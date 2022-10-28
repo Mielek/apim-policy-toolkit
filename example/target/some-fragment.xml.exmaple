@@ -1,0 +1,8 @@
+﻿<fragment>
+    <set-header name="X-Test" exist-action="append">
+        <value>test</value>
+    </set-header>
+    <set-method method="OPTIONS" />
+    <set-status code="404" reason="My reason" />
+    <set-body xsi-nil="blank">MyBody</set-body>
+</fragment>

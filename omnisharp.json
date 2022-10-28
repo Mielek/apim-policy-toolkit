@@ -1,0 +1,18 @@
+{
+    "msbuild": {
+        "EnablePackageAutoRestore": true
+    },
+    "RoslynExtensionsOptions": {
+        "EnableAnalyzersSupport": true
+    },
+    "script": {
+        "enabled": true,
+        "defaultTargetFramework": "netcoreapp3.1",
+        "enableScriptNuGetReferences": false,
+        "rspFilePath": "starter.rsp"
+    },
+    "FormattingOptions": {
+        "EnableEditorConfigSupport": true,
+        "OrganizeImports": true
+    }
+}

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <!-- <TargetFramework>netstandard1.4</TargetFramework> -->
+    <PackageId>Mielek.Test.Marshalling</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>Mielek</Authors>
+    <!-- <Description>Awesome application logging utility</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <Copyright>Copyright 2016 (c) Contoso Corporation. All rights reserved.</Copyright>
+    <PackageTags>logger logging logs</PackageTags> -->
+  </PropertyGroup> 
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
+    <PackageReference Include="coverlet.collector" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Model\Model.csproj" />
+    <ProjectReference Include="..\..\src\Marshalling\Marshalling.csproj" />
+    <ProjectReference Include="..\..\src\Builders\Builders.csproj" />
+  </ItemGroup>
+</Project>
