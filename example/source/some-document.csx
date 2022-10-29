@@ -18,7 +18,7 @@ return PolicyDocumentBuilder
                 policy.Name("X-Test").ExistAction(ExistAction.Append)
                     .Value("Test")
                     .Value(expression => expression.Inlined("context.Deployment.Region"))
-                    .Value(expression => expression.FromFile("./scripts/guid-time.csx"));
+                    .Value(expression => expression.FromFile("./expressions/guid-time.csx"));
             });
     })
     .Outbound(policies => policies.Base().SetBody(policy => policy.Body(expression => expression.FromFile("./scripts/filter-body.csx"))))

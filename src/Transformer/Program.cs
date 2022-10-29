@@ -18,8 +18,8 @@ var targetFolder = options["t"] ?? options["target"] ?? throw new NullReferenceE
 
 var scriptExtensionPattern = options["e"] ?? options["extension"] ?? "*.csx";
 
-var addRefsAndImportsToScripts = Boolean.Parse(options["add-imports"] ?? "true");
-var removeDirectivesFromScripts = Boolean.Parse(options["remove-directives"] ?? "false");
+var addRefsAndImportsToScripts = bool.Parse(options["add-imports"] ?? "true");
+var removeDirectivesFromScripts = bool.Parse(options["remove-directives"] ?? "false");
 var directivesRegex = new Regex("^#.* .*$", RegexOptions.Multiline);
 
 var scriptOptions = ScriptOptions.Default

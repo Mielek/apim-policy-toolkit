@@ -23,12 +23,12 @@ Before running anything in the example solution please execute below steps.
 ### Model
 
 Model library contain classes representing structures in policy document, like fragments, policies and policy sections.
-[Learn more](src/Model/README.md)
+[Learn more](src/Model)
 
 ### Builders
 
 Builders library contains classes which are responsible for creating object oriented definition of policy document.
-[Learn more](src/Builders/README.md)
+[Learn more](src/Builders)
 
 ```csharp
 PolicyDocumentBuilder
@@ -61,7 +61,7 @@ PolicyDocumentBuilder
 ### Marshalling
 
 Marshalling library contains all the necessary classes to transform object model into XML policy.
-[Learn more](src/Marshalling/README.md)
+[Learn more](src/Marshalling)
 
 ```csharp
 var model = CreateSomePolicyDocument();
@@ -74,12 +74,12 @@ using(var marshaller = Marshaller.Create("output/path/to/file.xml"))
 ### Expression.Context
 
 Expression.Context project contains classes representing a context of policy expression.
-[Learn more](src/Expressions/Context/README.md)
+[Learn more](src/Expressions/Context)
 
 ### Expression.Testing
 
 Expression.Testing project is responsible for classes which help with testing policy expressions defining mock context. Id defines simple expression runner, mock context and set of assertions.
-[Learn more](src/Expressions/Context/README.md)
+[Learn more](src/Expressions/Context)
 
 ```csharp
 var expression = ExpressionProvider.LoadFromFile(ScriptPath("guid-time.csx"));
@@ -90,7 +90,7 @@ var result = await expression.Execute(context);
 ### Transformer
 
 Transformer project is responsible for code of `policy-transformer` tool. Tool is responsible for creating XML representation of policy documents by running builder scripts.
-[Learn more](src/Transformer/README.md)
+[Learn more](src/Transformer)
 
 ```cmd
 dotnet policy-transformer --s ./source --t ./target

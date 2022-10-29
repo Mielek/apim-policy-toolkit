@@ -10,7 +10,7 @@ namespace Mielek.Marshalling;
 public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 {
     static readonly XmlWriterSettings XmlWriterSettings = new() { OmitXmlDeclaration = true, ConformanceLevel = ConformanceLevel.Fragment };
-    static readonly Dictionary<Type, IMarshallerHandler> handlers = new Dictionary<Type, IMarshallerHandler>()
+    static readonly Dictionary<Type, IMarshallerHandler> Handlers = new Dictionary<Type, IMarshallerHandler>()
     {
         #region Roots
         { typeof(PolicyDocument), new PolicyDocumentHandler() },
@@ -62,7 +62,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 
     public void Visit<T>(T element) where T : IVisitable
     {
-        if (!handlers.TryGetValue(typeof(T), out var handler))
+        if (!Handlers.TryGetValue(typeof(T), out var handler))
         {
             throw new Exception();
         }

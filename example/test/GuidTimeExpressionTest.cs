@@ -13,7 +13,7 @@ public class GuidTimeExpressionTest
     [ClassInitialize]
     public static void Init(TestContext c)
     {
-        expression = ExpressionProvider.LoadFromFile(ScriptPath("guid-time.csx"));
+        expression = ExpressionProvider.LoadFromFile(ExpressionPath("guid-time.csx"));
     }
 
     [ClassCleanup]

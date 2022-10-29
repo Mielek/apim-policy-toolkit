@@ -14,7 +14,7 @@ public class FilterBodyExpressionTest
     [ClassInitialize]
     public static void Init(TestContext c)
     {
-        expression = ExpressionProvider.LoadFromFile(ScriptPath("filter-body.csx"));
+        expression = ExpressionProvider.LoadFromFile(ExpressionPath("filter-body.csx"));
     }
 
     [ClassCleanup]
