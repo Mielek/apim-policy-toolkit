@@ -32,7 +32,7 @@ namespace Mielek.Builders.Policies
             return Reason(config => config.Constant(reason));
         }
 
-        internal SetStatusPolicy Build()
+        public SetStatusPolicy Build()
         {
             if (_code == null) throw new NullReferenceException();
 

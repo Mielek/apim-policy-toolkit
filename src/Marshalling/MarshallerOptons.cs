@@ -2,17 +2,15 @@ namespace Mielek.Marshalling;
 
 public sealed class MarshallerOptions
 {
-    public static MarshallerOptions Default => new MarshallerOptions();
+    public static MarshallerOptions Default => new();
 
-    string _scriptBaseDirectory = Environment.CurrentDirectory;
-
-    public string ScriptBaseDirectory => _scriptBaseDirectory;
+    public string ScriptBaseDirectory { get; private set; } = Environment.CurrentDirectory;
 
     MarshallerOptions() { }
 
     public MarshallerOptions WithFileScriptBaseDirectory(string scriptBaseDirectory)
     {
-        this._scriptBaseDirectory = scriptBaseDirectory;
+        ScriptBaseDirectory = scriptBaseDirectory;
         return this;
     }
 }

@@ -56,7 +56,7 @@ namespace Mielek.Builders.Policies
         };
 
 
-        internal SetBodyPolicy Build()
+        public SetBodyPolicy Build()
         {
             if (_body == null) throw new NullReferenceException();
 

@@ -6,7 +6,7 @@ return PolicyDocumentBuilder
             .CheckHeader(policy => 
             {
                 policy.Name("X-Checked")
-                    .FailedCheckCode(400)
+                    .FailedCheckHttpCode(400)
                     .FailedCheckErrorMessage("Bad request")
                     .IgnoreCase(true)
                     .Value("Test")

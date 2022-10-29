@@ -1,65 +1,34 @@
 using Mielek.Builders;
-using Mielek.Model.Policies;
-
-namespace Mielek.Marshalling;
+namespace Mielek.Test.Marshalling;
 
 [TestClass]
-public class MarshallerTest
+public class MarshallerTest : BaseMarshallerTest
 {
     [TestMethod]
-    public void PolicyDocument()
+    public void ShouldMarshallPolicyDocument()
     {
         var document = PolicyDocumentBuilder
             .Create()
-            .Inbound(policies =>
-            {
-                policies
-                    .CheckHeader(policy => 
-                    {
-                        policy.Name("X-Checked")
-                            .FailedCheckCode(400)
-                            .FailedCheckErrorMessage("Bad request")
-                            .IgnoreCase(true)
-                            .Value(expression => expression.Constant("Test"));
-                    })
-                    .Base()
-                    .SetHeader(policy =>
-                    {
-                        policy.Name("X-Test").ExistAction(ExistAction.Append)
-                            .Value("Test")
-                            .Value(expression => expression.Inlined("context.Deployment.Region"))
-                            .Value(expression => expression.FromFile("../../../scripts/guid-time.csx"));
-                    });
-            })
-            .Outbound(policies => policies.SetBody(policy => policy.Body(expression => expression.FromFile("../../../scripts/filter-body.csx"))))
+            .Inbound(policies => policies.Base())
+            .Backend(policies => policies.Base())
+            .Outbound(policies => policies.Base())
+            .OnError(policies => policies.Base())
             .Build();
 
-        using (var marshaller = Marshaller.Create(Console.Out))
-        {
-            document.Accept(marshaller);
-        }
-        Console.Out.Flush();
+        document.Accept(Marshaller);
+        
+        Assert.AreEqual("<policies><inbound><base /></inbound><backend><base /></backend><outbound><base /></outbound><on-error><base /></on-error></policies>", WrittenText);
     }
 
     [TestMethod]
-    public void PolicyFragment()
+    public void ShouldMarshallPolicyFragment()
     {
         var fragment = PolicyFragmentBuilder.Create()
-            .Policies(policies =>
-            {
-                policies
-                    .SetHeader(policy => policy.Name("X-Test")
-                            .ExistAction(ExistAction.Append)
-                            .Value(expression => expression.Constant("test")))
-                    .SetMethod(policy => policy.Options())
-                    .SetStatus(policy => policy.Code(222).Reason("My reason"))
-                    .SetBody(policy => policy.Body(expression => expression.Constant("MyBody")).XsiNil(XsiNilType.Blank));
-            }).Build();
+            .Policies(policies => policies.SetMethod(policy => policy.Options()))
+            .Build();
 
-        using (var marshaller = Marshaller.Create(Console.Out))
-        {
-            fragment.Accept(marshaller);
-        }
-        Console.Out.Flush();
+        fragment.Accept(Marshaller);
+
+        Assert.AreEqual(@"<fragment><set-method method=""OPTIONS"" /></fragment>", WrittenText);
     }
 }

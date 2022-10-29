@@ -32,7 +32,7 @@ public class ExpressionBuilder
         return this;
     }
 
-    internal IExpression Build() {
+    public IExpression Build() {
         return _expression ?? throw new NullReferenceException();
     }
 }

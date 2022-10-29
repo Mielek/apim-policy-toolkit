@@ -55,7 +55,7 @@ namespace Mielek. Builders.Policies
             _ => throw new Exception(),
         };
 
-        internal SetHeaderPolicy Build()
+        public SetHeaderPolicy Build()
         {
             if (_name == null) throw new NullReferenceException();
 

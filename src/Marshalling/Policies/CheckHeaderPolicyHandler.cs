@@ -12,7 +12,7 @@ public class CheckHeaderPolicyHandler : MarshallerHandler<CheckHeaderPolicy>
         marshaller.Writer.WriteStartElement("check-header");
 
         marshaller.Writer.WriteExpressionAsAttribute("name", element.Name);
-        marshaller.Writer.WriteExpressionAsAttribute("failed-check-httpcode", element.FailedCheckCode);
+        marshaller.Writer.WriteExpressionAsAttribute("failed-check-httpcode", element.FailedCheckHttpCode);
         marshaller.Writer.WriteExpressionAsAttribute("failed-check-error-message", element.FailedCheckErrorMessage);
         marshaller.Writer.WriteExpressionAsAttribute("ignore-case", element.IgnoreCase);
 

@@ -49,7 +49,7 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        internal SetMethodPolicy Build()
+        public SetMethodPolicy Build()
         {
             return _policy ?? throw new NullReferenceException();
         }

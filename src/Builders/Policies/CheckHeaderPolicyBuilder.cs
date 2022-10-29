@@ -22,12 +22,12 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public CheckHeaderPolicyBuilder FailedCheckCode(ushort code)
+        public CheckHeaderPolicyBuilder FailedCheckHttpCode(ushort code)
         {
-            return FailedCheckCode(config => config.Constant($"{code}"));
+            return FailedCheckHttpCode(config => config.Constant($"{code}"));
         }
         
-        public CheckHeaderPolicyBuilder FailedCheckCode(Action<ExpressionBuilder> configurator) {
+        public CheckHeaderPolicyBuilder FailedCheckHttpCode(Action<ExpressionBuilder> configurator) {
             _failedCheckCode = ExpressionBuilder.BuildFromConfiguration(configurator);
             return this;
         }
@@ -63,7 +63,7 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        internal CheckHeaderPolicy Build()
+        public CheckHeaderPolicy Build()
         {
             if(_name == null) throw new NullReferenceException();
             if(_failedCheckCode == null) throw new NullReferenceException();

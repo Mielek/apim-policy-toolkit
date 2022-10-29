@@ -9,4 +9,4 @@ public sealed record PolicyDocument(
     ICollection<IPolicy>? OnError = null
 ) : Visitable<PolicyDocument>;
 
-public record PolicyFragment(ICollection<IPolicy> Policies): Visitable<PolicyFragment>;
+public sealed record PolicyFragment(ICollection<IPolicy> Policies): Visitable<PolicyFragment>;

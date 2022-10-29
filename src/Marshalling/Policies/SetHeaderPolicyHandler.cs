@@ -15,7 +15,7 @@ public class SetHeaderPolicyHandler : MarshallerHandler<SetHeaderPolicy>
         {
             marshaller.Writer.WriteExpressionAsAttribute("exist-action", element.ExistAction);
         }
-        if (element.Values != null && element.Values.Count > 0)
+        if (element.Values != null)
         {
             foreach (var value in element.Values)
             {

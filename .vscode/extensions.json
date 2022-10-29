@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "ms-dotnettools.csharp",
+        "editorconfig.editorconfig",
+        "streetsidesoftware.code-spell-checker"
+    ]
+}

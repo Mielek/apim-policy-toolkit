@@ -5,7 +5,7 @@ namespace Mielek.Builders;
 
 public partial class PolicySectionBuilder {
     public PolicySectionBuilder Base() {
-        this.sectionPolicies.Add(new BasePolicy());
+        sectionPolicies.Add(new BasePolicy());
         return this;
     }
 }

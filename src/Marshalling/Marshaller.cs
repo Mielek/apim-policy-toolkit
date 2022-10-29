@@ -9,7 +9,7 @@ using Mielek.Marshalling.Expressions;
 namespace Mielek.Marshalling;
 public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 {
-    static readonly XmlWriterSettings XmlWriterSettings = new XmlWriterSettings() { OmitXmlDeclaration = true };
+    static readonly XmlWriterSettings XmlWriterSettings = new() { OmitXmlDeclaration = true, ConformanceLevel = ConformanceLevel.Fragment };
     static readonly Dictionary<Type, IMarshallerHandler> handlers = new Dictionary<Type, IMarshallerHandler>()
     {
         #region Roots
@@ -54,15 +54,11 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 
     public MarshallerOptions Options { get; }
 
-    public void Dispose()
-    {
-        Writer.BaseWriter.Dispose();
-    }
+    public void Flush() => Writer.BaseWriter.Flush();
 
-    public ValueTask DisposeAsync()
-    {
-        return Writer.BaseWriter.DisposeAsync();
-    }
+    public void Dispose() => Writer.BaseWriter.Dispose();
+
+    public ValueTask DisposeAsync() => Writer.BaseWriter.DisposeAsync();
 
     public void Visit<T>(T element) where T : IVisitable
     {
@@ -85,20 +81,11 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             _marshaller = marshaller;
         }
 
-        internal void WriteElement(string name)
-        {
-            BaseWriter.WriteElementString(name, null);
-        }
+        internal void WriteElement(string name) => BaseWriter.WriteElementString(name, null);
 
-        internal void WriteStartElement(string name)
-        {
-            BaseWriter.WriteStartElement(name);
-        }
+        internal void WriteStartElement(string name) => BaseWriter.WriteStartElement(name);
 
-        internal void WriteEndElement()
-        {
-            BaseWriter.WriteEndElement();
-        }
+        internal void WriteEndElement() => BaseWriter.WriteEndElement();
 
         internal void WriteExpressionAsAttribute(string name, IExpression expression)
         {
@@ -114,14 +101,8 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             BaseWriter.WriteEndElement();
         }
 
-        internal void WriteExpression(IExpression expression)
-        {
-            expression.Accept(_marshaller);
-        }
+        internal void WriteExpression(IExpression expression) => expression.Accept(_marshaller);
 
-        internal void WriteString(string value)
-        {
-            BaseWriter.WriteString(value);
-        }
+        internal void WriteString(string value) => BaseWriter.WriteString(value);
     }
 }
