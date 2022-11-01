@@ -1,6 +1,6 @@
 using Mielek.Expressions.Context;
 
-namespace Mielek.Expressions.Testing.Mocks;
+namespace Mielek.Testing.Expressions.Mocks;
 
 public class MockContextApi : MockApi, IContextApi
 {

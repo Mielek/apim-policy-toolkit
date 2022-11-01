@@ -14,6 +14,7 @@ namespace Mielek.Builders.Policies
         {
             return Body(config => config.Constant(text));
         }
+        
         public SetBodyPolicyBuilder Body(Action<ExpressionBuilder> configurator)
         {
             _body = ExpressionBuilder.BuildFromConfiguration(configurator);
@@ -54,7 +55,6 @@ namespace Mielek.Builders.Policies
             XsiNilType.Null => "null",
             _ => throw new Exception(),
         };
-
 
         public SetBodyPolicy Build()
         {

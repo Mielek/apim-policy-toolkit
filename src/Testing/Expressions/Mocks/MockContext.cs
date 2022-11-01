@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using Mielek.Expressions.Context;
 
-namespace Mielek.Expressions.Testing.Mocks;
+namespace Mielek.Testing.Expressions.Mocks;
 public class MockContext : IContext
 {
     public MockContext()

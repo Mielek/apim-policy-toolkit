@@ -65,7 +65,7 @@ namespace Mielek.Builders
         {
             var builder = new SetMethodPolicyBuilder();
             configurator(builder);
-            this.sectionPolicies.Add(builder.Build());
+            sectionPolicies.Add(builder.Build());
             return this;
         }
 

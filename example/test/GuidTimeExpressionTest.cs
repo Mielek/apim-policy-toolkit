@@ -1,9 +1,9 @@
-namespace test;
+namespace Mielek.Test.Example;
 
 using static Constants;
 
-using Mielek.Expressions.Testing;
-using Mielek.Expressions.Testing.Mocks;
+using Mielek.Testing.Expressions;
+using Mielek.Testing.Expressions.Mocks;
 
 [TestClass]
 public class GuidTimeExpressionTest

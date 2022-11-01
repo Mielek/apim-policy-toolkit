@@ -1,4 +1,4 @@
-namespace test;
+namespace Mielek.Test.Example;
 
 public static class Constants
 {

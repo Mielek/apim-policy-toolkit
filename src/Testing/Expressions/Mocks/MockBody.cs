@@ -3,7 +3,7 @@ using Mielek.Expressions.Context;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Mielek.Expressions.Testing.Mocks;
+namespace Mielek.Testing.Expressions.Mocks;
 
 public class MockBody : IMessageBody
 {

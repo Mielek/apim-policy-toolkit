@@ -2,7 +2,7 @@ using System.Security.Cryptography.X509Certificates;
 
 using Mielek.Expressions.Context;
 
-namespace Mielek.Expressions.Testing.Mocks;
+namespace Mielek.Testing.Expressions.Mocks;
 
 public class MockRequest : IRequest
 {

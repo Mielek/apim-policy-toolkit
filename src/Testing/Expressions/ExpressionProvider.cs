@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Mielek.Expressions.Testing;
+namespace Mielek.Testing.Expressions;
 public static class ExpressionProvider
 {
     readonly static Regex DirectivesRegex = new Regex("^#.* .*$", RegexOptions.Multiline);

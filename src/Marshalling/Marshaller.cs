@@ -24,6 +24,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(SetMethodPolicy), new SetMethodPolicyHandler() },
         { typeof(SetStatusPolicy), new SetStatusPolicyHandler() },
         { typeof(CheckHeaderPolicy), new CheckHeaderPolicyHandler() },
+        { typeof(IncludeFragmentPolicy), new IncludeFragmentPolicyHandler() },
         #endregion Policies
 
         #region Expressions
@@ -86,6 +87,8 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         internal void WriteStartElement(string name) => BaseWriter.WriteStartElement(name);
 
         internal void WriteEndElement() => BaseWriter.WriteEndElement();
+
+        internal void WriteAttribute(string name, string value) => BaseWriter.WriteAttributeString(name, value);
 
         internal void WriteExpressionAsAttribute(string name, IExpression expression)
         {

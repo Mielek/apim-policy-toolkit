@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <!-- <TargetFramework>netstandard1.4</TargetFramework> -->
-    <PackageId>Mielek.Expressions.Testing</PackageId>
+    <PackageId>Mielek.Testing.Expressions</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <Authors>Mielek</Authors>
     <!-- <Description>Awesome application logging utility</Description>
@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Context\Context.csproj" />
+    <ProjectReference Include="..\..\Expressions\Context\Context.csproj" />
   </ItemGroup>
 
 </Project>

@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mielek.Expressions.Testing" Version="1.0.0" />
+    <PackageReference Include="Mielek.Testing.Expressions" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

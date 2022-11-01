@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
 
-namespace Mielek.Expressions.Testing;
+namespace Mielek.Testing.Expressions;
 
 public sealed class Expression
 {
