@@ -1,9 +1,10 @@
-namespace Mielek. Builders.Policies
+namespace Mielek.Builders.Policies
 {
     using System.Collections.Immutable;
+
     using Mielek.Builders.Expressions;
-    using Mielek.Model.Policies;
     using Mielek.Model.Expressions;
+    using Mielek.Model.Policies;
 
     public class SetHeaderPolicyBuilder
     {
@@ -75,7 +76,7 @@ namespace Mielek.Builders
         {
             var builder = new SetHeaderPolicyBuilder();
             configurator(builder);
-            this.sectionPolicies.Add(builder.Build());
+            this._sectionPolicies.Add(builder.Build());
             return this;
         }
     }

@@ -1,10 +1,10 @@
 ﻿using System.Xml;
 
-using Mielek.Model;
-using Mielek.Model.Policies;
-using Mielek.Model.Expressions;
-using Mielek.Marshalling.Policies;
 using Mielek.Marshalling.Expressions;
+using Mielek.Marshalling.Policies;
+using Mielek.Model;
+using Mielek.Model.Expressions;
+using Mielek.Model.Policies;
 
 namespace Mielek.Marshalling;
 public class Marshaller : IVisitor, IAsyncDisposable, IDisposable

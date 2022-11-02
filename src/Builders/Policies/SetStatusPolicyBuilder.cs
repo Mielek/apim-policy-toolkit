@@ -51,12 +51,9 @@ namespace Mielek.Builders
         {
             var builder = new SetStatusPolicyBuilder();
             configurator(builder);
-            this.sectionPolicies.Add(builder.Build());
+            this._sectionPolicies.Add(builder.Build());
             return this;
         }
 
     }
 }
-
-
-

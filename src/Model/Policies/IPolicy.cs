@@ -1,3 +1,2 @@
 namespace Mielek.Model.Policies;
-public interface IPolicy : IVisitable {
-}
+public interface IPolicy : IVisitable { }

@@ -5,9 +5,12 @@ namespace Mielek.Builders.Expressions;
 
 public class ExpressionBuilder
 {
+    public static ExpressionBuilder Builder => new();
 
-    internal static IExpression BuildFromConfiguration(Action<ExpressionBuilder> configurator) {
-        var builder = new ExpressionBuilder();
+    public static IExpression BuildFromConfiguration(Action<ExpressionBuilder> configurator)
+    {
+
+        var builder = Builder;
         configurator(builder);
         return builder.Build();
     }
@@ -32,7 +35,8 @@ public class ExpressionBuilder
         return this;
     }
 
-    public IExpression Build() {
+    public IExpression Build()
+    {
         return _expression ?? throw new NullReferenceException();
     }
 }

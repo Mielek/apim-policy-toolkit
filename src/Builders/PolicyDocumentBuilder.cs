@@ -4,11 +4,7 @@ using Mielek.Model.Policies;
 namespace Mielek.Builders;
 public class PolicyDocumentBuilder
 {
-
-    public static PolicyDocumentBuilder Create()
-    {
-        return new PolicyDocumentBuilder();
-    }
+    public static PolicyDocumentBuilder Create() => new();
 
     ICollection<IPolicy>? _inbound;
     ICollection<IPolicy>? _backend;

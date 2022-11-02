@@ -4,7 +4,7 @@ namespace Mielek.Testing.Expressions;
 public static class ExpressionProvider
 {
     readonly static Regex DirectivesRegex = new Regex("^#.* .*$", RegexOptions.Multiline);
-    
+
     public static Expression LoadFromFile(string path)
     {
         var code = File.ReadAllText(path);

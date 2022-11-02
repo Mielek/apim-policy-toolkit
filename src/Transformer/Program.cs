@@ -6,8 +6,8 @@ using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.Extensions.Configuration;
 
 using Mielek.Builders;
-using Mielek.Model;
 using Mielek.Marshalling;
+using Mielek.Model;
 
 var options = new ConfigurationBuilder()
     .AddCommandLine(args)
@@ -65,6 +65,6 @@ Task.WaitAll(files.Select(async filePath =>
     {
         policy.Accept(marshaller);
     }
-    
+
     Console.Out.WriteLine($"Document {fileName} created");
 }).ToArray());

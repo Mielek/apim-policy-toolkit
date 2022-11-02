@@ -15,43 +15,52 @@ namespace Mielek.Builders.Policies
         bool? _ignoreError;
 
 
-        public GetAuthorizationContextPolicyBuilder ProviderId(string value) {
+        public GetAuthorizationContextPolicyBuilder ProviderId(string value)
+        {
             return ProviderId(config => config.Constant(value));
         }
-        public GetAuthorizationContextPolicyBuilder ProviderId(Action<ExpressionBuilder> configurator) {
+        public GetAuthorizationContextPolicyBuilder ProviderId(Action<ExpressionBuilder> configurator)
+        {
             _providerId = ExpressionBuilder.BuildFromConfiguration(configurator);
             return this;
         }
-        
-        public GetAuthorizationContextPolicyBuilder AuthorizationId(string value) {
+
+        public GetAuthorizationContextPolicyBuilder AuthorizationId(string value)
+        {
             return AuthorizationId(config => config.Constant(value));
         }
-        public GetAuthorizationContextPolicyBuilder AuthorizationId(Action<ExpressionBuilder> configurator) {
+        public GetAuthorizationContextPolicyBuilder AuthorizationId(Action<ExpressionBuilder> configurator)
+        {
             _authorizationId = ExpressionBuilder.BuildFromConfiguration(configurator);
             return this;
         }
 
-        public GetAuthorizationContextPolicyBuilder ContextVariableName(string value) {
+        public GetAuthorizationContextPolicyBuilder ContextVariableName(string value)
+        {
             _contextVariableName = value;
-             return this;
-        }
-        
-        public GetAuthorizationContextPolicyBuilder IdentityType(IdentityType value) {
-            _identityType = value;
-             return this;
+            return this;
         }
 
-        public GetAuthorizationContextPolicyBuilder Identity(string value) {
+        public GetAuthorizationContextPolicyBuilder IdentityType(IdentityType value)
+        {
+            _identityType = value;
+            return this;
+        }
+
+        public GetAuthorizationContextPolicyBuilder Identity(string value)
+        {
             return Identity(config => config.Constant(value));
         }
-        public GetAuthorizationContextPolicyBuilder Identity(Action<ExpressionBuilder> configurator) {
+        public GetAuthorizationContextPolicyBuilder Identity(Action<ExpressionBuilder> configurator)
+        {
             _identity = ExpressionBuilder.BuildFromConfiguration(configurator);
             return this;
         }
 
-        public GetAuthorizationContextPolicyBuilder IgnoreError(bool value) {
+        public GetAuthorizationContextPolicyBuilder IgnoreError(bool value)
+        {
             _ignoreError = value;
-             return this;
+            return this;
         }
 
         public GetAuthorizationContextPolicy Build()
@@ -73,7 +82,7 @@ namespace Mielek.Builders
         {
             var builder = new GetAuthorizationContextPolicyBuilder();
             configurator(builder);
-            sectionPolicies.Add(builder.Build());
+            _sectionPolicies.Add(builder.Build());
             return this;
         }
 

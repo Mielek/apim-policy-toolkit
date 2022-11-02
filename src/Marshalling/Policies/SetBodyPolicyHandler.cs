@@ -15,7 +15,8 @@ public class SetBodyPolicyHandler : MarshallerHandler<SetBodyPolicy>
             marshaller.Writer.WriteExpressionAsAttribute("template", element.Template);
         }
 
-        if(element.XsiNil != null) {
+        if (element.XsiNil != null)
+        {
             marshaller.Writer.WriteExpressionAsAttribute("xsi-nil", element.XsiNil);
         }
         marshaller.Writer.WriteExpression(element.Body);

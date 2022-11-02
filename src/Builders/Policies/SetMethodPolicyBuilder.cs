@@ -65,12 +65,9 @@ namespace Mielek.Builders
         {
             var builder = new SetMethodPolicyBuilder();
             configurator(builder);
-            sectionPolicies.Add(builder.Build());
+            _sectionPolicies.Add(builder.Build());
             return this;
         }
 
     }
 }
-
-
-

@@ -1,3 +1,3 @@
 namespace Mielek.Model.Expressions;
 
-public interface IExpression : IVisitable {} 
+public interface IExpression : IVisitable { }

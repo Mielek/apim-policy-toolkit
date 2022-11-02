@@ -16,7 +16,7 @@ public class MarshallerTest : BaseMarshallerTest
             .Build();
 
         document.Accept(Marshaller);
-        
+
         Assert.AreEqual("<policies><inbound><base /></inbound><backend><base /></backend><outbound><base /></outbound><on-error><base /></on-error></policies>", WrittenText);
     }
 

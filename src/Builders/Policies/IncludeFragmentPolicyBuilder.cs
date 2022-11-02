@@ -15,7 +15,7 @@ namespace Mielek.Builders.Policies
 
         public IncludeFragmentPolicy Build()
         {
-            if(_fragmentId == null) throw new NullReferenceException();
+            if (_fragmentId == null) throw new NullReferenceException();
 
             return new IncludeFragmentPolicy(_fragmentId);
         }
@@ -30,7 +30,7 @@ namespace Mielek.Builders
         {
             var builder = new IncludeFragmentPolicyBuilder();
             configurator(builder);
-            sectionPolicies.Add(builder.Build());
+            _sectionPolicies.Add(builder.Build());
             return this;
         }
 
