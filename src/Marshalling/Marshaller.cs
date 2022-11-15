@@ -24,6 +24,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(SetMethodPolicy), new SetMethodPolicyHandler() },
         { typeof(SetStatusPolicy), new SetStatusPolicyHandler() },
         { typeof(CheckHeaderPolicy), new CheckHeaderPolicyHandler() },
+        { typeof(RateLimitPolicy), new RateLimitPolicyHandler() },
         { typeof(IncludeFragmentPolicy), new IncludeFragmentPolicyHandler() },
         #endregion Policies
 

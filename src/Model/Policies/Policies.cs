@@ -41,4 +41,37 @@ public sealed record GetAuthorizationContextPolicy(
 ) : Visitable<GetAuthorizationContextPolicy>, IPolicy;
 public enum IdentityType { Managed, JWT }
 
+public sealed record RateLimitPolicy(
+    uint Calls,
+    uint RenewalPeriod,
+    string? RetryAfterHeaderName = null,
+    string? RetryAfterVariableName = null,
+    string? RemainingCallsHeaderName = null,
+    string? RemainingCallsVariableName = null,
+    string? TotalCallsHeaderName = null,
+    ICollection<RateLimitApi>? Apis = null
+) : Visitable<RateLimitPolicy>, IPolicy;
+public sealed record RateLimitApi(
+    string Name,
+    uint Calls,
+    uint RenewalPeriod,
+    string? RetryAfterHeaderName = null,
+    string? RetryAfterVariableName = null,
+    string? RemainingCallsHeaderName = null,
+    string? RemainingCallsVariableName = null,
+    string? TotalCallsHeaderName = null,
+    ICollection<RateLimitApiOperation>? Operations = null
+) : Visitable<RateLimitApi>;
+public sealed record RateLimitApiOperation(
+    string Name,
+    uint Calls,
+    uint RenewalPeriod,
+    string? RetryAfterHeaderName = null,
+    string? RetryAfterVariableName = null,
+    string? RemainingCallsHeaderName = null,
+    string? RemainingCallsVariableName = null,
+    string? TotalCallsHeaderName = null
+) : Visitable<RateLimitApiOperation>;
+
+
 public sealed record IncludeFragmentPolicy(string FragmentId) : Visitable<IncludeFragmentPolicy>, IPolicy;
