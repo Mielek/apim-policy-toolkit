@@ -1,5 +1,3 @@
-using System.Xml;
-
 namespace Mielek.Marshalling;
 
 public abstract class MarshallerHandler<T> : IMarshallerHandler

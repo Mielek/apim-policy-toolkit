@@ -8,8 +8,8 @@ namespace Mielek.Generator.Attributes
     {
         public BuilderException(Dictionary<string, string> errors) : this(null, errors)
         {
-                
         }
+        
         public BuilderException(string message, Dictionary<string,string> errors) : base(GetErrorMessage(message,errors))
         {
             Errors = errors;

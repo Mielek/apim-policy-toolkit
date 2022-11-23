@@ -73,5 +73,17 @@ public sealed record RateLimitApiOperation(
     string? TotalCallsHeaderName = null
 ) : Visitable<RateLimitApiOperation>;
 
+public sealed record RateLimitByKeyPolicy(
+    uint Calls,
+    uint RenewalPeriod,
+    IExpression CounterKey,
+    IExpression? IncrementCondition = null,
+    uint? IncrementCount = null,
+    string? RetryAfterHeaderName = null,
+    string? RetryAfterVariableName = null,
+    string? RemainingCallsHeaderName = null,
+    string? RemainingCallsVariableName = null,
+    string? TotalCallsHeaderName = null
+) : Visitable<RateLimitByKeyPolicy>, IPolicy;
 
 public sealed record IncludeFragmentPolicy(string FragmentId) : Visitable<IncludeFragmentPolicy>, IPolicy;

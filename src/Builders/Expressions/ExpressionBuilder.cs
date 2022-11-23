@@ -9,7 +9,6 @@ public class ExpressionBuilder
 
     public static IExpression BuildFromConfiguration(Action<ExpressionBuilder> configurator)
     {
-
         var builder = Builder;
         configurator(builder);
         return builder.Build();
