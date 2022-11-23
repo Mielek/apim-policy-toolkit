@@ -1,18 +1,13 @@
+using Mielek.Generator.Attributes;
 using Mielek.Model.Policies;
 
 namespace Mielek.Builders.Policies
 {
-    public class IncludeFragmentPolicyBuilder
+    
+    [GenerateBuilderSetters]
+    public partial class IncludeFragmentPolicyBuilder
     {
-
         string? _fragmentId;
-
-        public IncludeFragmentPolicyBuilder FragmentId(string fragmentId)
-        {
-            _fragmentId = fragmentId;
-            return this;
-        }
-
         public IncludeFragmentPolicy Build()
         {
             if (_fragmentId == null) throw new NullReferenceException();

@@ -2,49 +2,20 @@ namespace Mielek.Builders.Policies
 {
     using System.Collections.Immutable;
 
-    using Mielek.Builders.Expressions;
+    using Mielek.Generator.Attributes;
     using Mielek.Model.Expressions;
     using Mielek.Model.Policies;
 
-    public class SetHeaderPolicyBuilder
+    [GenerateBuilderSetters]
+    public partial class SetHeaderPolicyBuilder
     {
         IExpression? _name;
         ImmutableList<IExpression>.Builder? _values;
         IExpression? _existAction;
 
-        public SetHeaderPolicyBuilder Name(string name)
+        public SetHeaderPolicyBuilder ExistAction(ExistAction existAction)
         {
-            _name = new ConstantExpression(name);
-            return this;
-        }
-
-        public SetHeaderPolicyBuilder Name(Action<ExpressionBuilder> configurator)
-        {
-            _name = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
-        public SetHeaderPolicyBuilder Value(string value)
-        {
-            return Value(config => config.Constant(value));
-        }
-
-        public SetHeaderPolicyBuilder Value(Action<ExpressionBuilder> configurator)
-        {
-            var value = ExpressionBuilder.BuildFromConfiguration(configurator);
-            (_values ??= ImmutableList.CreateBuilder<IExpression>()).Add(value);
-            return this;
-        }
-
-        public SetHeaderPolicyBuilder ExistAction(Action<ExpressionBuilder> configurator)
-        {
-            _existAction = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
-        public SetHeaderPolicyBuilder ExistAction(Model.Policies.ExistAction existAction)
-        {
-            return ExistAction(config => config.Constant(Translate(existAction)));
+            return ExistAction(Translate(existAction));
         }
 
         private string Translate(Model.Policies.ExistAction existAction) => existAction switch
@@ -76,7 +47,7 @@ namespace Mielek.Builders
         {
             var builder = new SetHeaderPolicyBuilder();
             configurator(builder);
-            this._sectionPolicies.Add(builder.Build());
+            _sectionPolicies.Add(builder.Build());
             return this;
         }
     }

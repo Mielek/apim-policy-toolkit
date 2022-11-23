@@ -1,31 +1,17 @@
 namespace Mielek.Builders.Policies
 {
-    using Mielek.Builders.Expressions;
+    using Mielek.Generator.Attributes;
     using Mielek.Model.Expressions;
     using Mielek.Model.Policies;
 
-    public class SetBodyPolicyBuilder
+
+    [GenerateBuilderSetters]
+    public partial class SetBodyPolicyBuilder
     {
         IExpression? _body;
         IExpression? _template;
         IExpression? _xsiNil;
 
-        public SetBodyPolicyBuilder Body(string text)
-        {
-            return Body(config => config.Constant(text));
-        }
-
-        public SetBodyPolicyBuilder Body(Action<ExpressionBuilder> configurator)
-        {
-            _body = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
-        public SetBodyPolicyBuilder Template(Action<ExpressionBuilder> configurator)
-        {
-            _template = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
 
         public SetBodyPolicyBuilder Template(BodyTemplate template)
         {
@@ -37,12 +23,6 @@ namespace Mielek.Builders.Policies
             BodyTemplate.Liquid => "liquid",
             _ => throw new Exception(),
         };
-
-        public SetBodyPolicyBuilder XsiNil(Action<ExpressionBuilder> configurator)
-        {
-            _xsiNil = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
 
         public SetBodyPolicyBuilder XsiNil(XsiNilType xsiNil)
         {

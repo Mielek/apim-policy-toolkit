@@ -1,67 +1,19 @@
 using Mielek.Builders.Expressions;
 using Mielek.Model.Expressions;
 using Mielek.Model.Policies;
+using Mielek.Generator.Attributes;
 
 namespace Mielek.Builders.Policies
 {
-    public class GetAuthorizationContextPolicyBuilder
+    [GenerateBuilderSetters]
+    public partial class GetAuthorizationContextPolicyBuilder
     {
-
         IExpression? _providerId;
         IExpression? _authorizationId;
         string? _contextVariableName;
         IdentityType? _identityType;
         IExpression? _identity;
         bool? _ignoreError;
-
-
-        public GetAuthorizationContextPolicyBuilder ProviderId(string value)
-        {
-            return ProviderId(config => config.Constant(value));
-        }
-        public GetAuthorizationContextPolicyBuilder ProviderId(Action<ExpressionBuilder> configurator)
-        {
-            _providerId = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
-        public GetAuthorizationContextPolicyBuilder AuthorizationId(string value)
-        {
-            return AuthorizationId(config => config.Constant(value));
-        }
-        public GetAuthorizationContextPolicyBuilder AuthorizationId(Action<ExpressionBuilder> configurator)
-        {
-            _authorizationId = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
-        public GetAuthorizationContextPolicyBuilder ContextVariableName(string value)
-        {
-            _contextVariableName = value;
-            return this;
-        }
-
-        public GetAuthorizationContextPolicyBuilder IdentityType(IdentityType value)
-        {
-            _identityType = value;
-            return this;
-        }
-
-        public GetAuthorizationContextPolicyBuilder Identity(string value)
-        {
-            return Identity(config => config.Constant(value));
-        }
-        public GetAuthorizationContextPolicyBuilder Identity(Action<ExpressionBuilder> configurator)
-        {
-            _identity = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
-        public GetAuthorizationContextPolicyBuilder IgnoreError(bool value)
-        {
-            _ignoreError = value;
-            return this;
-        }
 
         public GetAuthorizationContextPolicy Build()
         {

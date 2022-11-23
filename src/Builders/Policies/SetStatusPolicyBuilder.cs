@@ -1,35 +1,18 @@
 namespace Mielek.Builders.Policies
 {
-    using Mielek.Builders.Expressions;
-
+    using Mielek.Generator.Attributes;
     using Mielek.Model.Expressions;
     using Mielek.Model.Policies;
 
-    public class SetStatusPolicyBuilder
+    [GenerateBuilderSetters]
+    public partial class SetStatusPolicyBuilder
     {
         IExpression? _code;
         IExpression? _reason;
 
-        public SetStatusPolicyBuilder Code(Action<ExpressionBuilder> configurator)
-        {
-            _code = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
         public SetStatusPolicyBuilder Code(ushort code)
         {
-            return Code(config => config.Constant($"{code}"));
-        }
-
-        public SetStatusPolicyBuilder Reason(Action<ExpressionBuilder> configurator)
-        {
-            _reason = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
-        public SetStatusPolicyBuilder Reason(string reason)
-        {
-            return Reason(config => config.Constant(reason));
+            return Code($"{code}");
         }
 
         public SetStatusPolicy Build()

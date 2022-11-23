@@ -2,82 +2,38 @@ namespace Mielek.Builders.Policies
 {
     using System.Collections.Immutable;
 
-    using Mielek.Builders.Expressions;
+    using Mielek.Generator.Attributes;
     using Mielek.Model.Expressions;
     using Mielek.Model.Policies;
 
-    public class CheckHeaderPolicyBuilder
+    [GenerateBuilderSetters]
+    public partial class CheckHeaderPolicyBuilder
     {
         IExpression? _name;
-        IExpression? _failedCheckCode;
+        IExpression? _failedCheckHttpCode;
         IExpression? _failedCheckErrorMessage;
         IExpression? _ignoreCase;
         ImmutableList<IExpression>.Builder? _values;
 
-        public CheckHeaderPolicyBuilder Name(string name)
-        {
-            return Name(config => config.Constant(name));
-        }
-        public CheckHeaderPolicyBuilder Name(Action<ExpressionBuilder> configurator)
-        {
-            _name = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
         public CheckHeaderPolicyBuilder FailedCheckHttpCode(ushort code)
         {
-            return FailedCheckHttpCode(config => config.Constant($"{code}"));
-        }
-
-        public CheckHeaderPolicyBuilder FailedCheckHttpCode(Action<ExpressionBuilder> configurator)
-        {
-            _failedCheckCode = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
-        public CheckHeaderPolicyBuilder FailedCheckErrorMessage(string message)
-        {
-            return FailedCheckErrorMessage(config => config.Constant(message));
-        }
-
-        public CheckHeaderPolicyBuilder FailedCheckErrorMessage(Action<ExpressionBuilder> configurator)
-        {
-            _failedCheckErrorMessage = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
+            return FailedCheckHttpCode($"{code}");
         }
 
         public CheckHeaderPolicyBuilder IgnoreCase(bool ignoreCase)
         {
-            return IgnoreCase(config => config.Constant($"{ignoreCase}"));
-        }
-
-        public CheckHeaderPolicyBuilder IgnoreCase(Action<ExpressionBuilder> configurator)
-        {
-            _ignoreCase = ExpressionBuilder.BuildFromConfiguration(configurator);
-            return this;
-        }
-
-        public CheckHeaderPolicyBuilder Value(string value)
-        {
-            return Value(config => config.Constant(value));
-        }
-
-        public CheckHeaderPolicyBuilder Value(Action<ExpressionBuilder> configurator)
-        {
-            var value = ExpressionBuilder.BuildFromConfiguration(configurator);
-            (_values ??= ImmutableList.CreateBuilder<IExpression>()).Add(value);
-            return this;
+            return IgnoreCase($"{ignoreCase}");
         }
 
         public CheckHeaderPolicy Build()
         {
             if (_name == null) throw new NullReferenceException();
-            if (_failedCheckCode == null) throw new NullReferenceException();
+            if (_failedCheckHttpCode == null) throw new NullReferenceException();
             if (_failedCheckErrorMessage == null) throw new NullReferenceException();
             if (_ignoreCase == null) throw new NullReferenceException();
             if (_values == null) throw new NullReferenceException();
 
-            return new CheckHeaderPolicy(_name, _failedCheckCode, _failedCheckErrorMessage, _ignoreCase, _values.ToImmutable());
+            return new CheckHeaderPolicy(_name, _failedCheckHttpCode, _failedCheckErrorMessage, _ignoreCase, _values.ToImmutable());
         }
     }
 }

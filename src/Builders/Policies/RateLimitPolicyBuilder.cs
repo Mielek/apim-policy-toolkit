@@ -17,7 +17,6 @@ namespace Mielek.Builders.Policies
             _calls = value;
             return (T)this;
         }
-
         public T RenewalPeriod(uint value)
         {
             _renewalPeriod = value;

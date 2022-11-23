@@ -21,5 +21,5 @@ return PolicyDocumentBuilder
                     .Value(expression => expression.FromFile("./expressions/guid-time.csx"));
             });
     })
-    .Outbound(policies => policies.Base().SetBody(policy => policy.Body(expression => expression.FromFile("./scripts/filter-body.csx"))))
+    .Outbound(policies => policies.Base().SetBody(policy => policy.Body(expression => expression.FromFile("./expressions/filter-body.csx"))))
     .Build();

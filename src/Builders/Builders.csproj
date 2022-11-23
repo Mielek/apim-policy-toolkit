@@ -17,11 +17,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <PackageOutputPath>../../output</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj" />
+    
+    <ProjectReference Include="..\Generators\Attributes\Attributes.csproj" />
+    <ProjectReference Include="..\Generators\Builders\Builders.csproj" 
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>

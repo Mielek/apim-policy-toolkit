@@ -1,12 +1,13 @@
 namespace Mielek.Builders.Policies
 {
-    using Mielek.Builders.Expressions;
-
+    using Mielek.Generator.Attributes;
+    using Mielek.Model.Expressions;
     using Mielek.Model.Policies;
 
-    public class SetMethodPolicyBuilder
+    [GenerateBuilderSetters]
+    public partial class SetMethodPolicyBuilder
     {
-        SetMethodPolicy? _policy;
+        IExpression? _method;
 
         public SetMethodPolicyBuilder Get()
         {
@@ -38,20 +39,11 @@ namespace Mielek.Builders.Policies
             return Method(configurator => configurator.Constant(method.Method));
         }
 
-        public SetMethodPolicyBuilder Method(string method)
-        {
-            return Method(configurator => configurator.Constant(method));
-        }
-
-        public SetMethodPolicyBuilder Method(Action<ExpressionBuilder> configurator)
-        {
-            _policy = new SetMethodPolicy(ExpressionBuilder.BuildFromConfiguration(configurator));
-            return this;
-        }
-
         public SetMethodPolicy Build()
         {
-            return _policy ?? throw new NullReferenceException();
+            if(_method == null) throw new NullReferenceException();
+
+            return new SetMethodPolicy(_method);
         }
     }
 }
