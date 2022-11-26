@@ -34,6 +34,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(ConstantExpression), new ConstantExpressionHandler() },
         { typeof(InlineScriptExpression), new InlineScriptExpressionHandler() },
         { typeof(FileScriptExpression), new FileScriptExpressionHandler() },
+        { typeof(FunctionFileScriptExpression), new FunctionFileScriptExpressionHandler() },
         #endregion Expressions
     };
 

@@ -34,6 +34,12 @@ public class ExpressionBuilder
         return this;
     }
 
+    public ExpressionBuilder FromFunctionFile(string filePath, string name)
+    {
+        _expression = new FunctionFileScriptExpression(filePath, name);
+        return this;
+    }
+
     public IExpression Build()
     {
         return _expression ?? throw new NullReferenceException();

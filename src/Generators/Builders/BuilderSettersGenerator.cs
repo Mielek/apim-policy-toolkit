@@ -20,18 +20,14 @@ public class BuilderSettersGenerator : ISourceGenerator
 {
     public void Execute(GeneratorExecutionContext context)
     {
-        // using the context, get a list of syntax trees in the users compilation
         foreach (var syntaxTree in context.Compilation.SyntaxTrees)
         {
             var classBuilders = GenerateSetterBuilder(context.Compilation, syntaxTree);
-            // add the filepath of each tree to the class we're building
             foreach (var classBuilder in classBuilders)
             {
                 context.AddSource($"{classBuilder.Key}.Builder.cs", SourceText.From(classBuilder.Value, Encoding.UTF8));
             }
-
         }
-        // inject the created source into the users compilation
     }
 
     private Dictionary<string, string> GenerateSetterBuilder(Compilation compilation, SyntaxTree syntaxTree)

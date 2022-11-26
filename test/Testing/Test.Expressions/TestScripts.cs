@@ -1,10 +1,8 @@
-namespace Mielek.Test.Marshalling;
+namespace Mielek.Test.Testing.Expressions;
 
 public static class TestScripts
 {
-    public static string OneLine => ScriptPath("one-line");
-    public static string GuidTime => ScriptPath("guid-time");
-    public static string FilterBody => ScriptPath("filter-body");
+    public static string WithoutDirective => ScriptPath("without-directive");
     public static string WithDirective => ScriptPath("with-directive");
     public static string Functions => ScriptPath("functions");
 

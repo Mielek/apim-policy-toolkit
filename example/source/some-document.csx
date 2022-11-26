@@ -8,7 +8,7 @@ return PolicyDocumentBuilder
                 policy.Name("X-Checked")
                     .FailedCheckHttpCode(400)
                     .FailedCheckErrorMessage("Bad request")
-                    .IgnoreCase(true)
+                    .IgnoreCase(expression => expression.FromFunctionFile("./expressions/simple-expressions-library.csx", "IsVariableSet"))
                     .Value("Test")
                     .Value("Other-Test");
             })
@@ -18,7 +18,8 @@ return PolicyDocumentBuilder
                 policy.Name("X-Test").ExistAction(ExistAction.Append)
                     .Value("Test")
                     .Value(expression => expression.Inlined("context.Deployment.Region"))
-                    .Value(expression => expression.FromFile("./expressions/guid-time.csx"));
+                    .Value(expression => expression.FromFile("./expressions/guid-time.csx"))
+                    .Value(expression => expression.FromFunctionFile("./expressions/simple-expressions-library.csx", "GetKnownGUIDOrGenerateNew"));
             });
     })
     .Outbound(policies => policies.Base().SetBody(policy => policy.Body(expression => expression.FromFile("./expressions/filter-body.csx"))))
