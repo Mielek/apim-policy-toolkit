@@ -69,7 +69,7 @@ public class SimpleExpressionsLibraryTest
         var expression = _expression["GetKnownGUIDOrGenerateNew"];
         var knownGuid = Guid.NewGuid().ToString();
         var context = new MockContext();
-        context.MockVariables["KnownGUID"] = knownGuid.ToString();
+        context.MockVariables["KnownGUID"] = knownGuid;
 
         var guidOne = await expression.Execute(context);
         var guidTwo = await expression.Execute(context);

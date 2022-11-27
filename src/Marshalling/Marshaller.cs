@@ -26,6 +26,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(CheckHeaderPolicy), new CheckHeaderPolicyHandler() },
         { typeof(RateLimitPolicy), new RateLimitPolicyHandler() },
         { typeof(RateLimitByKeyPolicy), new RateLimitByKeyPolicyHandler() },
+        { typeof(IpFilterPolicy), new IpFilterPolicyHandler() },
         { typeof(GetAuthorizationContextPolicy), new GetAuthorizationContextPolicyHandler() },
         { typeof(IncludeFragmentPolicy), new IncludeFragmentPolicyHandler() },
         #endregion Policies
@@ -86,7 +87,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             _marshaller = marshaller;
         }
 
-        internal void WriteElement(string name) => BaseWriter.WriteElementString(name, null);
+        internal void WriteElement(string name, string? value = null) => BaseWriter.WriteElementString(name, value);
 
         internal void WriteStartElement(string name) => BaseWriter.WriteStartElement(name);
 

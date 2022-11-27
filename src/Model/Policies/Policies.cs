@@ -86,4 +86,12 @@ public sealed record RateLimitByKeyPolicy(
     string? TotalCallsHeaderName = null
 ) : Visitable<RateLimitByKeyPolicy>, IPolicy;
 
+public sealed record IpFilterPolicy(IpFilterAction Action, ICollection<IIpFilterValue> Values) : Visitable<IpFilterPolicy>, IPolicy;
+public enum IpFilterAction {
+    Allow, Forbid
+}
+public interface IIpFilterValue {};
+public sealed record IpFilterAddress(string Ip): IIpFilterValue;
+public sealed record IpFilterAddressRange(string FromIp, string ToIp): IIpFilterValue;
+
 public sealed record IncludeFragmentPolicy(string FragmentId) : Visitable<IncludeFragmentPolicy>, IPolicy;

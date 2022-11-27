@@ -106,7 +106,7 @@ public class BuilderSettersGenerator : ISourceGenerator
             var fields = _classDeclaration.DescendantNodes().OfType<FieldDeclarationSyntax>().ToList();
             foreach (var field in fields)
             {
-                AppendFieldSetter(field);
+                if (!field.AttributeLists.HasAttribute(nameof(IgnoreBuilderFieldAttribute))) AppendFieldSetter(field);
             }
         }
 
