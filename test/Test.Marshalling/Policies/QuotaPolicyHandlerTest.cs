@@ -5,18 +5,17 @@ using Mielek.Model.Policies;
 namespace Mielek.Test.Marshalling;
 
 [TestClass]
-public class RateLimitPolicyHandlerTest : BaseMarshallerTest
+public class QuotaPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<rate-limit calls=""10"" renewal-period=""100"" />";
-    readonly RateLimitPolicy _policy = new RateLimitPolicyBuilder()
-            .Calls(10)
-            .RenewalPeriod(100)
-            .Build();
+    readonly string _expected = @"<quota renewal-period=""10"" />";
+    readonly QuotaPolicy _policy = new QuotaPolicyBuilder()
+        .RenewalPeriod(10)
+        .Build();
 
     [TestMethod]
     public void ShouldMarshallPolicy()
     {
-        var handler = new RateLimitPolicyHandler();
+        var handler = new QuotaPolicyHandler();
 
         handler.Marshal(Marshaller, _policy);
 
@@ -30,7 +29,6 @@ public class RateLimitPolicyHandlerTest : BaseMarshallerTest
 
         Assert.AreEqual(_expected, WrittenText.ToString());
     }
-
-    // TODO add tests for sub objects
-
+    
+    // TODO add test for rest properties
 }

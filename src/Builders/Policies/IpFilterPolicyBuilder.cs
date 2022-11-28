@@ -11,7 +11,7 @@ namespace Mielek.Builders.Policies
         IpFilterAction? _action;
 
         [IgnoreBuilderField]
-        ImmutableList<IIpFilterValue>.Builder _values = ImmutableList.CreateBuilder<IIpFilterValue>();
+        readonly ImmutableList<IIpFilterValue>.Builder _values = ImmutableList.CreateBuilder<IIpFilterValue>();
 
         public IpFilterPolicyBuilder Address(string address)
         {

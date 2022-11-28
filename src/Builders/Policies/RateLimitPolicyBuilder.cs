@@ -55,9 +55,16 @@ namespace Mielek.Builders.Policies
         }
     }
 
-    public abstract class RateLimitWithNameBuilder<T> : RateLimitBaseBuilder<T> where T : RateLimitWithNameBuilder<T>
+    public abstract class RateLimitWithIdentificationBuilder<T> : RateLimitBaseBuilder<T> where T : RateLimitWithIdentificationBuilder<T>
     {
+        protected string? _id = null;
         protected string? _name = null;
+
+        public T Id(string value)
+        {
+            _id = value;
+            return (T)this;
+        }
 
         public T Name(string value)
         {
@@ -67,21 +74,22 @@ namespace Mielek.Builders.Policies
 
         protected override void CheckRequiredParams()
         {
-            if (_name == null) throw new NullReferenceException();
+            if (_name == null && _id == null) throw new NullReferenceException();
             base.CheckRequiredParams();
         }
     }
 
-    public class RateLimitApiOperationBuilder : RateLimitWithNameBuilder<RateLimitApiOperationBuilder>
+    public class RateLimitApiOperationBuilder : RateLimitWithIdentificationBuilder<RateLimitApiOperationBuilder>
     {
         public RateLimitApiOperation Build()
         {
             CheckRequiredParams();
 
             return new RateLimitApiOperation(
-                _name!,
                 _calls!.Value,
                 _renewalPeriod!.Value,
+                _name,
+                _id,
                 _retryAfterHeaderName,
                 _retryAfterVariableName,
                 _remainingCallsHeaderName,
@@ -91,7 +99,7 @@ namespace Mielek.Builders.Policies
         }
     }
 
-    public class RateLimitApiBuilder : RateLimitWithNameBuilder<RateLimitApiBuilder>
+    public class RateLimitApiBuilder : RateLimitWithIdentificationBuilder<RateLimitApiBuilder>
     {
         List<RateLimitApiOperation>? _operations = null;
 
@@ -108,9 +116,10 @@ namespace Mielek.Builders.Policies
             CheckRequiredParams();
 
             return new RateLimitApi(
-                _name!,
                 _calls!.Value,
                 _renewalPeriod!.Value,
+                _name,
+                _id,
                 _retryAfterHeaderName,
                 _retryAfterVariableName,
                 _remainingCallsHeaderName,

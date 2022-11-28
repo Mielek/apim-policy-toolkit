@@ -12,8 +12,7 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class GetAuthorizationContextPolicyHandlerTest : BaseMarshallerTest
 {
-
-    GetAuthorizationContextPolicyBuilder baseBuilder = new GetAuthorizationContextPolicyBuilder()
+    readonly GetAuthorizationContextPolicyBuilder _baseBuilder = new GetAuthorizationContextPolicyBuilder()
             .ProviderId("someProvider")
             .AuthorizationId("someAuthId")
             .ContextVariableName("someContextVar");
@@ -22,7 +21,7 @@ public class GetAuthorizationContextPolicyHandlerTest : BaseMarshallerTest
     public void ShouldMarshallPolicy()
     {
         var handler = new GetAuthorizationContextPolicyHandler();
-        var policy = baseBuilder.Build();
+        var policy = _baseBuilder.Build();
 
         handler.Marshal(Marshaller, policy);
 
@@ -32,7 +31,7 @@ public class GetAuthorizationContextPolicyHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldHandlerBeRegisterInMarshaller()
     {
-        var policy = baseBuilder.Build();
+        var policy = _baseBuilder.Build();
 
         policy.Accept(Marshaller);
 
@@ -44,7 +43,7 @@ public class GetAuthorizationContextPolicyHandlerTest : BaseMarshallerTest
     [DataRow(IdentityType.Managed, "managed")]
     public void ShouldParseIdentityType(IdentityType identityType, string marshalledValue)
     {
-        var policy = baseBuilder
+        var policy = _baseBuilder
             .IdentityType(identityType)
             .Build();
 
@@ -56,7 +55,7 @@ public class GetAuthorizationContextPolicyHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldParseIdentityProperty()
     {
-        var policy = baseBuilder
+        var policy = _baseBuilder
             .Identity("someIdentity")
             .Build();
 
@@ -70,7 +69,7 @@ public class GetAuthorizationContextPolicyHandlerTest : BaseMarshallerTest
     [DataRow(false)]
     public void ShouldParseIgnoreProperty(bool ignoreError)
     {
-        var policy = baseBuilder
+        var policy = _baseBuilder
             .IgnoreError(ignoreError)
             .Build();
 

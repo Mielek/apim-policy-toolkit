@@ -28,6 +28,8 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(RateLimitByKeyPolicy), new RateLimitByKeyPolicyHandler() },
         { typeof(IpFilterPolicy), new IpFilterPolicyHandler() },
         { typeof(GetAuthorizationContextPolicy), new GetAuthorizationContextPolicyHandler() },
+        { typeof(QuotaPolicy), new QuotaPolicyHandler() },
+        { typeof(QuotaByKeyPolicy), new QuotaByKeyPolicyHandler() },
         { typeof(IncludeFragmentPolicy), new IncludeFragmentPolicyHandler() },
         #endregion Policies
 
@@ -39,78 +41,78 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         #endregion Expressions
     };
 
-    #region Create
-    public static Marshaller Create(XmlWriter xmlWriter) => new Marshaller(xmlWriter, MarshallerOptions.Default);
-    public static Marshaller Create(XmlWriter xmlWriter, MarshallerOptions options) => new Marshaller(xmlWriter, options);
-    public static Marshaller Create(Stream output) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), MarshallerOptions.Default);
-    public static Marshaller Create(Stream output, MarshallerOptions options) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), options);
-    public static Marshaller Create(TextWriter output) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), MarshallerOptions.Default);
-    public static Marshaller Create(TextWriter output, MarshallerOptions options) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), options);
-    public static Marshaller Create(string outputFileName) => new Marshaller(XmlWriter.Create(outputFileName, XmlWriterSettings), MarshallerOptions.Default);
-    public static Marshaller Create(string outputFileName, MarshallerOptions options) => new Marshaller(XmlWriter.Create(outputFileName, XmlWriterSettings), options);
-    #endregion Create
+#region Create
+public static Marshaller Create(XmlWriter xmlWriter) => new Marshaller(xmlWriter, MarshallerOptions.Default);
+public static Marshaller Create(XmlWriter xmlWriter, MarshallerOptions options) => new Marshaller(xmlWriter, options);
+public static Marshaller Create(Stream output) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), MarshallerOptions.Default);
+public static Marshaller Create(Stream output, MarshallerOptions options) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), options);
+public static Marshaller Create(TextWriter output) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), MarshallerOptions.Default);
+public static Marshaller Create(TextWriter output, MarshallerOptions options) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), options);
+public static Marshaller Create(string outputFileName) => new Marshaller(XmlWriter.Create(outputFileName, XmlWriterSettings), MarshallerOptions.Default);
+public static Marshaller Create(string outputFileName, MarshallerOptions options) => new Marshaller(XmlWriter.Create(outputFileName, XmlWriterSettings), options);
+#endregion Create
 
-    internal InternalWriter Writer { get; init; }
+internal InternalWriter Writer { get; init; }
 
-    Marshaller(XmlWriter xmlWriter, MarshallerOptions options)
+Marshaller(XmlWriter xmlWriter, MarshallerOptions options)
     {
-        this.Writer = new InternalWriter(xmlWriter, this);
-        this.Options = options;
+    this.Writer = new InternalWriter(xmlWriter, this);
+    this.Options = options;
+}
+
+public MarshallerOptions Options { get; }
+
+public void Flush() => Writer.BaseWriter.Flush();
+
+public void Dispose() => Writer.BaseWriter.Dispose();
+
+public ValueTask DisposeAsync() => Writer.BaseWriter.DisposeAsync();
+
+public void Visit<T>(T element) where T : IVisitable
+{
+    if (!Handlers.TryGetValue(typeof(T), out var handler))
+    {
+        throw new Exception();
     }
 
-    public MarshallerOptions Options { get; }
+    handler.Marshal(this, element);
+}
 
-    public void Flush() => Writer.BaseWriter.Flush();
+internal class InternalWriter
+{
+    readonly Marshaller _marshaller;
+    internal XmlWriter BaseWriter;
 
-    public void Dispose() => Writer.BaseWriter.Dispose();
-
-    public ValueTask DisposeAsync() => Writer.BaseWriter.DisposeAsync();
-
-    public void Visit<T>(T element) where T : IVisitable
+    internal InternalWriter(XmlWriter writer, Marshaller marshaller)
     {
-        if (!Handlers.TryGetValue(typeof(T), out var handler))
-        {
-            throw new Exception();
-        }
-
-        handler.Marshal(this, element);
+        BaseWriter = writer;
+        _marshaller = marshaller;
     }
 
-    internal class InternalWriter
+    internal void WriteElement(string name, string? value = null) => BaseWriter.WriteElementString(name, value);
+
+    internal void WriteStartElement(string name) => BaseWriter.WriteStartElement(name);
+
+    internal void WriteEndElement() => BaseWriter.WriteEndElement();
+
+    internal void WriteAttribute(string name, string value) => BaseWriter.WriteAttributeString(name, value);
+
+    internal void WriteExpressionAsAttribute(string name, IExpression expression)
     {
-        readonly Marshaller _marshaller;
-        internal XmlWriter BaseWriter;
-
-        internal InternalWriter(XmlWriter writer, Marshaller marshaller)
-        {
-            BaseWriter = writer;
-            _marshaller = marshaller;
-        }
-
-        internal void WriteElement(string name, string? value = null) => BaseWriter.WriteElementString(name, value);
-
-        internal void WriteStartElement(string name) => BaseWriter.WriteStartElement(name);
-
-        internal void WriteEndElement() => BaseWriter.WriteEndElement();
-
-        internal void WriteAttribute(string name, string value) => BaseWriter.WriteAttributeString(name, value);
-
-        internal void WriteExpressionAsAttribute(string name, IExpression expression)
-        {
-            BaseWriter.WriteStartAttribute(name);
-            expression.Accept(_marshaller);
-            BaseWriter.WriteEndAttribute();
-        }
-
-        internal void WriteExpressionAsElement(string name, IExpression expression)
-        {
-            BaseWriter.WriteStartElement(name);
-            expression.Accept(_marshaller);
-            BaseWriter.WriteEndElement();
-        }
-
-        internal void WriteExpression(IExpression expression) => expression.Accept(_marshaller);
-
-        internal void WriteString(string value) => BaseWriter.WriteString(value);
+        BaseWriter.WriteStartAttribute(name);
+        expression.Accept(_marshaller);
+        BaseWriter.WriteEndAttribute();
     }
+
+    internal void WriteExpressionAsElement(string name, IExpression expression)
+    {
+        BaseWriter.WriteStartElement(name);
+        expression.Accept(_marshaller);
+        BaseWriter.WriteEndElement();
+    }
+
+    internal void WriteExpression(IExpression expression) => expression.Accept(_marshaller);
+
+    internal void WriteString(string value) => BaseWriter.WriteString(value);
+}
 }

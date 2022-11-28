@@ -24,7 +24,8 @@ public class RateLimitPolicyHandler : MarshallerHandler<RateLimitPolicy>
     public void MarshalApi(Marshaller marshaller, RateLimitApi element)
     {
         marshaller.Writer.WriteStartElement("api");
-        marshaller.Writer.WriteAttribute("name", element.Name);
+        if (element.Name != null) marshaller.Writer.WriteAttribute("name", element.Name);
+        if (element.Id != null) marshaller.Writer.WriteAttribute("id", element.Id);
         MarshalBasicParams(marshaller, element);
         if (element.Operations != null && element.Operations.Count > 0)
         {
@@ -39,7 +40,8 @@ public class RateLimitPolicyHandler : MarshallerHandler<RateLimitPolicy>
     private void MarshalOperation(Marshaller marshaller, RateLimitApiOperation element)
     {
         marshaller.Writer.WriteStartElement("operation");
-        marshaller.Writer.WriteAttribute("name", element.Name);
+        if (element.Name != null) marshaller.Writer.WriteAttribute("name", element.Name);
+        if (element.Id != null) marshaller.Writer.WriteAttribute("id", element.Id);
         MarshalBasicParams(marshaller, element);
         marshaller.Writer.WriteEndElement();
     }
