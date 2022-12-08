@@ -13,8 +13,8 @@ var options = new ConfigurationBuilder()
     .AddCommandLine(args)
     .Build();
 
-var sourceFolder = options["s"] ?? options["source"] ?? throw new NullReferenceException("Source folder not provided");
-var targetFolder = options["t"] ?? options["target"] ?? throw new NullReferenceException("Target folder not provided");
+var sourceFolder = options["s"] ?? options["source"] ?? ".";
+var targetFolder = options["t"] ?? options["target"] ?? "./target";
 
 var scriptExtensionPattern = options["e"] ?? options["extension"] ?? "*.csx";
 
@@ -38,7 +38,15 @@ if (addRefsAndImportsToScripts)
     scriptOptions = scriptOptions.AddImports(imports);
 }
 
-var marshallerOptions = MarshallerOptions.Default.WithFileScriptBaseDirectory(options["script-source"] ?? sourceFolder);
+if (!Directory.Exists(targetFolder))
+{
+    Console.Out.WriteLine($"Target folder does not exist. Creating {targetFolder} structure");
+    Directory.CreateDirectory(targetFolder);
+}
+
+var marshallerOptions = MarshallerOptions.Default
+    .WithFileScriptBaseDirectory(options["script-source"] ?? sourceFolder)
+    .WithXmlFormatting(bool.Parse(options["format-output"] ?? "true"));
 
 var files = Directory.GetFiles(sourceFolder, scriptExtensionPattern);
 
@@ -58,6 +66,7 @@ Task.WaitAll(files.Select(async filePath =>
 
     if (File.Exists(targetFile))
     {
+        Console.Out.WriteLine($"Previous file detected. Removing {fileName}.xml");
         File.Delete(targetFile);
     }
 
@@ -66,5 +75,5 @@ Task.WaitAll(files.Select(async filePath =>
         policy.Accept(marshaller);
     }
 
-    Console.Out.WriteLine($"Document {fileName} created");
+    Console.Out.WriteLine($"Document {fileName}.xml created");
 }).ToArray());

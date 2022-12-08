@@ -1,7 +1,10 @@
+using System.Xml;
+
 namespace Mielek.Marshalling;
 
 public sealed class MarshallerOptions
 {
+    
     public static MarshallerOptions Default => new();
 
     public string ScriptBaseDirectory { get; private set; } = Environment.CurrentDirectory;
@@ -15,9 +18,11 @@ public sealed class MarshallerOptions
         return this;
     }
 
-    public MarshallerOptions WithXmlFormatting()
+    public MarshallerOptions WithXmlFormatting(bool value)
     {
-        FormatXml = true;
+        FormatXml = value;
         return this;
     }
+
+    public XmlWriterSettings XmlWriterSettings => new() { OmitXmlDeclaration = true, ConformanceLevel = ConformanceLevel.Fragment, Indent = FormatXml };
 }

@@ -9,7 +9,6 @@ using Mielek.Model.Policies;
 namespace Mielek.Marshalling;
 public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 {
-    static readonly XmlWriterSettings XmlWriterSettings = new() { OmitXmlDeclaration = true, ConformanceLevel = ConformanceLevel.Fragment, Indent = false };
     static readonly Dictionary<Type, IMarshallerHandler> Handlers = new Dictionary<Type, IMarshallerHandler>()
     {
         #region Roots
@@ -43,14 +42,14 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
     };
 
 #region Create
-public static Marshaller Create(XmlWriter xmlWriter) => new Marshaller(xmlWriter, MarshallerOptions.Default);
+public static Marshaller Create(XmlWriter xmlWriter) => Create(xmlWriter, MarshallerOptions.Default);
 public static Marshaller Create(XmlWriter xmlWriter, MarshallerOptions options) => new Marshaller(xmlWriter, options);
-public static Marshaller Create(Stream output) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), MarshallerOptions.Default);
-public static Marshaller Create(Stream output, MarshallerOptions options) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), options);
-public static Marshaller Create(TextWriter output) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), MarshallerOptions.Default);
-public static Marshaller Create(TextWriter output, MarshallerOptions options) => new Marshaller(XmlWriter.Create(output, XmlWriterSettings), options);
-public static Marshaller Create(string outputFileName) => new Marshaller(XmlWriter.Create(outputFileName, XmlWriterSettings), MarshallerOptions.Default);
-public static Marshaller Create(string outputFileName, MarshallerOptions options) => new Marshaller(XmlWriter.Create(outputFileName, XmlWriterSettings), options);
+public static Marshaller Create(Stream output) => Create(output, MarshallerOptions.Default);
+public static Marshaller Create(Stream output, MarshallerOptions options) => new Marshaller(XmlWriter.Create(output, options.XmlWriterSettings), options);
+public static Marshaller Create(TextWriter output) => Create(output, MarshallerOptions.Default);
+public static Marshaller Create(TextWriter output, MarshallerOptions options) => new Marshaller(XmlWriter.Create(output, options.XmlWriterSettings), options);
+public static Marshaller Create(string outputFileName) => Create(outputFileName, MarshallerOptions.Default);
+public static Marshaller Create(string outputFileName, MarshallerOptions options) => new Marshaller(XmlWriter.Create(outputFileName, options.XmlWriterSettings), options);
 #endregion Create
 
 internal InternalWriter Writer { get; init; }
