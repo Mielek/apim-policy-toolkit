@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Model\Model.csproj" />
+    <ProjectReference Include="..\..\src\Expressions\Context\Context.csproj" />
     <ProjectReference Include="..\..\src\Marshalling\Marshalling.csproj" />
     <ProjectReference Include="..\..\src\Builders\Builders.csproj" />
   </ItemGroup>

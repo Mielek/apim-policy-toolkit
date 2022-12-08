@@ -9,7 +9,7 @@ using Mielek.Model.Policies;
 namespace Mielek.Marshalling;
 public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 {
-    static readonly XmlWriterSettings XmlWriterSettings = new() { OmitXmlDeclaration = true, ConformanceLevel = ConformanceLevel.Fragment };
+    static readonly XmlWriterSettings XmlWriterSettings = new() { OmitXmlDeclaration = true, ConformanceLevel = ConformanceLevel.Fragment, Indent = false };
     static readonly Dictionary<Type, IMarshallerHandler> Handlers = new Dictionary<Type, IMarshallerHandler>()
     {
         #region Roots
@@ -30,6 +30,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(GetAuthorizationContextPolicy), new GetAuthorizationContextPolicyHandler() },
         { typeof(QuotaPolicy), new QuotaPolicyHandler() },
         { typeof(QuotaByKeyPolicy), new QuotaByKeyPolicyHandler() },
+        { typeof(ValidateAzureAdTokenPolicy), new ValidateAzureAdTokenPolicyHandler() },
         { typeof(IncludeFragmentPolicy), new IncludeFragmentPolicyHandler() },
         #endregion Policies
 
@@ -92,16 +93,37 @@ internal class InternalWriter
     internal void WriteElement(string name, string? value = null) => BaseWriter.WriteElementString(name, value);
 
     internal void WriteStartElement(string name) => BaseWriter.WriteStartElement(name);
-
     internal void WriteEndElement() => BaseWriter.WriteEndElement();
 
     internal void WriteAttribute(string name, string value) => BaseWriter.WriteAttributeString(name, value);
+    internal void WriteAttribute<T>(string name, T value) => BaseWriter.WriteAttributeString(name, $"{value}");
+
+    internal void WriteNullableAttribute(string name, string? value){
+        if(value != null)
+        {
+            BaseWriter.WriteAttributeString(name, value);
+        }
+    } 
+    internal void WriteNullableAttribute<T>(string name, T? value){
+        if(value != null)
+        {
+            BaseWriter.WriteAttributeString(name, $"{value}");
+        }
+    } 
 
     internal void WriteExpressionAsAttribute(string name, IExpression expression)
     {
         BaseWriter.WriteStartAttribute(name);
         expression.Accept(_marshaller);
         BaseWriter.WriteEndAttribute();
+    }
+
+    internal void WriteNullableExpressionAsAttribute(string name, IExpression? expression)
+    {
+        if(expression != null)
+        {
+            WriteExpressionAsAttribute(name, expression);
+        }
     }
 
     internal void WriteExpressionAsElement(string name, IExpression expression)

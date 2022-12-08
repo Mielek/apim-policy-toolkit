@@ -8,15 +8,12 @@ public class QuotaByKeyPolicyHandler : MarshallerHandler<QuotaByKeyPolicy>
     {
         marshaller.Writer.WriteStartElement("quota-by-key");
         marshaller.Writer.WriteExpressionAsAttribute("counter-key", element.CounterKey);
-        marshaller.Writer.WriteAttribute("renewal-period", $"{element.RenewalPeriod}");
+        marshaller.Writer.WriteAttribute("renewal-period", element.RenewalPeriod);
 
-        if (element.Calls != null) marshaller.Writer.WriteAttribute("calls", $"{element.Calls}");
-        if (element.Bandwidth != null) marshaller.Writer.WriteAttribute("bandwidth", $"{element.Bandwidth}");
+        marshaller.Writer.WriteNullableAttribute("calls", element.Calls);
+        marshaller.Writer.WriteNullableAttribute("bandwidth", element.Bandwidth);
 
-        if (element.IncrementCondition != null)
-        {
-            marshaller.Writer.WriteExpressionAsAttribute("increment-condition", element.IncrementCondition);
-        }
+        marshaller.Writer.WriteNullableExpressionAsAttribute("increment-condition", element.IncrementCondition);
 
         marshaller.Writer.WriteEndElement();
     }

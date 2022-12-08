@@ -7,15 +7,8 @@ public class SetBodyPolicyHandler : MarshallerHandler<SetBodyPolicy>
     public override void Marshal(Marshaller marshaller, SetBodyPolicy element)
     {
         marshaller.Writer.WriteStartElement("set-body");
-        if (element.Template != null)
-        {
-            marshaller.Writer.WriteExpressionAsAttribute("template", element.Template);
-        }
-
-        if (element.XsiNil != null)
-        {
-            marshaller.Writer.WriteExpressionAsAttribute("xsi-nil", element.XsiNil);
-        }
+        marshaller.Writer.WriteNullableExpressionAsAttribute("template", element.Template);
+        marshaller.Writer.WriteNullableExpressionAsAttribute("xsi-nil", element.XsiNil);
         marshaller.Writer.WriteExpression(element.Body);
         marshaller.Writer.WriteEndElement();
     }

@@ -17,7 +17,7 @@ return PolicyDocumentBuilder
             {
                 policy.Name("X-Test").ExistAction(ExistAction.Append)
                     .Value("Test")
-                    .Value(expression => expression.Inlined("context.Deployment.Region"))
+                    .Value(expression => expression.Inlined(context => context.Deployment.Region))
                     .Value(expression => expression.FromFile("./expressions/guid-time.csx"))
                     .Value(expression => expression.FromFunctionFile("./expressions/simple-expressions-library.csx", "GetKnownGUIDOrGenerateNew"));
             });

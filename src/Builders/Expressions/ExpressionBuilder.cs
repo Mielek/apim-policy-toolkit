@@ -1,3 +1,4 @@
+using Mielek.Expressions.Context;
 using Mielek.Model;
 using Mielek.Model.Expressions;
 
@@ -23,9 +24,9 @@ public class ExpressionBuilder
         _expression = new ConstantExpression(value);
         return this;
     }
-    public ExpressionBuilder Inlined(string script)
+    public ExpressionBuilder Inlined(System.Linq.Expressions.Expression<Func<IContext, string>> script)
     {
-        _expression = new InlineScriptExpression(script);
+        _expression = new InlineScriptExpression(script.Body.ToString());
         return this;
     }
     public ExpressionBuilder FromFile(string filePath)

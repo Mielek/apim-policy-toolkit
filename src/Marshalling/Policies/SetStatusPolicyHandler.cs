@@ -8,10 +8,7 @@ public class SetStatusPolicyHandler : MarshallerHandler<SetStatusPolicy>
     {
         marshaller.Writer.WriteStartElement("set-status");
         marshaller.Writer.WriteExpressionAsAttribute("code", element.Code);
-        if (element.Reason != null)
-        {
-            marshaller.Writer.WriteExpressionAsAttribute("reason", element.Reason);
-        }
+        marshaller.Writer.WriteNullableExpressionAsAttribute("reason", element.Reason);
         marshaller.Writer.WriteEndElement();
     }
 }

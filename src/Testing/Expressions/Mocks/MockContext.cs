@@ -42,4 +42,17 @@ public class MockContext : IContext
 
     public MockUser MockUser { get; init; }
     public IUser User => MockUser;
+
+    public IDeployment Deployment => throw new NotImplementedException();
+
+    public ILastError LastError => throw new NotImplementedException();
+
+    public IOperation Operation => throw new NotImplementedException();
+
+    public IProduct Product => throw new NotImplementedException();
+
+    public void Trace(string message)
+    {
+        throw new NotImplementedException();
+    }
 }

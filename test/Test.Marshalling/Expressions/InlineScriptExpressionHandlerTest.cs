@@ -1,8 +1,5 @@
-using System.Xml;
-
-using Mielek.Marshalling;
+using Mielek.Builders.Expressions;
 using Mielek.Marshalling.Expressions;
-using Mielek.Model.Expressions;
 
 namespace Mielek.Test.Marshalling;
 
@@ -14,7 +11,7 @@ public class InlineScriptExpressionHandlerTest : BaseMarshallerTest
     {
         var handler = new InlineScriptExpressionHandler();
 
-        handler.Marshal(Marshaller, new InlineScriptExpression("context.Deployment.Region"));
+        handler.Marshal(Marshaller, ExpressionBuilder.Builder.Inlined(context => context.Deployment.Region).Build());
 
         Assert.AreEqual("@(context.Deployment.Region)", WrittenText.ToString());
     }
@@ -22,7 +19,9 @@ public class InlineScriptExpressionHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldHandlerBeRegisterInMarshaller()
     {
-        new InlineScriptExpression("context.Deployment.Region").Accept(Marshaller);
+        var expression = ExpressionBuilder.Builder.Inlined(context => context.Deployment.Region).Build();
+        
+        expression.Accept(Marshaller);
 
         Assert.AreEqual("@(context.Deployment.Region)", WrittenText.ToString());
     }

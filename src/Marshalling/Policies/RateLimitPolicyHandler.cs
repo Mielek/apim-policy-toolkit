@@ -24,8 +24,8 @@ public class RateLimitPolicyHandler : MarshallerHandler<RateLimitPolicy>
     public void MarshalApi(Marshaller marshaller, RateLimitApi element)
     {
         marshaller.Writer.WriteStartElement("api");
-        if (element.Name != null) marshaller.Writer.WriteAttribute("name", element.Name);
-        if (element.Id != null) marshaller.Writer.WriteAttribute("id", element.Id);
+        marshaller.Writer.WriteNullableAttribute("name", element.Name);
+        marshaller.Writer.WriteNullableAttribute("id", element.Id);
         MarshalBasicParams(marshaller, element);
         if (element.Operations != null && element.Operations.Count > 0)
         {
@@ -40,85 +40,42 @@ public class RateLimitPolicyHandler : MarshallerHandler<RateLimitPolicy>
     private void MarshalOperation(Marshaller marshaller, RateLimitApiOperation element)
     {
         marshaller.Writer.WriteStartElement("operation");
-        if (element.Name != null) marshaller.Writer.WriteAttribute("name", element.Name);
-        if (element.Id != null) marshaller.Writer.WriteAttribute("id", element.Id);
+        marshaller.Writer.WriteNullableAttribute("name", element.Name);
+        marshaller.Writer.WriteNullableAttribute("id", element.Id);
         MarshalBasicParams(marshaller, element);
         marshaller.Writer.WriteEndElement();
     }
 
     public void MarshalBasicParams(Marshaller marshaller, RateLimitPolicy element)
     {
-        marshaller.Writer.WriteAttribute("calls", $"{element.Calls}");
-        marshaller.Writer.WriteAttribute("renewal-period", $"{element.RenewalPeriod}");
-        if (element.RetryAfterHeaderName != null)
-        {
-            marshaller.Writer.WriteAttribute("retry-after-header-name", $"{element.RetryAfterHeaderName}");
-        }
-        if (element.RetryAfterVariableName != null)
-        {
-            marshaller.Writer.WriteAttribute("retry-after-variable-name", $"{element.RetryAfterVariableName}");
-        }
-        if (element.RemainingCallsHeaderName != null)
-        {
-            marshaller.Writer.WriteAttribute("remaining-calls-header-name", $"{element.RemainingCallsHeaderName}");
-        }
-        if (element.RemainingCallsVariableName != null)
-        {
-            marshaller.Writer.WriteAttribute("remaining-calls-variable-name", $"{element.RemainingCallsVariableName}");
-        }
-        if (element.TotalCallsHeaderName != null)
-        {
-            marshaller.Writer.WriteAttribute("total-calls-header-name", $"{element.TotalCallsHeaderName}");
-        }
+        marshaller.Writer.WriteAttribute("calls", element.Calls);
+        marshaller.Writer.WriteAttribute("renewal-period", element.RenewalPeriod);
+        marshaller.Writer.WriteNullableAttribute("retry-after-header-name", element.RetryAfterHeaderName);
+        marshaller.Writer.WriteNullableAttribute("retry-after-variable-name", element.RetryAfterVariableName);
+        marshaller.Writer.WriteNullableAttribute("remaining-calls-header-name", element.RemainingCallsHeaderName);
+        marshaller.Writer.WriteNullableAttribute("remaining-calls-variable-name", element.RemainingCallsVariableName);
+        marshaller.Writer.WriteNullableAttribute("total-calls-header-name", element.TotalCallsHeaderName);
     }
     public void MarshalBasicParams(Marshaller marshaller, RateLimitApi element)
     {
-        marshaller.Writer.WriteAttribute("calls", $"{element.Calls}");
-        marshaller.Writer.WriteAttribute("renewal-period", $"{element.RenewalPeriod}");
-        if (element.RetryAfterHeaderName != null)
-        {
-            marshaller.Writer.WriteAttribute("retry-after-header-name", $"{element.RetryAfterHeaderName}");
-        }
-        if (element.RetryAfterVariableName != null)
-        {
-            marshaller.Writer.WriteAttribute("retry-after-variable-name", $"{element.RetryAfterVariableName}");
-        }
-        if (element.RemainingCallsHeaderName != null)
-        {
-            marshaller.Writer.WriteAttribute("remaining-calls-header-name", $"{element.RemainingCallsHeaderName}");
-        }
-        if (element.RemainingCallsVariableName != null)
-        {
-            marshaller.Writer.WriteAttribute("remaining-calls-variable-name", $"{element.RemainingCallsVariableName}");
-        }
-        if (element.TotalCallsHeaderName != null)
-        {
-            marshaller.Writer.WriteAttribute("total-calls-header-name", $"{element.TotalCallsHeaderName}");
-        }
+        marshaller.Writer.WriteAttribute("calls", element.Calls);
+        marshaller.Writer.WriteAttribute("renewal-period", element.RenewalPeriod);
+        marshaller.Writer.WriteNullableAttribute("retry-after-header-name", element.RetryAfterHeaderName);
+        marshaller.Writer.WriteNullableAttribute("retry-after-variable-name", element.RetryAfterVariableName);
+        marshaller.Writer.WriteNullableAttribute("remaining-calls-header-name", element.RemainingCallsHeaderName);
+        marshaller.Writer.WriteNullableAttribute("remaining-calls-variable-name", element.RemainingCallsVariableName);
+        marshaller.Writer.WriteNullableAttribute("total-calls-header-name", element.TotalCallsHeaderName);
+
     }
     public void MarshalBasicParams(Marshaller marshaller, RateLimitApiOperation element)
     {
-        marshaller.Writer.WriteAttribute("calls", $"{element.Calls}");
-        marshaller.Writer.WriteAttribute("renewal-period", $"{element.RenewalPeriod}");
-        if (element.RetryAfterHeaderName != null)
-        {
-            marshaller.Writer.WriteAttribute("retry-after-header-name", $"{element.RetryAfterHeaderName}");
-        }
-        if (element.RetryAfterVariableName != null)
-        {
-            marshaller.Writer.WriteAttribute("retry-after-variable-name", $"{element.RetryAfterVariableName}");
-        }
-        if (element.RemainingCallsHeaderName != null)
-        {
-            marshaller.Writer.WriteAttribute("remaining-calls-header-name", $"{element.RemainingCallsHeaderName}");
-        }
-        if (element.RemainingCallsVariableName != null)
-        {
-            marshaller.Writer.WriteAttribute("remaining-calls-variable-name", $"{element.RemainingCallsVariableName}");
-        }
-        if (element.TotalCallsHeaderName != null)
-        {
-            marshaller.Writer.WriteAttribute("total-calls-header-name", $"{element.TotalCallsHeaderName}");
-        }
+        marshaller.Writer.WriteAttribute("calls", element.Calls);
+        marshaller.Writer.WriteAttribute("renewal-period", element.RenewalPeriod);
+        marshaller.Writer.WriteNullableAttribute("retry-after-header-name", element.RetryAfterHeaderName);
+        marshaller.Writer.WriteNullableAttribute("retry-after-variable-name", element.RetryAfterVariableName);
+        marshaller.Writer.WriteNullableAttribute("remaining-calls-header-name", element.RemainingCallsHeaderName);
+        marshaller.Writer.WriteNullableAttribute("remaining-calls-variable-name", element.RemainingCallsVariableName);
+        marshaller.Writer.WriteNullableAttribute("total-calls-header-name", element.TotalCallsHeaderName);
+
     }
 }

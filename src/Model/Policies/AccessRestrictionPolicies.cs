@@ -102,6 +102,7 @@ public sealed record ValidateAzureAdTokenPolicy(
     string? TenantId = null,
     ushort? FailedValidationHttpCode = null,
     string? FailedValidationErrorMessage = null,
+    string? OutputTokenVariableName = null,
     ICollection<string>? BackendApplicationIds = null,
     ICollection<IExpression>? Audiences = null,
     ICollection<ValidateAzureAdTokenClaim>? RequiredClaims = null

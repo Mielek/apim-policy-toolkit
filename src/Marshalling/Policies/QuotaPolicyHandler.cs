@@ -7,16 +7,11 @@ public class QuotaPolicyHandler : MarshallerHandler<QuotaPolicy>
     public override void Marshal(Marshaller marshaller, QuotaPolicy element)
     {
         marshaller.Writer.WriteStartElement("quota");
-        marshaller.Writer.WriteAttribute("renewal-period", $"{element.RenewalPeriod}");
-        if (element.Calls != null)
-        {
-            marshaller.Writer.WriteAttribute("calls", $"{element.Calls}");
-        }
-        if (element.Bandwidth != null)
-        {
-            marshaller.Writer.WriteAttribute("bandwidth", $"{element.Bandwidth}");
-        }
-        if (element.Apis != null)
+        marshaller.Writer.WriteAttribute("renewal-period", element.RenewalPeriod);
+        marshaller.Writer.WriteNullableAttribute("calls", element.Calls);
+        marshaller.Writer.WriteNullableAttribute("bandwidth", element.Bandwidth);
+
+        if (element.Apis != null && element.Apis.Count > 0)
         {
             foreach (var api in element.Apis)
             {
@@ -31,11 +26,11 @@ public class QuotaPolicyHandler : MarshallerHandler<QuotaPolicy>
     {
         marshaller.Writer.WriteStartElement("api");
 
-        marshaller.Writer.WriteAttribute("calls", $"{api.Calls}");
-        if (api.Name != null) marshaller.Writer.WriteAttribute("name", $"{api.Name}");
-        if (api.Id != null) marshaller.Writer.WriteAttribute("id", $"{api.Id}");
+        marshaller.Writer.WriteAttribute("calls", api.Calls);
+        marshaller.Writer.WriteNullableAttribute("name", api.Name);
+        marshaller.Writer.WriteNullableAttribute("id", api.Id);
 
-        if (api.Operations != null)
+        if (api.Operations != null && api.Operations.Count > 0)
         {
             foreach (var operation in api.Operations)
             {
@@ -50,9 +45,9 @@ public class QuotaPolicyHandler : MarshallerHandler<QuotaPolicy>
     {
         marshaller.Writer.WriteStartElement("operation");
 
-        marshaller.Writer.WriteAttribute("calls", $"{operation.Calls}");
-        if (operation.Name != null) marshaller.Writer.WriteAttribute("name", $"{operation.Name}");
-        if (operation.Id != null) marshaller.Writer.WriteAttribute("id", $"{operation.Id}");
+        marshaller.Writer.WriteAttribute("calls", operation.Calls);
+        marshaller.Writer.WriteNullableAttribute("name", operation.Name);
+        marshaller.Writer.WriteNullableAttribute("id", operation.Id);
 
         marshaller.Writer.WriteEndElement();
     }

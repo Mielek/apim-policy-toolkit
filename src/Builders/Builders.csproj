@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj" />
-    
+    <ProjectReference Include="..\Expressions\Context\Context.csproj" />
     <ProjectReference Include="..\Generators\Attributes\Attributes.csproj" />
     <ProjectReference Include="..\Generators\Builders\Builders.csproj" 
                       OutputItemType="Analyzer"

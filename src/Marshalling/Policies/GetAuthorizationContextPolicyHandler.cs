@@ -12,15 +12,16 @@ public class GetAuthorizationContextPolicyHandler : MarshallerHandler<GetAuthori
         marshaller.Writer.WriteExpressionAsAttribute("authorization-id", element.AuthorizationId);
         marshaller.Writer.WriteAttribute("context-variable", element.ContextVariableName);
 
-        if (element.IdentityType.HasValue) marshaller.Writer.WriteAttribute("identity-type", TranslateIdentity(element.IdentityType.Value));
-        if (element.Identity != null) marshaller.Writer.WriteExpressionAsAttribute("identity", element.Identity);
-        if (element.IgnoreError.HasValue) marshaller.Writer.WriteAttribute("ignore-error", element.IgnoreError.Value.ToString());
+        marshaller.Writer.WriteNullableAttribute("identity-type", TranslateIdentity(element.IdentityType));
+        marshaller.Writer.WriteNullableExpressionAsAttribute("identity", element.Identity);
+        marshaller.Writer.WriteNullableAttribute("ignore-error", element.IgnoreError);
 
         marshaller.Writer.WriteEndElement();
     }
 
-    static string TranslateIdentity(IdentityType identityType) => identityType switch
+    static string? TranslateIdentity(IdentityType? identityType) => identityType switch
     {
+        null => null,
         IdentityType.Managed => "managed",
         IdentityType.JWT => "jwt",
         _ => throw new NotImplementedException(),
