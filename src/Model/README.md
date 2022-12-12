@@ -4,7 +4,7 @@ The project contains classes which represents [policy model](https://learn.micro
 
 ## Available policies
 
-List of policies which are modelled. Currently modelled 9/56.
+List of policies which are modelled. Currently modelled **17/57**.
 
 ### General elements (3/3)
 
@@ -12,17 +12,18 @@ List of policies which are modelled. Currently modelled 9/56.
 - [X] Policy fragment
 - [X] Base policy
 
-### Access restriction policies (1/9)
+### Access restriction policies (10/10)
 
 - [X] Check HTTP header
-- [ ] Get authorization context
-- [ ] Limit call rate by subscription
-- [ ] Limit call rate by key
-- [ ] Restrict caller IPs
-- [ ] Set usage quota by subscription
-- [ ] Set usage quota by key 
-- [ ] Validate JWT
-- [ ] Validate client certificate 
+- [X] Get authorization context
+- [X] Limit call rate by subscription
+- [X] Limit call rate by key
+- [X] Restrict caller IPs
+- [X] Set usage quota by subscription
+- [X] Set usage quota by key 
+- [X] Validate Azure Ad token
+- [X] Validate JWT
+- [X] Validate client certificate 
 
 ### Advanced policies (2/16)
 - [ ] Control flow

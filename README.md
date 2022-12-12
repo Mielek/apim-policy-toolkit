@@ -5,7 +5,7 @@
 ## Quick start
 
 ### Prerequisite
-We assume you have the newest `dotnet` command line installed on your machine.
+Download and install [dotnet](https://dotnet.microsoft.com/en-us/download) according to instructions.
 
 ### Install dotnet tool
 

@@ -3,29 +3,34 @@ using Mielek.Model.Policies;
 
 namespace Mielek.Marshalling.Policies;
 
-public class ValidateAzureAdTokenPolicyHandler : MarshallerHandler<ValidateAzureAdTokenPolicy>
+public class ValidateJwtPolicyHandler : MarshallerHandler<ValidateJwtPolicy>
 {
-    public override void Marshal(Marshaller marshaller, ValidateAzureAdTokenPolicy element)
+    public override void Marshal(Marshaller marshaller, ValidateJwtPolicy element)
     {
-        marshaller.Writer.WriteStartElement("validate-azure-ad-token");
-        marshaller.Writer.WriteNullableAttribute("tenant-id", element.TenantId);
+        marshaller.Writer.WriteStartElement("validate-jwt");
         marshaller.Writer.WriteNullableAttribute("header-name", element.HeaderName);
         marshaller.Writer.WriteNullableAttribute("query-parameter-name", element.QueryParameterName);
         marshaller.Writer.WriteNullableAttribute("token-value", element.TokenValue);
         marshaller.Writer.WriteNullableAttribute("failed-validation-httpcode", element.FailedValidationHttpCode);
         marshaller.Writer.WriteNullableAttribute("failed-validation-error-message", element.FailedValidationErrorMessage);
+        marshaller.Writer.WriteNullableAttribute("require-expiration-time", element.RequireExpirationTime);
+        marshaller.Writer.WriteNullableAttribute("require-scheme", element.RequireScheme);
+        marshaller.Writer.WriteNullableAttribute("require-signed-tokens", element.RequireSignedTokens);
+        marshaller.Writer.WriteNullableAttribute("clock-skew", element.ClockSkew);
         marshaller.Writer.WriteNullableAttribute("output-token-variable-name", element.OutputTokenVariableName);
 
-        marshaller.Writer.WriteElementCollection("client-application-ids", "application-id", element.ClientApplicationIds);
-        marshaller.Writer.WriteNullableElementCollection("backend-application-ids", "application-id", element.BackendApplicationIds);
+        
+        marshaller.Writer.WriteNullableElementCollection("issuer-signing-keys", "key", element.IssuerSigningKeys);
+        marshaller.Writer.WriteNullableElementCollection("decryption-keys", "key", element.DecryptionKeys);
         marshaller.Writer.WriteNullableElementCollection("audiences", "audience", element.Audiences);
+        marshaller.Writer.WriteNullableElementCollection("issuers", "issuer", element.Issuers);
 
         MarshalRequiredClaims(marshaller, element.RequiredClaims);
 
         marshaller.Writer.WriteEndElement();
     }
 
-    private void MarshalRequiredClaims(Marshaller marshaller, ICollection<ValidateAzureAdTokenClaim>? requiredClaims)
+    private void MarshalRequiredClaims(Marshaller marshaller, ICollection<ValidateJwtClaim>? requiredClaims)
     {
         if (requiredClaims == null || requiredClaims.Count == 0) return;
 
@@ -46,11 +51,11 @@ public class ValidateAzureAdTokenPolicyHandler : MarshallerHandler<ValidateAzure
         marshaller.Writer.WriteEndElement();
     }
 
-    private string? TranslateClaimMatch(ValidateAzureAdTokenClaimMatch? match) => match switch
+    private string? TranslateClaimMatch(ValidateJwtClaimMatch? match) => match switch
     {
         null => null,
-        ValidateAzureAdTokenClaimMatch.All => "all",
-        ValidateAzureAdTokenClaimMatch.Any => "any",
+        ValidateJwtClaimMatch.All => "all",
+        ValidateJwtClaimMatch.Any => "any",
         _ => throw new NotImplementedException(),
     };
 }
