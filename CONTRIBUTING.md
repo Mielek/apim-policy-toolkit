@@ -1,3 +1,10 @@
+# Contributing guide
+
+Contributing guide for the repo.
+
+| :exclamation:  Not finished   |
+|-------------------------------|
+
 ## Setup
 
 1. Download and install [dotnet](https://dotnet.microsoft.com/en-us/download) according to instructions
