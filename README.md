@@ -173,4 +173,4 @@ Go to [example project](example) for further guidance.
 
 ## Contributing
 
-Please refer to [CONTRIBUTION](CONTRIBUTION.md) file for contribution guidance.
+Please refer to our [guide](CONTRIBUTING.md) for the contribution guidance.
