@@ -92,14 +92,14 @@ public class BuilderClassBuilder
             }
 
             _sourceBuilder.Append(")\n");
-            AppendLineOfCode(1, "{\n");
+            AppendLineOfCode(1, "{");
 
             foreach (var line in method.BodyLines)
             {
                 AppendLineOfCode(2, line);
             }
             AppendLineOfCode(2, "return this;");
-            AppendLineOfCode(1, "}");
+            AppendLineOfCode(1, "}\n");
         }
     }
 

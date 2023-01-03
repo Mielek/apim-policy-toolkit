@@ -15,7 +15,7 @@ class ClassSetterBuilder
 {
     private static readonly IFieldSetterHandlerProvider[] _methodProviders = new IFieldSetterHandlerProvider[]
     {
-        new ListFieldHandlerProvider(),
+        new ImmutableListFieldHandlerProvider(),
         new ExpressionFieldHandlerProvider(),
         new SimpleFieldHandlerProvider()
     };

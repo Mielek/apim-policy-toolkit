@@ -7,7 +7,7 @@ using Mielek.Generator.Builder.Extensions;
 
 namespace Mielek.Generator.Builder.Field;
 
-public class ListFieldHandlerProvider : IFieldSetterHandlerProvider
+public class ImmutableListFieldHandlerProvider : IFieldSetterHandlerProvider
 {
     readonly static Regex ListRegex = new(@"^ImmutableList<(.*)>.Builder\??$");
     public bool TryGetHandler(FieldDeclarationSyntax field, out IFieldSetterHandler handler)

@@ -32,6 +32,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(ValidateAzureAdTokenPolicy), new ValidateAzureAdTokenPolicyHandler() },
         { typeof(ValidateJwtPolicy), new ValidateJwtPolicyHandler() },
         { typeof(ValidateClientCertificatePolicy), new ValidateClientCertificatePolicyHandler() },
+        { typeof(ChoosePolicy), new ChoosePolicyHandler() },
         { typeof(IncludeFragmentPolicy), new IncludeFragmentPolicyHandler() },
         #endregion Policies
 
