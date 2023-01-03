@@ -5,11 +5,11 @@ using Mielek.Model.Expressions;
 
 namespace Mielek.Marshalling.Expressions;
 
-public class FunctionFileScriptExpressionHandler : MarshallerHandler<FunctionFileScriptExpression>
+public class FunctionFileScriptExpressionHandler<T> : MarshallerHandler<FunctionFileScriptExpression<T>>
 {
     readonly Dictionary<string, string> _cache = new();
 
-    public override void Marshal(Marshaller marshaller, FunctionFileScriptExpression element)
+    public override void Marshal(Marshaller marshaller, FunctionFileScriptExpression<T> element)
     {
         var cacheKey = element.Path + element.Name;
         if (!_cache.ContainsKey(cacheKey))

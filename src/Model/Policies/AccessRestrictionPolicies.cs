@@ -3,19 +3,19 @@ using Mielek.Model.Expressions;
 namespace Mielek.Model.Policies;
 
 public sealed record CheckHeaderPolicy(
-    IExpression Name,
-    IExpression FailedCheckHttpCode,
-    IExpression FailedCheckErrorMessage,
-    IExpression IgnoreCase,
-    ICollection<IExpression> Values
+    IExpression<string> Name,
+    IExpression<string> FailedCheckHttpCode,
+    IExpression<string> FailedCheckErrorMessage,
+    IExpression<bool> IgnoreCase,
+    ICollection<IExpression<string>> Values
 ) : Visitable<CheckHeaderPolicy>, IPolicy;
 
 public sealed record GetAuthorizationContextPolicy(
-    IExpression ProviderId,
-    IExpression AuthorizationId,
+    IExpression<string> ProviderId,
+    IExpression<string> AuthorizationId,
     string ContextVariableName,
     IdentityType? IdentityType = null,
-    IExpression? Identity = null,
+    IExpression<string>? Identity = null,
     bool? IgnoreError = null
 ) : Visitable<GetAuthorizationContextPolicy>, IPolicy;
 public enum IdentityType { Managed, JWT }
@@ -57,8 +57,8 @@ public sealed record RateLimitApiOperation(
 public sealed record RateLimitByKeyPolicy(
     uint Calls,
     uint RenewalPeriod,
-    IExpression CounterKey,
-    IExpression? IncrementCondition = null,
+    IExpression<string> CounterKey,
+    IExpression<bool>? IncrementCondition = null,
     uint? IncrementCount = null,
     string? RetryAfterHeaderName = null,
     string? RetryAfterVariableName = null,
@@ -86,11 +86,11 @@ public sealed record QuotaApi(uint Calls, string? Name = null, string? Id = null
 public sealed record QuotaOperation(uint Calls, string? Name = null, string? Id = null);
 
 public sealed record QuotaByKeyPolicy(
-    IExpression CounterKey,
+    IExpression<string> CounterKey,
     uint RenewalPeriod,
     uint? Calls = null,
     uint? Bandwidth = null,
-    IExpression? IncrementCondition = null,
+    IExpression<bool>? IncrementCondition = null,
     DateTime? FirstPeriodStart = null
 ) : Visitable<QuotaByKeyPolicy>, IPolicy;
 
@@ -104,7 +104,7 @@ public sealed record ValidateAzureAdTokenPolicy(
     string? FailedValidationErrorMessage = null,
     string? OutputTokenVariableName = null,
     ICollection<string>? BackendApplicationIds = null,
-    ICollection<IExpression>? Audiences = null,
+    ICollection<IExpression<string>>? Audiences = null,
     ICollection<ValidateAzureAdTokenClaim>? RequiredClaims = null
 ) : Visitable<ValidateAzureAdTokenPolicy>, IPolicy;
 public sealed record ValidateAzureAdTokenClaim(
@@ -132,7 +132,7 @@ public sealed record ValidateJwtPolicy(
     ValidateJwtOpenIdConfig? OpenIdConfig = null,
     ICollection<string>? IssuerSigningKeys = null,
     ICollection<string>? DecryptionKeys = null,
-    ICollection<IExpression>? Audiences = null,
+    ICollection<IExpression<string>>? Audiences = null,
     ICollection<string>? Issuers = null,
     ICollection<ValidateJwtClaim>? RequiredClaims = null
 ) : Visitable<ValidateJwtPolicy>, IPolicy;

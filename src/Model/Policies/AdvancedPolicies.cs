@@ -6,7 +6,7 @@ public sealed record ChoosePolicy(
     ICollection<ChooseWhen> Whens,
     ICollection<IPolicy>? Otherwise = null
 ) : Visitable<ChoosePolicy>, IPolicy;
-public record ChooseWhen(IExpression Condition, ICollection<IPolicy> Policies);
+public record ChooseWhen(IExpression<bool> Condition, ICollection<IPolicy> Policies);
 
 public sealed record ForwardRequestPolicy(
     uint? Timeout = null,
@@ -17,14 +17,14 @@ public sealed record ForwardRequestPolicy(
 ) : Visitable<ForwardRequestPolicy>, IPolicy;
 
 public sealed record LimitConcurrencyPolicy(
-    IExpression Key,
+    IExpression<string> Key,
     uint MaxCount,
     ICollection<IPolicy> Policies
 ) : Visitable<LimitConcurrencyPolicy>, IPolicy;
 
 public sealed record LogToEventhubPolicy(
     string LoggerId,
-    IExpression Value,
+    IExpression<string> Value,
     string? PartitionId = null,
     string? PartitionKey = null
 ) : Visitable<LogToEventhubPolicy>, IPolicy;
@@ -32,21 +32,21 @@ public sealed record LogToEventhubPolicy(
 public sealed record EmitMetricPolicy(
     string Name,
     ICollection<EmitMetricDimension> Dimensions,
-    IExpression? Value = null,
+    IExpression<string>? Value = null,
     string? Namespace = null
 ) : Visitable<EmitMetricPolicy>, IPolicy;
-public record EmitMetricDimension(string Name, IExpression? Value = null);
+public record EmitMetricDimension(string Name, IExpression<string>? Value = null);
 
 public sealed record MockResponsePolicy(uint? StatusCode = null, string? ContentType = null) : Visitable<MockResponsePolicy>, IPolicy;
 
 public sealed record RecordPolicy(
-    IExpression Condition,
+    IExpression<bool> Condition,
     uint Count,
     uint Interval,
     ICollection<IPolicy> Policies,
     uint? MaxInterval = null,
     uint? Delta = null,
-    IExpression? FirstFastRetry = null
+    IExpression<string>? FirstFastRetry = null
 ) : Visitable<RecordPolicy>, IPolicy;
 
 public sealed record ReturnResponsePolicy(
@@ -58,8 +58,8 @@ public sealed record ReturnResponsePolicy(
 
 public sealed record SendOneWayRequestPolicy(
     SendOneWayRequestMode Mode,
-    IExpression? SetUrl = null,
-    IExpression? Method = null,
+    IExpression<string>? SetUrl = null,
+    IExpression<string>? Method = null,
     ICollection<SetHeaderPolicy>? SetHeaders = null,
     AuthenticationCertificatePolicy? AuthenticationCertificate = null
 ) : Visitable<SendOneWayRequestPolicy>, IPolicy;
@@ -70,8 +70,8 @@ public sealed record SendRequestPolicy(
     SendRequestMode? Mode = null,
     uint? Timeout = null,
     bool? IgnoreError = null,
-    IExpression? SetUrl = null,
-    IExpression? Method = null,
+    IExpression<string>? SetUrl = null,
+    IExpression<string>? Method = null,
     ICollection<SetHeaderPolicy>? SetHeaders = null,
     AuthenticationCertificatePolicy? AuthenticationCertificate = null
 ) : Visitable<SendRequestPolicy>, IPolicy;
@@ -85,16 +85,16 @@ public sealed record ProxyPolicy(
 
 public sealed record SetVariablePolicy(
     string Name,
-    IExpression Value
+    IExpression<string> Value
 ) : Visitable<SetVariablePolicy>, IPolicy;
 
-public sealed record SetMethodPolicy(IExpression Method) : Visitable<SetMethodPolicy>, IPolicy;
+public sealed record SetMethodPolicy(IExpression <string>Method) : Visitable<SetMethodPolicy>, IPolicy;
 
-public sealed record SetStatusPolicy(IExpression Code, IExpression? Reason = null) : Visitable<SetStatusPolicy>, IPolicy;
+public sealed record SetStatusPolicy(IExpression<string> Code, IExpression<string>? Reason = null) : Visitable<SetStatusPolicy>, IPolicy;
 
 public sealed record TracePolicy(
     string Source,
-    IExpression Message,
+    IExpression<string> Message,
     TraceSeverity? Severity = null,
     ICollection<TraceMetadata>? Metadatas = null
 ) : Visitable<TracePolicy>, IPolicy;
@@ -103,7 +103,7 @@ public enum TraceSeverity {
 }
 public record TraceMetadata(
     string Name,
-    IExpression Value
+    IExpression<string> Value
 );
 
 public sealed record WaitPolicy(

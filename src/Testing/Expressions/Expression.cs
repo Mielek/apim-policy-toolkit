@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Mielek.Testing.Expressions;
 
-public sealed class Expression
+public sealed class Expression<T>
 {
     static readonly Assembly[] Assemblies = new[] {
         typeof(object).Assembly,
@@ -28,15 +28,15 @@ public sealed class Expression
         .AddReferences(Assemblies)
         .AddImports(Imports);
 
-    readonly Script<string> _script;
+    readonly Script<T> _script;
 
     public Expression(string code)
     {
-        _script = CSharpScript.Create<string>(code, CSharpScriptOptions, typeof(GlobalType));
+        _script = CSharpScript.Create<T>(code, CSharpScriptOptions, typeof(GlobalType));
         _script.Compile();
     }
 
-    public async Task<string> Execute(IContext context, CancellationToken token = default)
+    public async Task<T> Execute(IContext context, CancellationToken token = default)
     {
         var state = await _script.RunAsync(new GlobalType(context), token);
         return state.ReturnValue;

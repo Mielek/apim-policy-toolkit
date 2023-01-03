@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -16,7 +17,9 @@ public class ListFieldHandlerProvider : IFieldSetterHandlerProvider
         if (regexMatch.Success)
         {
             var innerType = regexMatch.Groups[1].Value;
-            handler = innerType == "IExpression" ? new ExpressionListFieldHandler(field) : new SimpleListFieldHandler(field, innerType);
+            handler = innerType.StartsWith("IExpression")
+                ? new ExpressionListFieldHandler(field)
+                : new SimpleListFieldHandler(field, innerType);
             return true;
         }
 
@@ -35,20 +38,27 @@ public class ListFieldHandlerProvider : IFieldSetterHandlerProvider
 
         public void Handle(BuilderClassBuilder builder)
         {
+            var innerType = _field.Declaration.Type.DescendantNodes()
+                .OfType<GenericNameSyntax>()
+                .Last()
+                .DescendantNodes()
+                .OfType<TypeSyntax>()
+                .Last();
+
             foreach (var variable in _field.Declaration.Variables)
             {
                 var variableName = variable.Identifier.ToString();
                 var methodName = variableName.ToListMethodName();
                 builder.Method(new BuilderSetMethod(
                     methodName,
-                    new[] { "string value" },
+                    new[] { $"{innerType} value" },
                     new[] { $"this.{methodName}(config => config.Constant(value));" }
                 ));
                 builder.Method(new BuilderSetMethod(
                     methodName,
-                    new[] { "Action<ExpressionBuilder> configurator" },
-                    new[] { "var value = ExpressionBuilder.BuildFromConfiguration(configurator);",
-                            $"({variableName} ??= ImmutableList.CreateBuilder<IExpression>()).Add(value);" }
+                    new[] { $"Action<ExpressionBuilder<{innerType}>> configurator" },
+                    new[] { $"var value = ExpressionBuilder<{innerType}>.BuildFromConfiguration(configurator);",
+                            $"({variableName} ??= ImmutableList.CreateBuilder<IExpression<{innerType}>>()).Add(value);" }
                 ));
             }
         }

@@ -1,9 +1,6 @@
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 using BuilderGenerator;
 
@@ -36,7 +33,6 @@ public class BuilderSettersGenerator : ISourceGenerator
         var classToBuilder = new Dictionary<string, string>();
 
         var root = syntaxTree.GetRoot();
-        var usings = (root as CompilationUnitSyntax).Usings.ToString();
         var classesWithAttribute = root
             .DescendantNodes()
             .OfType<ClassDeclarationSyntax>()

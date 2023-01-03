@@ -18,7 +18,7 @@ namespace Mielek.Builders.Policies
         string? _failedValidationErrorMessage;
         string? _outputTokenVariableName;
         ImmutableList<string>.Builder? _backendApplicationIds;
-        ImmutableList<IExpression>.Builder? _audiences;
+        ImmutableList<IExpression<string>>.Builder? _audiences;
         
         [IgnoreBuilderField]
         ImmutableList<ValidateAzureAdTokenClaim>.Builder? _requiredClaims;
@@ -78,7 +78,7 @@ namespace Mielek.Builders
         {
             var builder = new ValidateAzureAdTokenPolicyBuilder();
             configurator(builder);
-            this._sectionPolicies.Add(builder.Build());
+            _sectionPolicies.Add(builder.Build());
             return this;
         }
     }

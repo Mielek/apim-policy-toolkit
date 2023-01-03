@@ -7,8 +7,8 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SetStatusPolicyBuilder
     {
-        IExpression? _code;
-        IExpression? _reason;
+        IExpression<string>? _code;
+        IExpression<string>? _reason;
 
         public SetStatusPolicyBuilder Code(ushort code)
         {
@@ -34,7 +34,7 @@ namespace Mielek.Builders
         {
             var builder = new SetStatusPolicyBuilder();
             configurator(builder);
-            this._sectionPolicies.Add(builder.Build());
+            _sectionPolicies.Add(builder.Build());
             return this;
         }
 

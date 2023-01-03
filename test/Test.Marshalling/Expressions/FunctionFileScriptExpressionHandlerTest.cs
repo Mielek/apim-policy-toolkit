@@ -1,8 +1,3 @@
-using System.Xml;
-
-using Mielek.Marshalling;
-using Mielek.Marshalling.Expressions;
-using Mielek.Model;
 using Mielek.Model.Expressions;
 
 namespace Mielek.Test.Marshalling;
@@ -13,17 +8,7 @@ public class FunctionFileScriptExpressionHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldMarshallObject()
     {
-        var handler = new FunctionFileScriptExpressionHandler();
-
-        handler.Marshal(Marshaller, new FunctionFileScriptExpression(TestScripts.Functions, "FunctionExpression"));
-
-        Assert.AreEqual("@(context.Elapsed)", WrittenText.ToString());
-    }
-
-    [TestMethod]
-    public void ShouldHandlerBeRegisterInMarshaller()
-    {
-        new FunctionFileScriptExpression(TestScripts.Functions, "FunctionExpression").Accept(Marshaller);
+        new FunctionFileScriptExpression<string>(TestScripts.Functions, "FunctionExpression").Accept(Marshaller);
 
         Assert.AreEqual("@(context.Elapsed)", WrittenText.ToString());
     }
@@ -31,9 +16,7 @@ public class FunctionFileScriptExpressionHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldMarshallFunctionBodyOneLine()
     {
-        var handler = new FunctionFileScriptExpressionHandler();
-
-        handler.Marshal(Marshaller, new FunctionFileScriptExpression(TestScripts.Functions, "FunctionBodyOneLine"));
+        new FunctionFileScriptExpression<bool>(TestScripts.Functions, "FunctionBodyOneLine").Accept(Marshaller);
 
         Assert.AreEqual("@(context.RequestId != null)", WrittenText.ToString());
     }
@@ -41,9 +24,7 @@ public class FunctionFileScriptExpressionHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldMarshallFunctionBodyMultiline()
     {
-        var handler = new FunctionFileScriptExpressionHandler();
-
-        handler.Marshal(Marshaller, new FunctionFileScriptExpression(TestScripts.Functions, "FunctionBodyMultiline"));
+        new FunctionFileScriptExpression<string>(TestScripts.Functions, "FunctionBodyMultiline").Accept(Marshaller);
 
         var expected = @"@{
 var response = context.Response.Body.As&lt;JObject&gt;();

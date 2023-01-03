@@ -8,11 +8,11 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class GetAuthorizationContextPolicyBuilder
     {
-        IExpression? _providerId;
-        IExpression? _authorizationId;
+        IExpression<string>? _providerId;
+        IExpression<string>? _authorizationId;
         string? _contextVariableName;
         IdentityType? _identityType;
-        IExpression? _identity;
+        IExpression<string>? _identity;
         bool? _ignoreError;
 
         public GetAuthorizationContextPolicy Build()

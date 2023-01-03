@@ -8,12 +8,12 @@ using Mielek.Testing.Expressions.Mocks;
 [TestClass]
 public class GuidTimeExpressionTest
 {
-    static Expression expression;
+    static Expression<string> expression;
 
     [ClassInitialize]
     public static void Init(TestContext c)
     {
-        expression = ExpressionProvider.LoadFromFile(ExpressionPath("guid-time.csx"));
+        expression = ExpressionProvider.LoadFromFile<string>(ExpressionPath("guid-time.csx"));
     }
 
     [ClassCleanup]

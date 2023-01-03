@@ -36,10 +36,15 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         #endregion Policies
 
         #region Expressions
-        { typeof(ConstantExpression), new ConstantExpressionHandler() },
-        { typeof(InlineScriptExpression), new InlineScriptExpressionHandler() },
-        { typeof(FileScriptExpression), new FileScriptExpressionHandler() },
-        { typeof(FunctionFileScriptExpression), new FunctionFileScriptExpressionHandler() },
+        { typeof(ConstantExpression<string>), new ConstantExpressionHandler<string>() },
+        { typeof(ConstantExpression<bool>), new ConstantExpressionHandler<bool>() },
+        { typeof(InlineScriptExpression<string>), new InlineScriptExpressionHandler<string>() },
+        { typeof(InlineScriptExpression<bool>), new InlineScriptExpressionHandler<bool>() },
+        { typeof(FileScriptExpression<string>), new FileScriptExpressionHandler<string>() },
+        { typeof(FileScriptExpression<bool>), new FileScriptExpressionHandler<bool>() },
+        { typeof(FunctionFileScriptExpression<string>), new FunctionFileScriptExpressionHandler<string>() },
+        { typeof(FunctionFileScriptExpression<bool>), new FunctionFileScriptExpressionHandler<bool>() },
+
         #endregion Expressions
     };
 
@@ -114,14 +119,14 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             }
         }
 
-        internal void WriteExpressionAsAttribute(string name, IExpression expression)
+        internal void WriteExpressionAsAttribute<T>(string name, IExpression<T> expression)
         {
             BaseWriter.WriteStartAttribute(name);
             expression.Accept(_marshaller);
             BaseWriter.WriteEndAttribute();
         }
 
-        internal void WriteNullableExpressionAsAttribute(string name, IExpression? expression)
+        internal void WriteNullableExpressionAsAttribute<T>(string name, IExpression<T>? expression)
         {
             if (expression != null)
             {
@@ -129,14 +134,14 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             }
         }
 
-        internal void WriteExpressionAsElement(string name, IExpression expression)
+        internal void WriteExpressionAsElement<T>(string name, IExpression<T> expression)
         {
             BaseWriter.WriteStartElement(name);
             expression.Accept(_marshaller);
             BaseWriter.WriteEndElement();
         }
 
-        internal void WriteExpression(IExpression expression) => expression.Accept(_marshaller);
+        internal void WriteExpression<T>(IExpression<T> expression) => expression.Accept(_marshaller);
 
         internal void WriteString(string value) => BaseWriter.WriteString(value);
 
@@ -162,7 +167,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             BaseWriter.WriteEndElement();
         }
 
-        internal void WriteNullableElementCollection(string collectionName, string collectionElement, ICollection<IExpression>? values)
+        internal void WriteNullableElementCollection<T>(string collectionName, string collectionElement, ICollection<IExpression<T>>? values)
         {
             if (values == null || values.Count == 0) return;
 

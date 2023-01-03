@@ -10,7 +10,7 @@ public sealed record AuthenticationBasic(
 public sealed record AuthenticationCertificatePolicy(
     string? Thumbprint = null,
     string? CertificateId = null,
-    IExpression? Body = null,
+    IExpression<string>? Body = null,
     string? Password = null
 ) : Visitable<AuthenticationCertificatePolicy>, IPolicy;
 

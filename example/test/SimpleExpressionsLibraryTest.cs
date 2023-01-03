@@ -8,7 +8,7 @@ using static Constants;
 [TestClass]
 public class SimpleExpressionsLibraryTest
 {
-    static Dictionary<string, Expression> _expression;
+    static Dictionary<string, Expression<object>> _expression;
 
     [ClassInitialize]
     public static void Init(TestContext _)
@@ -36,9 +36,9 @@ public class SimpleExpressionsLibraryTest
         var context = new MockContext();
         context.MockVariables["Variable"] = "something";
 
-        var result = await _expression["IsVariableSet"].Execute(context);
+        var result = (bool) await _expression["IsVariableSet"].Execute(context);
 
-        Assert.IsTrue(bool.Parse(result));
+        Assert.IsTrue(result);
     }
 
     [TestMethod]
@@ -46,9 +46,9 @@ public class SimpleExpressionsLibraryTest
     {
         var context = new MockContext();
 
-        var result = await _expression["IsVariableSet"].Execute(context);
+        var result = (bool) await _expression["IsVariableSet"].Execute(context);
 
-        Assert.IsFalse(bool.Parse(result));
+        Assert.IsFalse(result);
     }
 
     [TestMethod]

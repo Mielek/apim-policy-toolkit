@@ -1,4 +1,4 @@
-string IsVariableSet(IContext context) => context.Variables.ContainsKey("Variable").ToString();
+string IsVariableSet(IContext context) => context.Variables.ContainsKey("Variable");
 string GetKnownGUIDOrGenerateNew(IContext context)
 {
     if(!context.Variables.TryGetValue("KnownGUID", out var guid)){

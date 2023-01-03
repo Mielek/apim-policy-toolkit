@@ -8,9 +8,9 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SetBodyPolicyBuilder
     {
-        IExpression? _body;
-        IExpression? _template;
-        IExpression? _xsiNil;
+        IExpression<string>? _body;
+        IExpression<string>? _template;
+        IExpression<string>? _xsiNil;
 
 
         public SetBodyPolicyBuilder Template(BodyTemplate template)
@@ -55,7 +55,7 @@ namespace Mielek.Builders
         {
             var builder = new SetBodyPolicyBuilder();
             configurator(builder);
-            this._sectionPolicies.Add(builder.Build());
+            _sectionPolicies.Add(builder.Build());
             return this;
         }
     }

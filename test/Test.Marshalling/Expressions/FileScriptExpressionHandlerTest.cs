@@ -13,17 +13,7 @@ public class FileScriptExpressionHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldMarshallObject()
     {
-        var handler = new FileScriptExpressionHandler();
-
-        handler.Marshal(Marshaller, new FileScriptExpression(TestScripts.OneLine));
-
-        Assert.AreEqual($"@{{{Environment.NewLine}return context.RequestId;{Environment.NewLine}}}", WrittenText.ToString());
-    }
-
-    [TestMethod]
-    public void ShouldHandlerBeRegisterInMarshaller()
-    {
-        new FileScriptExpression(TestScripts.OneLine).Accept(Marshaller);
+        new FileScriptExpression<string>(TestScripts.OneLine).Accept(Marshaller);
 
         Assert.AreEqual($"@{{{Environment.NewLine}return context.RequestId;{Environment.NewLine}}}", WrittenText.ToString());
     }
@@ -31,9 +21,7 @@ public class FileScriptExpressionHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldRemoveDirectiveWhenMarshalling()
     {
-        var handler = new FileScriptExpressionHandler();
-
-        handler.Marshal(Marshaller, new FileScriptExpression(TestScripts.WithDirective));
+        new FileScriptExpression<string>(TestScripts.WithDirective).Accept(Marshaller);
 
         Assert.AreEqual($"@{{{Environment.NewLine}return context.User.LastName;{Environment.NewLine}}}", WrittenText.ToString());
     }

@@ -9,9 +9,9 @@ public class InlineScriptExpressionHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldMarshallObject()
     {
-        var handler = new InlineScriptExpressionHandler();
+        var handler = new InlineScriptExpressionHandler<string>();
 
-        handler.Marshal(Marshaller, ExpressionBuilder.Builder.Inlined(context => context.Deployment.Region).Build());
+        handler.Marshal(Marshaller, ExpressionBuilder<string>.Builder.Inlined(context => context.Deployment.Region).Build());
 
         Assert.AreEqual("@(context.Deployment.Region)", WrittenText.ToString());
     }
@@ -19,7 +19,7 @@ public class InlineScriptExpressionHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldHandlerBeRegisterInMarshaller()
     {
-        var expression = ExpressionBuilder.Builder.Inlined(context => context.Deployment.Region).Build();
+        var expression = ExpressionBuilder<string>.Builder.Inlined(context => context.Deployment.Region).Build();
         
         expression.Accept(Marshaller);
 

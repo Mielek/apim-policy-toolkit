@@ -9,14 +9,14 @@ public static class ExpressionProvider
 {
     readonly static Regex DirectivesRegex = new Regex("^#.* .*$", RegexOptions.Multiline);
 
-    public static Expression LoadFromFile(string path)
+    public static Expression<T> LoadFromFile<T>(string path)
     {
         var code = File.ReadAllText(path);
         code = DirectivesRegex.Replace(code, "").Trim();
-        return new Expression(code);
+        return new Expression<T>(code);
     }
 
-    public static Dictionary<string, Expression> LoadFromFunctionFile(string path)
+    public static Dictionary<string, Expression<object>> LoadFromFunctionFile(string path)
     {
         var code = File.ReadAllText(path);
         var scriptSyntaxTree = CSharpSyntaxTree.ParseText(code);
@@ -28,8 +28,8 @@ public static class ExpressionProvider
                 function => function.Identifier.ToString(),
                 function =>
                 {
-                    if (function.Body != null) return new Expression(function.Body.Statements.ToString());
-                    if (function.ExpressionBody != null) return new Expression($"return {function.ExpressionBody.Expression};");
+                    if (function.Body != null) return new Expression<object>(function.Body.Statements.ToString());
+                    if (function.ExpressionBody != null) return new Expression<object>($"return {function.ExpressionBody.Expression};");
 
                     throw new Exception();
                 });

@@ -1,4 +1,6 @@
 
+using System.Linq;
+
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Mielek.Generator.Builder.Extensions;
@@ -32,19 +34,23 @@ public class ExpressionFieldHandlerProvider : IFieldSetterHandlerProvider
 
         public void Handle(BuilderClassBuilder builder)
         {
+            var type = _field.Declaration.Type.DescendantNodes()
+                .OfType<TypeSyntax>()
+                .Last();
+
             foreach (var variable in _field.Declaration.Variables)
             {
                 var variableName = variable.Identifier.ToString();
                 var methodName = variableName.ToMethodName();
                 builder.Method(new BuilderSetMethod(
                     methodName,
-                    new[] { "string value" },
+                    new[] { $"{type} value" },
                     new[] { $"this.{methodName}(config => config.Constant(value));" }
                 ));
                 builder.Method(new BuilderSetMethod(
-                    methodName, 
-                    new[] { "Action<ExpressionBuilder> configurator" },
-                    new[] { $"{variableName} = ExpressionBuilder.BuildFromConfiguration(configurator);" }
+                    methodName,
+                    new[] { $"Action<ExpressionBuilder<{type}>> configurator" },
+                    new[] { $"{variableName} = ExpressionBuilder<{type}>.BuildFromConfiguration(configurator);" }
                 ));
             }
         }

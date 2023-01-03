@@ -69,7 +69,7 @@ namespace Mielek.Builders
         {
             var builder = new ValidateClientCertificatePolicyBuilder();
             configurator(builder);
-            this._sectionPolicies.Add(builder.Build());
+            _sectionPolicies.Add(builder.Build());
             return this;
         }
     }

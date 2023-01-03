@@ -9,7 +9,7 @@ public class ExpressionProviderTest
     [TestMethod]
     public async Task ShouldProvideExpressionFromFile()
     {
-        var expression = ExpressionProvider.LoadFromFile(TestScripts.WithoutDirective);
+        var expression = ExpressionProvider.LoadFromFile<string>(TestScripts.WithoutDirective);
 
         var context = new MockContext();
         var expressionResult = await expression.Execute(context);
@@ -20,7 +20,7 @@ public class ExpressionProviderTest
     [TestMethod]
     public async Task ShouldProvideExpressionFromFileAndRemoveDirective()
     {
-        var expression = ExpressionProvider.LoadFromFile(TestScripts.WithDirective);
+        var expression = ExpressionProvider.LoadFromFile<string>(TestScripts.WithDirective);
 
         var context = new MockContext();
         var expressionResult = await expression.Execute(context);
@@ -39,6 +39,7 @@ public class ExpressionProviderTest
         var context = new MockContext();
         var expressionResult = await expression.Execute(context);
 
-        Assert.AreEqual(context.RequestId.ToString(), expressionResult);
+        Assert.IsNotNull(expressionResult);
+        Assert.AreEqual(context.RequestId.ToString(), expressionResult.ToString());
     }
 }

@@ -9,12 +9,12 @@ using Newtonsoft.Json.Linq;
 [TestClass]
 public class FilterBodyExpressionTest
 {
-    static Expression expression;
+    static Expression<string> expression;
 
     [ClassInitialize]
     public static void Init(TestContext c)
     {
-        expression = ExpressionProvider.LoadFromFile(ExpressionPath("filter-body.csx"));
+        expression = ExpressionProvider.LoadFromFile<string>(ExpressionPath("filter-body.csx"));
     }
 
     [ClassCleanup]

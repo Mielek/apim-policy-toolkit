@@ -9,9 +9,9 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SetHeaderPolicyBuilder
     {
-        IExpression? _name;
-        ImmutableList<IExpression>.Builder? _values;
-        IExpression? _existAction;
+        IExpression<string>? _name;
+        ImmutableList<IExpression<string>>.Builder? _values;
+        IExpression<string>? _existAction;
 
         public SetHeaderPolicyBuilder ExistAction(ExistAction existAction)
         {

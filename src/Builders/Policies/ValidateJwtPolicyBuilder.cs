@@ -24,7 +24,7 @@ namespace Mielek.Builders.Policies
         ValidateJwtOpenIdConfig? _openIdConfig;
         ImmutableList<string>.Builder? _issuerSigningKeys;
         ImmutableList<string>.Builder? _decryptionKeys;
-        ImmutableList<IExpression>.Builder? _audiences;
+        ImmutableList<IExpression<string>>.Builder? _audiences;
         ImmutableList<string>.Builder? _issuers;
 
         [IgnoreBuilderField]
@@ -93,7 +93,7 @@ namespace Mielek.Builders
         {
             var builder = new ValidateJwtPolicyBuilder();
             configurator(builder);
-            this._sectionPolicies.Add(builder.Build());
+            _sectionPolicies.Add(builder.Build());
             return this;
         }
     }

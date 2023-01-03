@@ -9,8 +9,8 @@ namespace Mielek.Builders.Policies
     {
         uint? _calls;
         uint? _renewalPeriod;
-        IExpression? _counterKey;
-        IExpression? _incrementCondition;
+        IExpression<string>? _counterKey;
+        IExpression<bool>? _incrementCondition;
         uint? _incrementCount;
         string? _retryAfterHeaderName;
         string? _retryAfterVariableName;
