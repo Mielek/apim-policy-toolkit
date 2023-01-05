@@ -39,22 +39,22 @@ namespace Mielek.Builders.Policies
         IExpression<bool>? _condition;
 
         [IgnoreBuilderField]
-        ICollection<IPolicy>? _apply;
+        ICollection<IPolicy>? _policies;
 
-        public ChooseWhenBuilder Apply(Action<PolicySectionBuilder> configurator)
+        public ChooseWhenBuilder Policies(Action<PolicySectionBuilder> configurator)
         {
             var builder = new PolicySectionBuilder();
             configurator(builder);
-            _apply = builder.Build();
+            _policies = builder.Build();
             return this;
         }
 
         public ChooseWhen Build()
         {
             if(_condition == null) throw new NullReferenceException();
-            if(_apply == null) throw new NullReferenceException();
+            if(_policies == null) throw new NullReferenceException();
 
-            return new ChooseWhen(_condition, _apply);
+            return new ChooseWhen(_condition, _policies);
         }
     }
 }
