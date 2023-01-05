@@ -8,6 +8,6 @@ public class ConstantExpressionHandler<T> : MarshallerHandler<ConstantExpression
 {
     public override void Marshal(Marshaller marshaller, ConstantExpression<T> element)
     {
-        marshaller.Writer.WriteString($"{element.Value}");
+        marshaller.Writer.WriteRawString($"{element.Value}");
     }
 }

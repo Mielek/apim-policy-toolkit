@@ -5,20 +5,19 @@ using Mielek.Model.Policies;
 namespace Mielek.Test.Marshalling;
 
 [TestClass]
-public class ChoosePolicyHandlerTest : BaseMarshallerTest
+public class LimitConcurrencyPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<choose><when condition=""True""><base /></when></choose>";
-    readonly ChoosePolicy _policy = new ChoosePolicyBuilder()
-            .When(_ => _
-                .Condition(_ => _.Constant(true))
-                .Policies(_ => _.Base())
-            )
+    readonly string _expected = @"<limit-concurrency key=""@(context.User.Id)"" max-count=""10""><base /></limit-concurrency>";
+    readonly LimitConcurrencyPolicy _policy = new LimitConcurrencyPolicyBuilder()
+            .Key(_ => _.Inlined(context => context.User.Id))
+            .MaxCount(10)
+            .Policies(_ => _.Base())
             .Build();
 
     [TestMethod]
     public void ShouldMarshallPolicy()
     {
-        var handler = new ChoosePolicyHandler();
+        var handler = new LimitConcurrencyPolicyHandler();
 
         handler.Marshal(Marshaller, _policy);
 

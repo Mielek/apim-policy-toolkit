@@ -12,6 +12,6 @@ public class FileScriptExpressionHandler<T> : MarshallerHandler<FileScriptExpres
     {
         var script = File.ReadAllText(Path.Combine(marshaller.Options.ScriptBaseDirectory, element.Path));
         script = ReferenceRegex.Replace(script, "").Trim();
-        marshaller.Writer.WriteString($"@{{{Environment.NewLine}{script}{Environment.NewLine}}}");
+        marshaller.Writer.WriteRawString($"@{{{Environment.NewLine}{script}{Environment.NewLine}}}");
     }
 }

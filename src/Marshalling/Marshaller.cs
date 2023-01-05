@@ -33,7 +33,10 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(ValidateJwtPolicy), new ValidateJwtPolicyHandler() },
         { typeof(ValidateClientCertificatePolicy), new ValidateClientCertificatePolicyHandler() },
         { typeof(ChoosePolicy), new ChoosePolicyHandler() },
+        { typeof(ForwardRequestPolicy), new ForwardRequestPolicyHandler() },
         { typeof(IncludeFragmentPolicy), new IncludeFragmentPolicyHandler() },
+        { typeof(LimitConcurrencyPolicy), new LimitConcurrencyPolicyHandler() },
+        { typeof(LogToEventhubPolicy), new LogToEventhubPolicyHandler() },
         #endregion Policies
 
         #region Expressions
@@ -64,8 +67,8 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 
     Marshaller(XmlWriter xmlWriter, MarshallerOptions options)
     {
-        this.Writer = new InternalWriter(xmlWriter, this);
-        this.Options = options;
+        Writer = new InternalWriter(xmlWriter, this);
+        Options = options;
     }
 
     public MarshallerOptions Options { get; }
@@ -144,7 +147,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 
         internal void WriteExpression<T>(IExpression<T> expression) => expression.Accept(_marshaller);
 
-        internal void WriteString(string value) => BaseWriter.WriteRaw(value);
+        internal void WriteRawString(string value) => BaseWriter.WriteRaw(value);
 
         internal void WriteElementCollection(string collectionName, string collectionElement, ICollection<string> values)
         {

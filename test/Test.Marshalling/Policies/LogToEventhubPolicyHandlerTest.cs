@@ -5,20 +5,18 @@ using Mielek.Model.Policies;
 namespace Mielek.Test.Marshalling;
 
 [TestClass]
-public class ChoosePolicyHandlerTest : BaseMarshallerTest
+public class LogToEventhubPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<choose><when condition=""True""><base /></when></choose>";
-    readonly ChoosePolicy _policy = new ChoosePolicyBuilder()
-            .When(_ => _
-                .Condition(_ => _.Constant(true))
-                .Policies(_ => _.Base())
-            )
+    readonly string _expected = @"<log-to-eventhub logger-id=""some-logger-id"">@(context.User.Id)</log-to-eventhub>";
+    readonly LogToEventhubPolicy _policy = new LogToEventhubPolicyBuilder()
+            .LoggerId("some-logger-id")
+            .Value(_ => _.Inlined(context => context.User.Id))
             .Build();
 
     [TestMethod]
     public void ShouldMarshallPolicy()
     {
-        var handler = new ChoosePolicyHandler();
+        var handler = new LogToEventhubPolicyHandler();
 
         handler.Marshal(Marshaller, _policy);
 

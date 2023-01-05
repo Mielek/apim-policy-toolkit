@@ -17,7 +17,7 @@ public class FunctionFileScriptExpressionHandler<T> : MarshallerHandler<Function
             AddFileFunctionsToCache(marshaller.Options.ScriptBaseDirectory, element.Path);
         }
 
-        marshaller.Writer.WriteString(_cache[cacheKey]);
+        marshaller.Writer.WriteRawString(_cache[cacheKey]);
     }
 
     private void AddFileFunctionsToCache(string baseDirectory, string selectedFile)

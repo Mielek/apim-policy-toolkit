@@ -8,6 +8,6 @@ public class InlineScriptExpressionHandler<T> : MarshallerHandler<InlineScriptEx
 {
     public override void Marshal(Marshaller marshaller, InlineScriptExpression<T> element)
     {
-        marshaller.Writer.WriteString($"@({element.Script})");
+        marshaller.Writer.WriteRawString($"@({element.Script})");
     }
 }

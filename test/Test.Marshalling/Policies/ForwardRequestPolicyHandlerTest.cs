@@ -5,20 +5,16 @@ using Mielek.Model.Policies;
 namespace Mielek.Test.Marshalling;
 
 [TestClass]
-public class ChoosePolicyHandlerTest : BaseMarshallerTest
+public class ForwardRequestPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<choose><when condition=""True""><base /></when></choose>";
-    readonly ChoosePolicy _policy = new ChoosePolicyBuilder()
-            .When(_ => _
-                .Condition(_ => _.Constant(true))
-                .Policies(_ => _.Base())
-            )
+    readonly string _expected = @"<forward-request />";
+    readonly ForwardRequestPolicy _policy = new ForwardRequestPolicyBuilder()
             .Build();
 
     [TestMethod]
     public void ShouldMarshallPolicy()
     {
-        var handler = new ChoosePolicyHandler();
+        var handler = new ForwardRequestPolicyHandler();
 
         handler.Marshal(Marshaller, _policy);
 
