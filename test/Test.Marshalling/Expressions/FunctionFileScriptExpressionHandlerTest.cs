@@ -27,7 +27,7 @@ public class FunctionFileScriptExpressionHandlerTest : BaseMarshallerTest
         new FunctionFileScriptExpression<string>(TestScripts.Functions, "FunctionBodyMultiline").Accept(Marshaller);
 
         var expected = @"@{
-var response = context.Response.Body.As&lt;JObject&gt;();
+var response = context.Response.Body.As<JObject>();
     foreach (var key in new[] { ""current"", ""minutely"", ""hourly"", ""daily"", ""alerts"" })
     {
         response.Property(key)?.Remove();

@@ -28,7 +28,7 @@ return PolicyDocumentBuilder
         {
             policy
                 .Name("X-Deployment-Region")
-                .ExistAction(ExistAction.Override)
+                .ExistsAction(ExistsAction.Override)
                 .Value(context => context.Deployment.Region)
         })
     })
@@ -47,7 +47,7 @@ Tool will create the `target` folder. In the folder you will find the `global-do
 ```xml
 <policies>
     <inbound>
-        <set-header name="X-Deployment-Region" exist-action="override">
+        <set-header name="X-Deployment-Region" exists-action="override">
             <value>@(context.Deployment.Region)</value>
         </set-header>
     </inbound>
@@ -84,7 +84,7 @@ return PolicyDocumentBuilder
         {
             policy
                 .Name("X-Deployment-Region")
-                .ExistAction(ExistAction.Override)
+                .ExistsAction(ExistsAction.Override)
                 .Value(context => context.Deployment.Region)
         })
     })
@@ -112,7 +112,7 @@ The `global-document.xml` should contain outbound section with content of expres
   <backend />
   <outbound>
     <set-body>@{
-var response = context.Response.Body.As&lt;JObject&gt;();
+var response = context.Response.Body.As<JObject>();
 foreach (var key in new[] { "current", "minutely", "hourly", "daily", "alerts" })
 {
     response.Property(key)?.Remove();

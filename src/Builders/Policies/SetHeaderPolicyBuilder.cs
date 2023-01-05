@@ -11,19 +11,19 @@ namespace Mielek.Builders.Policies
     {
         IExpression<string>? _name;
         ImmutableList<IExpression<string>>.Builder? _values;
-        IExpression<string>? _existAction;
+        IExpression<string>? _existsAction;
 
-        public SetHeaderPolicyBuilder ExistAction(ExistAction existAction)
+        public SetHeaderPolicyBuilder ExistsAction(SetHeaderExistsAction existsAction)
         {
-            return ExistAction(Translate(existAction));
+            return ExistsAction(Translate(existsAction));
         }
 
-        private string Translate(Model.Policies.ExistAction existAction) => existAction switch
+        private string Translate(SetHeaderExistsAction existsAction) => existsAction switch
         {
-            Model.Policies.ExistAction.Override => "override",
-            Model.Policies.ExistAction.Append => "append",
-            Model.Policies.ExistAction.Delete => "delete",
-            Model.Policies.ExistAction.Skip => "skip",
+            SetHeaderExistsAction.Override => "override",
+            SetHeaderExistsAction.Append => "append",
+            SetHeaderExistsAction.Delete => "delete",
+            SetHeaderExistsAction.Skip => "skip",
             _ => throw new Exception(),
         };
 
@@ -31,7 +31,7 @@ namespace Mielek.Builders.Policies
         {
             if (_name == null) throw new NullReferenceException();
 
-            return new SetHeaderPolicy(_name, _values?.ToImmutable(), _existAction);
+            return new SetHeaderPolicy(_name, _values?.ToImmutable(), _existsAction);
         }
 
     }

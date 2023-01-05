@@ -1,5 +1,5 @@
 ﻿<fragment>
-  <set-header name="X-Test" exist-action="append">
+  <set-header name="X-Test" exists-action="append">
     <value>test</value>
   </set-header>
   <set-method method="OPTIONS" />

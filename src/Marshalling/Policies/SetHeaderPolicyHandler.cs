@@ -8,7 +8,7 @@ public class SetHeaderPolicyHandler : MarshallerHandler<SetHeaderPolicy>
     {
         marshaller.Writer.WriteStartElement("set-header");
         marshaller.Writer.WriteExpressionAsAttribute("name", element.Name);
-        marshaller.Writer.WriteNullableExpressionAsAttribute("exist-action", element.ExistAction);
+        marshaller.Writer.WriteNullableExpressionAsAttribute("exists-action", element.ExistsAction);
         if (element.Values != null)
         {
             foreach (var value in element.Values)

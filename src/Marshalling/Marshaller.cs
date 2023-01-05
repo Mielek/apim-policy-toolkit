@@ -144,7 +144,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 
         internal void WriteExpression<T>(IExpression<T> expression) => expression.Accept(_marshaller);
 
-        internal void WriteString(string value) => BaseWriter.WriteString(value);
+        internal void WriteString(string value) => BaseWriter.WriteRaw(value);
 
         internal void WriteElementCollection(string collectionName, string collectionElement, ICollection<string> values)
         {

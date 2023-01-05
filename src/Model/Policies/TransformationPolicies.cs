@@ -5,9 +5,9 @@ namespace Mielek.Model.Policies;
 public sealed record SetHeaderPolicy(
     IExpression<string> Name,
     ICollection<IExpression<string>>? Values = null,
-    IExpression<string>? ExistAction = null
+    IExpression<string>? ExistsAction = null
 ) : Visitable<SetHeaderPolicy>, IPolicy;
-public enum ExistAction { Override, Skip, Append, Delete }
+public enum SetHeaderExistsAction { Override, Skip, Append, Delete }
 
 public sealed record SetBodyPolicy(
     IExpression<string> Body,

@@ -15,7 +15,7 @@ return PolicyDocumentBuilder
             .Base()
             .SetHeader(policy =>
             {
-                policy.Name("X-Test").ExistAction(ExistAction.Append)
+                policy.Name("X-Test").ExistsAction(SetHeaderExistsAction.Append)
                     .Value("Test")
                     .Value(expression => expression.Inlined(context => context.Deployment.Region))
                     .Value(expression => expression.FromFile("./expressions/guid-time.csx"))

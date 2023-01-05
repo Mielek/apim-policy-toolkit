@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class SetHeaderPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<set-header name=""X-Test"" exist-action=""override""><value>3</value><value>2</value><value>1</value></set-header>";
-    readonly SetHeaderPolicy _policy = new SetHeaderPolicyBuilder().Name("X-Test").ExistAction(ExistAction.Override).Value("3").Value("2").Value("1").Build();
+    readonly string _expected = @"<set-header name=""X-Test"" exists-action=""override""><value>3</value><value>2</value><value>1</value></set-header>";
+    readonly SetHeaderPolicy _policy = new SetHeaderPolicyBuilder().Name("X-Test").ExistsAction(SetHeaderExistsAction.Override).Value("3").Value("2").Value("1").Build();
 
     [TestMethod]
     public void ShouldMarshallPolicy()
@@ -29,7 +29,7 @@ public class SetHeaderPolicyHandlerTest : BaseMarshallerTest
     }
 
     [TestMethod]
-    public void ShouldMarshallPolicyWithoutExistActionField()
+    public void ShouldMarshallPolicyWithoutExistsActionField()
     {
         var policy = new SetHeaderPolicyBuilder().Name("X-Test").Value("1").Build();
 
@@ -41,10 +41,10 @@ public class SetHeaderPolicyHandlerTest : BaseMarshallerTest
     [TestMethod]
     public void ShouldMarshallPolicyWithoutAnyValue()
     {
-        var policy = new SetHeaderPolicyBuilder().Name("X-Test").ExistAction(ExistAction.Delete).Build();
+        var policy = new SetHeaderPolicyBuilder().Name("X-Test").ExistsAction(SetHeaderExistsAction.Delete).Build();
 
         policy.Accept(Marshaller);
 
-        Assert.AreEqual(@"<set-header name=""X-Test"" exist-action=""delete"" />", WrittenText.ToString());
+        Assert.AreEqual(@"<set-header name=""X-Test"" exists-action=""delete"" />", WrittenText.ToString());
     }
 }
