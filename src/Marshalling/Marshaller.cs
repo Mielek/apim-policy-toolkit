@@ -40,6 +40,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(EmitMetricPolicy), new EmitMetricPolicyHandler() },
         { typeof(MockResponsePolicy), new MockResponsePolicyHandler() },
         { typeof(RetryPolicy), new RetryPolicyHandler() },
+        { typeof(ReturnResponsePolicy), new ReturnResponsePolicyHandler() },
         #endregion Policies
 
         #region Expressions
