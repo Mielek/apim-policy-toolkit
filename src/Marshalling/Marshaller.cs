@@ -9,7 +9,7 @@ using Mielek.Model.Policies;
 namespace Mielek.Marshalling;
 public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 {
-    static readonly Dictionary<Type, IMarshallerHandler> Handlers = new Dictionary<Type, IMarshallerHandler>()
+    static readonly Dictionary<Type, IMarshallerHandler> Handlers = new()
     {
         #region Roots
         { typeof(PolicyDocument), new PolicyDocumentHandler() },
@@ -41,6 +41,8 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(MockResponsePolicy), new MockResponsePolicyHandler() },
         { typeof(RetryPolicy), new RetryPolicyHandler() },
         { typeof(ReturnResponsePolicy), new ReturnResponsePolicyHandler() },
+
+        { typeof(AuthenticationBasicPolicy), new AuthenticationBasicPolicyHandler() },
         #endregion Policies
 
         #region Expressions
