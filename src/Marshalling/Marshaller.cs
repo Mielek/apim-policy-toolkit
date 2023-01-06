@@ -44,6 +44,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 
         { typeof(AuthenticationBasicPolicy), new AuthenticationBasicPolicyHandler() },
         { typeof(AuthenticationCertificatePolicy), new AuthenticationCertificatePolicyHandler() },
+        { typeof(AuthenticationManagedIdentityPolicy), new AuthenticationManagedIdentityPolicyHandler() },
         #endregion Policies
 
         #region Expressions

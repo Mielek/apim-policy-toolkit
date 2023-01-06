@@ -14,9 +14,9 @@ public sealed record AuthenticationCertificatePolicy(
     string? Password = null
 ) : Visitable<AuthenticationCertificatePolicy>, IPolicy;
 
-public sealed record AuthenticationManagedIdentity(
+public sealed record AuthenticationManagedIdentityPolicy(
     string Resource,
     string? ClientId = null,
     string? OutputTokenVariableName = null,
     bool? IgnoreError = null
-) : Visitable<AuthenticationManagedIdentity>, IPolicy;
+) : Visitable<AuthenticationManagedIdentityPolicy>, IPolicy;
