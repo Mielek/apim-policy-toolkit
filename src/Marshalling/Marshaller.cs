@@ -43,6 +43,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(ReturnResponsePolicy), new ReturnResponsePolicyHandler() },
 
         { typeof(AuthenticationBasicPolicy), new AuthenticationBasicPolicyHandler() },
+        { typeof(AuthenticationCertificatePolicy), new AuthenticationCertificatePolicyHandler() },
         #endregion Policies
 
         #region Expressions
@@ -54,7 +55,6 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(FileScriptExpression<bool>), new FileScriptExpressionHandler<bool>() },
         { typeof(FunctionFileScriptExpression<string>), new FunctionFileScriptExpressionHandler<string>() },
         { typeof(FunctionFileScriptExpression<bool>), new FunctionFileScriptExpressionHandler<bool>() },
-
         #endregion Expressions
     };
 
