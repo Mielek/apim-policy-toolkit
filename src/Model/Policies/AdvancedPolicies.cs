@@ -57,9 +57,11 @@ public sealed record ReturnResponsePolicy(
 ) : Visitable<ReturnResponsePolicy>, IPolicy;
 
 public sealed record SendOneWayRequestPolicy(
-    SendOneWayRequestMode Mode,
+    SendOneWayRequestMode? Mode = null,
+    uint? Timeout = null,
     IExpression<string>? SetUrl = null,
-    IExpression<string>? Method = null,
+    IExpression<string>? SetMethod = null,
+    IExpression<string>? SetBody = null,
     ICollection<SetHeaderPolicy>? SetHeaders = null,
     AuthenticationCertificatePolicy? AuthenticationCertificate = null
 ) : Visitable<SendOneWayRequestPolicy>, IPolicy;

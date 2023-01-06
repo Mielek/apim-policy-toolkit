@@ -41,6 +41,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(MockResponsePolicy), new MockResponsePolicyHandler() },
         { typeof(RetryPolicy), new RetryPolicyHandler() },
         { typeof(ReturnResponsePolicy), new ReturnResponsePolicyHandler() },
+        { typeof(SendOneWayRequestPolicy), new SendOneWayRequestPolicyHandler() },
 
         { typeof(AuthenticationBasicPolicy), new AuthenticationBasicPolicyHandler() },
         { typeof(AuthenticationCertificatePolicy), new AuthenticationCertificatePolicyHandler() },
@@ -150,6 +151,14 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             BaseWriter.WriteStartElement(name);
             expression.Accept(_marshaller);
             BaseWriter.WriteEndElement();
+        }
+
+        internal void WriteNullableExpressionAsElement<T>(string name, IExpression<T>? expression)
+        {
+            if (expression != null)
+            {
+                WriteExpressionAsElement(name, expression);
+            }
         }
 
         internal void WriteExpression<T>(IExpression<T> expression) => expression.Accept(_marshaller);
