@@ -38,6 +38,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(LimitConcurrencyPolicy), new LimitConcurrencyPolicyHandler() },
         { typeof(LogToEventhubPolicy), new LogToEventhubPolicyHandler() },
         { typeof(EmitMetricPolicy), new EmitMetricPolicyHandler() },
+        { typeof(MockResponsePolicy), new MockResponsePolicyHandler() },
         #endregion Policies
 
         #region Expressions
