@@ -39,7 +39,7 @@ public record EmitMetricDimension(string Name, IExpression<string>? Value = null
 
 public sealed record MockResponsePolicy(uint? StatusCode = null, string? ContentType = null) : Visitable<MockResponsePolicy>, IPolicy;
 
-public sealed record RecordPolicy(
+public sealed record RetryPolicy(
     IExpression<bool> Condition,
     uint Count,
     uint Interval,
@@ -47,7 +47,7 @@ public sealed record RecordPolicy(
     uint? MaxInterval = null,
     uint? Delta = null,
     IExpression<string>? FirstFastRetry = null
-) : Visitable<RecordPolicy>, IPolicy;
+) : Visitable<RetryPolicy>, IPolicy;
 
 public sealed record ReturnResponsePolicy(
     SetHeaderPolicy? SetHeaderPolicy = null,
