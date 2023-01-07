@@ -42,6 +42,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(RetryPolicy), new RetryPolicyHandler() },
         { typeof(ReturnResponsePolicy), new ReturnResponsePolicyHandler() },
         { typeof(SendOneWayRequestPolicy), new SendOneWayRequestPolicyHandler() },
+        { typeof(SendRequestPolicy), new SendRequestPolicyHandler() },
 
         { typeof(AuthenticationBasicPolicy), new AuthenticationBasicPolicyHandler() },
         { typeof(AuthenticationCertificatePolicy), new AuthenticationCertificatePolicyHandler() },

@@ -10,9 +10,9 @@ public class SendOneWayRequestPolicyHandlerTest : BaseHandlerTest
 {
     protected override IMarshallerHandler Handler => new SendOneWayRequestPolicyHandler();
     protected override IPolicy Policy => new SendOneWayRequestPolicyBuilder()
-        .SetUrl("https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX")
+        .SetUrl("https://test.com/")
         .SetMethod("POST")
         .SetBody("Body-body")
         .Build();
-    protected override string Expected => @"<send-one-way-request><set-url>https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX</set-url><set-method>POST</set-method><set-body>Body-body</set-body></send-one-way-request>";
+    protected override string Expected => @"<send-one-way-request><set-url>https://test.com/</set-url><set-method>POST</set-method><set-body>Body-body</set-body></send-one-way-request>";
 }

@@ -2,25 +2,28 @@ using Mielek.Model.Policies;
 
 namespace Mielek.Marshalling.Policies;
 
-public class SendOneWayRequestPolicyHandler : MarshallerHandler<SendOneWayRequestPolicy>
+public class SendRequestPolicyHandler : MarshallerHandler<SendRequestPolicy>
 {
-    public override void Marshal(Marshaller marshaller, SendOneWayRequestPolicy element)
+    public override void Marshal(Marshaller marshaller, SendRequestPolicy element)
     {
-        marshaller.Writer.WriteStartElement("send-one-way-request");
+        marshaller.Writer.WriteStartElement("send-request");
 
         marshaller.Writer.WriteNullableAttribute("mode", TranslateMode(element.Mode));
+        marshaller.Writer.WriteAttribute("response-variable-name", element.ResponseVariableName);
         marshaller.Writer.WriteNullableAttribute("timeout", element.Timeout);
+        marshaller.Writer.WriteNullableAttribute("ignore-error", element.IgnoreError);
 
         marshaller.Writer.WriteNullableExpressionAsElement("set-url", element.SetUrl);
         marshaller.Writer.WriteNullableExpressionAsElement("set-method", element.SetMethod);
-
-        if (element.SetHeaders != null && element.SetHeaders.Count > 0)
+        
+        if(element.SetHeaders != null && element.SetHeaders.Count > 0)
         {
             foreach (var setHeader in element.SetHeaders)
             {
                 setHeader.Accept(marshaller);
             }
         }
+
 
         marshaller.Writer.WriteNullableExpressionAsElement("set-body", element.SetBody);
 
@@ -29,10 +32,10 @@ public class SendOneWayRequestPolicyHandler : MarshallerHandler<SendOneWayReques
         marshaller.Writer.WriteEndElement();
     }
 
-    private static string? TranslateMode(SendOneWayRequestMode? mode) => mode switch
+    private static string? TranslateMode(SendRequestMode? mode) => mode switch
     {
-        SendOneWayRequestMode.Copy => "copy",
-        SendOneWayRequestMode.New => "new",
+        SendRequestMode.Copy => "copy",
+        SendRequestMode.New => "new",
         _ => null,
     };
 }
