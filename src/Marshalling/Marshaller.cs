@@ -46,6 +46,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(ProxyPolicy), new ProxyPolicyHandler() },
         { typeof(SetVariablePolicy), new SetVariablePolicyHandler() },
         { typeof(TracePolicy), new TracePolicyHandler() },
+        { typeof(WaitPolicy), new WaitPolicyHandler() },
         { typeof(AuthenticationBasicPolicy), new AuthenticationBasicPolicyHandler() },
         { typeof(AuthenticationCertificatePolicy), new AuthenticationCertificatePolicyHandler() },
         { typeof(AuthenticationManagedIdentityPolicy), new AuthenticationManagedIdentityPolicyHandler() },
