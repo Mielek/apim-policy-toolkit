@@ -11,7 +11,7 @@ public class TracePolicyHandler : MarshallerHandler<TracePolicy>
         marshaller.Writer.WriteAttribute("source", element.Source);
         marshaller.Writer.WriteNullableAttribute("severity", TranslateSeverity(element.Severity));
 
-        marshaller.Writer.WriteExpressionAsElement("message", element.Message);
+        marshaller.Writer.WriteElement("message", element.Message);
 
         if (element.Metadatas != null && element.Metadatas.Count > 0)
         {
@@ -19,7 +19,7 @@ public class TracePolicyHandler : MarshallerHandler<TracePolicy>
             {
                 marshaller.Writer.WriteStartElement("metadata");
                 marshaller.Writer.WriteAttribute("name", metadata.Name);
-                marshaller.Writer.WriteExpressionAsAttribute("value", metadata.Value);
+                marshaller.Writer.WriteAttribute("value", metadata.Value);
             }
         }
 

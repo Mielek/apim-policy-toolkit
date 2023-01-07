@@ -13,7 +13,7 @@ public class SendRequestPolicyHandler : MarshallerHandler<SendRequestPolicy>
         marshaller.Writer.WriteNullableAttribute("timeout", element.Timeout);
         marshaller.Writer.WriteNullableAttribute("ignore-error", element.IgnoreError);
 
-        marshaller.Writer.WriteNullableExpressionAsElement("set-url", element.SetUrl);
+        marshaller.Writer.WriteNullableElement("set-url", element.SetUrl);
         element.SetMethod?.Accept(marshaller);
 
         if (element.SetHeaders != null && element.SetHeaders.Count > 0)
@@ -25,7 +25,7 @@ public class SendRequestPolicyHandler : MarshallerHandler<SendRequestPolicy>
         }
 
 
-        marshaller.Writer.WriteNullableExpressionAsElement("set-body", element.SetBody);
+        marshaller.Writer.WriteNullableElement("set-body", element.SetBody);
 
         element.AuthenticationCertificate?.Accept(marshaller);
 

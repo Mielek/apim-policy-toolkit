@@ -9,7 +9,7 @@ public class EmitMetricPolicyHandler : MarshallerHandler<EmitMetricPolicy>
         marshaller.Writer.WriteStartElement("emit-metric");
 
         marshaller.Writer.WriteAttribute("name", element.Name);
-        marshaller.Writer.WriteNullableExpressionAsAttribute("value", element.Value);
+        marshaller.Writer.WriteNullableAttribute("value", element.Value);
         marshaller.Writer.WriteNullableAttribute("namespace", element.Namespace);
 
         foreach (var dimension in element.Dimensions)
@@ -17,7 +17,7 @@ public class EmitMetricPolicyHandler : MarshallerHandler<EmitMetricPolicy>
             marshaller.Writer.WriteStartElement("dimension");
 
             marshaller.Writer.WriteAttribute("name", dimension.Name);
-            marshaller.Writer.WriteNullableExpressionAsAttribute("value", dimension.Value);
+            marshaller.Writer.WriteNullableAttribute("value", dimension.Value);
 
             marshaller.Writer.WriteEndElement();
         }

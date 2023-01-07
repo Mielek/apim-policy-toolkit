@@ -6,6 +6,6 @@ public class SetMethodPolicyHandler : MarshallerHandler<SetMethodPolicy>
 {
     public override void Marshal(Marshaller marshaller, SetMethodPolicy element)
     {
-        marshaller.Writer.WriteExpressionAsElement("set-method", element.Method);
+        marshaller.Writer.WriteElement("set-method", element.Method);
     }
 }

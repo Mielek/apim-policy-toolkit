@@ -8,12 +8,12 @@ public class GetAuthorizationContextPolicyHandler : MarshallerHandler<GetAuthori
     {
         marshaller.Writer.WriteStartElement("get-authorization-context");
 
-        marshaller.Writer.WriteExpressionAsAttribute("provider-id", element.ProviderId);
-        marshaller.Writer.WriteExpressionAsAttribute("authorization-id", element.AuthorizationId);
+        marshaller.Writer.WriteAttribute("provider-id", element.ProviderId);
+        marshaller.Writer.WriteAttribute("authorization-id", element.AuthorizationId);
         marshaller.Writer.WriteAttribute("context-variable", element.ContextVariableName);
 
         marshaller.Writer.WriteNullableAttribute("identity-type", TranslateIdentity(element.IdentityType));
-        marshaller.Writer.WriteNullableExpressionAsAttribute("identity", element.Identity);
+        marshaller.Writer.WriteNullableAttribute("identity", element.Identity);
         marshaller.Writer.WriteNullableAttribute("ignore-error", element.IgnoreError);
 
         marshaller.Writer.WriteEndElement();

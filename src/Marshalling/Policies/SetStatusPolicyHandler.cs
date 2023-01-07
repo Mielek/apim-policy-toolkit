@@ -7,8 +7,8 @@ public class SetStatusPolicyHandler : MarshallerHandler<SetStatusPolicy>
     public override void Marshal(Marshaller marshaller, SetStatusPolicy element)
     {
         marshaller.Writer.WriteStartElement("set-status");
-        marshaller.Writer.WriteExpressionAsAttribute("code", element.Code);
-        marshaller.Writer.WriteNullableExpressionAsAttribute("reason", element.Reason);
+        marshaller.Writer.WriteAttribute("code", element.Code);
+        marshaller.Writer.WriteNullableAttribute("reason", element.Reason);
         marshaller.Writer.WriteEndElement();
     }
 }

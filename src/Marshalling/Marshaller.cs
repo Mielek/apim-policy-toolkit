@@ -50,6 +50,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         { typeof(AuthenticationBasicPolicy), new AuthenticationBasicPolicyHandler() },
         { typeof(AuthenticationCertificatePolicy), new AuthenticationCertificatePolicyHandler() },
         { typeof(AuthenticationManagedIdentityPolicy), new AuthenticationManagedIdentityPolicyHandler() },
+        { typeof(CacheLookupPolicy), new CacheLookupPolicyHandler() },
         #endregion Policies
 
         #region Expressions
@@ -113,12 +114,35 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
         }
 
         internal void WriteElement(string name, string? value = null) => BaseWriter.WriteElementString(name, value);
+        internal void WriteElement<T>(string name, T value)
+        {
+            WriteElement(name, $"{value}");
+        }
+        internal void WriteElement<T>(string name, IExpression<T> expression)
+        {
+            BaseWriter.WriteStartElement(name);
+            expression.Accept(_marshaller);
+            BaseWriter.WriteEndElement();
+        }
+        internal void WriteNullableElement<T>(string name, IExpression<T>? expression)
+        {
+            if (expression != null)
+            {
+                WriteElement(name, expression);
+            }
+        }
 
         internal void WriteStartElement(string name) => BaseWriter.WriteStartElement(name);
         internal void WriteEndElement() => BaseWriter.WriteEndElement();
 
         internal void WriteAttribute(string name, string value) => BaseWriter.WriteAttributeString(name, value);
         internal void WriteAttribute<T>(string name, T value) => BaseWriter.WriteAttributeString(name, $"{value}");
+        internal void WriteAttribute<T>(string name, IExpression<T> expression)
+        {
+            BaseWriter.WriteStartAttribute(name);
+            expression.Accept(_marshaller);
+            BaseWriter.WriteEndAttribute();
+        }
 
         internal void WriteNullableAttribute(string name, string? value)
         {
@@ -134,49 +158,40 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
                 BaseWriter.WriteAttributeString(name, $"{value}");
             }
         }
-
-        internal void WriteExpressionAsAttribute<T>(string name, IExpression<T> expression)
-        {
-            BaseWriter.WriteStartAttribute(name);
-            expression.Accept(_marshaller);
-            BaseWriter.WriteEndAttribute();
-        }
-
-        internal void WriteNullableExpressionAsAttribute<T>(string name, IExpression<T>? expression)
+        internal void WriteNullableAttribute<T>(string name, IExpression<T>? expression)
         {
             if (expression != null)
             {
-                WriteExpressionAsAttribute(name, expression);
+                WriteAttribute(name, expression);
             }
         }
 
-        internal void WriteExpressionAsElement<T>(string name, IExpression<T> expression)
-        {
-            BaseWriter.WriteStartElement(name);
-            expression.Accept(_marshaller);
-            BaseWriter.WriteEndElement();
-        }
 
-        internal void WriteNullableExpressionAsElement<T>(string name, IExpression<T>? expression)
-        {
-            if (expression != null)
-            {
-                WriteExpressionAsElement(name, expression);
-            }
-        }
 
         internal void WriteExpression<T>(IExpression<T> expression) => expression.Accept(_marshaller);
 
         internal void WriteRawString(string value) => BaseWriter.WriteRaw(value);
 
-        internal void WriteElementCollection(string collectionName, string collectionElement, ICollection<string> values)
+        internal void WriteElementCollection(string collectionElement, ICollection<string> values)
         {
-            BaseWriter.WriteStartElement(collectionName);
             foreach (var value in values)
             {
                 BaseWriter.WriteElementString(collectionElement, value);
             }
+        }
+
+        internal void WriteElementCollection(string collectionName, string collectionElement, ICollection<string> values)
+        {
+            BaseWriter.WriteStartElement(collectionName);
+            WriteElementCollection(collectionElement, values);
             BaseWriter.WriteEndElement();
+        }
+
+        internal void WriteNullableElementCollection(string collectionElement, ICollection<string>? values)
+        {
+            if (values == null || values.Count == 0) return;
+
+            WriteElementCollection(collectionElement, values);
         }
 
         internal void WriteNullableElementCollection(string collectionName, string collectionElement, ICollection<string>? values)
@@ -184,10 +199,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             if (values == null || values.Count == 0) return;
 
             BaseWriter.WriteStartElement(collectionName);
-            foreach (var value in values)
-            {
-                BaseWriter.WriteElementString(collectionElement, value);
-            }
+            WriteElementCollection(collectionElement, values);
             BaseWriter.WriteEndElement();
         }
 
@@ -198,7 +210,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             BaseWriter.WriteStartElement(collectionName);
             foreach (var value in values)
             {
-                WriteExpressionAsElement(collectionElement, value);
+                WriteElement(collectionElement, value);
             }
             BaseWriter.WriteEndElement();
         }

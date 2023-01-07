@@ -9,7 +9,7 @@ public class SetVariablePolicyHandler : MarshallerHandler<SetVariablePolicy>
         marshaller.Writer.WriteStartElement("set-variable");
 
         marshaller.Writer.WriteAttribute("name", element.Name);
-        marshaller.Writer.WriteExpressionAsAttribute("value", element.Value);
+        marshaller.Writer.WriteAttribute("value", element.Value);
 
         marshaller.Writer.WriteEndElement();
     }

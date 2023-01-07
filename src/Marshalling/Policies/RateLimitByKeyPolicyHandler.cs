@@ -9,9 +9,9 @@ public class RateLimitByKeyPolicyHandler : MarshallerHandler<RateLimitByKeyPolic
         marshaller.Writer.WriteStartElement("rate-limit-by-key");
         marshaller.Writer.WriteAttribute("calls", element.Calls);
         marshaller.Writer.WriteAttribute("renewal-period", element.RenewalPeriod);
-        marshaller.Writer.WriteExpressionAsAttribute("counter-key", element.CounterKey);
+        marshaller.Writer.WriteAttribute("counter-key", element.CounterKey);
 
-        marshaller.Writer.WriteNullableExpressionAsAttribute("increment-condition", element.IncrementCondition);
+        marshaller.Writer.WriteNullableAttribute("increment-condition", element.IncrementCondition);
         marshaller.Writer.WriteNullableAttribute("increment-count", element.IncrementCount);
         marshaller.Writer.WriteNullableAttribute("retry-after-header-name", element.RetryAfterHeaderName);
         marshaller.Writer.WriteNullableAttribute("retry-after-variable-name", element.RetryAfterVariableName);

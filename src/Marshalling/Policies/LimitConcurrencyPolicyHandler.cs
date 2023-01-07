@@ -7,7 +7,7 @@ public class LimitConcurrencyPolicyHandler : MarshallerHandler<LimitConcurrencyP
     public override void Marshal(Marshaller marshaller, LimitConcurrencyPolicy element)
     {
         marshaller.Writer.WriteStartElement("limit-concurrency");
-        marshaller.Writer.WriteExpressionAsAttribute("key", element.Key);
+        marshaller.Writer.WriteAttribute("key", element.Key);
         marshaller.Writer.WriteAttribute("max-count", element.MaxCount);
 
         foreach (var policy in element.Policies)
