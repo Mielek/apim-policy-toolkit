@@ -4,66 +4,77 @@ using Mielek.Marshalling.Expressions;
 using Mielek.Marshalling.Policies;
 using Mielek.Model;
 using Mielek.Model.Expressions;
-using Mielek.Model.Policies;
+using System.Collections.Immutable;
 
 namespace Mielek.Marshalling;
 public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 {
-    static readonly Dictionary<Type, IMarshallerHandler> Handlers = new()
+    static readonly IReadOnlyDictionary<Type, IMarshallerHandler> Handlers;
+
+    static Marshaller()
     {
-        #region Roots
-        { typeof(PolicyDocument), new PolicyDocumentHandler() },
-        { typeof(PolicyFragment), new PolicyFragmentHandler() },
-        #endregion Roots
+        Handlers = new IMarshallerHandler[] {
+            #region Roots
 
-        #region Policies
-        { typeof(BasePolicy), new BasePolicyHandler() },
-        { typeof(SetBodyPolicy), new SetBodyPolicyHandler() },
-        { typeof(SetHeaderPolicy), new SetHeaderPolicyHandler() },
-        { typeof(SetMethodPolicy), new SetMethodPolicyHandler() },
-        { typeof(SetStatusPolicy), new SetStatusPolicyHandler() },
-        { typeof(CheckHeaderPolicy), new CheckHeaderPolicyHandler() },
-        { typeof(RateLimitPolicy), new RateLimitPolicyHandler() },
-        { typeof(RateLimitByKeyPolicy), new RateLimitByKeyPolicyHandler() },
-        { typeof(IpFilterPolicy), new IpFilterPolicyHandler() },
-        { typeof(GetAuthorizationContextPolicy), new GetAuthorizationContextPolicyHandler() },
-        { typeof(QuotaPolicy), new QuotaPolicyHandler() },
-        { typeof(QuotaByKeyPolicy), new QuotaByKeyPolicyHandler() },
-        { typeof(ValidateAzureAdTokenPolicy), new ValidateAzureAdTokenPolicyHandler() },
-        { typeof(ValidateJwtPolicy), new ValidateJwtPolicyHandler() },
-        { typeof(ValidateClientCertificatePolicy), new ValidateClientCertificatePolicyHandler() },
-        { typeof(ChoosePolicy), new ChoosePolicyHandler() },
-        { typeof(ForwardRequestPolicy), new ForwardRequestPolicyHandler() },
-        { typeof(IncludeFragmentPolicy), new IncludeFragmentPolicyHandler() },
-        { typeof(LimitConcurrencyPolicy), new LimitConcurrencyPolicyHandler() },
-        { typeof(LogToEventhubPolicy), new LogToEventhubPolicyHandler() },
-        { typeof(EmitMetricPolicy), new EmitMetricPolicyHandler() },
-        { typeof(MockResponsePolicy), new MockResponsePolicyHandler() },
-        { typeof(RetryPolicy), new RetryPolicyHandler() },
-        { typeof(ReturnResponsePolicy), new ReturnResponsePolicyHandler() },
-        { typeof(SendOneWayRequestPolicy), new SendOneWayRequestPolicyHandler() },
-        { typeof(SendRequestPolicy), new SendRequestPolicyHandler() },
-        { typeof(ProxyPolicy), new ProxyPolicyHandler() },
-        { typeof(SetVariablePolicy), new SetVariablePolicyHandler() },
-        { typeof(TracePolicy), new TracePolicyHandler() },
-        { typeof(WaitPolicy), new WaitPolicyHandler() },
-        { typeof(AuthenticationBasicPolicy), new AuthenticationBasicPolicyHandler() },
-        { typeof(AuthenticationCertificatePolicy), new AuthenticationCertificatePolicyHandler() },
-        { typeof(AuthenticationManagedIdentityPolicy), new AuthenticationManagedIdentityPolicyHandler() },
-        { typeof(CacheLookupPolicy), new CacheLookupPolicyHandler() },
-        #endregion Policies
+            new PolicyDocumentHandler(),
+            new PolicyFragmentHandler(),
 
-        #region Expressions
-        { typeof(ConstantExpression<string>), new ConstantExpressionHandler<string>() },
-        { typeof(ConstantExpression<bool>), new ConstantExpressionHandler<bool>() },
-        { typeof(InlineScriptExpression<string>), new InlineScriptExpressionHandler<string>() },
-        { typeof(InlineScriptExpression<bool>), new InlineScriptExpressionHandler<bool>() },
-        { typeof(FileScriptExpression<string>), new FileScriptExpressionHandler<string>() },
-        { typeof(FileScriptExpression<bool>), new FileScriptExpressionHandler<bool>() },
-        { typeof(FunctionFileScriptExpression<string>), new FunctionFileScriptExpressionHandler<string>() },
-        { typeof(FunctionFileScriptExpression<bool>), new FunctionFileScriptExpressionHandler<bool>() },
-        #endregion Expressions
-    };
+            #endregion Roots
+
+            #region Policies
+
+            new BasePolicyHandler(),
+            new SetBodyPolicyHandler(),
+            new SetHeaderPolicyHandler(),
+            new SetMethodPolicyHandler(),
+            new SetStatusPolicyHandler(),
+            new CheckHeaderPolicyHandler(),
+            new RateLimitPolicyHandler(),
+            new RateLimitByKeyPolicyHandler(),
+            new IpFilterPolicyHandler(),
+            new GetAuthorizationContextPolicyHandler(),
+            new QuotaPolicyHandler(),
+            new QuotaByKeyPolicyHandler(),
+            new ValidateAzureAdTokenPolicyHandler(),
+            new ValidateJwtPolicyHandler(),
+            new ValidateClientCertificatePolicyHandler(),
+            new ChoosePolicyHandler(),
+            new ForwardRequestPolicyHandler(),
+            new IncludeFragmentPolicyHandler(),
+            new LimitConcurrencyPolicyHandler(),
+            new LogToEventhubPolicyHandler(),
+            new EmitMetricPolicyHandler(),
+            new MockResponsePolicyHandler(),
+            new RetryPolicyHandler(),
+            new ReturnResponsePolicyHandler(),
+            new SendOneWayRequestPolicyHandler(),
+            new SendRequestPolicyHandler(),
+            new ProxyPolicyHandler(),
+            new SetVariablePolicyHandler(),
+            new TracePolicyHandler(),
+            new WaitPolicyHandler(),
+            new AuthenticationBasicPolicyHandler(),
+            new AuthenticationCertificatePolicyHandler(),
+            new AuthenticationManagedIdentityPolicyHandler(),
+            new CacheLookupPolicyHandler(),
+
+            #endregion Policies
+
+            #region Expressions
+
+            new ConstantExpressionHandler<string>(),
+            new ConstantExpressionHandler<bool>(),
+            new InlineScriptExpressionHandler<string>(),
+            new InlineScriptExpressionHandler<bool>(),
+            new FileScriptExpressionHandler<string>(),
+            new FileScriptExpressionHandler<bool>(),
+            new FunctionFileScriptExpressionHandler<string>(),
+            new FunctionFileScriptExpressionHandler<bool>(),
+
+            #endregion Expressions
+        }.ToImmutableDictionary(_ => _.Type);
+    }
+
 
     #region Create
     public static Marshaller Create(XmlWriter xmlWriter) => Create(xmlWriter, MarshallerOptions.Default);
