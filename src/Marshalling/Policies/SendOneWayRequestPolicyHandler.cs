@@ -12,7 +12,7 @@ public class SendOneWayRequestPolicyHandler : MarshallerHandler<SendOneWayReques
         marshaller.Writer.WriteNullableAttribute("timeout", element.Timeout);
 
         marshaller.Writer.WriteNullableExpressionAsElement("set-url", element.SetUrl);
-        marshaller.Writer.WriteNullableExpressionAsElement("set-method", element.SetMethod);
+        element.SetMethod?.Accept(marshaller);
 
         if (element.SetHeaders != null && element.SetHeaders.Count > 0)
         {

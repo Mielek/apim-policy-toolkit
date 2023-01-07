@@ -60,7 +60,7 @@ public sealed record SendOneWayRequestPolicy(
     SendOneWayRequestMode? Mode = null,
     uint? Timeout = null,
     IExpression<string>? SetUrl = null,
-    IExpression<string>? SetMethod = null,
+    SetMethodPolicy? SetMethod = null,
     IExpression<string>? SetBody = null,
     ICollection<SetHeaderPolicy>? SetHeaders = null,
     AuthenticationCertificatePolicy? AuthenticationCertificate = null
@@ -73,7 +73,7 @@ public sealed record SendRequestPolicy(
     uint? Timeout = null,
     bool? IgnoreError = null,
     IExpression<string>? SetUrl = null,
-    IExpression<string>? SetMethod = null,
+    SetMethodPolicy? SetMethod = null,
     IExpression<string>? SetBody = null,
     ICollection<SetHeaderPolicy>? SetHeaders = null,
     AuthenticationCertificatePolicy? AuthenticationCertificate = null

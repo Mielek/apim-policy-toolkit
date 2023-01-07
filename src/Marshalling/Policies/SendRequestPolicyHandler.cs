@@ -14,9 +14,9 @@ public class SendRequestPolicyHandler : MarshallerHandler<SendRequestPolicy>
         marshaller.Writer.WriteNullableAttribute("ignore-error", element.IgnoreError);
 
         marshaller.Writer.WriteNullableExpressionAsElement("set-url", element.SetUrl);
-        marshaller.Writer.WriteNullableExpressionAsElement("set-method", element.SetMethod);
-        
-        if(element.SetHeaders != null && element.SetHeaders.Count > 0)
+        element.SetMethod?.Accept(marshaller);
+
+        if (element.SetHeaders != null && element.SetHeaders.Count > 0)
         {
             foreach (var setHeader in element.SetHeaders)
             {

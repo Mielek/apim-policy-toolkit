@@ -12,7 +12,7 @@ public class SendRequestPolicyHandlerTest : BaseHandlerTest
     protected override IPolicy Policy => new SendRequestPolicyBuilder()
         .ResponseVariableName("res-var")
         .SetUrl("https://test.com/")
-        .SetMethod("POST")
+        .SetMethod(_ => _.Post())
         .SetBody("Body-body")
         .Build();
     protected override string Expected => @"<send-request response-variable-name=""res-var""><set-url>https://test.com/</set-url><set-method>POST</set-method><set-body>Body-body</set-body></send-request>";

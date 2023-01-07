@@ -14,7 +14,8 @@ namespace Mielek.Builders.Policies
         uint? _timeout;
         bool? _ignoreError;
         IExpression<string>? _setUrl;
-        IExpression<string>? _setMethod;
+        [IgnoreBuilderField]
+        SetMethodPolicy? _setMethod;
         IExpression<string>? _setBody;
 
         [IgnoreBuilderField]
@@ -22,6 +23,14 @@ namespace Mielek.Builders.Policies
 
         [IgnoreBuilderField]
         AuthenticationCertificatePolicy? _authenticationCertificate;
+
+        public SendRequestPolicyBuilder SetMethod(Action<SetMethodPolicyBuilder> configurator)
+        {
+            var builder = new SetMethodPolicyBuilder();
+            configurator(builder);
+            _setMethod = builder.Build();
+            return this;
+        }
 
         public SendRequestPolicyBuilder SetHeader(Action<SetHeaderPolicyBuilder> configurator)
         {
@@ -41,7 +50,7 @@ namespace Mielek.Builders.Policies
 
         public SendRequestPolicy Build()
         {
-            if(_responseVariableName == null) throw new NullReferenceException();
+            if (_responseVariableName == null) throw new NullReferenceException();
             if (_mode != SendRequestMode.Copy)
             {
                 if (_setUrl == null) throw new NullReferenceException();

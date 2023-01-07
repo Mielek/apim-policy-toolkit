@@ -12,7 +12,8 @@ namespace Mielek.Builders.Policies
         SendOneWayRequestMode? _mode;
         uint? _timeout;
         IExpression<string>? _setUrl;
-        IExpression<string>? _setMethod;
+        [IgnoreBuilderField]
+        SetMethodPolicy? _setMethod;
         IExpression<string>? _setBody;
 
         [IgnoreBuilderField]
@@ -20,6 +21,14 @@ namespace Mielek.Builders.Policies
 
         [IgnoreBuilderField]
         AuthenticationCertificatePolicy? _authenticationCertificate;
+
+        public SendOneWayRequestPolicyBuilder SetMethod(Action<SetMethodPolicyBuilder> configurator)
+        {
+            var builder = new SetMethodPolicyBuilder();
+            configurator(builder);
+            _setMethod = builder.Build();
+            return this;
+        }
 
         public SendOneWayRequestPolicyBuilder SetHeader(Action<SetHeaderPolicyBuilder> configurator)
         {

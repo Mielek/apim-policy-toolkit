@@ -29,6 +29,6 @@ public class MarshallerTest : BaseMarshallerTest
 
         fragment.Accept(Marshaller);
 
-        Assert.AreEqual(@"<fragment><set-method method=""OPTIONS"" /></fragment>", WrittenText);
+        Assert.AreEqual(@"<fragment><set-method>OPTIONS</set-method></fragment>", WrittenText);
     }
 }
