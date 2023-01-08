@@ -1,10 +1,10 @@
-﻿using System.Xml;
+﻿using System.Collections.Immutable;
+using System.Xml;
 
 using Mielek.Marshalling.Expressions;
 using Mielek.Marshalling.Policies;
 using Mielek.Model;
 using Mielek.Model.Expressions;
-using System.Collections.Immutable;
 
 namespace Mielek.Marshalling;
 public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
@@ -57,6 +57,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             new AuthenticationCertificatePolicyHandler(),
             new AuthenticationManagedIdentityPolicyHandler(),
             new CacheLookupPolicyHandler(),
+            new CacheStorePolicyHandler(),
 
             #endregion Policies
 
@@ -64,12 +65,23 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 
             new ConstantExpressionHandler<string>(),
             new ConstantExpressionHandler<bool>(),
+            new ConstantExpressionHandler<int>(),
+            new ConstantExpressionHandler<uint>(),
+            new ConstantExpressionHandler<object>(),
             new InlineScriptExpressionHandler<string>(),
             new InlineScriptExpressionHandler<bool>(),
+            new InlineScriptExpressionHandler<int>(),
+            new InlineScriptExpressionHandler<uint>(),
+            new InlineScriptExpressionHandler<object>(),
             new FileScriptExpressionHandler<string>(),
             new FileScriptExpressionHandler<bool>(),
+            new FileScriptExpressionHandler<int>(),
+            new FileScriptExpressionHandler<uint>(),
+            new FileScriptExpressionHandler<object>(),
             new FunctionFileScriptExpressionHandler<string>(),
             new FunctionFileScriptExpressionHandler<bool>(),
+            new FunctionFileScriptExpressionHandler<int>(),
+            new FunctionFileScriptExpressionHandler<uint>(),
 
             #endregion Expressions
         }.ToImmutableDictionary(_ => _.Type);

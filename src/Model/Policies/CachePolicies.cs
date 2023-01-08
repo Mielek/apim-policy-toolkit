@@ -15,3 +15,7 @@ public sealed record CacheLookupPolicy(
 public enum CacheLookupCachingType { PreferExternal, External, Internal }
 public enum CacheLookupDownstreamCachingType { None, Private, Public }
 
+public sealed record CacheStorePolicy(
+    IExpression<uint> Duration,
+    bool? CacheResponse = null
+) : Visitable<CacheStorePolicy>, IPolicy;
