@@ -7,5 +7,6 @@
 /u:Mielek.Expressions.Context
 /u:Mielek.Builders
 /u:Mielek.Model.Policies
+/u:Mielek.Model.Expressions
 /u:Newtonsoft.Json
 /u:Newtonsoft.Json.Linq

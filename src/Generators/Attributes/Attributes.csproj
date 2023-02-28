@@ -1,5 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <!-- <TargetFramework>netstandard1.4</TargetFramework> -->
+    <PackageId>Mielek.Generators.Attributes</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>Mielek</Authors>
+    <!-- <Description>Awesome application logging utility</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <Copyright>Copyright 2016 (c) Contoso Corporation. All rights reserved.</Copyright>
+    <PackageTags>logger logging logs</PackageTags> -->
+  </PropertyGroup>
+
+  <PropertyGroup>
     <TargetFramework>.net6</TargetFramework>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <PackageOutputPath>../../../output</PackageOutputPath>
   </PropertyGroup>
 </Project>

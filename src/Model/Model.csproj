@@ -20,4 +20,8 @@
     <PackageOutputPath>../../output</PackageOutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Expressions\Context\Context.csproj" />
+  </ItemGroup>
+
 </Project>

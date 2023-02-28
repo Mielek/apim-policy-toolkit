@@ -33,7 +33,8 @@ if (addRefsAndImportsToScripts)
         "Mielek.Builders.Expressions",
         "Mielek.Model",
         "Mielek.Model.Policies",
-        "Mielek.Model.Expressions"
+        "Mielek.Model.Expressions",
+        "Mielek.Expressions.Context"
     };
     scriptOptions = scriptOptions.AddImports(imports);
 }
