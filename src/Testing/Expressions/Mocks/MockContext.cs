@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-
 using Mielek.Expressions.Context;
 
 namespace Mielek.Testing.Expressions.Mocks;
+
 public class MockContext : IContext
 {
     public MockContext()

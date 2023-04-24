@@ -1,4 +1,7 @@
 {
+    "msbuild": {
+        "EnablePackageAutoRestore": true
+    },
     "RoslynExtensionsOptions": {
         "EnableAnalyzersSupport": true
     },

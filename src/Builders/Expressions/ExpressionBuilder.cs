@@ -40,6 +40,12 @@ public class ExpressionBuilder<T>
         return this;
     }
 
+    public ExpressionBuilder<T> FromMethod(Func<IContext, T> method)
+    {
+        _expression = new MethodExpression<T>(method);
+        return this;
+    }
+
     public IExpression<T> Build()
     {
         return _expression ?? throw new NullReferenceException();

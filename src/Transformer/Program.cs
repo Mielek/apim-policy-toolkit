@@ -61,7 +61,9 @@ Task.WaitAll(files.Select(async filePath =>
         code = directivesRegex.Replace(code, "");
     }
 
-    var policy = await CSharpScript.EvaluateAsync<IVisitable>(code, scriptOptions);
+    var lib = new FileMethodLibraryResolver(code).ResolveMethodLibrary();
+
+    var policy = await CSharpScript.RunAsync<IVisitable>(code, scriptOptions);
 
     var targetFile = Path.Combine(targetFolder, $"{fileName}.xml");
 
@@ -71,9 +73,9 @@ Task.WaitAll(files.Select(async filePath =>
         File.Delete(targetFile);
     }
 
-    using (var marshaller = Marshaller.Create(targetFile, marshallerOptions))
+    using (var marshaller = Marshaller.Create(targetFile, marshallerOptions.WithMethodSourceLibrary(lib)))
     {
-        policy.Accept(marshaller);
+        policy.ReturnValue.Accept(marshaller);
     }
 
     Console.Out.WriteLine($"Document {fileName}.xml created");

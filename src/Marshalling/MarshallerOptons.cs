@@ -9,6 +9,7 @@ public sealed class MarshallerOptions
 
     public string ScriptBaseDirectory { get; private set; } = Environment.CurrentDirectory;
     public bool FormatXml { get; private set; } = false;
+    public IDictionary<string, string> MethodLibrary { get; private set; } = new Dictionary<string, string>();
 
     MarshallerOptions() { }
 
@@ -21,6 +22,12 @@ public sealed class MarshallerOptions
     public MarshallerOptions WithXmlFormatting(bool value)
     {
         FormatXml = value;
+        return this;
+    }
+
+    public MarshallerOptions WithMethodSourceLibrary(IDictionary<string, string> methodSourceLibrary)
+    {
+        MethodLibrary = methodSourceLibrary;
         return this;
     }
 
