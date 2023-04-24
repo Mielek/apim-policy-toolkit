@@ -1,18 +1,23 @@
 # Azure Api Management policy toolkit
 
-**Azure api management policy toolkit** is a set of libraries and tools for **Azure Api Management** which target **policy document**. The toolkit was design to **help manage** and **test** policy documents with complex expressions.
+**Azure api management policy toolkit** is a set of libraries and tools for **Azure Api Management** which target **policy document**. The toolkit was design to help **create** and **test** policy documents with complex expressions.
+
+| :exclamation:  This is a working PoC of the tool and libraries |
+|----------------------------------------------------------------|
 
 ## Quick start
 
 ### Prerequisite
-Download and install [dotnet](https://dotnet.microsoft.com/en-us/download) according to instructions.
+* Download and install [dotnet](https://dotnet.microsoft.com/en-us/download) according to instructions.
+* Clone the repository
+* Build packages by invoking `dotnet pack`
 
 ### Install dotnet tool
 
 Create project folder and install dotnet console tool in it
 
 ```bash
-dotnet tool install Mielek.Transformer
+dotnet tool install --add-source <<YOUR-REPO-LOCATION>>/output Mielek.Transformer
 ```
 
 ### Create simple policy builder script
