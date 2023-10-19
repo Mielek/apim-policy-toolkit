@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- <TargetFramework>netstandard1.4</TargetFramework> -->
     <PackageId>Mielek.Example</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <Authors>Mielek</Authors>
@@ -13,12 +12,17 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>.net6</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mielek.Model" Version="1.0.0" />
     <PackageReference Include="Mielek.Builders" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
+
+  <Target Name="TranformToPolicies" AfterTargets="Build">
+    <Exec Command="dotnet policy-transformer --dllFile  $(TargetPath) --out $(ProjectDir)/../target --format true"/>
+  </Target>
 </Project>

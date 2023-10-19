@@ -9,7 +9,7 @@ public class LimitConcurrencyPolicyHandlerTest : BaseMarshallerTest
 {
     readonly string _expected = @"<limit-concurrency key=""@(context.User.Id)"" max-count=""10""><base /></limit-concurrency>";
     readonly LimitConcurrencyPolicy _policy = new LimitConcurrencyPolicyBuilder()
-            .Key(_ => _.Inlined(context => context.User.Id))
+            .Key(_ => _.Inline(context => context.User.Id))
             .MaxCount(10)
             .Policies(_ => _.Base())
             .Build();

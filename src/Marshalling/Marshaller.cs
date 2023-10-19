@@ -68,24 +68,24 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
             new ConstantExpressionHandler<int>(),
             new ConstantExpressionHandler<uint>(),
             new ConstantExpressionHandler<object>(),
-            new InlineScriptExpressionHandler<string>(),
-            new InlineScriptExpressionHandler<bool>(),
-            new InlineScriptExpressionHandler<int>(),
-            new InlineScriptExpressionHandler<uint>(),
-            new InlineScriptExpressionHandler<object>(),
-            new FileScriptExpressionHandler<string>(),
-            new FileScriptExpressionHandler<bool>(),
-            new FileScriptExpressionHandler<int>(),
-            new FileScriptExpressionHandler<uint>(),
-            new FileScriptExpressionHandler<object>(),
-            new FunctionFileScriptExpressionHandler<string>(),
-            new FunctionFileScriptExpressionHandler<bool>(),
-            new FunctionFileScriptExpressionHandler<int>(),
-            new FunctionFileScriptExpressionHandler<uint>(),
+
+            new InlineExpressionHandler<string>(),
+            new InlineExpressionHandler<bool>(),
+            new InlineExpressionHandler<int>(),
+            new InlineExpressionHandler<uint>(),
+            new InlineExpressionHandler<object>(),
+
+            new LambdaExpressionHandler<string>(),
+            new LambdaExpressionHandler<bool>(),
+            new LambdaExpressionHandler<int>(),
+            new LambdaExpressionHandler<uint>(),
+            new LambdaExpressionHandler<object>(),
+
             new MethodExpressionHandler<string>(),
             new MethodExpressionHandler<bool>(),
             new MethodExpressionHandler<int>(),
             new MethodExpressionHandler<uint>(),
+            new MethodExpressionHandler<object>(),
 
             #endregion Expressions
         }.ToImmutableDictionary(_ => _.Type);

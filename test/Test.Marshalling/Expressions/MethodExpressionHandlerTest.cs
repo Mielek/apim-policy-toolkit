@@ -1,7 +1,7 @@
 using Mielek.Builders.Expressions;
 using Mielek.Expressions.Context;
 using Mielek.Marshalling.Expressions;
-using Mielek.Model.Expressions;
+using Mielek.Model.Attributes;
 
 namespace Mielek.Test.Marshalling;
 
@@ -9,33 +9,30 @@ namespace Mielek.Test.Marshalling;
 public class MethodExpressionHandlerTest : BaseMarshallerTest
 {
     [TestMethod]
-    public void ShouldMarshallLambdaObject()
+    public void ShouldMarshallObject()
     {
-        Marshaller.Options.MethodLibrary["lambda"] = "lambdaCode";
         var handler = new MethodExpressionHandler<string>();
 
-        handler.Marshal(Marshaller, ExpressionBuilder<string>.Builder.FromMethod([LambdaExpression("lambda")] (context) => context.Deployment.Region).Build());
-        
+        handler.Marshal(Marshaller, ExpressionBuilder<string>.Builder.Method(TestMethod).Build());
 
-        Assert.AreEqual("@(lambdaCode)", WrittenText.ToString());
+        Assert.AreEqual("@{return context.Deployment.Region;}", WrittenText.ToString());
     }
 
     [TestMethod]
-    public void ShouldMarshallMethodObject()
+    public void ShouldHandlerBeRegisterInMarshaller()
     {
-        Marshaller.Options.MethodLibrary["TestMethod"] = "methodCode";
-        var handler = new MethodExpressionHandler<string>();
+        var expression = ExpressionBuilder<string>.Builder.Method(TestMethod).Build();
 
-        handler.Marshal(Marshaller, ExpressionBuilder<string>.Builder.FromMethod(TestMethod).Build());
+        expression.Accept(Marshaller);
 
-        Assert.AreEqual("@(methodCode)", WrittenText.ToString());
+        Assert.AreEqual("@{return context.Deployment.Region;}", WrittenText.ToString());
     }
 
 
-    [MethodExpression]
+    [Expression]
     static string TestMethod(IContext context)
     {
-        return "";
+        return context.Deployment.Region;
     }
 }
 

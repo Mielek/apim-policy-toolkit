@@ -10,7 +10,7 @@ public class RetryPolicyHandlerTest : BaseHandlerTest
 {
     protected override IMarshallerHandler Handler => new RetryPolicyHandler();
     protected override IPolicy Policy => new RetryPolicyBuilder()
-        .Condition(_ => _.Inlined(_ => _.User.Id == "admin"))
+        .Condition(_ => _.Inline(_ => _.User.Id == "admin"))
         .Count(10)
         .Interval(10)
         .Policies(_ => _.Base())

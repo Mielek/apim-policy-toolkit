@@ -10,7 +10,7 @@ public class LogToEventhubPolicyHandlerTest : BaseMarshallerTest
     readonly string _expected = @"<log-to-eventhub logger-id=""some-logger-id"">@(context.User.Id)</log-to-eventhub>";
     readonly LogToEventhubPolicy _policy = new LogToEventhubPolicyBuilder()
             .LoggerId("some-logger-id")
-            .Value(_ => _.Inlined(context => context.User.Id))
+            .Value(_ => _.Inline(context => context.User.Id))
             .Build();
 
     [TestMethod]

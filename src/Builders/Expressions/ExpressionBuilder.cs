@@ -1,3 +1,7 @@
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
 using Mielek.Expressions.Context;
 using Mielek.Model.Expressions;
 
@@ -23,26 +27,26 @@ public class ExpressionBuilder<T>
         _expression = new ConstantExpression<T>(value);
         return this;
     }
-    public ExpressionBuilder<T> Inlined(System.Linq.Expressions.Expression<Func<IContext, T>> script)
+
+    public ExpressionBuilder<T> Inline(Expression<Func<IContext, T>> expression)
     {
-        _expression = new InlineScriptExpression<T>(script.Body.ToString());
-        return this;
-    }
-    public ExpressionBuilder<T> FromFile(string filePath)
-    {
-        _expression = new FileScriptExpression<T>(filePath);
+        _expression = new InlineExpression<T>(expression);
         return this;
     }
 
-    public ExpressionBuilder<T> FromFunctionFile(string filePath, string name)
+    public ExpressionBuilder<T> Lambda(Func<IContext, T> lambda, [CallerArgumentExpression(nameof(lambda))] string? lambdaCode = null)
     {
-        _expression = new FunctionFileScriptExpression<T>(filePath, name);
+        if (lambdaCode == null)
+        {
+            throw new Exception("Compiler services are not enabled");
+        }
+        _expression = new LambdaExpression<T>(lambda.GetMethodInfo(), lambdaCode);
         return this;
     }
 
-    public ExpressionBuilder<T> FromMethod(Func<IContext, T> method)
+    public ExpressionBuilder<T> Method(Func<IContext, T> method,  [CallerFilePath] string sourceFilePath = "")
     {
-        _expression = new MethodExpression<T>(method);
+        _expression = new MethodExpression<T>(method.GetMethodInfo(), sourceFilePath);
         return this;
     }
 

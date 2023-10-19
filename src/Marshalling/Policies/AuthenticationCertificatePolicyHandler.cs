@@ -11,7 +11,7 @@ public class AuthenticationCertificatePolicyHandler : MarshallerHandler<Authenti
         marshaller.Writer.WriteNullableAttribute("thumbprint", element.Thumbprint);
         marshaller.Writer.WriteNullableAttribute("certificate-id", element.CertificateId);
         marshaller.Writer.WriteNullableAttribute("body", element.Body);
-        marshaller.Writer.WriteNullableAttribute("password", element.Body);
+        marshaller.Writer.WriteNullableAttribute("password", element.Password);
 
         marshaller.Writer.WriteEndElement();
     }

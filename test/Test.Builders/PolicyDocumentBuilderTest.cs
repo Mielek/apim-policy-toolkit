@@ -1,3 +1,5 @@
+using Mielek.Model.Attributes;
+
 namespace Builders;
 
 [TestClass]

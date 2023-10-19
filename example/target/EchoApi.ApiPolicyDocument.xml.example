@@ -1,0 +1,49 @@
+﻿<policies>
+  <inbound>
+    <check-header name="X-Checked" failed-check-httpcode="400" failed-check-error-message="Bad request" ignore-case="@(context.Variables.ContainsKey("Variable"))">
+      <value>Test</value>
+      <value>Other-Test</value>
+    </check-header>
+    <base />
+    <set-header name="X-Test" exists-action="append">
+      <value>Test</value>
+      <value>@(context.Deployment.Region)</value>
+      <value>@{
+var guidBinary = new byte[16];
+Array.Copy(Guid.NewGuid().ToByteArray(), 0, guidBinary, 0, 10);
+long time = DateTime.Now.Ticks;
+byte[] bytes = new byte[6];
+unchecked
+{
+    bytes[5] = (byte)(time >> 40);
+    bytes[4] = (byte)(time >> 32);
+    bytes[3] = (byte)(time >> 24);
+    bytes[2] = (byte)(time >> 16);
+    bytes[1] = (byte)(time >> 8);
+    bytes[0] = (byte)(time);
+}
+Array.Copy(bytes, 0, guidBinary, 10, 6);
+return new Guid(guidBinary).ToString();
+}</value>
+      <value>@{
+if(!context.Variables.TryGetValue("KnownGUID", out var guid)){
+        guid = Guid.NewGuid();
+    }
+    return guid.ToString();
+}</value>
+    </set-header>
+  </inbound>
+  <backend />
+  <outbound>
+    <base />
+    <set-body>@{
+var response = context.Response.Body.As<JObject>();
+foreach (var key in new[] { "current", "minutely", "hourly", "daily", "alerts" })
+{
+    response.Property(key)?.Remove();
+};
+return response.ToString();
+}</set-body>
+  </outbound>
+  <on-error />
+</policies>
