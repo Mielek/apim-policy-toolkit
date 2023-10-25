@@ -36,26 +36,27 @@ foreach (var type in libraries)
 
     foreach (var document in documents)
     {
-        if (document.ReturnType != typeof(PolicyDocument))
+        if (document.ReturnType != typeof(PolicyDocument) || document.GetParameters().Length != 0)
         {
-            // error message
+            Console.Out.WriteLine($"Method {document.Name} should be accept no parameters and return PolicyDocument type");
             continue;
         }
 
-        if (document.GetParameters().Length != 0)
-        {
-            // error message
-            continue;
-        }
         Console.Out.WriteLine($"Document of {document}");
-
         var policyDoc = document.Invoke(instance, null) as PolicyDocument;
+
+        if (policyDoc == null)
+        {
+            Console.Out.WriteLine($"Method {document.Name} returned {policyDoc}");
+            continue;
+        }
+
         var targetFile = Path.Combine(output, $"{type.Name}.{document.Name}.xml");
-        Console.Out.WriteLine($"Create {targetFile}");
         using (var marshaller = Marshaller.Create(targetFile, marshallerOptions))
         {
             policyDoc?.Accept(marshaller);
         }
+        Console.Out.WriteLine($"Created {targetFile}");
     }
 }
 
