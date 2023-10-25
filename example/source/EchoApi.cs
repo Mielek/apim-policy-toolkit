@@ -61,6 +61,7 @@ public class EchoApi
         return guid.ToString();
     }
 
+    [Expression]
     public string FilterBody(IContext context)
     {
         var response = context.Response.Body.As<JObject>();

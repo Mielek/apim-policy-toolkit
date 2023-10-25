@@ -23,6 +23,6 @@
   </ItemGroup>
 
   <Target Name="TranformToPolicies" AfterTargets="Build">
-    <Exec Command="dotnet policy-transformer --dllFile  $(TargetPath) --out $(ProjectDir)/../target --format true"/>
+    <Exec Command="dotnet policy-transformer --dllFile  $(TargetPath) --out $(ProjectDir)..\target --format true"/>
   </Target>
 </Project>

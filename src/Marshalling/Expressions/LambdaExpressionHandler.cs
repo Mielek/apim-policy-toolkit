@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -10,39 +12,39 @@ public class LambdaExpressionHandler<T> : MarshallerHandler<LambdaExpression<T>>
 {
     public override void Marshal(Marshaller marshaller, LambdaExpression<T> element)
     {
-        var syntax = new TriviaRemover().Visit(CSharpSyntaxTree.ParseText(element.Code).GetRoot());
-
-        var lambda = syntax.DescendantNodesAndSelf().OfType<LambdaExpressionSyntax>().FirstOrDefault();
-        if (lambda == null)
+        if (!TryGetLambda(element, out var lambda))
         {
             throw new Exception();
         }
 
-        lambda = marshaller.Options.FormatCSharp
-            ? lambda.NormalizeWhitespace()
-            : lambda.NormalizeWhitespace("", "");
+        lambda = Format(lambda, marshaller.Options);
 
         if (lambda.Block != null)
         {
-            MarshallBlock(marshaller, lambda.Block);
+            marshaller.Writer.WriteRawString($"@{lambda.Block.ToFullString().TrimEnd()}");
         }
         else if (lambda.ExpressionBody != null)
         {
-            MarshallExpressionBody(marshaller, lambda.ExpressionBody);
+            marshaller.Writer.WriteRawString($"@({lambda.ExpressionBody})");
         }
         else
         {
             throw new Exception();
         }
     }
-    private void MarshallBlock(Marshaller marshaller, BlockSyntax block)
+
+    private bool TryGetLambda(LambdaExpression<T> element, [NotNullWhen(true)] out LambdaExpressionSyntax? lambda)
     {
-        marshaller.Writer.WriteRawString($"@{block.ToFullString()}");
+        var syntax = CSharpSyntaxTree.ParseText(element.Code).GetRoot();
+        lambda = syntax.DescendantNodesAndSelf().OfType<LambdaExpressionSyntax>().FirstOrDefault();
+        return lambda != null;
     }
 
-    private void MarshallExpressionBody(Marshaller marshaller, ExpressionSyntax expression)
+    private LambdaExpressionSyntax Format(LambdaExpressionSyntax lambda, MarshallerOptions options)
     {
-        marshaller.Writer.WriteRawString($"@({expression})");
+        var unformatted = (LambdaExpressionSyntax)new TriviaRemoverRewriter().Visit(lambda);
+        return options.FormatCSharp
+            ? unformatted.NormalizeWhitespace()
+            : unformatted.NormalizeWhitespace("", "");
     }
-
 }
