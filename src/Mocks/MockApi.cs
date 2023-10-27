@@ -4,15 +4,16 @@ namespace Mielek.Testing.Expressions.Mocks;
 
 public class MockApi : IApi
 {
-    public string Id => throw new NotImplementedException();
+    public string Id { get; set; } = "abcdefgh";
+    public string Name { get; set; } = "mock-api";
 
-    public string Name => throw new NotImplementedException();
+    public string Path { get; set; } = "/mock";
 
-    public string Path => throw new NotImplementedException();
+    public IEnumerable<string> Protocols { get; set; } = new[] { "https" };
 
-    public IEnumerable<string> Protocols => throw new NotImplementedException();
+    public IUrl ServiceUrl => MockServiceUrl;
+    public MockUrl MockServiceUrl { get; set; } = new MockUrl();
 
-    public IUrl ServiceUrl => throw new NotImplementedException();
-
-    public ISubscriptionKeyParameterNames SubscriptionKeyParameterNames => throw new NotImplementedException();
+    public ISubscriptionKeyParameterNames SubscriptionKeyParameterNames => MockSubscriptionKeyParameterNames;
+    public MockSubscriptionKeyParameterNames MockSubscriptionKeyParameterNames { get; set; } = new MockSubscriptionKeyParameterNames();
 }
