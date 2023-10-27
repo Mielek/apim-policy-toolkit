@@ -6,6 +6,6 @@ public class InlineExpressionHandler<T> : MarshallerHandler<InlineExpression<T>>
 {
     public override void Marshal(Marshaller marshaller, InlineExpression<T> element)
     {
-        marshaller.Writer.WriteRawString($"@({element.Expression.Body})");
+        marshaller.Writer.WriteRawString($"@({element.Expression})");
     }
 }

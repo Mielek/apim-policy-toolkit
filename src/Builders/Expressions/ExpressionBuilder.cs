@@ -30,7 +30,7 @@ public class ExpressionBuilder<T>
 
     public ExpressionBuilder<T> Inline(Expression<Func<IContext, T>> expression)
     {
-        _expression = new InlineExpression<T>(expression);
+        _expression = new InlineExpression<T>(expression.Body.ToString());
         return this;
     }
 
@@ -40,18 +40,42 @@ public class ExpressionBuilder<T>
         {
             throw new Exception("Compiler services are not enabled");
         }
-        _expression = new LambdaExpression<T>(lambda.GetMethodInfo(), lambdaCode);
+        var info = lambda.GetMethodInfo();
+        ValidateParameters(info);
+        _expression = new LambdaExpression<T>(info, lambdaCode);
         return this;
     }
 
-    public ExpressionBuilder<T> Method(Func<IContext, T> method,  [CallerFilePath] string sourceFilePath = "")
+    public ExpressionBuilder<T> Method(Func<IContext, T> method, [CallerFilePath] string sourceFilePath = "")
     {
-        _expression = new MethodExpression<T>(method.GetMethodInfo(), sourceFilePath);
+        var info = method.GetMethodInfo();
+        ValidateParameters(info);
+        _expression = new MethodExpression<T>(info, sourceFilePath);
         return this;
     }
 
     public IExpression<T> Build()
     {
         return _expression ?? throw new NullReferenceException();
+    }
+
+    void ValidateParameters(MethodInfo method)
+    {
+        var parameters = method.GetParameters();
+        if (parameters == null || parameters.Length > 1)
+        {
+            throw new Exception($"Expression should have only one parameter but have 0 or more then one");
+        }
+
+        var parameter = parameters[0];
+        if (parameter.ParameterType != typeof(IContext))
+        {
+            throw new Exception($"Parameter should be of type \"IContext\" but is \"{parameter.ParameterType}\"");
+        }
+
+        if (parameter.Name != "context")
+        {
+            throw new Exception($"Context parameter should be named \"context\" but is \"{parameter.Name}\"");
+        }
     }
 }
