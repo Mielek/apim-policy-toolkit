@@ -7,10 +7,10 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class AuthenticationManagedIdentityPolicyBuilder
     {
-        string? _resource;
-        string? _clientId;
-        string? _outputTokenVariableName;
-        bool? _ignoreError;
+        private string? _resource;
+        private string? _clientId;
+        private string? _outputTokenVariableName;
+        private bool? _ignoreError;
 
         public AuthenticationManagedIdentityPolicy Build()
         {

@@ -52,9 +52,9 @@ public class MethodExpressionHandlerTest : BaseMarshallerTest
         yield return new object[] { (Func<IContext, string>)new NonStaticExpressionLibrary().ExpressionBodyMethod, nameof(NonStaticExpressionLibrary.ExpressionBodyMethod) };
     }
 
-    string TestExpressionMethod(IContext context) => "TestExpressionMethod";
+    private string TestExpressionMethod(IContext context) => "TestExpressionMethod";
 
-    string TestBodyMethod(IContext context)
+    private string TestBodyMethod(IContext context)
     {
         return "TestBodyMethod";
     }

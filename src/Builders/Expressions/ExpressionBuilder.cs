@@ -18,7 +18,7 @@ public class ExpressionBuilder<T>
         return builder.Build();
     }
 
-    IExpression<T>? _expression;
+    private IExpression<T>? _expression;
 
     internal ExpressionBuilder() { }
 
@@ -59,7 +59,7 @@ public class ExpressionBuilder<T>
         return _expression ?? throw new NullReferenceException();
     }
 
-    void ValidateParameters(MethodInfo method)
+    private void ValidateParameters(MethodInfo method)
     {
         var parameters = method.GetParameters();
         if (parameters == null || parameters.Length > 1)

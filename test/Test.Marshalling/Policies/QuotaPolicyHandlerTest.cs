@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class QuotaPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<quota renewal-period=""10"" />";
-    readonly QuotaPolicy _policy = new QuotaPolicyBuilder()
+    private readonly string _expected = @"<quota renewal-period=""10"" />";
+    private readonly QuotaPolicy _policy = new QuotaPolicyBuilder()
         .RenewalPeriod(10)
         .Build();
 

@@ -8,8 +8,8 @@ namespace Mielek.Builders.Policies
 
     public partial class ChoosePolicyBuilder
     {
-        readonly ImmutableList<ChooseWhen>.Builder _whens = ImmutableList.CreateBuilder<ChooseWhen>();
-        ICollection<IPolicy>? _otherwise;
+        private readonly ImmutableList<ChooseWhen>.Builder _whens = ImmutableList.CreateBuilder<ChooseWhen>();
+        private ICollection<IPolicy>? _otherwise;
 
         public ChoosePolicyBuilder When(Action<ChooseWhenBuilder> configurator)
         {
@@ -36,10 +36,10 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class ChooseWhenBuilder
     {
-        IExpression<bool>? _condition;
+        private IExpression<bool>? _condition;
 
         [IgnoreBuilderField]
-        ICollection<IPolicy>? _policies;
+        private ICollection<IPolicy>? _policies;
 
         public ChooseWhenBuilder Policies(Action<PolicySectionBuilder> configurator)
         {

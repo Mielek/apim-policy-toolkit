@@ -7,7 +7,7 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SetMethodPolicyBuilder
     {
-        IExpression<string>? _method;
+        private IExpression<string>? _method;
 
         public SetMethodPolicyBuilder Get()
         {

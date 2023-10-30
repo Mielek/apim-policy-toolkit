@@ -8,8 +8,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class QuotaByKeyPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<quota-by-key counter-key=""test"" renewal-period=""100"" calls=""10"" />";
-    readonly QuotaByKeyPolicy _policy = new QuotaByKeyPolicyBuilder()
+    private readonly string _expected = @"<quota-by-key counter-key=""test"" renewal-period=""100"" calls=""10"" />";
+    private readonly QuotaByKeyPolicy _policy = new QuotaByKeyPolicyBuilder()
             .CounterKey("test")
             .RenewalPeriod(100)
             .Calls(10)

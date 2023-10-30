@@ -8,10 +8,10 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class IpFilterPolicyBuilder
     {
-        IpFilterAction? _action;
+        private IpFilterAction? _action;
 
         [IgnoreBuilderField]
-        readonly ImmutableList<IIpFilterValue>.Builder _values = ImmutableList.CreateBuilder<IIpFilterValue>();
+        private readonly ImmutableList<IIpFilterValue>.Builder _values = ImmutableList.CreateBuilder<IIpFilterValue>();
 
         public IpFilterPolicyBuilder Address(string address)
         {

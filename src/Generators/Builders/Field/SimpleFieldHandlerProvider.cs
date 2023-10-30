@@ -14,8 +14,7 @@ public class SimpleFieldHandlerProvider : IFieldSetterHandlerProvider
 
     public class SimpleFieldHandler : IFieldSetterHandler
     {
-
-        readonly FieldDeclarationSyntax _field;
+        private readonly FieldDeclarationSyntax _field;
 
         public SimpleFieldHandler(FieldDeclarationSyntax field)
         {

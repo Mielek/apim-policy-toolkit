@@ -7,10 +7,10 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class AuthenticationCertificatePolicyBuilder
     {
-        string? _thumbprint;
-        string? _certificateId;
-        IExpression<string>? _body;
-        string? _password;
+        private string? _thumbprint;
+        private string? _certificateId;
+        private IExpression<string>? _body;
+        private string? _password;
 
         public AuthenticationCertificatePolicy Build()
         {

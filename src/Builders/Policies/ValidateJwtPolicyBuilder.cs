@@ -9,26 +9,26 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class ValidateJwtPolicyBuilder
     {
-        string? _headerName;
-        string? _queryParameterName;
-        string? _tokenValue;
-        ushort? _failedValidationHttpCode;
-        string? _failedValidationErrorMessage;
-        bool? _requireExpirationTime;
-        string? _requireScheme;
-        bool? _requireSignedTokens;
-        uint? _clockSkew;
-        string? _outputTokenVariableName;
+        private string? _headerName;
+        private string? _queryParameterName;
+        private string? _tokenValue;
+        private ushort? _failedValidationHttpCode;
+        private string? _failedValidationErrorMessage;
+        private bool? _requireExpirationTime;
+        private string? _requireScheme;
+        private bool? _requireSignedTokens;
+        private uint? _clockSkew;
+        private string? _outputTokenVariableName;
         
         [IgnoreBuilderField]
-        ValidateJwtOpenIdConfig? _openIdConfig;
-        ImmutableList<string>.Builder? _issuerSigningKeys;
-        ImmutableList<string>.Builder? _decryptionKeys;
-        ImmutableList<IExpression<string>>.Builder? _audiences;
-        ImmutableList<string>.Builder? _issuers;
+        private ValidateJwtOpenIdConfig? _openIdConfig;
+        private ImmutableList<string>.Builder? _issuerSigningKeys;
+        private ImmutableList<string>.Builder? _decryptionKeys;
+        private ImmutableList<IExpression<string>>.Builder? _audiences;
+        private ImmutableList<string>.Builder? _issuers;
 
         [IgnoreBuilderField]
-        ImmutableList<ValidateJwtClaim>.Builder? _requiredClaims;
+        private ImmutableList<ValidateJwtClaim>.Builder? _requiredClaims;
 
         public ValidateJwtPolicyBuilder RequiredClaim(Action<ValidateJwtClaimBuilder> configurator)
         {
@@ -68,10 +68,10 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class ValidateJwtClaimBuilder
     {
-        string? _name;
-        ImmutableList<string>.Builder? _values;
-        ValidateJwtClaimMatch? _match;
-        string? _separator;
+        private string? _name;
+        private ImmutableList<string>.Builder? _values;
+        private ValidateJwtClaimMatch? _match;
+        private string? _separator;
 
         public ValidateJwtClaim Build()
         {

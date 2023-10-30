@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class ValidateJwtPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = "<validate-jwt />";
-    readonly ValidateJwtPolicy _policy = new ValidateJwtPolicy();
+    private readonly string _expected = "<validate-jwt />";
+    private readonly ValidateJwtPolicy _policy = new ValidateJwtPolicy();
 
     [TestMethod]
     public void ShouldMarshallPolicy()

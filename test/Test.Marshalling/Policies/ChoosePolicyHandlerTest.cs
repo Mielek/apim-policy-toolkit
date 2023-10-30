@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class ChoosePolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<choose><when condition=""True""><base /></when></choose>";
-    readonly ChoosePolicy _policy = new ChoosePolicyBuilder()
+    private readonly string _expected = @"<choose><when condition=""True""><base /></when></choose>";
+    private readonly ChoosePolicy _policy = new ChoosePolicyBuilder()
             .When(_ => _
                 .Condition(_ => _.Constant(true))
                 .Policies(_ => _.Base())

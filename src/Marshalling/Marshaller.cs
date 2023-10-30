@@ -9,7 +9,7 @@ using Mielek.Model.Expressions;
 namespace Mielek.Marshalling;
 public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 {
-    static readonly IReadOnlyDictionary<Type, IMarshallerHandler> Handlers;
+    private static readonly IReadOnlyDictionary<Type, IMarshallerHandler> Handlers;
 
     static Marshaller()
     {
@@ -105,7 +105,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 
     internal InternalWriter Writer { get; init; }
 
-    Marshaller(XmlWriter xmlWriter, MarshallerOptions options)
+    private Marshaller(XmlWriter xmlWriter, MarshallerOptions options)
     {
         Writer = new InternalWriter(xmlWriter, this);
         Options = options;
@@ -131,7 +131,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
 
     internal class InternalWriter
     {
-        readonly Marshaller _marshaller;
+        private readonly Marshaller _marshaller;
         internal XmlWriter BaseWriter;
 
         internal InternalWriter(XmlWriter writer, Marshaller marshaller)

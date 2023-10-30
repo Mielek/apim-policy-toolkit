@@ -10,11 +10,11 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class EmitMetricPolicyBuilder
     {
-        string? _name;
+        private string? _name;
         [IgnoreBuilderField]
-        readonly ImmutableList<EmitMetricDimension>.Builder _dimensions = ImmutableList.CreateBuilder<EmitMetricDimension>();
-        IExpression<string>? _value;
-        string? _namespace;
+        private readonly ImmutableList<EmitMetricDimension>.Builder _dimensions = ImmutableList.CreateBuilder<EmitMetricDimension>();
+        private IExpression<string>? _value;
+        private string? _namespace;
 
         public EmitMetricPolicyBuilder Dimension(Action<EmitMetricDimensionBuilder> configuration)
         {
@@ -35,8 +35,8 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class EmitMetricDimensionBuilder
     {
-        string? _name;
-        IExpression<string>? _value;
+        private string? _name;
+        private IExpression<string>? _value;
 
         public EmitMetricDimension Build()
         {

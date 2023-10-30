@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class ForwardRequestPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<forward-request />";
-    readonly ForwardRequestPolicy _policy = new ForwardRequestPolicyBuilder()
+    private readonly string _expected = @"<forward-request />";
+    private readonly ForwardRequestPolicy _policy = new ForwardRequestPolicyBuilder()
             .Build();
 
     [TestMethod]

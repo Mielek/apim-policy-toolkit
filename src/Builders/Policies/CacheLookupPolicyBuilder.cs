@@ -9,14 +9,14 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class CacheLookupPolicyBuilder
     {
-        bool? _varyByDeveloper;
-        bool? _varyByDeveloperGroup;
-        CacheLookupCachingType? _catchingType;
-        CacheLookupDownstreamCachingType? _downstreamCachingType;
-        bool? _mustRevalidate;
-        IExpression<bool>? _allowPrivateResponseCaching;
-        ImmutableList<string>.Builder? _varyByHeaders;
-        ImmutableList<string>.Builder? _varyByQueryParameters;
+        private bool? _varyByDeveloper;
+        private bool? _varyByDeveloperGroup;
+        private CacheLookupCachingType? _catchingType;
+        private CacheLookupDownstreamCachingType? _downstreamCachingType;
+        private bool? _mustRevalidate;
+        private IExpression<bool>? _allowPrivateResponseCaching;
+        private ImmutableList<string>.Builder? _varyByHeaders;
+        private ImmutableList<string>.Builder? _varyByQueryParameters;
 
         public CacheLookupPolicy Build()
         {

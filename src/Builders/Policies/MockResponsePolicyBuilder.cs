@@ -7,8 +7,8 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class MockResponsePolicyBuilder
     {
-        uint? _statusCode;
-        string? _contentType;
+        private uint? _statusCode;
+        private string? _contentType;
         
         public MockResponsePolicy Build()
         {

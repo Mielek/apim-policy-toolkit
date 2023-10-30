@@ -7,9 +7,9 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class WaitPolicyBuilder
     {
-        WaitFor? _for;
+        private WaitFor? _for;
         [IgnoreBuilderField]
-        ICollection<IPolicy>? _policies;
+        private ICollection<IPolicy>? _policies;
 
         public WaitPolicyBuilder Policies(Action<PolicySectionBuilder> configurator)
         {

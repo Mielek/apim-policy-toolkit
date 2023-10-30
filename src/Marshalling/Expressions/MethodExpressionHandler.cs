@@ -34,7 +34,7 @@ public class MethodExpressionHandler<T> : MarshallerHandler<MethodExpression<T>>
         }
     }
 
-    bool TryFindMethod(MethodExpression<T> element, [NotNullWhen(true)] out MethodDeclarationSyntax? method)
+    private bool TryFindMethod(MethodExpression<T> element, [NotNullWhen(true)] out MethodDeclarationSyntax? method)
     {
         var expression = element.MethodInfo.GetCustomAttribute<ExpressionAttribute>();
         if (!string.IsNullOrEmpty(expression?.SourceFilePath))
@@ -49,11 +49,11 @@ public class MethodExpressionHandler<T> : MarshallerHandler<MethodExpression<T>>
         {
             method = null;
         }
-
+        
         return method != null;
     }
 
-    MethodDeclarationSyntax? FindMethod(string filePath, MethodInfo methodInfo)
+    private MethodDeclarationSyntax? FindMethod(string filePath, MethodInfo methodInfo)
     {
         var syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText(filePath));
         return syntaxTree.GetRoot()
@@ -65,7 +65,7 @@ public class MethodExpressionHandler<T> : MarshallerHandler<MethodExpression<T>>
             .SingleOrDefault(m => m.Identifier.ValueText == methodInfo.Name);
     }
 
-    MethodDeclarationSyntax Format(MethodDeclarationSyntax method, MarshallerOptions options)
+    private MethodDeclarationSyntax Format(MethodDeclarationSyntax method, MarshallerOptions options)
     {
         var unformatted = (MethodDeclarationSyntax)new TriviaRemoverRewriter().Visit(method);
 

@@ -7,10 +7,10 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class LogToEventhubPolicyBuilder
     {
-        string? _loggerId;
-        IExpression<string>? _value;
-        string? _partitionId;
-        string? _partitionKey;
+        private string? _loggerId;
+        private IExpression<string>? _value;
+        private string? _partitionId;
+        private string? _partitionKey;
 
         public LogToEventhubPolicy Build()
         {

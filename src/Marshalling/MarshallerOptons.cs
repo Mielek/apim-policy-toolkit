@@ -10,7 +10,7 @@ public sealed class MarshallerOptions
     public bool FormatXml { get; private set; } = false;
     public bool FormatCSharp { get; private set; } = false;
 
-    MarshallerOptions() { }
+    private MarshallerOptions() { }
 
     public MarshallerOptions WithXmlFormatting(bool value)
     {

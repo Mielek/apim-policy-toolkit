@@ -7,12 +7,12 @@ namespace Mielek.Builders.Policies
     public partial class ReturnResponsePolicyBuilder
     {
         [IgnoreBuilderField]
-        SetHeaderPolicy? _setHeaderPolicy;
+        private SetHeaderPolicy? _setHeaderPolicy;
         [IgnoreBuilderField]
-        SetBodyPolicy? _setBodyPolicy;
+        private SetBodyPolicy? _setBodyPolicy;
         [IgnoreBuilderField]
-        SetStatusPolicy? _setStatusPolicy;
-        string? _responseVariableName;
+        private SetStatusPolicy? _setStatusPolicy;
+        private string? _responseVariableName;
 
         public ReturnResponsePolicyBuilder SetHeader(Action<SetHeaderPolicyBuilder> configuration)
         {

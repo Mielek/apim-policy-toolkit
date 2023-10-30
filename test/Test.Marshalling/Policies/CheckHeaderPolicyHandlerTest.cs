@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class CheckHeaderPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<check-header name=""amen"" failed-check-httpcode=""400"" failed-check-error-message=""MessageError"" ignore-case=""True""><value>3</value><value>2</value><value>1</value></check-header>";
-    readonly CheckHeaderPolicy _policy = new CheckHeaderPolicyBuilder()
+    private readonly string _expected = @"<check-header name=""amen"" failed-check-httpcode=""400"" failed-check-error-message=""MessageError"" ignore-case=""True""><value>3</value><value>2</value><value>1</value></check-header>";
+    private readonly CheckHeaderPolicy _policy = new CheckHeaderPolicyBuilder()
             .Name("amen")
             .FailedCheckHttpCode(400)
             .FailedCheckErrorMessage("MessageError")

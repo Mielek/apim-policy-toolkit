@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class EmitMetricPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<emit-metric name=""some-name""><dimension name=""dimension-name"" /></emit-metric>";
-    readonly EmitMetricPolicy _policy = new EmitMetricPolicyBuilder()
+    private readonly string _expected = @"<emit-metric name=""some-name""><dimension name=""dimension-name"" /></emit-metric>";
+    private readonly EmitMetricPolicy _policy = new EmitMetricPolicyBuilder()
             .Name("some-name")
             .Dimension(_ => _.Name("dimension-name"))
             .Build();

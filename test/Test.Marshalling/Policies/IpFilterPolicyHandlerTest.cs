@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class IpFilterPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<ip-filter action=""allow""><address>1.1.1.1</address><address-range from=""1.1.1.2"" to=""1.1.1.255"" /></ip-filter>";
-    readonly IpFilterPolicy _policy = new IpFilterPolicyBuilder()
+    private readonly string _expected = @"<ip-filter action=""allow""><address>1.1.1.1</address><address-range from=""1.1.1.2"" to=""1.1.1.255"" /></ip-filter>";
+    private readonly IpFilterPolicy _policy = new IpFilterPolicyBuilder()
             .Action(IpFilterAction.Allow)
             .Address("1.1.1.1")
             .AddressRange("1.1.1.2", "1.1.1.255")

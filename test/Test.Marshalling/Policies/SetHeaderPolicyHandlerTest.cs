@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class SetHeaderPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<set-header name=""X-Test"" exists-action=""override""><value>3</value><value>2</value><value>1</value></set-header>";
-    readonly SetHeaderPolicy _policy = new SetHeaderPolicyBuilder().Name("X-Test").ExistsAction(SetHeaderExistsAction.Override).Value("3").Value("2").Value("1").Build();
+    private readonly string _expected = @"<set-header name=""X-Test"" exists-action=""override""><value>3</value><value>2</value><value>1</value></set-header>";
+    private readonly SetHeaderPolicy _policy = new SetHeaderPolicyBuilder().Name("X-Test").ExistsAction(SetHeaderExistsAction.Override).Value("3").Value("2").Value("1").Build();
 
     [TestMethod]
     public void ShouldMarshallPolicy()

@@ -9,20 +9,20 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SendRequestPolicyBuilder
     {
-        string? _responseVariableName;
-        SendRequestMode? _mode;
-        uint? _timeout;
-        bool? _ignoreError;
-        IExpression<string>? _setUrl;
+        private string? _responseVariableName;
+        private SendRequestMode? _mode;
+        private uint? _timeout;
+        private bool? _ignoreError;
+        private IExpression<string>? _setUrl;
         [IgnoreBuilderField]
-        SetMethodPolicy? _setMethod;
-        IExpression<string>? _setBody;
+        private SetMethodPolicy? _setMethod;
+        private IExpression<string>? _setBody;
 
         [IgnoreBuilderField]
-        ImmutableList<SetHeaderPolicy>.Builder? _setHeaders;
+        private ImmutableList<SetHeaderPolicy>.Builder? _setHeaders;
 
         [IgnoreBuilderField]
-        AuthenticationCertificatePolicy? _authenticationCertificate;
+        private AuthenticationCertificatePolicy? _authenticationCertificate;
 
         public SendRequestPolicyBuilder SetMethod(Action<SetMethodPolicyBuilder> configurator)
         {

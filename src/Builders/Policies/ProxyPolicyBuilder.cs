@@ -6,9 +6,9 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class ProxyPolicyBuilder
     {
-        string? _url;
-        string? _username;
-        string? _password;
+        private string? _url;
+        private string? _username;
+        private string? _password;
 
         public ProxyPolicy Build()
         {

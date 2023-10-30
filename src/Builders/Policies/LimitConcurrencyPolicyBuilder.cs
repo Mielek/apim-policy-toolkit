@@ -7,11 +7,11 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class LimitConcurrencyPolicyBuilder
     {
-        IExpression<string>? _key;
-        uint? _maxCount;
+        private IExpression<string>? _key;
+        private uint? _maxCount;
 
         [IgnoreBuilderField]
-        ICollection<IPolicy>? _policies;
+        private ICollection<IPolicy>? _policies;
 
         public LimitConcurrencyPolicyBuilder Policies(Action<PolicySectionBuilder> configurator)
         {

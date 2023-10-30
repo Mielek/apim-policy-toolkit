@@ -8,23 +8,23 @@ namespace BuilderGenerator
     {
         public static bool HasAttribute(this SyntaxList<AttributeListSyntax> attributes, string name)
         {
-            string fullname, shortname;
+            string fullName, shortname;
             var attrLen = "Attribute".Length;
             if (name.EndsWith("Attribute"))
             {
-                fullname = name;
+                fullName = name;
                 shortname = name.Remove(name.Length - attrLen, attrLen);
             }
             else
             {
-                fullname = name + "Attribute";
+                fullName = name + "Attribute";
                 shortname = name;
             }
 
             return attributes.Any(al => al.Attributes.Any(a => a.Name.ToString().StartsWith(shortname)));
         }
         
-        public static T FindParent<T>(this SyntaxNode node) where T : class
+        public static T? FindParent<T>(this SyntaxNode node) where T : class
         {
             var current = node;
             while(true)

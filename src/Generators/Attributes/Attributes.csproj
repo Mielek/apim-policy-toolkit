@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <!-- <TargetFramework>netstandard1.4</TargetFramework> -->
     <PackageId>Mielek.Generators.Attributes</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <Authors>Mielek</Authors>
@@ -12,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>.net6</TargetFramework>
+    <TargetFramework>.net7</TargetFramework>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <PackageOutputPath>../../../output</PackageOutputPath>
   </PropertyGroup>

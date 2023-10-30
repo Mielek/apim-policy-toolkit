@@ -7,11 +7,11 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class ForwardRequestPolicyBuilder
     {
-        uint? _timeout;
-        bool? _followRedirects;
-        bool? _bufferRequestBody;
-        bool? _bufferResponse;
-        bool? _failOnErrorStatusCode;
+        private uint? _timeout;
+        private bool? _followRedirects;
+        private bool? _bufferRequestBody;
+        private bool? _bufferResponse;
+        private bool? _failOnErrorStatusCode;
         
         public ForwardRequestPolicy Build()
         {

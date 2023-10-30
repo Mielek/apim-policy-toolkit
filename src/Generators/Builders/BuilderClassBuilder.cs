@@ -8,13 +8,11 @@ namespace Mielek.Generator.Builder;
 
 public class BuilderClassBuilder
 {
-    readonly string _namespaceName;
-    readonly string _className;
-
-    readonly StringBuilder _sourceBuilder = new StringBuilder();
-
-    readonly List<string> _usingsTypes = new List<string>();
-    readonly List<BuilderSetMethod> _methods = new List<BuilderSetMethod>();
+    private readonly string _namespaceName;
+    private readonly string _className;
+    private readonly StringBuilder _sourceBuilder = new StringBuilder();
+    private readonly List<string> _usingsTypes = new List<string>();
+    private readonly List<BuilderSetMethod> _methods = new List<BuilderSetMethod>();
 
     public BuilderClassBuilder(string namespaceName, string className)
     {

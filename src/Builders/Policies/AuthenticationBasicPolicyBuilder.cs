@@ -6,8 +6,8 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class AuthenticationBasicPolicyBuilder
     {
-        string? _username;
-        string? _password;
+        private string? _username;
+        private string? _password;
 
         public AuthenticationBasicPolicy Build()
         {

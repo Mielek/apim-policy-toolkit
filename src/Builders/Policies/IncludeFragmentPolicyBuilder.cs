@@ -7,7 +7,7 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class IncludeFragmentPolicyBuilder
     {
-        string? _fragmentId;
+        private string? _fragmentId;
         public IncludeFragmentPolicy Build()
         {
             if (_fragmentId == null) throw new NullReferenceException();

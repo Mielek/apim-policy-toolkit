@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class ValidateClientCertificatePolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = "<validate-client-certificate><identities /></validate-client-certificate>";
-    readonly ValidateClientCertificatePolicy _policy = new ValidateClientCertificatePolicy(new List<ValidateClientCertificateIdentity>());
+    private readonly string _expected = "<validate-client-certificate><identities /></validate-client-certificate>";
+    private readonly ValidateClientCertificatePolicy _policy = new ValidateClientCertificatePolicy(new List<ValidateClientCertificateIdentity>());
 
     [TestMethod]
     public void ShouldMarshallPolicy()

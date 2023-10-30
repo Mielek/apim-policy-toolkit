@@ -12,7 +12,7 @@ using Mielek.Generator.Attributes;
 namespace BuilderGenerator
 {
     //[Generator]
-    public class BuilderSourceGenerator : ISourceGenerator
+    public class BuilderSourceGenerator //: ISourceGenerator
     {
         public void Execute(GeneratorExecutionContext context)
         {
@@ -44,13 +44,17 @@ namespace BuilderGenerator
             foreach (var classDeclaration in classesWithAttribute)
             {
                 var att = classDeclaration.AttributeLists.SelectMany(a => a.Attributes).Where(a => a.Name.ToString().StartsWith("GenerateBuilder")).First();
-                var arg = (TypeOfExpressionSyntax) att.ArgumentList?.Arguments[0].Expression;
+                var arg = att?.ArgumentList?.Arguments[0].Expression as TypeOfExpressionSyntax;
+                if (arg == null) continue;
                 var semanticModel = compilation.GetSemanticModel(syntaxTree);
-                var symbol = (INamedTypeSymbol) semanticModel.GetSymbolInfo(arg.Type).Symbol;
+                var symbol = semanticModel.GetSymbolInfo(arg.Type).Symbol as INamedTypeSymbol;
+                if (symbol == null) continue;
                 var parameters = symbol.Constructors[0].Parameters;
 
                 var t = symbol.GetMembers().OfType<IPropertySymbol>().Where(p => p.DeclaredAccessibility == Accessibility.Public);
-                var namespaceName = classDeclaration.FindParent<NamespaceDeclarationSyntax>().Name.ToString();
+                var namespaceSyntax = classDeclaration.FindParent<NamespaceDeclarationSyntax>();
+                if (namespaceSyntax == null) continue;
+                var namespaceName = namespaceSyntax.Name.ToString();
                 var className = classDeclaration.Identifier.Text;
                 var fields = classDeclaration.DescendantNodes().OfType<FieldDeclarationSyntax>().ToList();
                 classToBuilder[className] = $@"
@@ -61,7 +65,7 @@ public partial class {className}
     public string Fields => ""{string.Join(",", fields.Select(f => f.Declaration.Variables[0].ToString()).ToArray())}"";
     public string ConstructorParamNames => ""{string.Join(",", parameters.Select(p => p.Name))}"";
     public string ConstructorParamTypes => ""{string.Join(",", parameters.Select(p => p.Type))}"";
-    public string Arg => ""{string.Join(",", t.Select(f => f.Name.Replace(symbol.Name, "") ))}"";
+    public string Arg => ""{string.Join(",", t.Select(f => f.Name.Replace(symbol.Name, "")))}"";
 }}
 ";
             }
@@ -120,8 +124,8 @@ namespace @namespace
 
             var classToBuilder = new Dictionary<string, string>();
 
-            var root = syntaxTree.GetRoot();
-            var usings = (root as CompilationUnitSyntax).Usings.ToString();
+            var root = (CompilationUnitSyntax)syntaxTree.GetRoot();
+            var usings = root.Usings.ToString();
             var classesWithAttribute = root
                 .DescendantNodes()
                 .OfType<ClassDeclarationSyntax>()
@@ -131,7 +135,11 @@ namespace @namespace
             foreach (var classDeclaration in classesWithAttribute)
             {
                 var sb = new StringBuilder();
-                var namespaceName = classDeclaration.FindParent<NamespaceDeclarationSyntax>().Name.ToString();
+                var namespaceSyntax = classDeclaration.FindParent<NamespaceDeclarationSyntax>();
+
+                if (namespaceSyntax == null) continue;
+
+                var namespaceName = namespaceSyntax.Name.ToString();
                 var className = classDeclaration.Identifier.Text;
                 var properties = classDeclaration.DescendantNodes().OfType<PropertyDeclarationSyntax>().ToList();
                 var builderName = $"{className}Builder";
@@ -188,7 +196,7 @@ namespace @namespace
             // No initialization required for this one
         }
 
-        struct BuilderPropertyInfo
+        private struct BuilderPropertyInfo
         {
             public BuilderPropertyInfo(PropertyDeclarationSyntax property) : this()
             {

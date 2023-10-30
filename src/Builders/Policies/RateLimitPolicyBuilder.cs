@@ -101,7 +101,7 @@ namespace Mielek.Builders.Policies
 
     public class RateLimitApiBuilder : RateLimitWithIdentificationBuilder<RateLimitApiBuilder>
     {
-        List<RateLimitApiOperation>? _operations = null;
+        private List<RateLimitApiOperation>? _operations = null;
 
         public RateLimitApiBuilder Operation(Action<RateLimitApiOperationBuilder> config)
         {
@@ -133,8 +133,7 @@ namespace Mielek.Builders.Policies
 
     public class RateLimitPolicyBuilder : RateLimitBaseBuilder<RateLimitPolicyBuilder>
     {
-
-        List<RateLimitApi>? _apis = null;
+        private List<RateLimitApi>? _apis = null;
 
         public RateLimitPolicyBuilder Api(Action<RateLimitApiBuilder> config)
         {

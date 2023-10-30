@@ -11,7 +11,7 @@ using Mielek.Generator.Builder.Field;
 
 namespace Mielek.Generator.Builder;
 
-class ClassSetterBuilder
+internal class ClassSetterBuilder
 {
     private static readonly IFieldSetterHandlerProvider[] _methodProviders = new IFieldSetterHandlerProvider[]
     {
@@ -19,14 +19,15 @@ class ClassSetterBuilder
         new ExpressionFieldHandlerProvider(),
         new SimpleFieldHandlerProvider()
     };
-
-    readonly ClassDeclarationSyntax _classDeclaration;
-    readonly BuilderClassBuilder _classBuilder;
+    private readonly ClassDeclarationSyntax _classDeclaration;
+    private readonly BuilderClassBuilder _classBuilder;
 
     public ClassSetterBuilder(ClassDeclarationSyntax classDeclaration)
     {
         _classDeclaration = classDeclaration;
-        var namespaceName = _classDeclaration.FindParent<NamespaceDeclarationSyntax>().Name.ToString();
+        var syntax = _classDeclaration.FindParent<NamespaceDeclarationSyntax>();
+        if(syntax == null) throw new Exception();
+        var namespaceName = syntax.Name.ToString();
         _classBuilder = new BuilderClassBuilder(namespaceName, classDeclaration.Identifier.Text);
     }
 

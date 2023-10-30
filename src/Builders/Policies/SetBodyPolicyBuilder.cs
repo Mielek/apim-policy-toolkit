@@ -8,9 +8,9 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SetBodyPolicyBuilder
     {
-        IExpression<string>? _body;
-        IExpression<string>? _template;
-        IExpression<string>? _xsiNil;
+        private IExpression<string>? _body;
+        private IExpression<string>? _template;
+        private IExpression<string>? _xsiNil;
 
 
         public SetBodyPolicyBuilder Template(BodyTemplate template)

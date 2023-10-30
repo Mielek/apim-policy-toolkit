@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class SetBodyPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expectedSimple = @"<set-body>SomeBody</set-body>";
-    readonly SetBodyPolicy _simplePolicy = new SetBodyPolicyBuilder()
+    private readonly string _expectedSimple = @"<set-body>SomeBody</set-body>";
+    private readonly SetBodyPolicy _simplePolicy = new SetBodyPolicyBuilder()
             .Body("SomeBody")
             .Build();
 

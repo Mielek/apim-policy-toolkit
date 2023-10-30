@@ -7,8 +7,8 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class CacheStorePolicyBuilder
     {
-        IExpression<uint>? _duration;
-        bool? _cacheResponse;
+        private IExpression<uint>? _duration;
+        private bool? _cacheResponse;
 
         public CacheStorePolicy Build()
         {

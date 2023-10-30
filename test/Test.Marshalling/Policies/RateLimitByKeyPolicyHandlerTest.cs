@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class RateLimitByKeyPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<rate-limit-by-key calls=""10"" renewal-period=""100"" counter-key=""test"" />";
-    readonly RateLimitByKeyPolicy _policy = new RateLimitByKeyPolicyBuilder()
+    private readonly string _expected = @"<rate-limit-by-key calls=""10"" renewal-period=""100"" counter-key=""test"" />";
+    private readonly RateLimitByKeyPolicy _policy = new RateLimitByKeyPolicyBuilder()
             .Calls(10)
             .RenewalPeriod(100)
             .CounterKey("test")

@@ -7,8 +7,8 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SetVariablePolicyBuilder
     {
-        string? _name;
-        IExpression<string>? _value;
+        private string? _name;
+        private IExpression<string>? _value;
 
         public SetVariablePolicy Build()
         {

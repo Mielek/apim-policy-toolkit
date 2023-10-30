@@ -19,7 +19,7 @@ public class GetAuthorizationContextPolicyHandler : MarshallerHandler<GetAuthori
         marshaller.Writer.WriteEndElement();
     }
 
-    static string? TranslateIdentity(IdentityType? identityType) => identityType switch
+    private static string? TranslateIdentity(IdentityType? identityType) => identityType switch
     {
         null => null,
         IdentityType.Managed => "managed",

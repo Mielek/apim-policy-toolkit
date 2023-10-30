@@ -9,19 +9,19 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class ValidateAzureAdTokenPolicyBuilder
     {
-        ImmutableList<string>.Builder? _clientApplicationIds;
-        string? _headerName;
-        string? _queryParameterName;
-        string? _tokenValue;
-        string? _tenantId;
-        ushort? _failedValidationHttpCode;
-        string? _failedValidationErrorMessage;
-        string? _outputTokenVariableName;
-        ImmutableList<string>.Builder? _backendApplicationIds;
-        ImmutableList<IExpression<string>>.Builder? _audiences;
+        private ImmutableList<string>.Builder? _clientApplicationIds;
+        private string? _headerName;
+        private string? _queryParameterName;
+        private string? _tokenValue;
+        private string? _tenantId;
+        private ushort? _failedValidationHttpCode;
+        private string? _failedValidationErrorMessage;
+        private string? _outputTokenVariableName;
+        private ImmutableList<string>.Builder? _backendApplicationIds;
+        private ImmutableList<IExpression<string>>.Builder? _audiences;
         
         [IgnoreBuilderField]
-        ImmutableList<ValidateAzureAdTokenClaim>.Builder? _requiredClaims;
+        private ImmutableList<ValidateAzureAdTokenClaim>.Builder? _requiredClaims;
 
         public ValidateAzureAdTokenPolicyBuilder RequiredClaim(Action<ValidateAzureAdTokenClaimBuilder> configurator)
         {
@@ -53,10 +53,10 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class ValidateAzureAdTokenClaimBuilder
     {
-        string? _name;
-        ImmutableList<string>.Builder? _values;
-        ValidateAzureAdTokenClaimMatch? _match;
-        string? _separator;
+        private string? _name;
+        private ImmutableList<string>.Builder? _values;
+        private ValidateAzureAdTokenClaimMatch? _match;
+        private string? _separator;
 
         public ValidateAzureAdTokenClaim Build()
         {

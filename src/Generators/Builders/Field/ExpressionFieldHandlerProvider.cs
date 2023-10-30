@@ -1,4 +1,5 @@
 
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -9,7 +10,7 @@ namespace Mielek.Generator.Builder.Field;
 
 public class ExpressionFieldHandlerProvider : IFieldSetterHandlerProvider
 {
-    public bool TryGetHandler(FieldDeclarationSyntax field, out IFieldSetterHandler handler)
+    public bool TryGetHandler(FieldDeclarationSyntax field, [NotNullWhen(true)] out IFieldSetterHandler? handler)
     {
         var type = field.Declaration.Type.ToString();
         if (type.StartsWith("IExpression"))
@@ -24,8 +25,7 @@ public class ExpressionFieldHandlerProvider : IFieldSetterHandlerProvider
 
     public class ExpressionFieldHandler : IFieldSetterHandler
     {
-
-        readonly FieldDeclarationSyntax _field;
+        private readonly FieldDeclarationSyntax _field;
 
         public ExpressionFieldHandler(FieldDeclarationSyntax field)
         {

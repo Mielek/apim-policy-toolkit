@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class SetStatusPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = "<set-status code=\"204\" reason=\"No content\" />";
-    readonly SetStatusPolicy _policy = new SetStatusPolicyBuilder().Code(204).Reason("No content").Build();
+    private readonly string _expected = "<set-status code=\"204\" reason=\"No content\" />";
+    private readonly SetStatusPolicy _policy = new SetStatusPolicyBuilder().Code(204).Reason("No content").Build();
 
     [TestMethod]
     public void ShouldMarshallPolicy()

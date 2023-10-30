@@ -9,18 +9,18 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SendOneWayRequestPolicyBuilder
     {
-        SendOneWayRequestMode? _mode;
-        uint? _timeout;
-        IExpression<string>? _setUrl;
+        private SendOneWayRequestMode? _mode;
+        private uint? _timeout;
+        private IExpression<string>? _setUrl;
         [IgnoreBuilderField]
-        SetMethodPolicy? _setMethod;
-        IExpression<string>? _setBody;
+        private SetMethodPolicy? _setMethod;
+        private IExpression<string>? _setBody;
 
         [IgnoreBuilderField]
-        ImmutableList<SetHeaderPolicy>.Builder? _setHeaders;
+        private ImmutableList<SetHeaderPolicy>.Builder? _setHeaders;
 
         [IgnoreBuilderField]
-        AuthenticationCertificatePolicy? _authenticationCertificate;
+        private AuthenticationCertificatePolicy? _authenticationCertificate;
 
         public SendOneWayRequestPolicyBuilder SetMethod(Action<SetMethodPolicyBuilder> configurator)
         {

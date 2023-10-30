@@ -7,16 +7,16 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class RateLimitByKeyPolicyBuilder
     {
-        uint? _calls;
-        uint? _renewalPeriod;
-        IExpression<string>? _counterKey;
-        IExpression<bool>? _incrementCondition;
-        uint? _incrementCount;
-        string? _retryAfterHeaderName;
-        string? _retryAfterVariableName;
-        string? _remainingCallsHeaderName;
-        string? _remainingCallsVariableName;
-        string? _totalCallsHeaderName;
+        private uint? _calls;
+        private uint? _renewalPeriod;
+        private IExpression<string>? _counterKey;
+        private IExpression<bool>? _incrementCondition;
+        private uint? _incrementCount;
+        private string? _retryAfterHeaderName;
+        private string? _retryAfterVariableName;
+        private string? _remainingCallsHeaderName;
+        private string? _remainingCallsVariableName;
+        private string? _totalCallsHeaderName;
 
         public RateLimitByKeyPolicy Build()
         {

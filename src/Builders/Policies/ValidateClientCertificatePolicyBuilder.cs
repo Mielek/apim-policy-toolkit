@@ -10,12 +10,12 @@ namespace Mielek.Builders.Policies
     {
 
         [IgnoreBuilderField]
-        readonly ImmutableList<ValidateClientCertificateIdentity>.Builder _identities = ImmutableList.CreateBuilder<ValidateClientCertificateIdentity>();
-        bool? _validateRevocation;
-        bool? _validateTrust;
-        bool? _validateNotBefore;
-        bool? _validateNotAfter;
-        bool? _ignoreError;
+        private readonly ImmutableList<ValidateClientCertificateIdentity>.Builder _identities = ImmutableList.CreateBuilder<ValidateClientCertificateIdentity>();
+        private bool? _validateRevocation;
+        private bool? _validateTrust;
+        private bool? _validateNotBefore;
+        private bool? _validateNotAfter;
+        private bool? _ignoreError;
 
         public ValidateClientCertificatePolicy Build()
         {
@@ -34,14 +34,14 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class ValidateClientCertificateIdentityBuilder
     {
-        string? _thumbprint;
-        string? _serialNumber;
-        string? _commonName;
-        string? _subject;
-        string? _dnsName;
-        string? _issuerSubject;
-        string? _issuerThumbprint;
-        string? _issuerCertificateId;
+        private string? _thumbprint;
+        private string? _serialNumber;
+        private string? _commonName;
+        private string? _subject;
+        private string? _dnsName;
+        private string? _issuerSubject;
+        private string? _issuerThumbprint;
+        private string? _issuerCertificateId;
 
         public ValidateClientCertificateIdentity Build()
         {

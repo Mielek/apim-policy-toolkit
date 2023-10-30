@@ -8,14 +8,14 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class RetryPolicyBuilder
     {
-        IExpression<bool>? _condition;
-        uint? _count;
-        uint? _interval;
+        private IExpression<bool>? _condition;
+        private uint? _count;
+        private uint? _interval;
         [IgnoreBuilderField]
-        ICollection<IPolicy>? _policies;
-        uint? _maxInterval;
-        uint? _delta;
-        IExpression<string>? _firstFastRetry;
+        private ICollection<IPolicy>? _policies;
+        private uint? _maxInterval;
+        private uint? _delta;
+        private IExpression<string>? _firstFastRetry;
 
         public RetryPolicyBuilder Policies(Action<PolicySectionBuilder> configurator)
         {

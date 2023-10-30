@@ -12,7 +12,7 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class GetAuthorizationContextPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly GetAuthorizationContextPolicyBuilder _baseBuilder = new GetAuthorizationContextPolicyBuilder()
+    private readonly GetAuthorizationContextPolicyBuilder _baseBuilder = new GetAuthorizationContextPolicyBuilder()
             .ProviderId("someProvider")
             .AuthorizationId("someAuthId")
             .ContextVariableName("someContextVar");

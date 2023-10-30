@@ -6,12 +6,12 @@ public class PolicyDocumentBuilder
 {
     public static PolicyDocumentBuilder Create() => new();
 
-    ICollection<IPolicy>? _inbound;
-    ICollection<IPolicy>? _backend;
-    ICollection<IPolicy>? _outbound;
-    ICollection<IPolicy>? _onError;
+    private ICollection<IPolicy>? _inbound;
+    private ICollection<IPolicy>? _backend;
+    private ICollection<IPolicy>? _outbound;
+    private ICollection<IPolicy>? _onError;
 
-    PolicyDocumentBuilder() { }
+    private PolicyDocumentBuilder() { }
 
     public PolicyDocumentBuilder Inbound(Action<PolicySectionBuilder> configurator)
     {

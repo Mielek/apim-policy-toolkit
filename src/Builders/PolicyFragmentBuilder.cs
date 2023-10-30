@@ -5,9 +5,9 @@ public class PolicyFragmentBuilder
 {
     public static PolicyFragmentBuilder Create() => new();
 
-    readonly PolicySectionBuilder _innerBuilder = new();
+    private readonly PolicySectionBuilder _innerBuilder = new();
 
-    PolicyFragmentBuilder() { }
+    private PolicyFragmentBuilder() { }
 
     public PolicyFragmentBuilder Policies(Action<PolicySectionBuilder> configurator)
     {

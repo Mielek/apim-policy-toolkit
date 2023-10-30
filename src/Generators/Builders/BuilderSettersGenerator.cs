@@ -50,5 +50,6 @@ public class BuilderSettersGenerator : ISourceGenerator
 
     public void Initialize(GeneratorInitializationContext context)
     {
+            Console.Out.WriteLine("Test");
     }
 }

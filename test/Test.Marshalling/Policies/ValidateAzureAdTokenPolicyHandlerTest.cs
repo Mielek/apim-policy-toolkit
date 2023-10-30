@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class ValidateAzureAdTokenPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = "<validate-azure-ad-token><client-application-ids><application-id>Client</application-id></client-application-ids></validate-azure-ad-token>";
-    readonly ValidateAzureAdTokenPolicy _policy = new ValidateAzureAdTokenPolicyBuilder()
+    private readonly string _expected = "<validate-azure-ad-token><client-application-ids><application-id>Client</application-id></client-application-ids></validate-azure-ad-token>";
+    private readonly ValidateAzureAdTokenPolicy _policy = new ValidateAzureAdTokenPolicyBuilder()
         .ClientApplicationId("Client")
         .Build();
 

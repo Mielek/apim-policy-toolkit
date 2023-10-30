@@ -7,8 +7,8 @@ namespace Mielek.Test.Marshalling;
 [TestClass]
 public class RateLimitPolicyHandlerTest : BaseMarshallerTest
 {
-    readonly string _expected = @"<rate-limit calls=""10"" renewal-period=""100"" />";
-    readonly RateLimitPolicy _policy = new RateLimitPolicyBuilder()
+    private readonly string _expected = @"<rate-limit calls=""10"" renewal-period=""100"" />";
+    private readonly RateLimitPolicy _policy = new RateLimitPolicyBuilder()
             .Calls(10)
             .RenewalPeriod(100)
             .Build();

@@ -9,11 +9,11 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class CheckHeaderPolicyBuilder
     {
-        IExpression<string>? _name;
-        IExpression<string>? _failedCheckHttpCode;
-        IExpression<string>? _failedCheckErrorMessage;
-        IExpression<bool>? _ignoreCase;
-        ImmutableList<IExpression<string>>.Builder? _values;
+        private IExpression<string>? _name;
+        private IExpression<string>? _failedCheckHttpCode;
+        private IExpression<string>? _failedCheckErrorMessage;
+        private IExpression<bool>? _ignoreCase;
+        private ImmutableList<IExpression<string>>.Builder? _values;
 
         public CheckHeaderPolicyBuilder FailedCheckHttpCode(ushort code)
         {

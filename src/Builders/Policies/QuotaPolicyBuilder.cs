@@ -8,12 +8,12 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class QuotaPolicyBuilder
     {
-        uint? _renewalPeriod;
-        uint? _calls;
-        uint? _bandwidth;
+        private uint? _renewalPeriod;
+        private uint? _calls;
+        private uint? _bandwidth;
 
         [IgnoreBuilderField]
-        ImmutableList<QuotaApi>.Builder? _apis;
+        private ImmutableList<QuotaApi>.Builder? _apis;
 
         public QuotaPolicyBuilder Api(Action<QuotaApiBuilder> configurator)
         {
@@ -34,12 +34,12 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class QuotaApiBuilder
     {
-        uint? _calls;
-        string? _name;
-        string? _id;
+        private uint? _calls;
+        private string? _name;
+        private string? _id;
 
         [IgnoreBuilderField]
-        ImmutableList<QuotaOperation>.Builder? _operations;
+        private ImmutableList<QuotaOperation>.Builder? _operations;
 
         public QuotaApiBuilder Api(Action<QuotaOperationBuilder> configurator)
         {
@@ -61,9 +61,9 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class QuotaOperationBuilder
     {
-        uint? _calls;
-        string? _name;
-        string? _id;
+        private uint? _calls;
+        private string? _name;
+        private string? _id;
 
         public QuotaOperation Build()
         {

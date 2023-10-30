@@ -7,12 +7,12 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class QuotaByKeyPolicyBuilder
     {
-        IExpression<string>? _counterKey;
-        uint? _renewalPeriod;
-        uint? _calls;
-        uint? _bandwidth;
-        IExpression<bool>? _incrementCondition;
-        DateTime? _firstPeriodStart;
+        private IExpression<string>? _counterKey;
+        private uint? _renewalPeriod;
+        private uint? _calls;
+        private uint? _bandwidth;
+        private IExpression<bool>? _incrementCondition;
+        private DateTime? _firstPeriodStart;
 
         public QuotaByKeyPolicy Build()
         {

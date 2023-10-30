@@ -7,8 +7,8 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SetStatusPolicyBuilder
     {
-        IExpression<string>? _code;
-        IExpression<string>? _reason;
+        private IExpression<string>? _code;
+        private IExpression<string>? _reason;
 
         public SetStatusPolicyBuilder Code(ushort code)
         {

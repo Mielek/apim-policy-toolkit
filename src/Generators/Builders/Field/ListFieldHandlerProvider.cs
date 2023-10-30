@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -9,8 +10,8 @@ namespace Mielek.Generator.Builder.Field;
 
 public class ImmutableListFieldHandlerProvider : IFieldSetterHandlerProvider
 {
-    readonly static Regex ListRegex = new(@"^ImmutableList<(.*)>.Builder\??$");
-    public bool TryGetHandler(FieldDeclarationSyntax field, out IFieldSetterHandler handler)
+    private static readonly Regex ListRegex = new(@"^ImmutableList<(.*)>.Builder\??$");
+    public bool TryGetHandler(FieldDeclarationSyntax field, [NotNullWhen(true)] out IFieldSetterHandler? handler)
     {
         var type = field.Declaration.Type.ToString();
         var regexMatch = ListRegex.Match(type);

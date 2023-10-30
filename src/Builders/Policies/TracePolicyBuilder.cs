@@ -9,12 +9,12 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class TracePolicyBuilder
     {
-        string? _source;
-        IExpression<string>? _message;
-        TraceSeverity? _severity;
+        private string? _source;
+        private IExpression<string>? _message;
+        private TraceSeverity? _severity;
 
         [IgnoreBuilderField]
-        ImmutableList<TraceMetadata>.Builder? _metadatas;
+        private ImmutableList<TraceMetadata>.Builder? _metadatas;
 
         public TracePolicyBuilder Metadata(Action<TraceMetadataBuilder> configurator)
         {
@@ -37,8 +37,8 @@ namespace Mielek.Builders.Policies
     [GenerateBuilderSetters]
     public partial class TraceMetadataBuilder
     {
-        string? _name;
-        IExpression<string>? _value;
+        private string? _name;
+        private IExpression<string>? _value;
 
         public TraceMetadata Build()
         {
