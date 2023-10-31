@@ -17,10 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mielek.Model" Version="1.0.0" />
-    <PackageReference Include="Mielek.Builders" Version="1.0.0" />
-    <PackageReference Include="Mielek.Analyzers" Version="1.0.0" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <PackageReference Include="Mielek.Policy" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
+  <Target Name="TranformToPolicies" AfterTargets="Build">
+    <Exec Command="dotnet policy-transformer --dllFile  $(TargetPath) --out $(ProjectDir)..\target --format true" />
+  </Target>
 </Project>

@@ -1,17 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Mielek.Generators.Builders</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
-    <Authors>Mielek</Authors>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <TargetFramework>.net7</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
     <Nullable>enable</Nullable>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

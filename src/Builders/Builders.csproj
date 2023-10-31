@@ -1,18 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <PackageId>Mielek.Builders</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
-    <Authors>Mielek</Authors>
-  </PropertyGroup>
-
   <PropertyGroup>
     <TargetFramework>.net7</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
+    <IsPackable>false</IsPackable>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-    <PackageOutputPath>..\..\output</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

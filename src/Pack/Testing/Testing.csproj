@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Mielek.Policy</PackageId>
+    <PackageId>Mielek.Testing</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <Authors>Mielek</Authors>
     <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>
@@ -12,40 +12,32 @@
     <Description>Mielek.Policy</Description>
     <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>
     <Copyright>Copyright</Copyright>
-    <PackageTags>Mielek.Policy, analyzers</PackageTags>
-    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <PackageTags>Mielek.Mock</PackageTags>
+    <NoPackageAnalysis>false</NoPackageAnalysis>
 
     <TargetsForTfmSpecificContentInPackage>
-      $(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput;_IncludeReferencedProjectInPackage</TargetsForTfmSpecificContentInPackage>
-    
+      $(TargetsForTfmSpecificContentInPackage);_IncludeReferencedProjectInPackage</TargetsForTfmSpecificContentInPackage>
+
   </PropertyGroup>
 
   <PropertyGroup>
     <TargetFramework>.net7</TargetFramework>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageOutputPath>..\..\..\output</PackageOutputPath>
   </PropertyGroup>
 
+
   <ItemGroup>
-    <ProjectReference Include="..\..\Model\Model.csproj" />
-    <ProjectReference Include="..\..\Builders\Builders.csproj" />
-    <ProjectReference Include="..\..\Generators\Attributes\Attributes.csproj" />
     <ProjectReference Include="..\..\Expressions\Context\Context.csproj" />
-    <ProjectReference Include="..\..\Analyzers\Analyzers.csproj" />
+    <ProjectReference Include="..\..\Expressions\Mocks\Mocks.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
-  <Target Name="_AddAnalyzersToOutput">
-    <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)\Analyzers.dll"
-        PackagePath="analyzers/dotnet/cs" />
-    </ItemGroup>
-  </Target>
 
   <Target Name="_IncludeReferencedProjectInPackage">
     <GetNuGetShortFolderName
@@ -55,12 +47,8 @@
     </GetNuGetShortFolderName>
     <ItemGroup>
       <TfmSpecificPackageFile Include="$(OutputPath)\Context.dll"
-      PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Attributes.dll"
-      PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Model.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />
-        <TfmSpecificPackageFile Include="$(OutputPath)\Builders.dll"
+      <TfmSpecificPackageFile Include="$(OutputPath)\Mocks.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />
     </ItemGroup>
   </Target>

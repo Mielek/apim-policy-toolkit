@@ -50,7 +50,7 @@ public class EchoApi
     }
 
     [Expression]
-    public bool IsVariableSet(IContext c) => c.Variables.ContainsKey("Variable");
+    public bool IsVariableSet(IContext context) => context.Variables.ContainsKey("Variable");
 
     [Expression]
     public string GetKnownGUIDOrGenerateNew(IContext context)

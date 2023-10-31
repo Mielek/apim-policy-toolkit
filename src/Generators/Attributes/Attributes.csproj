@@ -1,14 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Mielek.Generators.Attributes</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
-    <Authors>Mielek</Authors>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <TargetFramework>.net7</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <PackageOutputPath>..\..\..\output</PackageOutputPath>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 </Project>
