@@ -49,8 +49,10 @@ public class EchoApi
             .Build();
     }
 
-    public bool IsVariableSet(IContext context) => context.Variables.ContainsKey("Variable");
+    [Expression]
+    public bool IsVariableSet(IContext c) => c.Variables.ContainsKey("Variable");
 
+    [Expression]
     public string GetKnownGUIDOrGenerateNew(IContext context)
     {
         if (!context.Variables

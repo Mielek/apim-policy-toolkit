@@ -1,17 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- <TargetFramework>netstandard1.4</TargetFramework> -->
     <PackageId>Mielek.Transformer</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <Authors>Mielek</Authors>
-    <!-- <Description>Awesome application logging utility</Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>First release</PackageReleaseNotes>
-    <Copyright>Copyright 2016 (c) Contoso Corporation. All rights reserved.</Copyright>
-    <PackageTags>logger logging logs</PackageTags> -->
-  </PropertyGroup> 
-
+  </PropertyGroup>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -21,7 +14,7 @@
 
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>policy-transformer</ToolCommandName>
-    <PackageOutputPath>../../output</PackageOutputPath>
+    <PackageOutputPath>..\..\output</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
