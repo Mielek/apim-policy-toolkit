@@ -9,7 +9,6 @@
   <PropertyGroup>
     <TargetFramework>.net7</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
@@ -26,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Model\Model.csproj" />
+    <ProjectReference Include="..\..\src\Builders\Builders.csproj" />
     <ProjectReference Include="..\..\src\Analyzers\Analyzers.csproj"
       OutputItemType="Analyzer"
       ReferenceOutputAssembly="false" />
