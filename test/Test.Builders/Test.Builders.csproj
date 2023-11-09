@@ -1,11 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  
-  <PropertyGroup>
-    <PackageId>Mielek.Test.Builders</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
-    <Authors>Mielek</Authors>
-  </PropertyGroup> 
-
   <PropertyGroup>
     <TargetFramework>.net7</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

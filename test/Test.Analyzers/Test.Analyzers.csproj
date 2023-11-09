@@ -1,11 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  
-  <PropertyGroup>
-    <PackageId>Mielek.Test.Expressions.Analyzer</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
-    <Authors>Mielek</Authors>
-  </PropertyGroup> 
-
   <PropertyGroup>
     <TargetFramework>.net7</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -26,9 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Model\Model.csproj" />
     <ProjectReference Include="..\..\src\Builders\Builders.csproj" />
-    <ProjectReference Include="..\..\src\Analyzers\Analyzers.csproj"
-      OutputItemType="Analyzer"
-      ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\src\Analyzers\Analyzers.csproj" />
   </ItemGroup>
 
 </Project>

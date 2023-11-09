@@ -5,11 +5,7 @@ namespace Mielek.Analyzers;
 public static class Constants
 {
 
-    public static SymbolDisplayFormat format = new SymbolDisplayFormat(
-                globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.OmittedAsContaining,
-                typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
-                genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
-                miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
+    public static SymbolDisplayFormat format = new SymbolDisplayFormat(typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
 
 
     public static class Method
@@ -17,8 +13,15 @@ public static class Constants
         public static string ExpressionAttribute = "Mielek.Model.Attributes.ExpressionAttribute";
         public static string ContextParamType = "Mielek.Expressions.Context.IContext";
         public static string ContextParamName = "context";
+        public static string PolicyDocumentAttribute = "Mielek.Model.Attributes.DocumentAttribute";
+
     }
 
+    public static IReadOnlySet<string> AllowedPolicyDocumentReturnTypes = new HashSet<string>()
+    {
+        "Mielek.Model.PolicyDocument",
+        "Mielek.Model.PolicyFragment"
+    };
 
     public static IReadOnlySet<string> AllowedExpressionReturnTypes = new HashSet<string>()
     {
@@ -44,6 +47,8 @@ public static class Constants
 
     public static IReadOnlySet<string> AllowedTypes = new HashSet<string>()
     {
+        #region Expression
+
         #region  mslib
         "System.Array",
         "System.BitConverter",
@@ -180,7 +185,7 @@ public static class Constants
         "Newtonsoft.Json.Linq.JValue",
         #endregion Newtonsoft.Json
 
-        #region Mielek
+        #region Mielek.Expressions.Context
         "Mielek.Expressions.Context.IApi",
         "Mielek.Expressions.Context.IContext",
         "Mielek.Expressions.Context.IContextApi",
@@ -198,7 +203,58 @@ public static class Constants
         "Mielek.Expressions.Context.IUrl",
         "Mielek.Expressions.Context.IUser",
         "Mielek.Expressions.Context.IUserIdentity",
-        #endregion Mielek
+        #endregion Mielek.Expressions.Context
+
+        #endregion Expression
+
+        #region Policy building
+        "Mielek.Model.PolicyDocument",
+        "Mielek.Model.PolicyFragment",
+        "Mielek.Builders.PolicyDocumentBuilder",
+        "Mielek.Builders.PolicyFragmentBuilder",
+        "Mielek.Builders.PolicySectionBuilder",
+        "Mielek.Builders.Expressions.ExpressionBuilder",
+        "Mielek.Builders.Policies.AuthenticationBasicPolicyBuilder",
+        "Mielek.Builders.Policies.AuthenticationCertificatePolicyBuilder",
+        "Mielek.Builders.Policies.AuthenticationManagedIdentityPolicyBuilder",
+        "Mielek.Builders.Policies.CacheLookupPolicyBuilder",
+        "Mielek.Builders.Policies.CacheStorePolicyBuilder",
+        "Mielek.Builders.Policies.CheckHeaderPolicyBuilder",
+        "Mielek.Builders.Policies.ChoosePolicyBuilder",
+        "Mielek.Builders.Policies.ChooseWhenBuilder",
+        "Mielek.Builders.Policies.EmitMetricPolicyBuilder",
+        "Mielek.Builders.Policies.EmitMetricDimensionBuilder",
+        "Mielek.Builders.Policies.ForwardRequestPolicyBuilder",
+        "Mielek.Builders.Policies.GetAuthorizationContextPolicyBuilder",
+        "Mielek.Builders.Policies.IncludeFragmentPolicyBuilder",
+        "Mielek.Builders.Policies.IpFilterPolicyBuilder",
+        "Mielek.Builders.Policies.LimitConcurrencyPolicyBuilder",
+        "Mielek.Builders.Policies.LogToEventhubPolicyBuilder",
+        "Mielek.Builders.Policies.MockResponsePolicyBuilder",
+        "Mielek.Builders.Policies.ProxyPolicyBuilder",
+        "Mielek.Builders.Policies.QuotaByKeyPolicyBuilder",
+        "Mielek.Builders.Policies.QuotaPolicyBuilder",
+        "Mielek.Builders.Policies.RateLimitByKeyPolicyBuilder",
+        "Mielek.Builders.Policies.RateLimitApiOperationBuilder",
+        "Mielek.Builders.Policies.RateLimitApiBuilder",
+        "Mielek.Builders.Policies.RateLimitPolicyBuilder",
+        "Mielek.Builders.Policies.RetryPolicyBuilder",
+        "Mielek.Builders.Policies.ReturnResponsePolicyBuilder",
+        "Mielek.Builders.Policies.SendOneWayRequestPolicyBuilder",
+        "Mielek.Builders.Policies.SendRequestPolicyBuilder",
+        "Mielek.Builders.Policies.SetBodyPolicyBuilder",
+        "Mielek.Builders.Policies.SetHeaderPolicyBuilder",
+        "Mielek.Builders.Policies.SetStatusPolicyBuilder",
+        "Mielek.Builders.Policies.SetVariablePolicyBuilder",
+        "Mielek.Builders.Policies.TracePolicyBuilder",
+        "Mielek.Builders.Policies.ValidateAzureAdTokenPolicyBuilder",
+        "Mielek.Builders.Policies.ValidateAzureAdTokenClaimBuilder",
+        "Mielek.Builders.Policies.ValidateClientCertificatePolicyBuilder",
+        "Mielek.Builders.Policies.ValidateClientCertificateIdentityBuilder",
+        "Mielek.Builders.Policies.ValidateJwtPolicyBuilder",
+        "Mielek.Builders.Policies.ValidateJwtClaimBuilder",
+        "Mielek.Builders.Policies.WaitPolicyBuilder",
+        #endregion Policy building
     };
 
     public static IReadOnlyDictionary<string, IReadOnlySet<string>> AllowedInTypes = new Dictionary<string, IReadOnlySet<String>>()

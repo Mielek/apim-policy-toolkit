@@ -1,7 +1,6 @@
 namespace Mielek.Builders.Policies
 {
     using Mielek.Generator.Attributes;
-    using Mielek.Model.Expressions;
     using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
