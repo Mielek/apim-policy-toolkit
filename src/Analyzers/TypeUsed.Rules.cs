@@ -8,7 +8,6 @@ public static partial class Rules
 {
     public static class TypeUsed
     {
-
         public readonly static DiagnosticDescriptor DisallowedType = new DiagnosticDescriptor(
             "APIM001",
             "Disallowed type used",

@@ -16,11 +16,36 @@ public class ExpressionMethodAnalyzer : DiagnosticAnalyzer
     public override void Initialize(AnalysisContext context)
     {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
-        context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.MethodDeclaration);
         context.EnableConcurrentExecution();
+
+        context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.MethodDeclaration);
     }
 
-    public void Analyze(SyntaxNodeAnalysisContext context)
+    private readonly static IReadOnlySet<string> AllowedExpressionReturnTypes = new HashSet<string>()
+    {
+        "System.Boolean",
+        "System.Byte",
+        "System.Char",
+        "System.DateTime",
+        "System.Decimal",
+        "System.Double",
+        "System.Enum",
+        "System.Guid",
+        "System.Int16",
+        "System.Int32",
+        "System.Int64",
+        "System.String",
+        "System.UInt16",
+        "System.UInt32",
+        "System.UInt64",
+        "System.Uri",
+        "Newtonsoft.Json.Linq.JObject",
+    };
+    private readonly static string ExpressionAttribute = "Mielek.Model.Attributes.ExpressionAttribute";
+    private readonly static string ContextParamType = "Mielek.Expressions.Context.IContext";
+    private readonly static string ContextParamName = "context";
+
+    private static void Analyze(SyntaxNodeAnalysisContext context)
     {
         if (context.Node is not MethodDeclarationSyntax method)
         {
@@ -28,7 +53,7 @@ public class ExpressionMethodAnalyzer : DiagnosticAnalyzer
         }
         var model = context.SemanticModel;
 
-        var isExpression = method.ContainsAttributeOfType(model, Constants.Method.ExpressionAttribute);
+        var isExpression = method.ContainsAttributeOfType(model, ExpressionAttribute);
         if (!isExpression) return;
 
         var type = model.GetTypeInfo(method.ReturnType).Type;
@@ -40,7 +65,7 @@ public class ExpressionMethodAnalyzer : DiagnosticAnalyzer
         else
         {
             var fullTypeName = type.ToFullyQualifiedString();
-            if (!Constants.AllowedExpressionReturnTypes.Contains(fullTypeName))
+            if (!AllowedExpressionReturnTypes.Contains(fullTypeName))
             {
                 var diagnostic = Diagnostic.Create(Rules.Expression.ReturnTypeNotAllowed, method.ReturnType.GetLocation(), fullTypeName);
                 context.ReportDiagnostic(diagnostic);
@@ -62,14 +87,14 @@ public class ExpressionMethodAnalyzer : DiagnosticAnalyzer
                 throw new Exception();
             }
 
-            if (parameterSymbol.Type.ToFullyQualifiedString() != Constants.Method.ContextParamType)
+            if (parameterSymbol.Type.ToFullyQualifiedString() != ContextParamType)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rules.Expression.WrongParameterType, parameter.Type?.GetLocation(), parameterSymbol.Type.ToFullyQualifiedString(), Constants.Method.ContextParamType));
+                context.ReportDiagnostic(Diagnostic.Create(Rules.Expression.WrongParameterType, parameter.Type?.GetLocation(), parameterSymbol.Type.ToFullyQualifiedString(), ContextParamType));
             }
 
-            if (parameter.Identifier.ValueText != Constants.Method.ContextParamName)
+            if (parameter.Identifier.ValueText != ContextParamName)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rules.Expression.WrongParameterName, parameter.Identifier.GetLocation(), parameter.Identifier.ValueText, Constants.Method.ContextParamName));
+                context.ReportDiagnostic(Diagnostic.Create(Rules.Expression.WrongParameterName, parameter.Identifier.GetLocation(), parameter.Identifier.ValueText, ContextParamName));
             }
         }
     }

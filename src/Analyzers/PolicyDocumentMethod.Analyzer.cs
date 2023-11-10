@@ -8,18 +8,26 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Mielek.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public class PolicyMDocumentAnalyzer : DiagnosticAnalyzer
+public class PolicyDocumentMethodAnalyzer : DiagnosticAnalyzer
 {
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => Rules.PolicyDocument.All;
 
     public override void Initialize(AnalysisContext context)
     {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
-        context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.MethodDeclaration);
         context.EnableConcurrentExecution();
+
+        context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.MethodDeclaration);
     }
 
-    public void Analyze(SyntaxNodeAnalysisContext context)
+    private readonly static IReadOnlySet<string> AllowedPolicyDocumentReturnTypes = new HashSet<string>()
+    {
+        "Mielek.Model.PolicyDocument",
+        "Mielek.Model.PolicyFragment"
+    };
+    private readonly static string PolicyDocumentAttribute = "Mielek.Model.Attributes.DocumentAttribute";
+
+    private static void Analyze(SyntaxNodeAnalysisContext context)
     {
 
         if (context.Node is not MethodDeclarationSyntax method)
@@ -28,8 +36,8 @@ public class PolicyMDocumentAnalyzer : DiagnosticAnalyzer
         }
         var model = context.SemanticModel;
 
-        var isDocument = method.ContainsAttributeOfType(model, Constants.Method.PolicyDocumentAttribute);
-        if(!isDocument) return;
+        var isDocument = method.ContainsAttributeOfType(model, PolicyDocumentAttribute);
+        if (!isDocument) return;
 
         var type = model.GetTypeInfo(method.ReturnType).Type;
         if (type == null)
@@ -40,7 +48,7 @@ public class PolicyMDocumentAnalyzer : DiagnosticAnalyzer
         else
         {
             var fullTypeName = type.ToFullyQualifiedString();
-            if (!Constants.AllowedPolicyDocumentReturnTypes.Contains(fullTypeName))
+            if (!AllowedPolicyDocumentReturnTypes.Contains(fullTypeName))
             {
                 var diagnostic = Diagnostic.Create(Rules.PolicyDocument.ReturnValue, method.ReturnType.GetLocation(), fullTypeName);
                 context.ReportDiagnostic(diagnostic);

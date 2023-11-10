@@ -1,26 +1,23 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Mielek.Analyzers;
 using Microsoft.CodeAnalysis.Testing;
-using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.Testing.Verifiers;
-using Mielek.Model.Attributes;
-using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Mielek.Analyzers;
 using Mielek.Analyzers.Test;
 using System.Data;
 
 namespace Mielek.Test.Analyzers;
 
-using Verify = Microsoft.CodeAnalysis.CSharp.Testing.MSTest.AnalyzerVerifier<ExpressionMethodAnalyzer>;
-
 [TestClass]
-public class MethodDefinitionTests
+public class ExpressionMethodTests
 {
+    public static Task VerifyAsync(string source, params DiagnosticResult[] diags)
+    {
+        return new BaseAnalyzerTest<ExpressionMethodAnalyzer>(source, diags).RunAsync();
+    }
+
     [TestMethod]
     public async Task ShouldReportWrongReturnType()
     {
-        await ExpressionMethodAnalyzerTest.VerifyAsync(
+        await VerifyAsync(
             """
             class Test 
             { 
@@ -42,9 +39,9 @@ public class MethodDefinitionTests
     [DataRow("", 0)]
     [DataRow("IContext c1, IContext c2", 2)]
     [DataRow("IContext c1, IContext c2, IContext c3", 3)]
-    public async Task ShouldReportWrongWrongParameterCount(string parameters, int count)
+    public async Task ShouldReportWrongParameterCount(string parameters, int count)
     {
-        await ExpressionMethodAnalyzerTest.VerifyAsync(
+        await VerifyAsync(
             $$"""
             class Test 
             { 

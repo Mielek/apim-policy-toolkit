@@ -4,6 +4,7 @@ using System.Reflection.Metadata;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
@@ -13,10 +14,9 @@ using Mielek.Model.Attributes;
 
 namespace Mielek.Analyzers.Test;
 
-public class ExpressionMethodAnalyzerTest : CSharpAnalyzerTest<ExpressionMethodAnalyzer, MSTestVerifier>
+public class BaseAnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, MSTestVerifier> where TAnalyzer : DiagnosticAnalyzer, new()
 {
-
-    ExpressionMethodAnalyzerTest(string source, params DiagnosticResult[] diags)
+    public BaseAnalyzerTest(string source, params DiagnosticResult[] diags)
     {
         ReferenceAssemblies = new ReferenceAssemblies("net7.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "7.0.0"), Path.Combine("ref", "net7.0"));
         TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(ExpressionAttribute).Assembly.Location));
@@ -37,11 +37,4 @@ public class ExpressionMethodAnalyzerTest : CSharpAnalyzerTest<ExpressionMethodA
         TestState.ExpectedDiagnostics.AddRange(diags);
 
     }
-
-    public static Task VerifyAsync(string source, params DiagnosticResult[] diags)
-    {
-        return new ExpressionMethodAnalyzerTest(source, diags).RunAsync();
-    }
-
-
 }

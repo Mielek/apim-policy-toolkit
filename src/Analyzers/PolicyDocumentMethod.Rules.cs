@@ -8,7 +8,6 @@ public static partial class Rules
 {
     public static class PolicyDocument
     {
-        
         public readonly static DiagnosticDescriptor ReturnValue = new DiagnosticDescriptor(
             "APIM201",
             "Disallowed document method return type",
