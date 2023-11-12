@@ -11,7 +11,7 @@ public class ChoosePolicyHandler : MarshallerHandler<ChoosePolicy>
         foreach (var when in element.Whens)
         {
             marshaller.Writer.WriteStartElement("when");
-            marshaller.Writer.WriteNullableElement("condition", when.Condition);
+            marshaller.Writer.WriteAttribute("condition", when.Condition);
             foreach (var policy in when.Policies)
             {
                 policy.Accept(marshaller);
