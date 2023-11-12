@@ -8,10 +8,10 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-using Mielek.Generator.Attributes;
+using Mielek.Generators.Attributes;
 
 
-namespace Mielek.Generator.Builder;
+namespace Mielek.Generators.Builder;
 
 [Generator]
 public class BuilderSettersGenerator : ISourceGenerator

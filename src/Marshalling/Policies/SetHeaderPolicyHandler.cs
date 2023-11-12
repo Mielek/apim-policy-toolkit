@@ -13,9 +13,7 @@ public class SetHeaderPolicyHandler : MarshallerHandler<SetHeaderPolicy>
         {
             foreach (var value in element.Values)
             {
-                marshaller.Writer.WriteStartElement("value");
-                value.Accept(marshaller);
-                marshaller.Writer.WriteEndElement();
+                marshaller.Writer.WriteElement("value", value);
             }
         }
         marshaller.Writer.WriteEndElement();

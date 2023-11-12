@@ -1,0 +1,31 @@
+{
+    "whens": {
+        "type": "array",
+        "items": {
+            "name": "when",
+            "type": "object",
+            "target": "element",
+            "properties": {
+                "condition": {
+                    "type": "bool",
+                    "target": "attribute",
+                    "expression": true
+                },
+                "policies": {
+                    "type": "array",
+                    "items": {
+                        "type": "policy"
+                    }
+                }
+            }
+        }
+    },
+    "otherwise": {
+        "type": "array",
+        "target": "element",
+        "optional": true,
+        "items": {
+            "type": "policy"
+        }
+    }
+}

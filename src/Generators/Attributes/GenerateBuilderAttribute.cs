@@ -1,12 +1,8 @@
-using System;
+namespace Mielek.Generators.Attributes;
 
-namespace Mielek.Generator.Attributes
+[AttributeUsage(AttributeTargets.Class),]
+public class GenerateBuilderAttribute : Attribute
 {
-
-    [AttributeUsage(AttributeTargets.Class),]
-    public class GenerateBuilderAttribute : Attribute
-    {
-        public GenerateBuilderAttribute(Type _)
-        { }
-    }
+    public GenerateBuilderAttribute(Type _)
+    { }
 }

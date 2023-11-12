@@ -1,8 +1,3 @@
-using System;
-
-namespace Mielek.Generator.Attributes
-{
-
-    [AttributeUsage(AttributeTargets.Field)]
-    public class IgnoreBuilderFieldAttribute : Attribute {}
-}
+namespace Mielek.Generators.Attributes;
+[AttributeUsage(AttributeTargets.Field)]
+public class IgnoreBuilderFieldAttribute : Attribute { }

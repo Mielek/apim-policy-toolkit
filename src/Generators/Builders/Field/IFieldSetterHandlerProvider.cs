@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Mielek.Generator.Builder.Field;
+namespace Mielek.Generators.Builder.Field;
 
 public interface IFieldSetterHandlerProvider
 {

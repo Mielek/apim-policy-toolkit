@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-using Mielek.Generator.Attributes;
+using Mielek.Generators.Attributes;
 
 namespace BuilderGenerator
 {

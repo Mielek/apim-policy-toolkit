@@ -1,4 +1,4 @@
-using Mielek.Generator.Attributes;
+using Mielek.Generators.Attributes;
 using Mielek.Model.Policies;
 
 namespace Mielek.Builders.Policies

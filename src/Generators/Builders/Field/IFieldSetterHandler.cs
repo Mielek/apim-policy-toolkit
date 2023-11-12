@@ -1,4 +1,4 @@
-namespace Mielek.Generator.Builder.Field;
+namespace Mielek.Generators.Builder.Field;
 
 public interface IFieldSetterHandler
 {

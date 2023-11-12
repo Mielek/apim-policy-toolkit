@@ -1,8 +1,8 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Generator.Builder.Extensions;
+using Mielek.Generators.Builder.Extensions;
 
-namespace Mielek.Generator.Builder.Field;
+namespace Mielek.Generators.Builder.Field;
 
 public class SimpleFieldHandlerProvider : IFieldSetterHandlerProvider
 {

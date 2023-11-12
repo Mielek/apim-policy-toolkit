@@ -1,7 +1,7 @@
 using Mielek.Builders.Expressions;
 using Mielek.Model.Expressions;
 using Mielek.Model.Policies;
-using Mielek.Generator.Attributes;
+using Mielek.Generators.Attributes;
 
 namespace Mielek.Builders.Policies
 {

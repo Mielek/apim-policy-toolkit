@@ -6,10 +6,10 @@ using BuilderGenerator;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Generator.Attributes;
-using Mielek.Generator.Builder.Field;
+using Mielek.Generators.Attributes;
+using Mielek.Generators.Builder.Field;
 
-namespace Mielek.Generator.Builder;
+namespace Mielek.Generators.Builder;
 
 internal class ClassSetterBuilder
 {

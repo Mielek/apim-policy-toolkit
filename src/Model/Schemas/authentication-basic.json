@@ -1,0 +1,10 @@
+{
+    "username": {
+        "type": "string",
+        "target": "attribute"
+    },
+    "password": {
+        "type": "string",
+        "target": "attribute"
+    }
+}

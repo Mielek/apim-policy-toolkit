@@ -1,4 +1,4 @@
-namespace Mielek.Generator.Builder.Extensions;
+namespace Mielek.Generators.Builder.Extensions;
 
 public static class StringExtensions
 {

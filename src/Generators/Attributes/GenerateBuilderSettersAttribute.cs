@@ -1,6 +1,4 @@
-using System;
-
-namespace Mielek.Generator.Attributes;
+namespace Mielek.Generators.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class GenerateBuilderSettersAttribute : Attribute { }

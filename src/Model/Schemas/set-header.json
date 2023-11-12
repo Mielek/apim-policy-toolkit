@@ -1,0 +1,27 @@
+{
+    "name": {
+        "type": "string",
+        "target": "attribute",
+        "expression": true
+    },
+    "exist-action": {
+        "type": "string",
+        "enum": [
+            "override",
+            "skip",
+            "append",
+            "delete"
+        ],
+        "optional": true
+    },
+    "values": {
+        "type": "array",
+        "optional": true,
+        "items": {
+            "name": "value",
+            "target": "element",
+            "type": "string",
+            "expression": true
+        }
+    }
+}

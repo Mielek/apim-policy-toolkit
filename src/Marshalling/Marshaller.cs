@@ -123,7 +123,7 @@ public class Marshaller : IVisitor, IAsyncDisposable, IDisposable
     {
         if (!Handlers.TryGetValue(typeof(T), out var handler))
         {
-            throw new Exception();
+            throw new Exception($"Handler for {typeof(T).FullName} is not registered in handlers");
         }
 
         handler.Marshal(this, element);
