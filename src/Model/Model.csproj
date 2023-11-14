@@ -9,13 +9,19 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Expressions\Context\Context.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Generators\Common\Common.csproj"
+      OutputItemType="Analyzer"
+      ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\Generators\Model\Model.csproj"
       OutputItemType="Analyzer"
       ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="./Schemas/*.json" />
+    <AdditionalFiles Include="..\Schemas\*.json" />
   </ItemGroup>
 
 </Project>

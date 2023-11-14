@@ -2,13 +2,12 @@ namespace Mielek.Generators.Model;
 
 public class ModelClassBuilder
 {
-    private string name;
-    private List<Property> properties = new List<Property>();
+    private record Property(string Name, string Type);
+
+    private readonly string name;
+    private readonly List<Property> properties = new List<Property>();
     private bool addPolicyInterfaces = false;
-
-    public record Property(string Name, string Type);
-
-    private List<string> subClasses = new List<string>();
+    private readonly List<string> subClasses = new List<string>();
 
     public ModelClassBuilder(string name)
     {

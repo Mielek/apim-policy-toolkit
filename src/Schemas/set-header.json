@@ -6,6 +6,7 @@
     },
     "exist-action": {
         "type": "string",
+        "target": "attribute",
         "enum": [
             "override",
             "skip",

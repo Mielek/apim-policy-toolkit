@@ -4,7 +4,6 @@
         "items": {
             "name": "when",
             "type": "object",
-            "target": "element",
             "properties": {
                 "condition": {
                     "type": "bool",

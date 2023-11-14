@@ -7,7 +7,10 @@ public static class StringExtensions
 
     public static string Capitalize(this string value)
         => $"{char.ToUpperInvariant(value[0])}{value[1..]}";
+    
+    public static string VariableName(this string value)
+        => $"{char.ToLowerInvariant(value[0])}{value[1..]}";
 
     public static string Intend(this string value, int indent)
-        => value.PadLeft(4 * indent, ' ');
+        => value.PadLeft(value.Length + 4 * indent, ' ');
 }

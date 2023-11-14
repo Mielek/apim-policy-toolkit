@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Mielek.Generators.Model;
 
 [Generator]
-public class ModelGenerator : ISourceGenerator
+public class MarshallerGenerator : ISourceGenerator
 {
     public readonly static DiagnosticDescriptor CouldNotReadFile = new DiagnosticDescriptor(
             "GEN001",
@@ -20,7 +20,7 @@ public class ModelGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext context)
     {
-        var compiler = new JsonToModelCompiler(context);
+        var compiler = new JsonToMarshallerCompiler(context);
         var schemaFiles = context.AdditionalFiles.Where(at => at.Path.EndsWith(".json"));
 
         foreach (var file in schemaFiles)
@@ -31,14 +31,14 @@ public class ModelGenerator : ISourceGenerator
                 var fileName = Path.GetFileNameWithoutExtension(file.Path);
                 var output = compiler.Compile(Path.GetFileNameWithoutExtension(fileName), content);
                 var generated = $$"""
-                using Mielek.Model.Expressions;
+                using Mielek.Model.Policies;
 
-                namespace Mielek.Model.Policies;
+                namespace Mielek.Marshalling.Policies;
 
                 {{output}}
                 """;
                 var sourceText = SourceText.From(generated, Encoding.UTF8);
-                context.AddSource($"{fileName}.model.g.cs", sourceText);
+                context.AddSource($"{fileName}.marshaller.g.cs", sourceText);
             }
             else
             {

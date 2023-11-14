@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Mielek.Generators.Model;
 
-public class JsonToCSharpCompiler
+public class JsonToModelCompiler
 {
     public readonly static DiagnosticDescriptor anyError = new DiagnosticDescriptor(
             "ANY",
@@ -18,7 +18,7 @@ public class JsonToCSharpCompiler
             isEnabledByDefault: true);
     private readonly GeneratorExecutionContext context;
 
-    public JsonToCSharpCompiler(GeneratorExecutionContext context)
+    public JsonToModelCompiler(GeneratorExecutionContext context)
     {
         this.context = context;
     }
@@ -75,16 +75,16 @@ public class JsonToCSharpCompiler
 
         private PropertyDescription ProcessObject(PropertyDescription description, JsonObject node)
         {
-            var newName = node["name"]?.GetValue<string>() ?? throw new NullReferenceException("name");
+            var newName = node.Name() ?? throw new NullReferenceException(node.GetPathTo("name"));
             description = description.WithType(newName.ToCamelCase());
-            var newRoot = node["properties"]?.AsObject() ?? throw new NullReferenceException("properties");
+            var newRoot = node.Properties();
             builder.WithSubClass(new InnerCompiler(description.type, newRoot, false).Compile());
             return description;
         }
 
         private PropertyDescription ProcessArray(PropertyDescription description, JsonObject node)
         {
-            var itemsNode = node["items"]?.AsObject() ?? throw new NullReferenceException("items");
+            var itemsNode = node.Items();
             var itemsDescription = CreateDescription(itemsNode);
             if (itemsDescription.type == "object")
             {
@@ -95,17 +95,23 @@ public class JsonToCSharpCompiler
                 itemsDescription = itemsDescription.WithType($"IPolicy");
             }
 
+            if(itemsDescription.expression)
+            {
+                itemsDescription = itemsDescription.WithType($"IExpression<{itemsDescription.type}>");
+            }
+
             description = description.WithType($"{itemsDescription.type}[]");
             return description;
         }
 
         private void AddProperty(string name, PropertyDescription description)
         {
-            var enumValues = description.enumValues;
-            if (enumValues != null)
-            {
-                builder.WithSubClass($"public enum {name}Enum {{ {string.Join(", ", enumValues.Select(v => v.Capitalize()))} }}");
-            }
+            // Move to marshaller
+            // var enumValues = description.enumValues;
+            // if (enumValues != null)
+            // {
+            //     builder.WithSubClass($"public enum {name}Enum {{ {string.Join(", ", enumValues.Select(v => v.Capitalize()))} }}");
+            // }
 
             if (description.expression)
             {
@@ -122,10 +128,10 @@ public class JsonToCSharpCompiler
 
         private PropertyDescription CreateDescription(JsonObject obj)
         {
-            var type = obj["type"]?.AsValue().GetValue<string>() ?? throw new NullReferenceException("type");
-            var expression = obj["expression"]?.AsValue().GetValue<bool>() ?? false;
-            var optional = obj["optional"]?.AsValue().GetValue<bool>() ?? false;
-            var enumValues = obj["enum"]?.AsArray().Select(v => v?.GetValue<string>() ?? throw new NullReferenceException("enum value")).ToArray();
+            var type = obj.Type();
+            var expression = obj.Expression();
+            var optional = obj.Optional();
+            var enumValues = obj.Enum();
             return new PropertyDescription(type, expression, optional, enumValues);
         }
 
