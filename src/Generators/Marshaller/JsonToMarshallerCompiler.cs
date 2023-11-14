@@ -27,7 +27,7 @@ public class JsonToMarshallerCompiler
         try
         {
             var root = JsonNode.Parse(text.ToString())?.AsObject() ?? throw new NullReferenceException("root is null");
-            return new InnerCompiler(fileName, root).Compile();
+            return new InnerCompiler(context, fileName, root).Compile();
         }
         catch (Exception e)
         {
@@ -38,22 +38,31 @@ public class JsonToMarshallerCompiler
 
     class InnerCompiler
     {
+        readonly GeneratorExecutionContext context;
         readonly MarshallerClassBuilder builder;
         readonly JsonObject root;
 
-        public InnerCompiler(string name, JsonObject root)
+        public InnerCompiler(GeneratorExecutionContext context, string name, JsonObject root)
         {
+            this.context = context;
             builder = new MarshallerClassBuilder(name, name.ToCamelCase());
-
             this.root = root;
         }
 
         public string Compile()
         {
-            foreach (var element in root)
+            try
             {
-                var node = element.Value?.AsObject() ?? throw new NullReferenceException(root.GetPathTo(element.Key));
-                ProcessDescription(element.Key, node);
+                foreach (var element in root)
+                {
+                    var node = element.Value?.AsObject() ?? throw new NullReferenceException(root.GetPathTo(element.Key));
+                    ProcessDescription(element.Key, node);
+                }
+
+            }
+            catch (Exception e)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(anyError, null, e.Message));
             }
             return builder.Build();
         }
@@ -71,14 +80,14 @@ public class JsonToMarshallerCompiler
             switch (type)
             {
                 case "array":
-                    if(target == "element")
+                    if (target == "element")
                     {
                         builder.AppendStartElement(elementName);
                     }
                     builder.AppendForEach(propertyName.VariableName(), propertyName);
                     ProcessArray(value.Items());
-                    builder.FinishPart();
-                    if(target == "element")
+                    builder.FinishPart(true);
+                    if (target == "element")
                     {
                         builder.FinishPart();
                     }
@@ -113,7 +122,7 @@ public class JsonToMarshallerCompiler
         private void ProcessObject(JsonObject value)
         {
             var implicitName = value.Name();
-            if(implicitName != null)
+            if (implicitName != null)
             {
                 builder.AppendStartElement(implicitName);
             }
@@ -122,7 +131,7 @@ public class JsonToMarshallerCompiler
                 var node = element.Value?.AsObject() ?? throw new NullReferenceException(value.GetPathTo(element.Key));
                 ProcessDescription(element.Key, node);
             }
-            if(implicitName != null)
+            if (implicitName != null)
             {
                 builder.FinishPart();
             }

@@ -43,6 +43,7 @@
     },
     "allowed-headers": {
         "type": "array",
+        "name": "allowed-headers",
         "target": "element",
         "items": {
             "type": "string",
@@ -52,6 +53,7 @@
     },
     "expose-headers": {
         "type": "array",
+        "name": "expose-headers",
         "target": "element",
         "items": {
             "type": "string",

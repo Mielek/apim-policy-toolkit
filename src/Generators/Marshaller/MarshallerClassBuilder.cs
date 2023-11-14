@@ -73,13 +73,9 @@ public class MarshallerClassBuilder
         return this;
     }
 
-    public MarshallerClassBuilder FinishPart()
+    public MarshallerClassBuilder FinishPart(bool popVarStack = false)
     {
-        if (closingsStack.Count < varNameStack.Count)
-        {
-            varNameStack.Pop();
-        }
-        else if (closingsStack.TryPop(out var result))
+        if (closingsStack.TryPop(out var result))
         {
             builder.AppendLine(result);
             var newIndent = result.TakeWhile(c => c == ' ').Count() / 4;
@@ -88,7 +84,7 @@ public class MarshallerClassBuilder
                 indent = newIndent;
             }
 
-            if (result.Trim() == "}")
+            if (popVarStack)
             {
                 varNameStack.Pop();
             }
