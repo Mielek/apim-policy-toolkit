@@ -2,10 +2,10 @@ using Mielek.Model.Expressions;
 
 namespace Mielek.Model.Policies;
 
-public sealed record AuthenticationBasicPolicy(
-    string Username,
-    string Password
-) : Visitable<AuthenticationBasicPolicy>, IPolicy;
+// public sealed record AuthenticationBasicPolicy(
+//     string Username,
+//     string Password
+// ) : Visitable<AuthenticationBasicPolicy>, IPolicy;
 
 public sealed record AuthenticationCertificatePolicy(
     string? Thumbprint = null,

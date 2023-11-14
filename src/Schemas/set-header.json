@@ -4,7 +4,7 @@
         "target": "attribute",
         "expression": true
     },
-    "exist-action": {
+    "exists-action": {
         "type": "string",
         "target": "attribute",
         "enum": [
@@ -13,7 +13,8 @@
             "append",
             "delete"
         ],
-        "optional": true
+        "optional": true,
+        "expression": true
     },
     "values": {
         "type": "array",

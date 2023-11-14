@@ -8,7 +8,7 @@ namespace Mielek.Builders.Policies
 
     public partial class ChoosePolicyBuilder
     {
-        private readonly ImmutableList<ChooseWhen>.Builder _whens = ImmutableList.CreateBuilder<ChooseWhen>();
+        private readonly ImmutableList<ChoosePolicyWhen>.Builder _whens = ImmutableList.CreateBuilder<ChoosePolicyWhen>();
         private ICollection<IPolicy>? _otherwise;
 
         public ChoosePolicyBuilder When(Action<ChooseWhenBuilder> configurator)
@@ -29,7 +29,7 @@ namespace Mielek.Builders.Policies
 
         public ChoosePolicy Build()
         {
-            return new ChoosePolicy(_whens.ToImmutable(), _otherwise);
+            return new ChoosePolicy(_whens.ToArray(), _otherwise?.ToArray());
         }
     }
 
@@ -49,12 +49,12 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public ChooseWhen Build()
+        public ChoosePolicyWhen Build()
         {
             if(_condition == null) throw new NullReferenceException();
             if(_policies == null) throw new NullReferenceException();
 
-            return new ChooseWhen(_condition, _policies);
+            return new ChoosePolicyWhen(_condition, _policies.ToArray());
         }
     }
 }

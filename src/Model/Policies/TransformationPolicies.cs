@@ -2,12 +2,12 @@ using Mielek.Model.Expressions;
 
 namespace Mielek.Model.Policies;
 
-public sealed record SetHeaderPolicy(
-    IExpression<string> Name,
-    ICollection<IExpression<string>>? Values = null,
-    IExpression<string>? ExistsAction = null
-) : Visitable<SetHeaderPolicy>, IPolicy;
-public enum SetHeaderExistsAction { Override, Skip, Append, Delete }
+// public sealed record SetHeaderPolicy(
+//     IExpression<string> Name,
+//     ICollection<IExpression<string>>? Values = null,
+//     IExpression<string>? ExistsAction = null
+// ) : Visitable<SetHeaderPolicy>, IPolicy;
+// public enum SetHeaderExistsAction { Override, Skip, Append, Delete }
 
 public sealed record SetBodyPolicy(
     IExpression<string> Body,

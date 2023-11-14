@@ -28,7 +28,7 @@ public class JsonToModelCompiler
         try
         {
             var root = JsonNode.Parse(text.ToString())?.AsObject() ?? throw new NullReferenceException("root is null");
-            return new InnerCompiler(fileName.ToCamelCase(), root, true).Compile();
+            return new InnerCompiler(context, fileName.ToCamelCase() + "Policy", root, true).Compile();
         }
         catch (Exception e)
         {
@@ -39,11 +39,15 @@ public class JsonToModelCompiler
 
     class InnerCompiler
     {
+        readonly GeneratorExecutionContext context;
         readonly ModelClassBuilder builder;
         readonly JsonObject root;
+        readonly string rootName;
 
-        public InnerCompiler(string name, JsonObject root, bool isPolicy)
+        public InnerCompiler(GeneratorExecutionContext context, string name, JsonObject root, bool isPolicy)
         {
+            this.context = context;
+            rootName = name;
             builder = new ModelClassBuilder(name).WithAddPolicyInterfaces(isPolicy);
 
             this.root = root;
@@ -51,24 +55,31 @@ public class JsonToModelCompiler
 
         public string Compile()
         {
-            foreach (var element in root)
+            try
             {
-                var propertyName = element.Key.ToCamelCase();
-                var node = element.Value?.AsObject() ?? throw new NullReferenceException(element.Key);
-                var description = CreateDescription(node);
-                switch (description.type)
+                foreach (var element in root)
                 {
-                    case "object":
-                        description = ProcessObject(description, node);
-                        break;
-                    case "array":
-                        description = ProcessArray(description, node);
-                        break;
-                    case "policy":
-                        description = description.WithType($"IPolicy");
-                        break;
+                    var propertyName = element.Key.ToCamelCase();
+                    var node = element.Value?.AsObject() ?? throw new NullReferenceException(element.Key);
+                    var description = CreateDescription(node);
+                    switch (description.type)
+                    {
+                        case "object":
+                            description = ProcessObject(description, node);
+                            break;
+                        case "array":
+                            description = ProcessArray(description, node);
+                            break;
+                        case "policy":
+                            description = description.WithType($"IPolicy");
+                            break;
+                    }
+                    AddProperty(propertyName, description);
                 }
-                AddProperty(propertyName, description);
+            }
+            catch (Exception e)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(anyError, null, e.Message));
             }
             return builder.Build();
         }
@@ -76,9 +87,9 @@ public class JsonToModelCompiler
         private PropertyDescription ProcessObject(PropertyDescription description, JsonObject node)
         {
             var newName = node.Name() ?? throw new NullReferenceException(node.GetPathTo("name"));
-            description = description.WithType(newName.ToCamelCase());
+            description = description.WithType(rootName + newName.ToCamelCase());
             var newRoot = node.Properties();
-            builder.WithSubClass(new InnerCompiler(description.type, newRoot, false).Compile());
+            builder.WithSubClass(new InnerCompiler(context, description.type, newRoot, false).Compile());
             return description;
         }
 
@@ -95,7 +106,7 @@ public class JsonToModelCompiler
                 itemsDescription = itemsDescription.WithType($"IPolicy");
             }
 
-            if(itemsDescription.expression)
+            if (itemsDescription.expression)
             {
                 itemsDescription = itemsDescription.WithType($"IExpression<{itemsDescription.type}>");
             }
@@ -106,12 +117,11 @@ public class JsonToModelCompiler
 
         private void AddProperty(string name, PropertyDescription description)
         {
-            // Move to marshaller
-            // var enumValues = description.enumValues;
-            // if (enumValues != null)
-            // {
-            //     builder.WithSubClass($"public enum {name}Enum {{ {string.Join(", ", enumValues.Select(v => v.Capitalize()))} }}");
-            // }
+            var enumValues = description.enumValues;
+            if (enumValues != null)
+            {
+                builder.WithSubClass($"public enum {rootName}{name} {{ {string.Join(", ", enumValues.Select(v => v.Capitalize()))} }}");
+            }
 
             if (description.expression)
             {

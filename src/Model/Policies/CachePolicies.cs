@@ -19,3 +19,25 @@ public sealed record CacheStorePolicy(
     IExpression<uint> Duration,
     bool? CacheResponse = null
 ) : Visitable<CacheStorePolicy>, IPolicy;
+
+public sealed record CacheLookupValuePolicy(
+    IExpression<string> Key,
+    string VariableName,
+    IExpression<string>? DefaultValue,
+    CacheLookupValueCachingType? CachingType
+) : Visitable<CacheLookupValuePolicy>, IPolicy;
+public enum CacheLookupValueCachingType { Internal, External, PreferExternal }
+
+public sealed record CacheStoreValuePolicy(
+    IExpression<string> Key,
+    IExpression<string> Value,
+    IExpression<uint> Duration,
+    CacheStoreValuePolicyCachingType? CachingType
+) : Visitable<CacheStoreValuePolicy>, IPolicy;
+public enum CacheStoreValuePolicyCachingType { Internal, External, PreferExternal }
+
+public sealed record CacheRemoveValuePolicy(
+    IExpression<string> Key,
+    CacheRemoveValuePolicyCachingType? CachingType
+) : Visitable<CacheStoreValuePolicy>, IPolicy;
+public enum CacheRemoveValuePolicyCachingType { Internal, External, PreferExternal }

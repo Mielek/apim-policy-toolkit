@@ -2,11 +2,19 @@ using Mielek.Model.Expressions;
 
 namespace Mielek.Model.Policies;
 
-public sealed record ChoosePolicy(
-    ICollection<ChooseWhen> Whens,
-    ICollection<IPolicy>? Otherwise = null
-) : Visitable<ChoosePolicy>, IPolicy;
-public record ChooseWhen(IExpression<bool> Condition, ICollection<IPolicy> Policies);
+// public sealed record ChoosePolicy(
+//     ICollection<ChooseWhen> Whens,
+//     ICollection<IPolicy>? Otherwise = null
+// ) : Visitable<ChoosePolicy>, IPolicy;
+// public record ChooseWhen(IExpression<bool> Condition, ICollection<IPolicy> Policies);
+
+public sealed record EmitMetricPolicy(
+    string Name,
+    ICollection<EmitMetricDimension> Dimensions,
+    IExpression<string>? Value = null,
+    string? Namespace = null
+) : Visitable<EmitMetricPolicy>, IPolicy;
+public record EmitMetricDimension(string Name, IExpression<string>? Value = null);
 
 public sealed record ForwardRequestPolicy(
     uint? Timeout = null,
@@ -15,6 +23,8 @@ public sealed record ForwardRequestPolicy(
     bool? BufferResponse = null,
     bool? FailOnErrorStatusCode = null
 ) : Visitable<ForwardRequestPolicy>, IPolicy;
+
+public sealed record IncludeFragmentPolicy(string FragmentId) : Visitable<IncludeFragmentPolicy>, IPolicy;
 
 public sealed record LimitConcurrencyPolicy(
     IExpression<string> Key,
@@ -28,15 +38,6 @@ public sealed record LogToEventhubPolicy(
     string? PartitionId = null,
     string? PartitionKey = null
 ) : Visitable<LogToEventhubPolicy>, IPolicy;
-
-public sealed record EmitMetricPolicy(
-    string Name,
-    ICollection<EmitMetricDimension> Dimensions,
-    IExpression<string>? Value = null,
-    string? Namespace = null
-) : Visitable<EmitMetricPolicy>, IPolicy;
-public record EmitMetricDimension(string Name, IExpression<string>? Value = null);
-
 public sealed record MockResponsePolicy(uint? StatusCode = null, string? ContentType = null) : Visitable<MockResponsePolicy>, IPolicy;
 
 public sealed record RetryPolicy(
