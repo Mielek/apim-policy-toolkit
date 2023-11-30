@@ -1,10 +1,11 @@
 namespace Mielek.Builders.Policies
 {
     using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
+
 
     [GenerateBuilderSetters]
     public partial class SendRequestPolicyBuilder
@@ -15,14 +16,14 @@ namespace Mielek.Builders.Policies
         private bool? _ignoreError;
         private IExpression<string>? _setUrl;
         [IgnoreBuilderField]
-        private SetMethodPolicy? _setMethod;
+        private XElement? _setMethod;
         private IExpression<string>? _setBody;
 
         [IgnoreBuilderField]
-        private ImmutableList<SetHeaderPolicy>.Builder? _setHeaders;
+        private ImmutableList<XElement>.Builder? _setHeaders;
 
         [IgnoreBuilderField]
-        private AuthenticationCertificatePolicy? _authenticationCertificate;
+        private XElement? _authenticationCertificate;
 
         public SendRequestPolicyBuilder SetMethod(Action<SetMethodPolicyBuilder> configurator)
         {
@@ -36,7 +37,7 @@ namespace Mielek.Builders.Policies
         {
             var builder = new SetHeaderPolicyBuilder();
             configurator(builder);
-            (_setHeaders ??= ImmutableList.CreateBuilder<SetHeaderPolicy>()).Add(builder.Build());
+            (_setHeaders ??= ImmutableList.CreateBuilder<XElement>()).Add(builder.Build());
             return this;
         }
 
@@ -48,7 +49,7 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public SendRequestPolicy Build()
+        public XElement Build()
         {
             if (_responseVariableName == null) throw new NullReferenceException();
             if (_mode != SendRequestMode.Copy)
@@ -56,8 +57,56 @@ namespace Mielek.Builders.Policies
                 if (_setUrl == null) throw new NullReferenceException();
                 if (_setMethod == null) throw new NullReferenceException();
             }
-            return new SendRequestPolicy(_responseVariableName, _mode, _timeout, _ignoreError, _setUrl, _setMethod, _setBody, _setHeaders?.ToImmutable(), _authenticationCertificate);
+
+            var children = ImmutableArray.CreateBuilder<object>();
+
+            if (_mode != null)
+            {
+                children.Add(new XAttribute("mode", TranslateMode(_mode)));
+            }
+            children.Add(new XAttribute("response-variable-name", _responseVariableName));
+            if (_timeout != null)
+            {
+                children.Add(new XAttribute("timeout", _timeout));
+            }
+            if (_ignoreError != null)
+            {
+                children.Add(new XAttribute("ignore-error", _ignoreError));
+            }
+
+            if(_setMethod != null)
+            {
+                children.Add(_setMethod);
+            }
+            if(_setUrl != null)
+            {
+                children.Add(new XElement("set-url", _setUrl.GetXText()));
+            }
+            if(_setHeaders != null && _setHeaders.Count > 0)
+            {
+                children.AddRange(_setHeaders.ToArray());
+            }
+            if(_setBody != null)
+            {
+                children.Add(new XElement("set-body", _setBody.GetXText()));
+            }
+            if(_authenticationCertificate != null)
+            {
+                children.Add(_authenticationCertificate);
+            }
+
+            return new XElement("send-request", children.ToArray());
         }
+
+        public enum SendRequestMode { New, Copy }
+        private static string TranslateMode(SendRequestMode? mode) => mode switch
+        {
+            SendRequestMode.Copy => "copy",
+            SendRequestMode.New => "new",
+            _ => throw new Exception(),
+        };
+
+
     }
 }
 

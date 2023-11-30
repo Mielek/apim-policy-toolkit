@@ -1,8 +1,10 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
+
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class LimitConcurrencyPolicyBuilder
@@ -11,7 +13,7 @@ namespace Mielek.Builders.Policies
         private uint? _maxCount;
 
         [IgnoreBuilderField]
-        private ICollection<IPolicy>? _policies;
+        private ICollection<XElement>? _policies;
 
         public LimitConcurrencyPolicyBuilder Policies(Action<PolicySectionBuilder> configurator)
         {
@@ -21,13 +23,18 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public LimitConcurrencyPolicy Build()
+        public XElement Build()
         {
-            if(_key == null) throw new NullReferenceException();
-            if(_maxCount == null) throw new NullReferenceException();
-            if(_policies == null) throw new NullReferenceException();
+            if (_key == null) throw new NullReferenceException();
+            if (_maxCount == null) throw new NullReferenceException();
+            if (_policies == null) throw new NullReferenceException();
 
-            return new LimitConcurrencyPolicy(_key, _maxCount.Value, _policies);
+            var children = ImmutableArray.CreateBuilder<object>();
+            children.Add(new XAttribute("key", _key.GetXText()));
+            children.Add(new XAttribute("max-count", _maxCount));
+            children.AddRange(_policies.ToArray());
+
+            return new XElement("limit-concurrency", children.ToArray());
         }
     }
 }

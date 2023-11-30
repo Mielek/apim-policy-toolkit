@@ -1,14 +1,17 @@
 namespace Mielek.Builders.Policies
 {
     using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
+
 
     [GenerateBuilderSetters]
     public partial class SetHeaderPolicyBuilder
     {
+        public enum SetHeaderPolicyExistsAction { Override, Skip, Append, Delete }
+
         private IExpression<string>? _name;
         private ImmutableList<IExpression<string>>.Builder? _values;
         private IExpression<string>? _existsAction;
@@ -27,11 +30,22 @@ namespace Mielek.Builders.Policies
             _ => throw new Exception(),
         };
 
-        public SetHeaderPolicy Build()
+        public XElement Build()
         {
             if (_name == null) throw new NullReferenceException();
 
-            return new SetHeaderPolicy(_name, _existsAction, _values?.ToArray());
+            var children = ImmutableArray.CreateBuilder<object>();
+            children.Add(new XAttribute("name", _name.GetXText()));
+            if (_existsAction != null)
+            {
+                children.Add(new XAttribute("exists-action", _existsAction.GetXText()));
+            }
+            if (_values != null && _values.Count > 0)
+            {
+                children.AddRange(_values.ToImmutable().Select(v => new XElement("value", v.GetXText())));
+            }
+
+            return new XElement("set-header", children.ToArray());
         }
 
     }

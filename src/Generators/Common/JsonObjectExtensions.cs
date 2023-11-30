@@ -1,6 +1,6 @@
 using System.Text.Json.Nodes;
 
-namespace Mielek.Generators.Model;
+namespace Mielek.Generators.Common;
 
 public static class JsonObjectExtensions
 {

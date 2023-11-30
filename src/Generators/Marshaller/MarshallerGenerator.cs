@@ -3,7 +3,9 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Mielek.Generators.Model;
+using Mielek.Generators.Common;
+
+namespace Mielek.Generators.Marshaller;
 
 [Generator]
 public class MarshallerGenerator : ISourceGenerator

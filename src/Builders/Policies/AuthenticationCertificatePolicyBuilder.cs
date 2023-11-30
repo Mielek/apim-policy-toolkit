@@ -1,8 +1,10 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
+
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class AuthenticationCertificatePolicyBuilder
@@ -12,12 +14,36 @@ namespace Mielek.Builders.Policies
         private IExpression<string>? _body;
         private string? _password;
 
-        public AuthenticationCertificatePolicy Build()
+        public XElement Build()
         {
             if ((_thumbprint == null) == (_certificateId == null)) throw new Exception();
             if (_password != null && _body == null) throw new Exception();
 
-            return new AuthenticationCertificatePolicy(_thumbprint, _certificateId, _body, _password);
+
+            var attributes = ImmutableArray.CreateBuilder<object>();
+
+            if (_thumbprint != null)
+            {
+                attributes.Add(new XAttribute("thumbprint", _thumbprint));
+            }
+
+            if (_certificateId != null)
+            {
+                attributes.Add(new XAttribute("certificate-id", _certificateId));
+            }
+
+            if (_body != null)
+            {
+                attributes.Add(new XAttribute("body", _body.GetXText()));
+            }
+
+            if (_password != null)
+            {
+                attributes.Add(new XAttribute("password", _password));
+            }
+
+
+            return new XElement("authentication-certificate", attributes.ToArray());
         }
     }
 }

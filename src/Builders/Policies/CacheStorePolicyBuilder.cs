@@ -1,8 +1,10 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
+
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class CacheStorePolicyBuilder
@@ -10,11 +12,20 @@ namespace Mielek.Builders.Policies
         private IExpression<uint>? _duration;
         private bool? _cacheResponse;
 
-        public CacheStorePolicy Build()
+        public XElement Build()
         {
             if (_duration == null) throw new NullReferenceException();
 
-            return new CacheStorePolicy(_duration, _cacheResponse);
+            var children = ImmutableArray.CreateBuilder<object>();
+            
+            children.Add(new XAttribute("duration", _duration.GetXText()));
+
+            if(_cacheResponse != null)
+            {
+                children.Add(new XAttribute("client-id", _cacheResponse));
+            }
+
+            return new XElement("cache-store", children.ToArray());
         }
     }
 }

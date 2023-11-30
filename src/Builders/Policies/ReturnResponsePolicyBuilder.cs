@@ -1,24 +1,26 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
+
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class ReturnResponsePolicyBuilder
     {
         [IgnoreBuilderField]
-        private SetHeaderPolicy? _setHeaderPolicy;
+        private ImmutableList<XElement>.Builder? _setHeaderPolicies;
         [IgnoreBuilderField]
-        private SetBodyPolicy? _setBodyPolicy;
+        private XElement? _setBodyPolicy;
         [IgnoreBuilderField]
-        private SetStatusPolicy? _setStatusPolicy;
+        private XElement? _setStatusPolicy;
         private string? _responseVariableName;
 
         public ReturnResponsePolicyBuilder SetHeader(Action<SetHeaderPolicyBuilder> configuration)
         {
             var builder = new SetHeaderPolicyBuilder();
             configuration(builder);
-            _setHeaderPolicy = builder.Build();
+            (_setHeaderPolicies ??= ImmutableList.CreateBuilder<XElement>()).Add(builder.Build());
             return this;
         }
         public ReturnResponsePolicyBuilder SetBody(Action<SetBodyPolicyBuilder> configuration)
@@ -36,14 +38,30 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public ReturnResponsePolicy Build()
+        public XElement Build()
         {
+            var children = ImmutableArray.CreateBuilder<object>();
+            if (_responseVariableName != null)
+            {
+                children.Add(new XAttribute("response-variable-name", _responseVariableName));
+            }
+            if (_setStatusPolicy != null)
+            {
+                children.Add(_setStatusPolicy);
+            }
+            if (_setHeaderPolicies != null && _setHeaderPolicies.Count > 0)
+            {
+                children.AddRange(_setHeaderPolicies.ToImmutable());
+            }
+            if (_setBodyPolicy != null)
+            {
+                children.Add(_setBodyPolicy);
+            }
 
-            return new ReturnResponsePolicy(_setHeaderPolicy, _setBodyPolicy, _setStatusPolicy, _responseVariableName);
+            return new XElement("return-response", children.ToArray());
         }
     }
 }
-
 
 namespace Mielek.Builders
 {

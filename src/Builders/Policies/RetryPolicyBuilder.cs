@@ -1,9 +1,10 @@
 namespace Mielek.Builders.Policies
 {
-    using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Builders.Expressions;
+    using Mielek.Generators.Attributes;
 
     [GenerateBuilderSetters]
     public partial class RetryPolicyBuilder
@@ -12,7 +13,7 @@ namespace Mielek.Builders.Policies
         private uint? _count;
         private uint? _interval;
         [IgnoreBuilderField]
-        private ICollection<IPolicy>? _policies;
+        private ICollection<XElement>? _policies;
         private uint? _maxInterval;
         private uint? _delta;
         private IExpression<string>? _firstFastRetry;
@@ -25,14 +26,34 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public RetryPolicy Build()
+        public XElement Build()
         {
-            if(_condition == null) throw new NullReferenceException();
-            if(_count == null) throw new NullReferenceException();
-            if(_interval == null) throw new NullReferenceException();
-            if(_policies == null) throw new NullReferenceException();
+            if (_condition == null) throw new NullReferenceException();
+            if (_count == null) throw new NullReferenceException();
+            if (_interval == null) throw new NullReferenceException();
+            if (_policies == null) throw new NullReferenceException();
 
-            return new RetryPolicy(_condition, _count.Value, _interval.Value, _policies, _maxInterval, _delta, _firstFastRetry);
+            var children = ImmutableArray.CreateBuilder<object>();
+            children.Add(new XAttribute("condition", _condition.GetXText()));
+            children.Add(new XAttribute("count", _count));
+            children.Add(new XAttribute("interval", _interval));
+
+            if (_maxInterval != null)
+            {
+                children.Add(new XAttribute("max-interval", _maxInterval));
+            }
+            if (_delta != null)
+            {
+                children.Add(new XAttribute("delta", _delta));
+            }
+            if (_firstFastRetry != null)
+            {
+                children.Add(new XAttribute("first-fast-retry", _firstFastRetry.GetXText()));
+            }
+
+            children.AddRange(_policies);
+
+            return new XElement("retry", children.ToArray());
         }
     }
 }

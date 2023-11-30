@@ -1,8 +1,9 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Xml.Linq;
+
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class SetVariablePolicyBuilder
@@ -10,12 +11,16 @@ namespace Mielek.Builders.Policies
         private string? _name;
         private IExpression<string>? _value;
 
-        public SetVariablePolicy Build()
+        public XElement Build()
         {
             if (_name == null) throw new NullReferenceException();
             if (_value == null) throw new NullReferenceException();
 
-            return new SetVariablePolicy(_name, _value);
+            var children = new[] {
+                new XAttribute("name", _name),
+                new XAttribute("value", _value.GetXText())
+            };
+            return new XElement("set-variable", children);
         }
 
     }

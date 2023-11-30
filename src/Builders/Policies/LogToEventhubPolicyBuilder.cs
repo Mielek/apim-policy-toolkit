@@ -1,8 +1,10 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
+
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class LogToEventhubPolicyBuilder
@@ -12,12 +14,27 @@ namespace Mielek.Builders.Policies
         private string? _partitionId;
         private string? _partitionKey;
 
-        public LogToEventhubPolicy Build()
+        public XElement Build()
         {
             if (_loggerId == null) throw new NullReferenceException();
             if (_value == null) throw new NullReferenceException();
-            
-            return new LogToEventhubPolicy(_loggerId, _value, _partitionId, _partitionKey);
+
+            var children = ImmutableArray.CreateBuilder<object>();
+            children.Add(new XAttribute("logger-id", _loggerId));
+
+            if (_partitionId != null)
+            {
+                children.Add(new XAttribute("partition-id", _partitionId));
+            }
+
+            if (_partitionKey != null)
+            {
+                children.Add(new XAttribute("partition-key", _partitionKey));
+            }
+
+            children.Add(_value.GetXText());
+
+            return new XElement("log-to-eventhub", children.ToArray());
         }
     }
 }

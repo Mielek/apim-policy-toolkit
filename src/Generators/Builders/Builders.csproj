@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Attributes\Attributes.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
 </Project>

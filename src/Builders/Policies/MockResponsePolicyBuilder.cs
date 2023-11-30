@@ -1,18 +1,31 @@
 namespace Mielek.Builders.Policies
 {
-    using Mielek.Generators.Attributes;
-    using Mielek.Model.Policies;
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Generators.Attributes;
 
     [GenerateBuilderSetters]
     public partial class MockResponsePolicyBuilder
     {
         private uint? _statusCode;
         private string? _contentType;
-        
-        public MockResponsePolicy Build()
+
+        public XElement Build()
         {
-            return new MockResponsePolicy(_statusCode, _contentType);
+            var children = ImmutableArray.CreateBuilder<object>();
+
+            if (_statusCode != null)
+            {
+                children.Add(new XAttribute("status-code", _statusCode));
+            }
+
+            if (_contentType != null)
+            {
+                children.Add(new XAttribute("content-type", _contentType));
+            }
+
+            return new XElement("mock-response", children.ToArray());
         }
     }
 }

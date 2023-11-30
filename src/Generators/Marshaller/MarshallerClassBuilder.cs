@@ -1,6 +1,8 @@
 using System.Text;
 
-namespace Mielek.Generators.Model;
+using Mielek.Generators.Common;
+
+namespace Mielek.Generators.Marshaller;
 
 public class MarshallerClassBuilder
 {
@@ -70,6 +72,12 @@ public class MarshallerClassBuilder
     {
         builder.AppendLine($"var {varName} = {CurrentVarName}.{accessor};".Intend(indent));
         varNameStack.Push(varName);
+        return this;
+    }
+
+    public MarshallerClassBuilder PopVariable()
+    {
+        varNameStack.Pop();
         return this;
     }
 

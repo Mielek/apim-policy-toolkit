@@ -1,15 +1,15 @@
 namespace Mielek.Builders.Policies
 {
     using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     public partial class ChoosePolicyBuilder
     {
-        private readonly ImmutableList<ChoosePolicyWhen>.Builder _whens = ImmutableList.CreateBuilder<ChoosePolicyWhen>();
-        private ICollection<IPolicy>? _otherwise;
+        private readonly ImmutableList<XElement>.Builder _whens = ImmutableList.CreateBuilder<XElement>();
+        private ICollection<XElement>? _otherwise;
 
         public ChoosePolicyBuilder When(Action<ChooseWhenBuilder> configurator)
         {
@@ -27,9 +27,18 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public ChoosePolicy Build()
+        public XElement Build()
         {
-            return new ChoosePolicy(_whens.ToArray(), _otherwise?.ToArray());
+            var children = ImmutableArray.CreateBuilder<object>();
+
+            children.Add(_whens.ToArray());
+
+            if (_otherwise != null && _otherwise.Count > 0)
+            {
+                children.Add(new XElement("otherwise", _otherwise.ToArray()));
+            }
+
+            return new XElement("choose", children.ToArray());
         }
     }
 
@@ -39,7 +48,7 @@ namespace Mielek.Builders.Policies
         private IExpression<bool>? _condition;
 
         [IgnoreBuilderField]
-        private ICollection<IPolicy>? _policies;
+        private ICollection<XElement>? _policies;
 
         public ChooseWhenBuilder Policies(Action<PolicySectionBuilder> configurator)
         {
@@ -49,12 +58,16 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public ChoosePolicyWhen Build()
+        public XElement Build()
         {
-            if(_condition == null) throw new NullReferenceException();
-            if(_policies == null) throw new NullReferenceException();
+            if (_condition == null) throw new NullReferenceException();
+            if (_policies == null) throw new NullReferenceException();
 
-            return new ChoosePolicyWhen(_condition, _policies.ToArray());
+            var children = ImmutableArray.CreateBuilder<object>();
+            children.Add(new XAttribute("condition", _condition.GetXText()));
+            children.AddRange(_policies.ToArray());
+
+            return new XElement("when", children.ToArray());
         }
     }
 }

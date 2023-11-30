@@ -1,7 +1,8 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Xml.Linq;
+
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class AuthenticationBasicPolicyBuilder
@@ -9,12 +10,15 @@ namespace Mielek.Builders.Policies
         private string? _username;
         private string? _password;
 
-        public AuthenticationBasicPolicy Build()
+        public XElement Build()
         {
             if (_username == null) throw new NullReferenceException();
             if (_password == null) throw new NullReferenceException();
 
-            return new AuthenticationBasicPolicy(_username, _password);
+            return new XElement("authentication-basic", new object[] {
+                new XAttribute("username", _username),
+                new XAttribute("password", _password),
+            });
         }
     }
 }

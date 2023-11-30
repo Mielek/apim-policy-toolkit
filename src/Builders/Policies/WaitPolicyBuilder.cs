@@ -1,15 +1,18 @@
 namespace Mielek.Builders.Policies
 {
-    using Mielek.Generators.Attributes;
-    using Mielek.Model.Policies;
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Generators.Attributes;
 
     [GenerateBuilderSetters]
     public partial class WaitPolicyBuilder
     {
+        public enum WaitFor { All, Any }
+
         private WaitFor? _for;
         [IgnoreBuilderField]
-        private ICollection<IPolicy>? _policies;
+        private ICollection<XElement>? _policies;
 
         public WaitPolicyBuilder Policies(Action<PolicySectionBuilder> configurator)
         {
@@ -19,12 +22,26 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public WaitPolicy Build()
+        public XElement Build()
         {
-            if(_policies == null) throw new NullReferenceException();
+            if (_policies == null) throw new NullReferenceException();
 
-            return new WaitPolicy(_policies, _for);
+            var children = ImmutableArray.CreateBuilder<object>();
+            if(_for != null)
+            {
+                children.Add(new XAttribute("for", TranslateFor(_for)));
+            }
+
+            children.AddRange(_policies.ToArray());
+
+            return new XElement("wait", _for);
         }
+        private static string TranslateFor(WaitFor? waitFor) => waitFor switch
+        {
+            WaitFor.All => "all",
+            WaitFor.Any => "any",
+            _ => throw new Exception(),
+        };
     }
 }
 

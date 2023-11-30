@@ -1,10 +1,10 @@
 namespace Mielek.Builders.Policies
 {
     using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class SendOneWayRequestPolicyBuilder
@@ -13,14 +13,14 @@ namespace Mielek.Builders.Policies
         private uint? _timeout;
         private IExpression<string>? _setUrl;
         [IgnoreBuilderField]
-        private SetMethodPolicy? _setMethod;
+        private XElement? _setMethod;
         private IExpression<string>? _setBody;
 
         [IgnoreBuilderField]
-        private ImmutableList<SetHeaderPolicy>.Builder? _setHeaders;
+        private ImmutableList<XElement>.Builder? _setHeaders;
 
         [IgnoreBuilderField]
-        private AuthenticationCertificatePolicy? _authenticationCertificate;
+        private XElement? _authenticationCertificate;
 
         public SendOneWayRequestPolicyBuilder SetMethod(Action<SetMethodPolicyBuilder> configurator)
         {
@@ -34,7 +34,7 @@ namespace Mielek.Builders.Policies
         {
             var builder = new SetHeaderPolicyBuilder();
             configurator(builder);
-            (_setHeaders ??= ImmutableList.CreateBuilder<SetHeaderPolicy>()).Add(builder.Build());
+            (_setHeaders ??= ImmutableList.CreateBuilder<XElement>()).Add(builder.Build());
             return this;
         }
 
@@ -46,15 +46,55 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public SendOneWayRequestPolicy Build()
+        public XElement Build()
         {
             if (_mode != SendOneWayRequestMode.Copy)
             {
                 if (_setUrl == null) throw new NullReferenceException();
                 if (_setMethod == null) throw new NullReferenceException();
             }
-            return new SendOneWayRequestPolicy(_mode, _timeout, _setUrl, _setMethod, _setBody, _setHeaders?.ToImmutable(), _authenticationCertificate);
+
+            var children = ImmutableArray.CreateBuilder<object>();
+
+            if(_mode != null)
+            {
+                children.Add(new XAttribute("mode", TranslateMode(_mode)));
+            }
+            if(_timeout != null)
+            {
+                children.Add(new XAttribute("timeout", _timeout));
+            }
+            if(_setMethod != null)
+            {
+                children.Add(_setMethod);
+            }
+            if(_setUrl != null)
+            {
+                children.Add(new XElement("set-url", _setUrl.GetXText()));
+            }
+            if(_setHeaders != null && _setHeaders.Count > 0)
+            {
+                children.AddRange(_setHeaders.ToArray());
+            }
+            if(_setBody != null)
+            {
+                children.Add(new XElement("set-body", _setBody.GetXText()));
+            }
+            if(_authenticationCertificate != null)
+            {
+                children.Add(_authenticationCertificate);
+            }
+
+            return new XElement("send-one-way-request", children.ToArray());
         }
+
+        public enum SendOneWayRequestMode { New, Copy }
+        private static string TranslateMode(SendOneWayRequestMode? mode) => mode switch
+        {
+            SendOneWayRequestMode.Copy => "copy",
+            SendOneWayRequestMode.New => "new",
+            _ => throw new Exception(),
+        };
     }
 }
 

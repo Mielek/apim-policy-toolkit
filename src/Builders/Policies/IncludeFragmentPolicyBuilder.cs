@@ -1,18 +1,18 @@
-using Mielek.Generators.Attributes;
-using Mielek.Model.Policies;
-
 namespace Mielek.Builders.Policies
 {
-    
+    using System.Xml.Linq;
+
+    using Mielek.Generators.Attributes;
+
     [GenerateBuilderSetters]
     public partial class IncludeFragmentPolicyBuilder
     {
         private string? _fragmentId;
-        public IncludeFragmentPolicy Build()
+        public XElement Build()
         {
             if (_fragmentId == null) throw new NullReferenceException();
 
-            return new IncludeFragmentPolicy(_fragmentId);
+            return new XElement("include-fragment", new XAttribute("fragment-id", _fragmentId));
         }
     }
 }

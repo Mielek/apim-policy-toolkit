@@ -1,8 +1,10 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
+
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class QuotaByKeyPolicyBuilder
@@ -14,18 +16,33 @@ namespace Mielek.Builders.Policies
         private IExpression<bool>? _incrementCondition;
         private DateTime? _firstPeriodStart;
 
-        public QuotaByKeyPolicy Build()
+        public XElement Build()
         {
             if (_counterKey == null) throw new NullReferenceException();
             if (_renewalPeriod == null) throw new NullReferenceException();
 
-            return new QuotaByKeyPolicy(
-                _counterKey,
-                _renewalPeriod.Value,
-                _calls,
-                _bandwidth,
-                _incrementCondition,
-                _firstPeriodStart);
+            var children = ImmutableArray.CreateBuilder<object>();
+            children.Add(new XAttribute("counter-key", _counterKey.GetXText()));
+            children.Add(new XAttribute("renewal-period", _renewalPeriod));
+
+            if (_calls != null)
+            {
+                children.Add(new XAttribute("calls", _calls));
+            }
+            if (_bandwidth != null)
+            {
+                children.Add(new XAttribute("bandwidth", _bandwidth));
+            }
+            if (_incrementCondition != null)
+            {
+                children.Add(new XAttribute("increment-condition", _incrementCondition.GetXText()));
+            }
+            if (_firstPeriodStart != null)
+            {
+                children.Add(new XAttribute("first-period-start", _firstPeriodStart));
+            }
+
+            return new XElement("quota-by-key", children.ToArray());
         }
     }
 }

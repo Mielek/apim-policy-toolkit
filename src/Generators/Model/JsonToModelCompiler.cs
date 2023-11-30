@@ -1,9 +1,10 @@
 
-using System.Runtime.CompilerServices;
 using System.Text.Json.Nodes;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+
+using Mielek.Generators.Common;
 
 namespace Mielek.Generators.Model;
 
@@ -28,7 +29,7 @@ public class JsonToModelCompiler
         try
         {
             var root = JsonNode.Parse(text.ToString())?.AsObject() ?? throw new NullReferenceException("root is null");
-            return new InnerCompiler(context, fileName.ToCamelCase() + "Policy", root, true).Compile();
+            return new InnerCompiler(context, fileName.ToPolicyClassName(), root, true).Compile();
         }
         catch (Exception e)
         {

@@ -17,7 +17,7 @@ public class ValidateClientCertificatePolicyHandler : MarshallerHandler<Validate
         marshaller.Writer.WriteStartElement("identities");
         foreach (var identity in element.Identities)
         {
-            marshaller.Writer.WriteStartElement("identity ");
+            marshaller.Writer.WriteStartElement("identity");
             marshaller.Writer.WriteNullableAttribute("thumbprint", identity.Thumbprint);
             marshaller.Writer.WriteNullableAttribute("serial-number", identity.SerialNumber);
             marshaller.Writer.WriteNullableAttribute("common-name", identity.CommonName);

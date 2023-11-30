@@ -1,8 +1,9 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Xml.Linq;
+
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class SetMethodPolicyBuilder
@@ -39,11 +40,11 @@ namespace Mielek.Builders.Policies
             return Method(configurator => configurator.Constant(method.Method));
         }
 
-        public SetMethodPolicy Build()
+        public XElement Build()
         {
-            if(_method == null) throw new NullReferenceException();
+            if (_method == null) throw new NullReferenceException();
 
-            return new SetMethodPolicy(_method);
+            return new XElement("set-method", _method.GetXText());
         }
     }
 }

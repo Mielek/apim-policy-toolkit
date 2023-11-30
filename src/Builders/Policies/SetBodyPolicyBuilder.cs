@@ -1,17 +1,21 @@
 namespace Mielek.Builders.Policies
 {
-    using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Builders.Expressions;
+    using Mielek.Generators.Attributes;
 
     [GenerateBuilderSetters]
     public partial class SetBodyPolicyBuilder
     {
+
+        public enum BodyTemplate { Liquid }
+        public enum XsiNilType { Blank, Null }
+
         private IExpression<string>? _body;
         private IExpression<string>? _template;
         private IExpression<string>? _xsiNil;
-
 
         public SetBodyPolicyBuilder Template(BodyTemplate template)
         {
@@ -36,11 +40,23 @@ namespace Mielek.Builders.Policies
             _ => throw new Exception(),
         };
 
-        public SetBodyPolicy Build()
+        public XElement Build()
         {
             if (_body == null) throw new NullReferenceException();
 
-            return new SetBodyPolicy(_body, _template, _xsiNil);
+            var children = ImmutableArray.CreateBuilder<object>();
+            if (_template != null)
+            {
+                children.Add(new XAttribute("template", _template.GetXText()));
+            }
+            if (_xsiNil != null)
+            {
+                children.Add(new XAttribute("xsi-nil", _xsiNil.GetXText()));
+            }
+
+            children.Add(_body.GetXText());
+
+            return new XElement("set-body", children.ToArray());
         }
     }
 }

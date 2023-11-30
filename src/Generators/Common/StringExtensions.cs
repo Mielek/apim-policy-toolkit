@@ -1,4 +1,4 @@
-namespace Mielek.Generators.Model;
+namespace Mielek.Generators.Common;
 
 public static class StringExtensions
 {
@@ -13,4 +13,7 @@ public static class StringExtensions
 
     public static string Intend(this string value, int indent)
         => value.PadLeft(value.Length + 4 * indent, ' ');
+
+    public static string ToPolicyClassName(this string value)
+        => value.ToCamelCase() + "Policy";
 }

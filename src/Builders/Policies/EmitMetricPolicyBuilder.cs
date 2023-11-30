@@ -1,18 +1,17 @@
 namespace Mielek.Builders.Policies
 {
     using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
-
 
     [GenerateBuilderSetters]
     public partial class EmitMetricPolicyBuilder
     {
         private string? _name;
         [IgnoreBuilderField]
-        private readonly ImmutableList<EmitMetricDimension>.Builder _dimensions = ImmutableList.CreateBuilder<EmitMetricDimension>();
+        private readonly ImmutableList<XElement>.Builder _dimensions = ImmutableList.CreateBuilder<XElement>();
         private IExpression<string>? _value;
         private string? _namespace;
 
@@ -24,11 +23,27 @@ namespace Mielek.Builders.Policies
             return this;
         }
 
-        public EmitMetricPolicy Build()
+        public XElement Build()
         {
             if (_name == null) throw new NullReferenceException();
 
-            return new EmitMetricPolicy(_name, _dimensions.ToImmutable(), _value, _namespace);
+            var children = ImmutableArray.CreateBuilder<object>();
+
+            children.Add(new XAttribute("name", _name));
+
+            if (_value != null)
+            {
+                children.Add(new XAttribute("value", _value.GetXText()));
+            }
+
+            if (_namespace != null)
+            {
+                children.Add(new XAttribute("namespace", _namespace));
+            }
+
+            children.Add(_dimensions);
+
+            return new XElement("emit-metric", children.ToArray());
         }
     }
 
@@ -38,11 +53,19 @@ namespace Mielek.Builders.Policies
         private string? _name;
         private IExpression<string>? _value;
 
-        public EmitMetricDimension Build()
+        public XElement Build()
         {
             if (_name == null) throw new NullReferenceException();
 
-            return new EmitMetricDimension(_name, _value);
+            var children = ImmutableArray.CreateBuilder<object>();
+            children.Add(new XAttribute("name", _name));
+
+            if (_value != null)
+            {
+                children.Add(new XAttribute("value", _value));
+            }
+
+            return new XElement("dimension", children.ToArray());
         }
     }
 

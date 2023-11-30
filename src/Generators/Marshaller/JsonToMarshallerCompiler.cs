@@ -4,7 +4,9 @@ using System.Text.Json.Nodes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Mielek.Generators.Model;
+using Mielek.Generators.Common;
+
+namespace Mielek.Generators.Marshaller;
 
 public class JsonToMarshallerCompiler
 {
@@ -45,7 +47,7 @@ public class JsonToMarshallerCompiler
         public InnerCompiler(GeneratorExecutionContext context, string name, JsonObject root)
         {
             this.context = context;
-            builder = new MarshallerClassBuilder(name, name.ToCamelCase());
+            builder = new MarshallerClassBuilder(name, name.ToPolicyClassName());
             this.root = root;
         }
 
@@ -93,7 +95,7 @@ public class JsonToMarshallerCompiler
                     }
                     break;
                 case "object":
-                    ProcessObject(value);
+                    ProcessObject(propertyName, value);
                     break;
                 case "policy":
                     builder.AppendAcceptMarshaller();
@@ -119,21 +121,28 @@ public class JsonToMarshallerCompiler
             }
         }
 
-        private void ProcessObject(JsonObject value)
+        private void ProcessObject(string propertyName, JsonObject value)
         {
             var implicitName = value.Name();
             if (implicitName != null)
             {
                 builder.AppendStartElement(implicitName);
             }
+            builder.AppendVariable(propertyName.VariableName(), propertyName);
+
             foreach (var element in value.Properties())
             {
                 var node = element.Value?.AsObject() ?? throw new NullReferenceException(value.GetPathTo(element.Key));
                 ProcessDescription(element.Key, node);
             }
+
             if (implicitName != null)
             {
-                builder.FinishPart();
+                builder.FinishPart(true);
+            }
+            else
+            {
+                builder.PopVariable();
             }
         }
 

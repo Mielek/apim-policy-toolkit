@@ -1,8 +1,10 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
+
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class SetStatusPolicyBuilder
@@ -15,11 +17,17 @@ namespace Mielek.Builders.Policies
             return Code($"{code}");
         }
 
-        public SetStatusPolicy Build()
+        public XElement Build()
         {
             if (_code == null) throw new NullReferenceException();
 
-            return new SetStatusPolicy(_code, _reason);
+            var children = ImmutableArray.CreateBuilder<object>();
+            children.Add(new XAttribute("code", _code.GetXText()));
+            if (_reason != null)
+            {
+                children.Add(new XAttribute("reason", _reason.GetXText()));
+            }
+            return new XElement("set-status", children.ToArray());
         }
 
     }

@@ -1,7 +1,9 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
+
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class ProxyPolicyBuilder
@@ -10,11 +12,24 @@ namespace Mielek.Builders.Policies
         private string? _username;
         private string? _password;
 
-        public ProxyPolicy Build()
+        public XElement Build()
         {
             if (_url == null) throw new NullReferenceException();
+            var children = ImmutableArray.CreateBuilder<object>();
 
-            return new ProxyPolicy(_url, _username, _password);
+            children.Add(new XAttribute("url", _url));
+
+            if (_username != null)
+            {
+                children.Add(new XAttribute("username", _username));
+            }
+
+            if (_password != null)
+            {
+                children.Add(new XAttribute("password", _password));
+            }
+
+            return new XElement("proxy", children.ToArray());
         }
     }
 }

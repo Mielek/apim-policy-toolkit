@@ -1,10 +1,10 @@
 namespace Mielek.Builders.Policies
 {
     using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class ValidateJwtPolicyBuilder
@@ -19,67 +19,131 @@ namespace Mielek.Builders.Policies
         private bool? _requireSignedTokens;
         private uint? _clockSkew;
         private string? _outputTokenVariableName;
-        
-        [IgnoreBuilderField]
-        private ValidateJwtOpenIdConfig? _openIdConfig;
+        private string? _openIdConfigUrl;
         private ImmutableList<string>.Builder? _issuerSigningKeys;
         private ImmutableList<string>.Builder? _decryptionKeys;
         private ImmutableList<IExpression<string>>.Builder? _audiences;
         private ImmutableList<string>.Builder? _issuers;
 
         [IgnoreBuilderField]
-        private ImmutableList<ValidateJwtClaim>.Builder? _requiredClaims;
+        private ImmutableList<XElement>.Builder? _requiredClaims;
 
         public ValidateJwtPolicyBuilder RequiredClaim(Action<ValidateJwtClaimBuilder> configurator)
         {
             var builder = new ValidateJwtClaimBuilder();
             configurator(builder);
-            (_requiredClaims ??= ImmutableList.CreateBuilder<ValidateJwtClaim>()).Add(builder.Build());
+            (_requiredClaims ??= ImmutableList.CreateBuilder<XElement>()).Add(builder.Build());
             return this;
         }
 
-        public ValidateJwtPolicyBuilder OpenIdConfig(string url)
+        public XElement Build()
         {
-            _openIdConfig = new ValidateJwtOpenIdConfig(url);
-            return this;
-        }
+            var children = ImmutableArray.CreateBuilder<object>();
 
-        public ValidateJwtPolicy Build()
-        {
-            return new ValidateJwtPolicy(
-                _headerName,
-                _queryParameterName,
-                _tokenValue,
-                _failedValidationHttpCode,
-                _failedValidationErrorMessage,
-                _requireExpirationTime,
-                _requireScheme,
-                _requireSignedTokens,
-                _clockSkew,
-                _outputTokenVariableName,
-                _openIdConfig,
-                _issuerSigningKeys?.ToImmutable(),
-                _decryptionKeys?.ToImmutable(),
-                _audiences?.ToImmutable(),
-                _issuers?.ToImmutable());
+            if (_headerName != null)
+            {
+                children.Add(new XAttribute("header-name", _headerName));
+            }
+            if (_queryParameterName != null)
+            {
+                children.Add(new XAttribute("query-parameter-name", _queryParameterName));
+            }
+            if (_tokenValue != null)
+            {
+                children.Add(new XAttribute("token-value", _tokenValue));
+            }
+            if (_failedValidationHttpCode != null)
+            {
+                children.Add(new XAttribute("failed-validation-httpcode", _failedValidationHttpCode));
+            }
+            if (_failedValidationErrorMessage != null)
+            {
+                children.Add(new XAttribute("failed-validation-error-message", _failedValidationErrorMessage));
+            }
+            if (_requireExpirationTime != null)
+            {
+                children.Add(new XAttribute("require-expiration-time", _requireExpirationTime));
+            }
+            if (_requireScheme != null)
+            {
+                children.Add(new XAttribute("require-scheme", _requireScheme));
+            }
+            if (_requireSignedTokens != null)
+            {
+                children.Add(new XAttribute("require-signed-tokens", _requireSignedTokens));
+            }
+            if (_clockSkew != null)
+            {
+                children.Add(new XAttribute("clock-skew", _clockSkew));
+            }
+
+            if (_outputTokenVariableName != null)
+            {
+                children.Add(new XAttribute("output-token-variable-name", _outputTokenVariableName));
+            }
+
+            if (_issuerSigningKeys != null && _issuerSigningKeys.Count > 0)
+            {
+                children.Add(new XElement("issuer-signing-keys", _issuerSigningKeys.Select(i => new XElement("key", i)).ToArray()));
+            }
+            if (_decryptionKeys != null && _decryptionKeys.Count > 0)
+            {
+                children.Add(new XElement("decryption-keys", _decryptionKeys.Select(i => new XElement("key", i)).ToArray()));
+            }
+            if (_audiences != null && _audiences.Count > 0)
+            {
+                children.Add(new XElement("audiences", _audiences.Select(i => new XElement("audience", i.GetXText())).ToArray()));
+            }
+            if (_issuers != null && _issuers.Count > 0)
+            {
+                children.Add(new XElement("issuers", _issuers.Select(i => new XElement("issuer", i)).ToArray()));
+            }
+            if (_requiredClaims != null && _requiredClaims.Count > 0)
+            {
+                children.Add(new XElement("required-claims", _requiredClaims.ToArray()));
+            }
+
+            return new XElement("validate-azure-ad-token", children.ToArray());
         }
     }
 
     [GenerateBuilderSetters]
     public partial class ValidateJwtClaimBuilder
     {
+        public enum ValidateJwtClaimMatch { All, Any }
         private string? _name;
         private ImmutableList<string>.Builder? _values;
         private ValidateJwtClaimMatch? _match;
         private string? _separator;
 
-        public ValidateJwtClaim Build()
+        public XElement Build()
         {
             if (_name == null) throw new NullReferenceException();
             if (_values == null) throw new NullReferenceException();
 
-            return new ValidateJwtClaim(_name, _values.ToImmutable(), _match, _separator);
+            var children = ImmutableArray.CreateBuilder<object>();
+            children.Add(new XAttribute("name", _name));
+            if (_match != null)
+            {
+                children.Add(new XAttribute("match", TranslateClaimMatch(_match)));
+            }
+            if (_separator != null)
+            {
+                children.Add(new XAttribute("separator", _separator));
+            }
+
+            children.AddRange(_values.Select(v => new XElement("value", v)));
+
+            return new XElement("claim", children.ToArray());
         }
+
+
+        private string TranslateClaimMatch(ValidateJwtClaimMatch? match) => match switch
+        {
+            ValidateJwtClaimMatch.All => "all",
+            ValidateJwtClaimMatch.Any => "any",
+            _ => throw new NotImplementedException(),
+        };
     }
 }
 

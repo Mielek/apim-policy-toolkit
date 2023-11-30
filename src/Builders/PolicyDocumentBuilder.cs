@@ -1,15 +1,18 @@
-﻿using Mielek.Model;
-using Mielek.Model.Policies;
+﻿using System.Xml;
+using System.Xml.Linq;
+
+using Mielek.Model;
+
 
 namespace Mielek.Builders;
 public class PolicyDocumentBuilder
 {
     public static PolicyDocumentBuilder Create() => new();
 
-    private ICollection<IPolicy>? _inbound;
-    private ICollection<IPolicy>? _backend;
-    private ICollection<IPolicy>? _outbound;
-    private ICollection<IPolicy>? _onError;
+    private ICollection<XElement>? _inbound;
+    private ICollection<XElement>? _backend;
+    private ICollection<XElement>? _outbound;
+    private ICollection<XElement>? _onError;
 
     private PolicyDocumentBuilder() { }
 
@@ -37,15 +40,20 @@ public class PolicyDocumentBuilder
         return this;
     }
 
-    private ICollection<IPolicy> BuildSection(Action<PolicySectionBuilder> configurator)
+    private ICollection<XElement> BuildSection(Action<PolicySectionBuilder> configurator)
     {
         var builder = new PolicySectionBuilder();
         configurator(builder);
         return builder.Build();
     }
 
-    public PolicyDocument Build()
+    public XElement Build()
     {
-        return new PolicyDocument(_inbound, _backend, _outbound, _onError);
+        var document = new XElement("policies");
+        document.Add(new XElement("inbound", _inbound?.ToArray()));
+        document.Add(new XElement("backend", _backend?.ToArray()));
+        document.Add(new XElement("outbound", _outbound?.ToArray()));
+        document.Add(new XElement("on-error", _onError?.ToArray()));
+        return document;
     }
 }

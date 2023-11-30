@@ -1,10 +1,10 @@
 namespace Mielek.Builders.Policies
 {
     using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Builders.Expressions;
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Expressions;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class CheckHeaderPolicyBuilder
@@ -20,7 +20,7 @@ namespace Mielek.Builders.Policies
             return FailedCheckHttpCode($"{code}");
         }
 
-        public CheckHeaderPolicy Build()
+        public XElement Build()
         {
             if (_name == null) throw new NullReferenceException();
             if (_failedCheckHttpCode == null) throw new NullReferenceException();
@@ -28,7 +28,19 @@ namespace Mielek.Builders.Policies
             if (_ignoreCase == null) throw new NullReferenceException();
             if (_values == null) throw new NullReferenceException();
 
-            return new CheckHeaderPolicy(_name, _failedCheckHttpCode, _failedCheckErrorMessage, _ignoreCase, _values.ToImmutable());
+            var children = ImmutableArray.CreateBuilder<object>();
+
+            children.Add(new XAttribute("name", _name.GetXText()));
+            children.Add(new XAttribute("failed-check-httpcode", _failedCheckHttpCode.GetXText()));
+            children.Add(new XAttribute("failed-check-error-message", _failedCheckErrorMessage.GetXText()));
+            children.Add(new XAttribute("ignore-case", _ignoreCase.GetXText()));
+
+            foreach (var value in _values.ToArray())
+            {
+                children.Add(new XElement("value", _name.GetXText()));
+            }
+
+            return new XElement("check-header", children.ToArray());
         }
     }
 }

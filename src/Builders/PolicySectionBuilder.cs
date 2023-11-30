@@ -1,15 +1,16 @@
 using System.Collections.Immutable;
+using System.Xml.Linq;
 
-using Mielek.Model.Policies;
+
 
 namespace Mielek.Builders;
 public partial class PolicySectionBuilder
 {
-    protected ImmutableList<IPolicy>.Builder _sectionPolicies = ImmutableList.CreateBuilder<IPolicy>();
+    protected ImmutableList<XElement>.Builder _sectionPolicies = ImmutableList.CreateBuilder<XElement>();
 
     internal PolicySectionBuilder() { }
 
-    internal ICollection<IPolicy> Build()
+    internal ICollection<XElement> Build()
     {
         return _sectionPolicies.ToImmutable();
     }

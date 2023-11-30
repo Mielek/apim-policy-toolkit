@@ -1,3 +1,5 @@
+using System.Xml.Linq;
+
 using Mielek.Model;
 
 namespace Mielek.Builders;
@@ -15,8 +17,10 @@ public class PolicyFragmentBuilder
         return this;
     }
 
-    public PolicyFragment Build()
+    public XElement Build()
     {
-        return new PolicyFragment(_innerBuilder.Build());
+        var fragment = new XElement("fragment");
+        fragment.Add(_innerBuilder.Build());
+        return fragment;
     }
 }

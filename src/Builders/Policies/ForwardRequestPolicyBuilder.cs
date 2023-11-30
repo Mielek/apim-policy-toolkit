@@ -1,8 +1,9 @@
 namespace Mielek.Builders.Policies
 {
-    using Mielek.Generators.Attributes;
-    using Mielek.Model.Policies;
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
 
+    using Mielek.Generators.Attributes;
 
     [GenerateBuilderSetters]
     public partial class ForwardRequestPolicyBuilder
@@ -12,10 +13,33 @@ namespace Mielek.Builders.Policies
         private bool? _bufferRequestBody;
         private bool? _bufferResponse;
         private bool? _failOnErrorStatusCode;
-        
-        public ForwardRequestPolicy Build()
+
+        public XElement Build()
         {
-            return new ForwardRequestPolicy(_timeout, _followRedirects, _bufferRequestBody, _bufferResponse, _failOnErrorStatusCode);
+            var children = ImmutableArray.CreateBuilder<object>();
+
+            if (_timeout != null)
+            {
+                children.Add(new XAttribute("timeout", _timeout));
+            }
+            if (_followRedirects != null)
+            {
+                children.Add(new XAttribute("follow-redirects", _followRedirects));
+            }
+            if (_bufferRequestBody != null)
+            {
+                children.Add(new XAttribute("buffer-request-body", _bufferRequestBody));
+            }
+            if (_bufferResponse != null)
+            {
+                children.Add(new XAttribute("buffer-response", _bufferResponse));
+            }
+            if (_failOnErrorStatusCode != null)
+            {
+                children.Add(new XAttribute("fail-on-error-status-code", _failOnErrorStatusCode));
+            }
+
+            return new XElement("forward-request", children.ToArray());
         }
     }
 }

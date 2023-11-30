@@ -1,7 +1,9 @@
 namespace Mielek.Builders.Policies
 {
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
+
     using Mielek.Generators.Attributes;
-    using Mielek.Model.Policies;
 
     [GenerateBuilderSetters]
     public partial class AuthenticationManagedIdentityPolicyBuilder
@@ -11,11 +13,27 @@ namespace Mielek.Builders.Policies
         private string? _outputTokenVariableName;
         private bool? _ignoreError;
 
-        public AuthenticationManagedIdentityPolicy Build()
+        public XElement Build()
         {
             if (_resource == null) throw new NullReferenceException();
 
-            return new AuthenticationManagedIdentityPolicy(_resource, _clientId, _outputTokenVariableName, _ignoreError);
+            var attributes = ImmutableArray.CreateBuilder<object>();
+
+            attributes.Add(new XAttribute("resource", _resource));
+            if (_clientId != null)
+            {
+                attributes.Add(new XAttribute("client-id", _clientId));
+            }
+            if (_outputTokenVariableName != null)
+            {
+                attributes.Add(new XAttribute("output-token-variable-name", _outputTokenVariableName));
+            }
+            if (_ignoreError != null)
+            {
+                attributes.Add(new XAttribute("ignore-error", _ignoreError));
+            }
+
+            return new XElement("authentication-managed-identity", attributes.ToArray());
         }
     }
 }

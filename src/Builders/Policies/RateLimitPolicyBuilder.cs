@@ -1,6 +1,7 @@
 namespace Mielek.Builders.Policies
 {
-    using Mielek.Model.Policies;
+    using System.Collections.Immutable;
+    using System.Xml.Linq;
 
     public abstract class RateLimitBaseBuilder<T> where T : RateLimitBaseBuilder<T>
     {
@@ -48,10 +49,37 @@ namespace Mielek.Builders.Policies
             return (T)this;
         }
 
-        protected virtual void CheckRequiredParams()
+        protected virtual object[] BuildBasic()
         {
             if (_calls == null) throw new NullReferenceException();
             if (_renewalPeriod == null) throw new NullReferenceException();
+
+            var children = ImmutableArray.CreateBuilder<object>();
+            children.Add(new XAttribute("calls", _calls));
+            children.Add(new XAttribute("renewal-period", _renewalPeriod));
+
+            if (_retryAfterHeaderName != null)
+            {
+                children.Add(new XAttribute("retry-after-header-name", _retryAfterHeaderName));
+            }
+            if (_retryAfterVariableName != null)
+            {
+                children.Add(new XAttribute("retry-after-variable-name", _retryAfterVariableName));
+            }
+            if (_remainingCallsHeaderName != null)
+            {
+                children.Add(new XAttribute("remaining-calls-header-name", _remainingCallsHeaderName));
+            }
+            if (_remainingCallsVariableName != null)
+            {
+                children.Add(new XAttribute("remaining-calls-variable-name", _remainingCallsVariableName));
+            }
+            if (_totalCallsHeaderName != null)
+            {
+                children.Add(new XAttribute("total-calls-header-name", _totalCallsHeaderName));
+            }
+
+            return children.ToArray();
         }
     }
 
@@ -72,91 +100,69 @@ namespace Mielek.Builders.Policies
             return (T)this;
         }
 
-        protected override void CheckRequiredParams()
+        protected override object[] BuildBasic()
         {
             if (_name == null && _id == null) throw new NullReferenceException();
-            base.CheckRequiredParams();
+
+            var children = ImmutableArray.CreateBuilder<object>();
+
+            if (_name != null)
+            {
+                children.Add(new XAttribute("name", _name));
+            }
+            if (_id != null)
+            {
+                children.Add(new XAttribute("id", _id));
+            }
+
+            children.AddRange(base.BuildBasic());
+
+            return children.ToArray();
         }
     }
 
     public class RateLimitApiOperationBuilder : RateLimitWithIdentificationBuilder<RateLimitApiOperationBuilder>
     {
-        public RateLimitApiOperation Build()
+        public XElement Build()
         {
-            CheckRequiredParams();
-
-            return new RateLimitApiOperation(
-                _calls!.Value,
-                _renewalPeriod!.Value,
-                _name,
-                _id,
-                _retryAfterHeaderName,
-                _retryAfterVariableName,
-                _remainingCallsHeaderName,
-                _remainingCallsVariableName,
-                _totalCallsHeaderName
-            );
+            return new XElement("operation", BuildBasic());
         }
     }
 
     public class RateLimitApiBuilder : RateLimitWithIdentificationBuilder<RateLimitApiBuilder>
     {
-        private List<RateLimitApiOperation>? _operations = null;
+        private List<XElement>? _operations = null;
 
         public RateLimitApiBuilder Operation(Action<RateLimitApiOperationBuilder> config)
         {
             var builder = new RateLimitApiOperationBuilder();
             config(builder);
-            (_operations ??= new List<RateLimitApiOperation>()).Add(builder.Build());
+            (_operations ??= new List<XElement>()).Add(builder.Build());
             return this;
         }
 
-        public RateLimitApi Build()
+        public XElement Build()
         {
-            CheckRequiredParams();
-
-            return new RateLimitApi(
-                _calls!.Value,
-                _renewalPeriod!.Value,
-                _name,
-                _id,
-                _retryAfterHeaderName,
-                _retryAfterVariableName,
-                _remainingCallsHeaderName,
-                _remainingCallsVariableName,
-                _totalCallsHeaderName,
-                _operations
-            );
+            return new XElement("api", BuildBasic());
         }
 
     }
 
     public class RateLimitPolicyBuilder : RateLimitBaseBuilder<RateLimitPolicyBuilder>
     {
-        private List<RateLimitApi>? _apis = null;
+        private List<XElement>? _apis = null;
 
         public RateLimitPolicyBuilder Api(Action<RateLimitApiBuilder> config)
         {
             var builder = new RateLimitApiBuilder();
             config(builder);
-            (_apis ??= new List<RateLimitApi>()).Add(builder.Build());
+            (_apis ??= new List<XElement>()).Add(builder.Build());
             return this;
         }
 
-        public RateLimitPolicy Build()
+        public XElement Build()
         {
-            CheckRequiredParams();
-
-            return new RateLimitPolicy(
-                _calls!.Value,
-                _renewalPeriod!.Value,
-                _retryAfterHeaderName,
-                _retryAfterVariableName,
-                _remainingCallsHeaderName,
-                _remainingCallsVariableName,
-                _totalCallsHeaderName,
-                _apis
-            );
+            return new XElement("rate-limit", BuildBasic());
         }
 
     }
