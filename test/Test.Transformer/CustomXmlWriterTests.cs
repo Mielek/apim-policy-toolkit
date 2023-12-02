@@ -1,0 +1,6 @@
+
+[TestClass]
+public class CustomXmlWriterTests
+{
+    
+} 

@@ -30,7 +30,7 @@ namespace Mielek.Builders.Policies
             if (_policies == null) throw new NullReferenceException();
 
             var children = ImmutableArray.CreateBuilder<object>();
-            children.Add(new XAttribute("key", _key.GetXText()));
+            children.Add(_key.GetXAttribute("key"));
             children.Add(new XAttribute("max-count", _maxCount));
             children.AddRange(_policies.ToArray());
 

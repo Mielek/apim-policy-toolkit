@@ -22,10 +22,10 @@ namespace Mielek.Builders.Policies
             if (_code == null) throw new NullReferenceException();
 
             var children = ImmutableArray.CreateBuilder<object>();
-            children.Add(new XAttribute("code", _code.GetXText()));
+            children.Add(_code.GetXAttribute("code"));
             if (_reason != null)
             {
-                children.Add(new XAttribute("reason", _reason.GetXText()));
+                children.Add(_reason.GetXAttribute("reason"));
             }
             return new XElement("set-status", children.ToArray());
         }

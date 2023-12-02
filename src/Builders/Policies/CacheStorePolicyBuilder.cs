@@ -18,7 +18,7 @@ namespace Mielek.Builders.Policies
 
             var children = ImmutableArray.CreateBuilder<object>();
             
-            children.Add(new XAttribute("duration", _duration.GetXText()));
+            children.Add(_duration.GetXAttribute("duration"));
 
             if(_cacheResponse != null)
             {

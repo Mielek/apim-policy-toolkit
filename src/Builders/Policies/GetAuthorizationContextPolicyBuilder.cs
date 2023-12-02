@@ -26,8 +26,8 @@ namespace Mielek.Builders.Policies
 
             var children = ImmutableArray.CreateBuilder<object>();
 
-            children.Add(new XAttribute("provider-id", _providerId.GetXText()));
-            children.Add(new XAttribute("authorization-id", _authorizationId.GetXText()));
+            children.Add(_providerId.GetXAttribute("provider-id"));
+            children.Add(_authorizationId.GetXAttribute("authorization-id"));
             children.Add(new XAttribute("context-variable", _contextVariableName));
 
             if (_identityType != null)
@@ -36,7 +36,7 @@ namespace Mielek.Builders.Policies
             }
             if (_identity != null)
             {
-                children.Add(new XAttribute("identity", _identity.GetXText()));
+                children.Add(_identity.GetXAttribute("identity"));
             }
             if (_ignoreError != null)
             {

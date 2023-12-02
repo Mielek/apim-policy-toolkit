@@ -72,7 +72,7 @@ namespace Mielek.Builders.Policies
             var children = new[]
             {
                 new XAttribute("name", _name),
-                new XAttribute("value", _value.GetXText())
+                _value.GetXAttribute("value")
             };
             return new XElement("metadata", children);
         }

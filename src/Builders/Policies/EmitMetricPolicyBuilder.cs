@@ -33,7 +33,7 @@ namespace Mielek.Builders.Policies
 
             if (_value != null)
             {
-                children.Add(new XAttribute("value", _value.GetXText()));
+                children.Add(_value.GetXAttribute("value"));
             }
 
             if (_namespace != null)

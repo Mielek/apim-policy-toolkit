@@ -24,9 +24,9 @@ public class BaseAnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, MSTestV
         TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(IContext).Assembly.Location));
         TestState.Sources.Add(
             $"""
+            using System.Xml.Linq;
             using Mielek.Builders;
             using Mielek.Expressions.Context;
-            using Mielek.Model;
             using Mielek.Model.Attributes;
 
             namespace Mielek.Test;

@@ -47,11 +47,11 @@ namespace Mielek.Builders.Policies
             var children = ImmutableArray.CreateBuilder<object>();
             if (_template != null)
             {
-                children.Add(new XAttribute("template", _template.GetXText()));
+                children.Add(_template.GetXAttribute("template"));
             }
             if (_xsiNil != null)
             {
-                children.Add(new XAttribute("xsi-nil", _xsiNil.GetXText()));
+                children.Add(_xsiNil.GetXAttribute("xsi-nil"));
             }
 
             children.Add(_body.GetXText());

@@ -34,7 +34,7 @@ namespace Mielek.Builders.Policies
 
             if (_body != null)
             {
-                attributes.Add(new XAttribute("body", _body.GetXText()));
+                attributes.Add(_body.GetXAttribute("body"));
             }
 
             if (_password != null)

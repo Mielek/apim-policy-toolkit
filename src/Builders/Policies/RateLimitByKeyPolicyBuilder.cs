@@ -29,11 +29,11 @@ namespace Mielek.Builders.Policies
             var children = ImmutableArray.CreateBuilder<object>();
             children.Add(new XAttribute("calls", _calls));
             children.Add(new XAttribute("renewal-period", _renewalPeriod));
-            children.Add(new XAttribute("counter-key", _counterKey.GetXText()));
+            children.Add(_counterKey.GetXAttribute("counter-key"));
 
             if (_incrementCondition != null)
             {
-                children.Add(new XAttribute("increment-condition", _incrementCondition.GetXText()));
+                children.Add(_incrementCondition.GetXAttribute("increment-condition"));
             }
             if (_incrementCount != null)
             {

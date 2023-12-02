@@ -188,8 +188,6 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
         #endregion Expression
 
         #region Policy building
-        "Mielek.Model.PolicyDocument",
-        "Mielek.Model.PolicyFragment",
         "Mielek.Builders.PolicyDocumentBuilder",
         "Mielek.Builders.PolicyFragmentBuilder",
         "Mielek.Builders.PolicySectionBuilder",

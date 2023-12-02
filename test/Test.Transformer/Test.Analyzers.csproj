@@ -12,13 +12,10 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.7.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.MSTest" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Builders\Builders.csproj" />
-    <ProjectReference Include="..\..\src\Analyzers\Analyzers.csproj" />
+    <ProjectReference Include="..\..\src\Transformer\Transformer.csproj" />
   </ItemGroup>
 
 </Project>

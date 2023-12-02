@@ -43,7 +43,7 @@ namespace Mielek.Builders.Policies
             }
             if (_allowPrivateResponseCaching != null)
             {
-                children.Add(new XAttribute("allow-private-response-caching", _allowPrivateResponseCaching.GetXText()));
+                children.Add(_allowPrivateResponseCaching.GetXAttribute("allow-private-response-caching"));
             }
 
             if (_varyByHeaders != null)

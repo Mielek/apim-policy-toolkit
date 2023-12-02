@@ -45,7 +45,7 @@ public class PolicyDocumentMethodTests
             class Test 
             { 
                 [Document]
-                PolicyDocument Method({{parameters}})
+                XElement Method({{parameters}})
                 { 
                     return null;
                 }
@@ -53,7 +53,7 @@ public class PolicyDocumentMethodTests
             """,
             DiagnosticResult
                 .CompilerError(Rules.PolicyDocument.NoParametersAllowed.Id)
-                .WithSpan(11, 26, 11, 26 + parameters.Length + 2)
+                .WithSpan(11, 20, 11, 20 + parameters.Length + 2)
                 .WithArguments(count)
         );
     }

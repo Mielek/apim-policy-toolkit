@@ -22,7 +22,7 @@ namespace Mielek.Builders.Policies
             if (_renewalPeriod == null) throw new NullReferenceException();
 
             var children = ImmutableArray.CreateBuilder<object>();
-            children.Add(new XAttribute("counter-key", _counterKey.GetXText()));
+            children.Add(_counterKey.GetXAttribute("counter-key"));
             children.Add(new XAttribute("renewal-period", _renewalPeriod));
 
             if (_calls != null)
@@ -35,7 +35,7 @@ namespace Mielek.Builders.Policies
             }
             if (_incrementCondition != null)
             {
-                children.Add(new XAttribute("increment-condition", _incrementCondition.GetXText()));
+                children.Add(_incrementCondition.GetXAttribute("increment-condition"));
             }
             if (_firstPeriodStart != null)
             {

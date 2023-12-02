@@ -64,7 +64,7 @@ namespace Mielek.Builders.Policies
             if (_policies == null) throw new NullReferenceException();
 
             var children = ImmutableArray.CreateBuilder<object>();
-            children.Add(new XAttribute("condition", _condition.GetXText()));
+            children.Add(_condition.GetXAttribute("condition"));
             children.AddRange(_policies.ToArray());
 
             return new XElement("when", children.ToArray());

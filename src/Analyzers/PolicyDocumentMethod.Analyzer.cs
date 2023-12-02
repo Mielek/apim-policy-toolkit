@@ -22,8 +22,7 @@ public class PolicyDocumentMethodAnalyzer : DiagnosticAnalyzer
 
     private readonly static IReadOnlySet<string> AllowedPolicyDocumentReturnTypes = new HashSet<string>()
     {
-        "Mielek.Model.PolicyDocument",
-        "Mielek.Model.PolicyFragment"
+        "System.Xml.Linq.XElement"
     };
     private readonly static string PolicyDocumentAttribute = "Mielek.Model.Attributes.DocumentAttribute";
 

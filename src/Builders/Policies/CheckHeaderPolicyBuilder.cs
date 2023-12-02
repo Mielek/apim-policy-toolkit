@@ -30,14 +30,14 @@ namespace Mielek.Builders.Policies
 
             var children = ImmutableArray.CreateBuilder<object>();
 
-            children.Add(new XAttribute("name", _name.GetXText()));
-            children.Add(new XAttribute("failed-check-httpcode", _failedCheckHttpCode.GetXText()));
-            children.Add(new XAttribute("failed-check-error-message", _failedCheckErrorMessage.GetXText()));
-            children.Add(new XAttribute("ignore-case", _ignoreCase.GetXText()));
+            children.Add(_name.GetXAttribute("name"));
+            children.Add(_failedCheckHttpCode.GetXAttribute("failed-check-httpcode"));
+            children.Add(_failedCheckErrorMessage.GetXAttribute("failed-check-error-message"));
+            children.Add(_ignoreCase.GetXAttribute("ignore-case"));
 
             foreach (var value in _values.ToArray())
             {
-                children.Add(new XElement("value", _name.GetXText()));
+                children.Add(new XElement("value", value.GetXText()));
             }
 
             return new XElement("check-header", children.ToArray());

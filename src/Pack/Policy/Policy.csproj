@@ -16,8 +16,8 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
 
     <TargetsForTfmSpecificContentInPackage>
-      $(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput;_IncludeReferencedProjectInPackage</TargetsForTfmSpecificContentInPackage>
-    
+      $(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput;_IncludeReferencedProjectInPackage
+    </TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -29,7 +29,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Model\Model.csproj" />
     <ProjectReference Include="..\..\Builders\Builders.csproj" />
     <ProjectReference Include="..\..\Generators\Attributes\Attributes.csproj" />
     <ProjectReference Include="..\..\Expressions\Context\Context.csproj" />
@@ -55,12 +54,10 @@
     </GetNuGetShortFolderName>
     <ItemGroup>
       <TfmSpecificPackageFile Include="$(OutputPath)\Context.dll"
-      PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Attributes.dll"
-      PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Model.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />
-        <TfmSpecificPackageFile Include="$(OutputPath)\Builders.dll"
+      <TfmSpecificPackageFile Include="$(OutputPath)\Attributes.dll"
+        PackagePath="lib/$(_NuGetShortFolderName)" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\Builders.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />
     </ItemGroup>
   </Target>

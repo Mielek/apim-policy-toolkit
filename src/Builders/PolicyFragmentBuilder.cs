@@ -19,8 +19,6 @@ public class PolicyFragmentBuilder
 
     public XElement Build()
     {
-        var fragment = new XElement("fragment");
-        fragment.Add(_innerBuilder.Build());
-        return fragment;
+        return new XElement("fragment", _innerBuilder.Build().ToArray());
     }
 }

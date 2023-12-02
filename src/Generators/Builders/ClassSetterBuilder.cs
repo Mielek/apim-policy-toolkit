@@ -42,8 +42,6 @@ internal class ClassSetterBuilder
     {
         _classBuilder.Using("System.Collections.Immutable");
         _classBuilder.Using("Mielek.Builders.Expressions");
-        _classBuilder.Using("Mielek.Model.Expressions");
-        _classBuilder.Using("Mielek.Model.Policies");
     }
 
     private void AddFieldSetters()

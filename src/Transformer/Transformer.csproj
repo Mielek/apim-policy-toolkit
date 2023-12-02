@@ -23,8 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Model\Model.csproj" />
-    <ProjectReference Include="..\Marshalling\Marshalling.csproj" />
     <ProjectReference Include="..\Builders\Builders.csproj" />
   </ItemGroup>
 

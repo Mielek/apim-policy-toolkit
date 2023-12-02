@@ -1,9 +1,9 @@
 
 using System.Text;
+using System.Xml.Linq;
 
 using Mielek.Builders;
 using Mielek.Expressions.Context;
-using Mielek.Model;
 using Mielek.Model.Attributes;
 
 namespace Mielek.Test;
@@ -38,7 +38,7 @@ public class Library
         return null;
     }
 
-    public PolicyDocument ApiPolicyDocument()
+    public XElement ApiPolicyDocument()
     {
         return PolicyDocumentBuilder.Create()
         .Inbound(i =>

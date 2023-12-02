@@ -35,10 +35,10 @@ namespace Mielek.Builders.Policies
             if (_name == null) throw new NullReferenceException();
 
             var children = ImmutableArray.CreateBuilder<object>();
-            children.Add(new XAttribute("name", _name.GetXText()));
+            children.Add(_name.GetXAttribute("name"));
             if (_existsAction != null)
             {
-                children.Add(new XAttribute("exists-action", _existsAction.GetXText()));
+                children.Add(_existsAction.GetXAttribute("exists-action"));
             }
             if (_values != null && _values.Count > 0)
             {

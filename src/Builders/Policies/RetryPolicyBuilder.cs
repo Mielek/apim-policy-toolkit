@@ -34,7 +34,7 @@ namespace Mielek.Builders.Policies
             if (_policies == null) throw new NullReferenceException();
 
             var children = ImmutableArray.CreateBuilder<object>();
-            children.Add(new XAttribute("condition", _condition.GetXText()));
+            children.Add(_condition.GetXAttribute("condition"));
             children.Add(new XAttribute("count", _count));
             children.Add(new XAttribute("interval", _interval));
 
@@ -48,7 +48,7 @@ namespace Mielek.Builders.Policies
             }
             if (_firstFastRetry != null)
             {
-                children.Add(new XAttribute("first-fast-retry", _firstFastRetry.GetXText()));
+                children.Add(_firstFastRetry.GetXAttribute("first-fast-retry"));
             }
 
             children.AddRange(_policies);
