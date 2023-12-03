@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Mielek.Generators.Attributes;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 public class BuilderException : Exception
 {
     public BuilderException(Dictionary<string, string> errors) : this(null, errors)

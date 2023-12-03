@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mielek.Generators.Builder;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder;
 
 public class BuilderClassBuilder
 {

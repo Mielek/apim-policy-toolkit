@@ -1,4 +1,4 @@
-namespace Mielek.Generators.Attributes;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
 [AttributeUsage(AttributeTargets.Class),]
 public class GenerateBuilderAttribute : Attribute

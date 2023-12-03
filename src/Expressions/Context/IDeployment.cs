@@ -1,6 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 
-namespace Mielek.Expressions.Context;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
 public interface IDeployment
 {

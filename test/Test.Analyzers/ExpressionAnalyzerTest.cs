@@ -8,11 +8,11 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-using Mielek.Builders;
-using Mielek.Expressions.Context;
-using Mielek.Model.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
 
-namespace Mielek.Analyzers.Test;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
 
 public class BaseAnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, MSTestVerifier> where TAnalyzer : DiagnosticAnalyzer, new()
 {
@@ -25,9 +25,9 @@ public class BaseAnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, MSTestV
         TestState.Sources.Add(
             $"""
             using System.Xml.Linq;
-            using Mielek.Builders;
-            using Mielek.Expressions.Context;
-            using Mielek.Model.Attributes;
+            using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
+            using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
+            using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
 
             namespace Mielek.Test;
 

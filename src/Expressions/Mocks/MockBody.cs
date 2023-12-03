@@ -1,8 +1,8 @@
-using Mielek.Expressions.Context;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
 using Newtonsoft.Json.Linq;
 
-namespace Mielek.Testing.Expressions.Mocks;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
 
 public class MockBody : IMessageBody
 {

@@ -1,4 +1,4 @@
-namespace Mielek.Generators.Builder.Field;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder.Field;
 
 public interface IFieldSetterHandler
 {

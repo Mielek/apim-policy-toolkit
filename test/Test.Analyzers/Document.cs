@@ -1,12 +1,11 @@
-
 using System.Text;
 using System.Xml.Linq;
 
-using Mielek.Builders;
-using Mielek.Expressions.Context;
-using Mielek.Model.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
-namespace Mielek.Test;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Test;
 
 [Library]
 public class Library

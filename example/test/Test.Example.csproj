@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mielek.Testing" Version="1.0.0" />
+    <PackageReference Include="Mielek.Azure.ApiManagement.PolicyToolkit.Testing" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

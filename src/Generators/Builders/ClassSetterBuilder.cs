@@ -2,14 +2,12 @@
 using System;
 using System.Linq;
 
-using BuilderGenerator;
-
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Generators.Attributes;
-using Mielek.Generators.Builder.Field;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder.Field;
 
-namespace Mielek.Generators.Builder;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder;
 
 internal class ClassSetterBuilder
 {
@@ -41,7 +39,7 @@ internal class ClassSetterBuilder
     private void AddUsings()
     {
         _classBuilder.Using("System.Collections.Immutable");
-        _classBuilder.Using("Mielek.Builders.Expressions");
+        _classBuilder.Using("Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions");
     }
 
     private void AddFieldSetters()

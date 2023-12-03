@@ -2,16 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using BuilderGenerator;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-using Mielek.Generators.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
 
-namespace Mielek.Generators.Builder;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder;
 
 [Generator]
 public class BuilderSettersGenerator : ISourceGenerator

@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Mielek.Analyzers;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
 
 public static class SyntaxExtensions
 {

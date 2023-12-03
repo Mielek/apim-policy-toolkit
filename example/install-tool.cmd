@@ -1,1 +1,1 @@
-dotnet tool install --add-source ../output Mielek.Transformer
+dotnet tool install --add-source ../output Mielek.Azure.ApiManagement.PolicyToolkit.Transformer

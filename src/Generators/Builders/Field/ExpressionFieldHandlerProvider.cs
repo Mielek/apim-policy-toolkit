@@ -4,9 +4,9 @@ using System.Linq;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Generators.Builder.Extensions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder.Extensions;
 
-namespace Mielek.Generators.Builder.Field;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder.Field;
 
 public class ExpressionFieldHandlerProvider : IFieldSetterHandlerProvider
 {

@@ -3,9 +3,9 @@
 // using Microsoft.CodeAnalysis;
 // using Microsoft.CodeAnalysis.Text;
 
-// using Mielek.Generators.Common;
+// using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Common;
 
-// namespace Mielek.Generators.Builder;
+// namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder;
 
 // [Generator]
 // public class BuilderGenerator : ISourceGenerator

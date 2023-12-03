@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Mielek.Generators.Builder.Field;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder.Field;
 
 public interface IFieldSetterHandlerProvider
 {

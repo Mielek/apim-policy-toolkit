@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Mielek.Analyzers;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class PolicyDocumentMethodAnalyzer : DiagnosticAnalyzer
@@ -24,7 +24,7 @@ public class PolicyDocumentMethodAnalyzer : DiagnosticAnalyzer
     {
         "System.Xml.Linq.XElement"
     };
-    private readonly static string PolicyDocumentAttribute = "Mielek.Model.Attributes.DocumentAttribute";
+    private readonly static string PolicyDocumentAttribute = "Mielek.Azure.ApiManagement.PolicyToolkit.Attributes.DocumentAttribute";
 
     private static void Analyze(SyntaxNodeAnalysisContext context)
     {

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Mielek.Testing</PackageId>
+    <PackageId>Mielek.Azure.ApiManagement.PolicyToolkit.Testing</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <Authors>Mielek</Authors>
     <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>
@@ -9,14 +9,15 @@
     <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>
     <RepositoryUrl>http://REPOSITORY_URL_HERE_OR_DELETE_THIS_LINE</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>Mielek.Policy</Description>
+    <Description>Mielek.Azure.ApiManagement.PolicyToolkit.Testing</Description>
     <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>
     <Copyright>Copyright</Copyright>
-    <PackageTags>Mielek.Mock</PackageTags>
+    <PackageTags>Mielek.Azure.ApiManagement.PolicyToolkit.Testing</PackageTags>
     <NoPackageAnalysis>false</NoPackageAnalysis>
 
     <TargetsForTfmSpecificContentInPackage>
-      $(TargetsForTfmSpecificContentInPackage);_IncludeReferencedProjectInPackage</TargetsForTfmSpecificContentInPackage>
+      $(TargetsForTfmSpecificContentInPackage);_IncludeReferencedProjectInPackage
+    </TargetsForTfmSpecificContentInPackage>
 
   </PropertyGroup>
 

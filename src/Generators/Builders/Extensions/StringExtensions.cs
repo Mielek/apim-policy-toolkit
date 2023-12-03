@@ -1,4 +1,4 @@
-namespace Mielek.Generators.Builder.Extensions;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder.Extensions;
 
 public static class StringExtensions
 {

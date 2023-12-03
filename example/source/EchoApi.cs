@@ -1,9 +1,9 @@
-using Mielek.Model;
-using Mielek.Model.Attributes;
-using Mielek.Builders;
-using Mielek.Model.Policies;
-using Mielek.Expressions.Context;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 using Newtonsoft.Json.Linq;
+using System.Xml.Linq;
 
 namespace Contoso.Apis;
 
@@ -12,7 +12,7 @@ public class EchoApi
 {
 
     [Document]
-    public PolicyDocument ApiPolicyDocument()
+    public XElement ApiPolicyDocument()
     {
         return PolicyDocumentBuilder.Create()
             .Inbound(policies =>
@@ -30,7 +30,7 @@ public class EchoApi
                     .Base()
                     .SetHeader(policy =>
                     {
-                        policy.Name("X-Test").ExistsAction(SetHeaderExistsAction.Append)
+                        policy.Name("X-Test").ExistsAction(SetHeaderPolicyBuilder.SetHeaderPolicyExistsAction.Append)
                             .Value("Test")
                             .Value(expression => expression.Inline(context => context.Deployment
                             .Region))

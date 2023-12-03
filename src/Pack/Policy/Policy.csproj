@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Mielek.Policy</PackageId>
+    <PackageId>Mielek.Azure.ApiManagement.PolicyToolkit</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <Authors>Mielek</Authors>
     <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>
@@ -9,10 +9,10 @@
     <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>
     <RepositoryUrl>http://REPOSITORY_URL_HERE_OR_DELETE_THIS_LINE</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>Mielek.Policy</Description>
+    <Description>Mielek.Azure.ApiManagement.PolicyToolkit</Description>
     <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>
     <Copyright>Copyright</Copyright>
-    <PackageTags>Mielek.Policy, analyzers</PackageTags>
+    <PackageTags>Mielek.Azure.ApiManagement.PolicyToolkit, analyzers</PackageTags>
     <NoPackageAnalysis>true</NoPackageAnalysis>
 
     <TargetsForTfmSpecificContentInPackage>
@@ -29,7 +29,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Builders\Builders.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Generators\Attributes\Attributes.csproj" />
     <ProjectReference Include="..\..\Expressions\Context\Context.csproj" />
     <ProjectReference Include="..\..\Analyzers\Analyzers.csproj" />
@@ -57,7 +57,7 @@
         PackagePath="lib/$(_NuGetShortFolderName)" />
       <TfmSpecificPackageFile Include="$(OutputPath)\Attributes.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Builders.dll"
+      <TfmSpecificPackageFile Include="$(OutputPath)\Core.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />
     </ItemGroup>
   </Target>

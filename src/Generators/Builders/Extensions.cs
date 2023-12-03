@@ -2,7 +2,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace BuilderGenerator
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators
 {
     public static class Extensions
     {

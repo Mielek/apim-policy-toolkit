@@ -1,8 +1,8 @@
 using System.Security.Cryptography.X509Certificates;
 
-using Mielek.Expressions.Context;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
-namespace Mielek.Testing.Expressions.Mocks;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
 
 public class MockRequest : IRequest
 {

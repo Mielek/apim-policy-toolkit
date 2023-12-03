@@ -6,8 +6,8 @@ using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 
-using Mielek.Transformer;
-using Mielek.Model.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
 
 var options = new ConfigurationBuilder()
     .AddCommandLine(args)

@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 
 using Microsoft.CodeAnalysis;
 
-namespace Mielek.Analyzers;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
 
 public static partial class Rules
 {

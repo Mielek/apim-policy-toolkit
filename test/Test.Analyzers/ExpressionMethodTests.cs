@@ -1,10 +1,9 @@
-using Microsoft.CodeAnalysis.Testing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Mielek.Analyzers;
-using Mielek.Analyzers.Test;
 using System.Data;
 
-namespace Mielek.Test.Analyzers;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Test.Analyzers;
 
 [TestClass]
 public class ExpressionMethodTests
