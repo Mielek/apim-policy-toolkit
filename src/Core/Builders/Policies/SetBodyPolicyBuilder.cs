@@ -9,7 +9,6 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SetBodyPolicyBuilder
     {
-
         public enum BodyTemplate { Liquid }
         public enum XsiNilType { Blank, Null }
 

@@ -12,7 +12,7 @@
     <Description>Mielek.Azure.ApiManagement.PolicyToolkit</Description>
     <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>
     <Copyright>Copyright</Copyright>
-    <PackageTags>Mielek.Azure.ApiManagement.PolicyToolkit, analyzers</PackageTags>
+    <PackageTags>Mielek.Azure.ApiManagement.PolicyToolkit</PackageTags>
     <NoPackageAnalysis>true</NoPackageAnalysis>
 
     <TargetsForTfmSpecificContentInPackage>
@@ -29,9 +29,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\..\Generators\Attributes\Attributes.csproj" />
     <ProjectReference Include="..\..\Expressions\Context\Context.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Analyzers\Analyzers.csproj" />
   </ItemGroup>
 
@@ -54,8 +53,6 @@
     </GetNuGetShortFolderName>
     <ItemGroup>
       <TfmSpecificPackageFile Include="$(OutputPath)\Context.dll"
-        PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Attributes.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />
       <TfmSpecificPackageFile Include="$(OutputPath)\Core.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />

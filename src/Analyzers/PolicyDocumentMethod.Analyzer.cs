@@ -24,11 +24,10 @@ public class PolicyDocumentMethodAnalyzer : DiagnosticAnalyzer
     {
         "System.Xml.Linq.XElement"
     };
-    private readonly static string PolicyDocumentAttribute = "Mielek.Azure.ApiManagement.PolicyToolkit.Attributes.DocumentAttribute";
+    private const string PolicyDocumentAttribute = "Mielek.Azure.ApiManagement.PolicyToolkit.Attributes.DocumentAttribute";
 
     private static void Analyze(SyntaxNodeAnalysisContext context)
     {
-
         if (context.Node is not MethodDeclarationSyntax method)
         {
             throw new Exception();

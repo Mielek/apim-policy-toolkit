@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
@@ -23,6 +24,8 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
                 SyntaxKind.ObjectInitializerExpression,
                 SyntaxKind.AnonymousObjectCreationExpression);
     }
+
+    private const string LibraryAttribute = "Mielek.Azure.ApiManagement.PolicyToolkit.Attributes.LibraryAttribute";
 
     private readonly static IReadOnlySet<string> AllowedTypes = new HashSet<string>()
     {
@@ -191,11 +194,13 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.PolicyDocumentBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.PolicyFragmentBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.PolicySectionBuilder",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions.ExpressionBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions.ExpressionBuilder<T>",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.AuthenticationBasicPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.AuthenticationCertificatePolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.AuthenticationManagedIdentityPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheLookupPolicyBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheLookupPolicyBuilder.CacheLookupCachingType",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheLookupPolicyBuilder.CacheLookupDownstreamCachingType",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheStorePolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CheckHeaderPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ChoosePolicyBuilder",
@@ -204,8 +209,10 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.EmitMetricDimensionBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ForwardRequestPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.GetAuthorizationContextPolicyBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.GetAuthorizationContextPolicyBuilder.IdentityTypeEnum",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.IncludeFragmentPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.IpFilterPolicyBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.IpFilterPolicyBuilder.IpFilterAction",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.LimitConcurrencyPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.LogToEventhubPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.MockResponsePolicyBuilder",
@@ -220,18 +227,26 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ReturnResponsePolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SendOneWayRequestPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SendRequestPolicyBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SendRequestPolicyBuilder.SendRequestMode",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetBodyPolicyBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetBodyPolicyBuilder.BodyTemplate",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetBodyPolicyBuilder.XsiNilType",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetHeaderPolicyBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetHeaderPolicyBuilder.ExistsActionType",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetStatusPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetVariablePolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.TracePolicyBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.TracePolicyBuilder.TraceSeverity",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateAzureAdTokenPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateAzureAdTokenClaimBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateAzureAdTokenClaimBuilder.ClaimMatch",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateClientCertificatePolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateClientCertificateIdentityBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateJwtPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateJwtClaimBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateJwtClaimBuilder.ClaimMatch",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.WaitPolicyBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.WaitPolicyBuilder.WaitFor",
         #endregion Policy building
     };
 
@@ -259,6 +274,12 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
     private static void AnalyzeNode(SyntaxNodeAnalysisContext context)
     {
         var node = context.Node;
+        var libraryAttributeAnnotated = node.Ancestors()
+            .OfType<ClassDeclarationSyntax>()
+            .Any(c => c.ContainsAttributeOfType(context.SemanticModel, LibraryAttribute));
+
+        if(!libraryAttributeAnnotated) return;
+
         var nodeSymbol = context.SemanticModel.GetSymbolInfo(node).Symbol;
         if (nodeSymbol == null)
         {

@@ -10,6 +10,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SendRequestPolicyBuilder
     {
+        public enum SendRequestMode { New, Copy }
+
         private string? _responseVariableName;
         private SendRequestMode? _mode;
         private uint? _timeout;
@@ -74,31 +76,29 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
                 children.Add(new XAttribute("ignore-error", _ignoreError));
             }
 
-            if(_setMethod != null)
+            if (_setMethod != null)
             {
                 children.Add(_setMethod);
             }
-            if(_setUrl != null)
+            if (_setUrl != null)
             {
                 children.Add(new XElement("set-url", _setUrl.GetXText()));
             }
-            if(_setHeaders != null && _setHeaders.Count > 0)
+            if (_setHeaders != null && _setHeaders.Count > 0)
             {
                 children.AddRange(_setHeaders.ToArray());
             }
-            if(_setBody != null)
+            if (_setBody != null)
             {
                 children.Add(new XElement("set-body", _setBody.GetXText()));
             }
-            if(_authenticationCertificate != null)
+            if (_authenticationCertificate != null)
             {
                 children.Add(_authenticationCertificate);
             }
 
             return new XElement("send-request", children.ToArray());
         }
-
-        public enum SendRequestMode { New, Copy }
         private static string TranslateMode(SendRequestMode? mode) => mode switch
         {
             SendRequestMode.Copy => "copy",

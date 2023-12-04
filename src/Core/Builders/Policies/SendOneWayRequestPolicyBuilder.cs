@@ -9,6 +9,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SendOneWayRequestPolicyBuilder
     {
+        public enum SendOneWayRequestMode { New, Copy }
+
         private SendOneWayRequestMode? _mode;
         private uint? _timeout;
         private IExpression<string>? _setUrl;
@@ -56,31 +58,31 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 
             var children = ImmutableArray.CreateBuilder<object>();
 
-            if(_mode != null)
+            if (_mode != null)
             {
                 children.Add(new XAttribute("mode", TranslateMode(_mode)));
             }
-            if(_timeout != null)
+            if (_timeout != null)
             {
                 children.Add(new XAttribute("timeout", _timeout));
             }
-            if(_setMethod != null)
+            if (_setMethod != null)
             {
                 children.Add(_setMethod);
             }
-            if(_setUrl != null)
+            if (_setUrl != null)
             {
                 children.Add(new XElement("set-url", _setUrl.GetXText()));
             }
-            if(_setHeaders != null && _setHeaders.Count > 0)
+            if (_setHeaders != null && _setHeaders.Count > 0)
             {
                 children.AddRange(_setHeaders.ToArray());
             }
-            if(_setBody != null)
+            if (_setBody != null)
             {
                 children.Add(new XElement("set-body", _setBody.GetXText()));
             }
-            if(_authenticationCertificate != null)
+            if (_authenticationCertificate != null)
             {
                 children.Add(_authenticationCertificate);
             }
@@ -88,7 +90,6 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
             return new XElement("send-one-way-request", children.ToArray());
         }
 
-        public enum SendOneWayRequestMode { New, Copy }
         private static string TranslateMode(SendOneWayRequestMode? mode) => mode switch
         {
             SendOneWayRequestMode.Copy => "copy",

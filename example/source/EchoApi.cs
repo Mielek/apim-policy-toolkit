@@ -30,7 +30,7 @@ public class EchoApi
                     .Base()
                     .SetHeader(policy =>
                     {
-                        policy.Name("X-Test").ExistsAction(SetHeaderPolicyBuilder.SetHeaderPolicyExistsAction.Append)
+                        policy.Name("X-Test").ExistsAction(SetHeaderPolicyBuilder.ExistsActionType.Append)
                             .Value("Test")
                             .Value(expression => expression.Inline(context => context.Deployment
                             .Region))

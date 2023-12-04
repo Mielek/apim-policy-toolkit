@@ -9,6 +9,9 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     [GenerateBuilderSetters]
     public partial class CacheLookupPolicyBuilder
     {
+        public enum CacheLookupCachingType { PreferExternal, External, Internal }
+        public enum CacheLookupDownstreamCachingType { None, Private, Public }
+
         private bool? _varyByDeveloper;
         private bool? _varyByDeveloperGroup;
         private CacheLookupCachingType? _catchingType;
@@ -80,9 +83,6 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
             CacheLookupDownstreamCachingType.Public => "public",
             _ => throw new Exception(),
         };
-
-        public enum CacheLookupCachingType { PreferExternal, External, Internal }
-        public enum CacheLookupDownstreamCachingType { None, Private, Public }
     }
 }
 

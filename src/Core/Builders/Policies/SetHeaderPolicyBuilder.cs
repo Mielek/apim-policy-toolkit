@@ -10,23 +10,23 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     [GenerateBuilderSetters]
     public partial class SetHeaderPolicyBuilder
     {
-        public enum SetHeaderPolicyExistsAction { Override, Skip, Append, Delete }
+        public enum ExistsActionType { Override, Skip, Append, Delete }
 
         private IExpression<string>? _name;
         private ImmutableList<IExpression<string>>.Builder? _values;
         private IExpression<string>? _existsAction;
 
-        public SetHeaderPolicyBuilder ExistsAction(SetHeaderPolicyExistsAction existsAction)
+        public SetHeaderPolicyBuilder ExistsAction(ExistsActionType existsAction)
         {
             return ExistsAction(Translate(existsAction));
         }
 
-        private string Translate(SetHeaderPolicyExistsAction existsAction) => existsAction switch
+        private string Translate(ExistsActionType existsAction) => existsAction switch
         {
-            SetHeaderPolicyExistsAction.Override => "override",
-            SetHeaderPolicyExistsAction.Append => "append",
-            SetHeaderPolicyExistsAction.Delete => "delete",
-            SetHeaderPolicyExistsAction.Skip => "skip",
+            ExistsActionType.Override => "override",
+            ExistsActionType.Append => "append",
+            ExistsActionType.Delete => "delete",
+            ExistsActionType.Skip => "skip",
             _ => throw new Exception(),
         };
 

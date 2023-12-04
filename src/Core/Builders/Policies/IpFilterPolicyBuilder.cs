@@ -5,11 +5,12 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 
     using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
+
     [GenerateBuilderSetters]
     public partial class IpFilterPolicyBuilder
     {
-
         public enum IpFilterAction { Allow, Forbid }
+
         public interface IIpFilterValue { };
         public sealed record IpFilterAddress(string Ip) : IIpFilterValue;
         public sealed record IpFilterAddressRange(string FromIp, string ToIp) : IIpFilterValue;

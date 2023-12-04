@@ -110,10 +110,10 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     [GenerateBuilderSetters]
     public partial class ValidateJwtClaimBuilder
     {
-        public enum ValidateJwtClaimMatch { All, Any }
+        public enum ClaimMatch { All, Any }
         private string? _name;
         private ImmutableList<string>.Builder? _values;
-        private ValidateJwtClaimMatch? _match;
+        private ClaimMatch? _match;
         private string? _separator;
 
         public XElement Build()
@@ -138,10 +138,10 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
         }
 
 
-        private string TranslateClaimMatch(ValidateJwtClaimMatch? match) => match switch
+        private string TranslateClaimMatch(ClaimMatch? match) => match switch
         {
-            ValidateJwtClaimMatch.All => "all",
-            ValidateJwtClaimMatch.Any => "any",
+            ClaimMatch.All => "all",
+            ClaimMatch.Any => "any",
             _ => throw new NotImplementedException(),
         };
     }

@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
@@ -39,18 +40,41 @@ public class ExpressionBuilder<T>
         {
             throw new Exception("Compiler services are not enabled");
         }
+
         var info = lambda.GetMethodInfo();
         ValidateParameters(info);
         _expression = new LambdaExpression<T>(info, lambdaCode);
         return this;
     }
 
-    public ExpressionBuilder<T> Method(Func<IContext, T> method, [CallerFilePath] string sourceFilePath = "")
+    public ExpressionBuilder<T> Method(Func<IContext, T> method, [CallerFilePath] string? sourceFilePath = null)
     {
+        if (sourceFilePath == null)
+        {
+            throw new Exception("Compiler services are not enabled");
+        }
+
         var info = method.GetMethodInfo();
         ValidateParameters(info);
         _expression = new MethodExpression<T>(info, sourceFilePath);
         return this;
+    }
+
+    public ExpressionBuilder<T> Function(Func<IContext, T> func, [CallerArgumentExpression(nameof(func))] string? code = null, [CallerFilePath] string? sourceFilePath = null)
+    {
+        if (code == null || sourceFilePath == null)
+        {
+            throw new Exception("Compiler services are not enabled");
+        }
+
+        if (Regex.Match(code, @"\(?\s*[^)]*\s*\)?\s*=>\s*.+", RegexOptions.Singleline).Success)
+        {
+            return Lambda(func, code);
+        }
+        else
+        {
+            return Method(func, sourceFilePath);
+        }
     }
 
     public IExpression<T> Build()

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -16,14 +17,14 @@ var options = new ConfigurationBuilder()
 var dllFile = options["dllFile"] ?? throw new Exception();
 var output = options["out"] ?? throw new Exception();
 var format = bool.TryParse(options["format"] ?? "false", out var fmt) && fmt;
-var formatXml = bool.TryParse(options["format-xml"] ?? "false", out var fmtXML) && fmtXML;
-var formatCSharp = bool.TryParse(options["format-csharp"] ?? "false", out var fmtCSharp) && fmtCSharp;
+var formatXml = bool.TryParse(options["format-xml"] ?? "false", out var fmtXML) && fmtXML || format;
+var formatCSharp = bool.TryParse(options["format-csharp"] ?? "false", out var fmtCSharp) && fmtCSharp || format;
 
 var writerSettings = new XmlWriterSettings()
 {
     OmitXmlDeclaration = true,
     ConformanceLevel = ConformanceLevel.Fragment,
-    Indent = format || formatXml
+    Indent = formatXml
 };
 
 var stopwatch = Stopwatch.StartNew();
@@ -34,8 +35,6 @@ var libraries = assembly.GetExportedTypes().Where(t => t.GetCustomAttribute<Libr
 foreach (var type in libraries)
 {
     var instance = Activator.CreateInstance(type);
-    Console.Out.WriteLine($"Created instance of {type}");
-
     var documents = type.GetMethods().Where(m => m.GetCustomAttribute<DocumentAttribute>() != null);
 
     foreach (var document in documents)
@@ -46,7 +45,8 @@ foreach (var type in libraries)
             continue;
         }
 
-        Console.Out.WriteLine($"Document of {document}");
+        var documentName = $"{type.Name}.{document.Name}";
+        Console.Out.WriteLine($"Document of {documentName}");
         var policyDoc = document.Invoke(instance, null) as XElement;
 
         if (policyDoc == null)
@@ -55,11 +55,20 @@ foreach (var type in libraries)
             continue;
         }
 
-        var targetFile = Path.Combine(output, $"{type.Name}.{document.Name}.xml");
-        using (var writer = CustomXmlWriter.Create(targetFile, writerSettings))
+        StringBuilder codeBuilder = new StringBuilder();
+        using (var writer = CustomXmlWriter.Create(codeBuilder, writerSettings))
         {
             writer.Write(policyDoc);
         }
+        var code = codeBuilder.ToString();
+
+        if (formatCSharp)
+        {
+            code = new RazorCodeFormatter(code).Format();
+        }
+
+        var targetFile = Path.Combine(output, $"{documentName}.xml");
+        File.WriteAllText(targetFile, code);
 
         Console.Out.WriteLine($"Created {targetFile}");
     }

@@ -89,11 +89,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     [GenerateBuilderSetters]
     public partial class ValidateAzureAdTokenClaimBuilder
     {
-        public enum ValidateAzureAdTokenClaimMatch { All, Any }
+        public enum ClaimMatch { All, Any }
 
         private string? _name;
         private ImmutableList<string>.Builder? _values;
-        private ValidateAzureAdTokenClaimMatch? _match;
+        private ClaimMatch? _match;
         private string? _separator;
 
         public XElement Build()
@@ -117,10 +117,10 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
             return new XElement("claim", children.ToArray());
         }
 
-        private string TranslateClaimMatch(ValidateAzureAdTokenClaimMatch? match) => match switch
+        private string TranslateClaimMatch(ClaimMatch? match) => match switch
         {
-            ValidateAzureAdTokenClaimMatch.All => "all",
-            ValidateAzureAdTokenClaimMatch.Any => "any",
+            ClaimMatch.All => "all",
+            ClaimMatch.Any => "any",
             _ => throw new NotImplementedException(),
         };
     }
