@@ -1,7 +1,3 @@
-
-
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Builder;
@@ -11,7 +7,7 @@ public class BuilderClassBuilder
     private readonly string _namespaceName;
     private readonly string _className;
     private readonly StringBuilder _sourceBuilder = new StringBuilder();
-    private readonly List<string> _usingsTypes = new List<string>();
+    private readonly HashSet<string> _usingsTypes = new HashSet<string>();
     private readonly List<BuilderSetMethod> _methods = new List<BuilderSetMethod>();
 
     public BuilderClassBuilder(string namespaceName, string className)

@@ -52,6 +52,11 @@ public class ExpressionFieldHandlerProvider : IFieldSetterHandlerProvider
                     new[] { $"Action<ExpressionBuilder<{type}>> configurator" },
                     new[] { $"{variableName} = ExpressionBuilder<{type}>.BuildFromConfiguration(configurator);" }
                 ));
+                builder.Method(new BuilderSetMethod(
+                    methodName,
+                    new[] { $"Func<IContext, {type}> func, [CallerArgumentExpression(nameof(func))] string? code = null, [CallerFilePath] string? sourceFilePath = null" },
+                    new[] { $"{variableName} = ExpressionBuilder<{type}>.Builder.Function(func, code, sourceFilePath).Build();" }
+                ));
             }
         }
     }

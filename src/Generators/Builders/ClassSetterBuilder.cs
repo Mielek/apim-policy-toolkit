@@ -24,7 +24,7 @@ internal class ClassSetterBuilder
     {
         _classDeclaration = classDeclaration;
         var syntax = _classDeclaration.FindParent<NamespaceDeclarationSyntax>();
-        if(syntax == null) throw new Exception();
+        if (syntax == null) throw new Exception();
         var namespaceName = syntax.Name.ToString();
         _classBuilder = new BuilderClassBuilder(namespaceName, classDeclaration.Identifier.Text);
     }
@@ -39,7 +39,9 @@ internal class ClassSetterBuilder
     private void AddUsings()
     {
         _classBuilder.Using("System.Collections.Immutable");
+        _classBuilder.Using("System.Runtime.CompilerServices");
         _classBuilder.Using("Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions");
+        _classBuilder.Using("Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context");
     }
 
     private void AddFieldSetters()
@@ -58,7 +60,7 @@ internal class ClassSetterBuilder
     {
         foreach (var provider in _methodProviders)
         {
-            if(provider.TryGetHandler(field, out var handler))
+            if (provider.TryGetHandler(field, out var handler))
             {
                 handler.Handle(_classBuilder);
                 return;

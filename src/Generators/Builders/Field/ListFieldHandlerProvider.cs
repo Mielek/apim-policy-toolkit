@@ -61,6 +61,12 @@ public class ImmutableListFieldHandlerProvider : IFieldSetterHandlerProvider
                     new[] { $"var value = ExpressionBuilder<{innerType}>.BuildFromConfiguration(configurator);",
                             $"({variableName} ??= ImmutableList.CreateBuilder<IExpression<{innerType}>>()).Add(value);" }
                 ));
+                builder.Method(new BuilderSetMethod(
+                    methodName,
+                    new[] { $"Func<IContext, {innerType}> func, [CallerArgumentExpression(nameof(func))] string? code = null, [CallerFilePath] string? sourceFilePath = null" },
+                    new[] { $"var value = ExpressionBuilder<{innerType}>.Builder.Function(func, code, sourceFilePath).Build();",
+                            $"({variableName} ??= ImmutableList.CreateBuilder<IExpression<{innerType}>>()).Add(value);" }
+                ));
             }
         }
     }
