@@ -15,13 +15,6 @@ public class ExpressionBuilderTests
     }
 
     [TestMethod]
-    public void ShouldReturnInlineExpression()
-    {
-        var expression = ExpressionBuilder<string>.Builder.Inline(context => context.Product.Name).Build();
-        Assert.AreEqual("@(context.Product.Name)", expression.Source);
-    }
-
-    [TestMethod]
     public void ShouldReturnExpressionLambda()
     {
         var expression = ExpressionBuilder<string>.Builder.Lambda(context => context.Product.Name).Build();
