@@ -44,8 +44,8 @@ public class Library
         {
             i.SetHeader(sh =>
             {
-                sh.Name(c => c.Lambda(context => context.Api.Id))
-                .Value(c => c.Inline(context => context.Product.Id));
+                sh.Name(context => context.Api.Id)
+                .Value(context => context.Product.Id);
             });
         })
         .Build();

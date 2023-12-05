@@ -37,7 +37,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 
         public SetMethodPolicyBuilder Method(HttpMethod method)
         {
-            return Method(configurator => configurator.Constant(method.Method));
+            return Method(method.Method);
         }
 
         public XElement Build()

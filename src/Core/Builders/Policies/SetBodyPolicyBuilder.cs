@@ -18,7 +18,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 
         public SetBodyPolicyBuilder Template(BodyTemplate template)
         {
-            return Template(config => config.Constant(TranslateTemplate(template)));
+            return Template(TranslateTemplate(template));
         }
 
         private string TranslateTemplate(BodyTemplate template) => template switch
@@ -29,7 +29,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 
         public SetBodyPolicyBuilder XsiNil(XsiNilType xsiNil)
         {
-            return XsiNil(config => config.Constant(TranslateXsiNil(xsiNil)));
+            return XsiNil(TranslateXsiNil(xsiNil));
         }
 
         private string TranslateXsiNil(XsiNilType xsiNil) => xsiNil switch

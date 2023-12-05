@@ -53,19 +53,14 @@ public class ImmutableListFieldHandlerProvider : IFieldSetterHandlerProvider
                 builder.Method(new BuilderSetMethod(
                     methodName,
                     new[] { $"{innerType} value" },
-                    new[] { $"this.{methodName}(config => config.Constant(value));" }
-                ));
-                builder.Method(new BuilderSetMethod(
-                    methodName,
-                    new[] { $"Action<ExpressionBuilder<{innerType}>> configurator" },
-                    new[] { $"var value = ExpressionBuilder<{innerType}>.BuildFromConfiguration(configurator);",
-                            $"({variableName} ??= ImmutableList.CreateBuilder<IExpression<{innerType}>>()).Add(value);" }
+                    new[] { $"var expression = ExpressionBuilder<{innerType}>.Builder.Constant(value).Build();",
+                            $"({variableName} ??= ImmutableList.CreateBuilder<IExpression<{innerType}>>()).Add(expression);" }
                 ));
                 builder.Method(new BuilderSetMethod(
                     methodName,
                     new[] { $"Func<IContext, {innerType}> func, [CallerArgumentExpression(nameof(func))] string? code = null, [CallerFilePath] string? sourceFilePath = null" },
-                    new[] { $"var value = ExpressionBuilder<{innerType}>.Builder.Function(func, code, sourceFilePath).Build();",
-                            $"({variableName} ??= ImmutableList.CreateBuilder<IExpression<{innerType}>>()).Add(value);" }
+                    new[] { $"var expression = ExpressionBuilder<{innerType}>.Builder.Function(func, code, sourceFilePath).Build();",
+                            $"({variableName} ??= ImmutableList.CreateBuilder<IExpression<{innerType}>>()).Add(expression);" }
                 ));
             }
         }

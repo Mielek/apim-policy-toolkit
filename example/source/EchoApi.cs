@@ -23,7 +23,7 @@ public class EchoApi
                         policy.Name("X-Checked")
                             .FailedCheckHttpCode(400)
                             .FailedCheckErrorMessage("Bad request")
-                            .IgnoreCase(expression => expression.Method(IsVariableSet))
+                            .IgnoreCase(IsVariableSet)
                             .Value("Test")
                             .Value("Other-Test");
                     })
@@ -32,20 +32,19 @@ public class EchoApi
                     {
                         policy.Name("X-Test").ExistsAction(SetHeaderPolicyBuilder.ExistsActionType.Append)
                             .Value("Test")
-                            .Value(expression => expression.Inline(context => context.Deployment
-                            .Region))
-                            .Value(expression => expression.Lambda(context =>
+                            .Value(context => context.Deployment.Region)
+                            .Value(context =>
                             {
                                 if (context.Variables.ContainsKey("Variable"))
                                 {
                                     return "ContainsVariable";
                                 }
                                 return "NotContainVariable";
-                            }))
-                            .Value(expression => expression.Method(GetKnownGUIDOrGenerateNew));
+                            })
+                            .Value(GetKnownGUIDOrGenerateNew);
                     });
             })
-            .Outbound(policies => policies.Base().SetBody(policy => policy.Body(expression => expression.Method(FilterBody))))
+            .Outbound(policies => policies.Base().SetBody(policy => policy.Body(FilterBody)))
             .Build();
     }
 

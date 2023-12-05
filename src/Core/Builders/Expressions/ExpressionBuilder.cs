@@ -11,13 +11,6 @@ public class ExpressionBuilder<T>
 {
     public static ExpressionBuilder<T> Builder => new();
 
-    public static IExpression<T> BuildFromConfiguration(Action<ExpressionBuilder<T>> configurator)
-    {
-        var builder = ExpressionBuilder<T>.Builder;
-        configurator(builder);
-        return builder.Build();
-    }
-
     private IExpression<T>? _expression;
 
     internal ExpressionBuilder() { }
@@ -25,12 +18,6 @@ public class ExpressionBuilder<T>
     public ExpressionBuilder<T> Constant(T value)
     {
         _expression = new ConstantExpression<T>(value);
-        return this;
-    }
-
-    public ExpressionBuilder<T> Inline(Expression<Func<IContext, T>> expression)
-    {
-        _expression = new InlineExpression<T>(expression.Body.ToString());
         return this;
     }
 

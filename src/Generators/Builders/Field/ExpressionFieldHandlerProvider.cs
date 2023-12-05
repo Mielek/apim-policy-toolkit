@@ -45,12 +45,7 @@ public class ExpressionFieldHandlerProvider : IFieldSetterHandlerProvider
                 builder.Method(new BuilderSetMethod(
                     methodName,
                     new[] { $"{type} value" },
-                    new[] { $"this.{methodName}(config => config.Constant(value));" }
-                ));
-                builder.Method(new BuilderSetMethod(
-                    methodName,
-                    new[] { $"Action<ExpressionBuilder<{type}>> configurator" },
-                    new[] { $"{variableName} = ExpressionBuilder<{type}>.BuildFromConfiguration(configurator);" }
+                    new[] { $"{variableName} = ExpressionBuilder<{type}>.Builder.Constant(value).Build();" }
                 ));
                 builder.Method(new BuilderSetMethod(
                     methodName,
