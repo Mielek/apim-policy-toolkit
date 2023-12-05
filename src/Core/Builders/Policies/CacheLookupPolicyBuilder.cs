@@ -28,7 +28,6 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 
             var children = ImmutableArray.CreateBuilder<object>();
 
-
             children.Add(new XAttribute("vary-by-developer", _varyByDeveloper));
             children.Add(new XAttribute("vary-by-developer-group", _varyByDeveloperGroup));
 
