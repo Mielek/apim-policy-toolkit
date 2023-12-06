@@ -6,17 +6,17 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
 
 public class MockRequest : IRequest
 {
-    public MockRequest()
-    {
-        MockBody = new MockBody();
-    }
 
-    public MockBody MockBody { get; init; }
+    public MockBody MockBody { get; set; } = new MockBody();
     public IMessageBody Body => MockBody;
 
 
-    public X509Certificate2 Certificate => throw new NotImplementedException();
+    public X509Certificate2? Certificate { get; set; } = null;
 
+    public Dictionary<string, string[]> MockHeaders { get; set; } = new Dictionary<string, string[]>()
+    {
+        {"Accept", new [] {"application/json"}}
+    };
     public IReadOnlyDictionary<string, string[]> Headers => throw new NotImplementedException();
 
     public string IpAddress => throw new NotImplementedException();

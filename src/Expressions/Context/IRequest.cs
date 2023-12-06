@@ -6,7 +6,7 @@ public interface IRequest
 {
     IMessageBody? Body { get; }
 
-    X509Certificate2 Certificate { get; }
+    X509Certificate2? Certificate { get; }
 
     IReadOnlyDictionary<string, string[]> Headers { get; }
 

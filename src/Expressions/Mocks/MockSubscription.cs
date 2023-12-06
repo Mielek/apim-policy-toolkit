@@ -4,19 +4,19 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
 
 public class MockSubscription : ISubscription
 {
-    public DateTime CreatedDate => throw new NotImplementedException();
+    public DateTime CreatedDate { get; set; } = DateTime.UtcNow.AddDays(-3);
 
-    public DateTime? EndDate => throw new NotImplementedException();
+    public DateTime? EndDate { get; set; }
 
-    public string Id => throw new NotImplementedException();
+    public string Id { get; set; } = "MBJsUa3qCI";
 
-    public string Key => throw new NotImplementedException();
+    public string Key { get; set; } = "jkgvggusT9";
 
-    public string Name => throw new NotImplementedException();
+    public string Name { get; set; } = "mock-api-access";
 
-    public string PrimaryKey => throw new NotImplementedException();
+    public string PrimaryKey { get; set; } = "AGfCkbqC6J5wu1n1AnGrl8p5eC5pirHD";
 
-    public string SecondaryKey => throw new NotImplementedException();
+    public string SecondaryKey { get; set; } = "Of0lkMYsLVnt9f7WfWHBZn2GhZlHfgAJ";
 
-    public DateTime? StartDate => throw new NotImplementedException();
+    public DateTime? StartDate { get; set; }
 }

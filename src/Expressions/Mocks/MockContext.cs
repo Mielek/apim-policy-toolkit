@@ -4,42 +4,28 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
 
 public class MockContext : IContext
 {
-    public MockContext()
-    {
-        RequestId = Guid.NewGuid();
-        Timestamp = DateTime.Now;
-        Elapsed = TimeSpan.Zero;
-        Tracing = false;
-        MockVariables = new Dictionary<string, object>();
-        MockApi = new MockContextApi();
-        MockRequest = new MockRequest();
-        MockResponse = new MockResponse();
-        MockSubscription = new MockSubscription();
-        MockUser = new MockUser();
-    }
+    public Guid RequestId { get; set; } = Guid.NewGuid();
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+    public TimeSpan Elapsed { get; set; } = TimeSpan.Zero;
+    public bool Tracing { get; set; } = false;
 
-    public Guid RequestId { get; set; }
-    public DateTime Timestamp { get; set; }
-    public TimeSpan Elapsed { get; set; }
-    public bool Tracing { get; set; }
-
-    public Dictionary<string, object> MockVariables { get; init; }
+    public Dictionary<string, object> MockVariables { get; set; } = new Dictionary<string, object>();
     public IReadOnlyDictionary<string, object> Variables => MockVariables;
 
-    public MockContextApi MockApi { get; init; }
+    public MockContextApi MockApi { get; set; } = new MockContextApi();
     public IContextApi Api => MockApi;
 
-    public MockRequest MockRequest { get; init; }
+    public MockRequest MockRequest { get; set; } = new MockRequest();
     public IRequest Request => MockRequest;
 
-    public MockResponse MockResponse { get; init; }
+    public MockResponse MockResponse { get; set; } = new MockResponse();
     public IResponse Response => MockResponse;
 
 
-    public MockSubscription MockSubscription { get; init; }
+    public MockSubscription MockSubscription { get; set; } = new MockSubscription();
     public ISubscription Subscription => MockSubscription;
 
-    public MockUser MockUser { get; init; }
+    public MockUser MockUser { get; set; } = new MockUser();
     public IUser User => MockUser;
 
     public IDeployment Deployment => throw new NotImplementedException();

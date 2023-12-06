@@ -4,9 +4,9 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
 
 public class MockContextApi : MockApi, IContextApi
 {
-    public bool IsCurrentRevision => throw new NotImplementedException();
+    public bool IsCurrentRevision { get; set; } = true;
 
-    public string Revision => throw new NotImplementedException();
+    public string Revision { get; set; } = "2";
 
-    public string Version => throw new NotImplementedException();
+    public string Version { get; set; } = "v2";
 }

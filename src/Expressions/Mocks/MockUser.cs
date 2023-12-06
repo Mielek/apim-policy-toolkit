@@ -4,19 +4,21 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
 
 public class MockUser : IUser
 {
-    public string Email => throw new NotImplementedException();
+    public string Email { get; set; } = "joe.doe@contoso.com";
 
-    public string FirstName => throw new NotImplementedException();
+    public string FirstName { get; set; } = "Joe";
 
-    public IEnumerable<IGroup> Groups => throw new NotImplementedException();
+    public List<MockGroup> MockGroups { get; set; } = new List<MockGroup>() { new MockGroup() };
+    public IEnumerable<IGroup> Groups => MockGroups;
 
-    public string Id => throw new NotImplementedException();
+    public string Id { get; set; } = "joe-doe-contoso-com";
 
-    public IEnumerable<IUserIdentity> Identities => throw new NotImplementedException();
+    public List<MockUserIdentity> MockUserIdentities { get; set; } = new List<MockUserIdentity>() { new MockUserIdentity() };
+    public IEnumerable<IUserIdentity> Identities => MockUserIdentities;
 
-    public string LastName => throw new NotImplementedException();
+    public string LastName { get; set; } = "Doe";
 
-    public string Note => throw new NotImplementedException();
+    public string Note { get; set; } = "Joe likes dogs and cats equally";
 
-    public DateTime RegistrationDate => throw new NotImplementedException();
+    public DateTime RegistrationDate { get; set; } = DateTime.UtcNow.AddDays(-5);
 }
