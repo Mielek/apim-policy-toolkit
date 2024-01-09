@@ -190,10 +190,14 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
 
         #endregion Expression
 
-        #region Policy building
+        #region Mielek.Azure.ApiManagement.PolicyToolkit.Builders
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policy",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.PolicyDocumentBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.PolicyFragmentBuilder",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.PolicySectionBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.InboundSectionBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.BackendSectionBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.OutboundSectionBuilder",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.OnErrorSectionBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions.ExpressionBuilder<T>",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.AuthenticationBasicPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.AuthenticationCertificatePolicyBuilder",
@@ -259,7 +263,7 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateJwtClaimBuilder.ClaimMatch",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.WaitPolicyBuilder",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.WaitPolicyBuilder.WaitFor",
-        #endregion Policy building
+        #endregion Mielek.Azure.ApiManagement.PolicyToolkit.Builders
     };
 
     private readonly static IReadOnlyDictionary<string, IReadOnlySet<string>> AllowedInTypes = new Dictionary<string, IReadOnlySet<String>>()

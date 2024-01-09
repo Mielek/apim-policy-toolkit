@@ -14,35 +14,33 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class CacheLookupValuePolicyBuilder
+public partial class CacheStoreValuePolicyBuilder
 {
     public enum CachingTypeEnum { Internal, External, PreferExternal }
 
-    private string? _variableName;
-    private CachingTypeEnum? _catchingType;
-    private IExpression<string>? _key;
-    private IExpression<string>? _defaultValue;
+    private string? _key;
+    private IExpression<string>? _value;
+    private IExpression<uint>? _duration;
+    private CachingTypeEnum? _cachingType;
 
     public XElement Build()
     {
-        if (_variableName == null) throw new NullReferenceException();
+        if (_key == null) throw new NullReferenceException();
+        if (_value == null) throw new NullReferenceException();
+        if (_duration == null) throw new NullReferenceException();
 
-        var children = ImmutableArray.CreateBuilder<XObject>();
-        children.Add(new XAttribute("variable-name", _variableName));
-        if (_catchingType != null)
+        var children = ImmutableArray.CreateBuilder<object>();
+
+        children.Add(new XAttribute("key", _key));
+        children.Add(_value.GetXAttribute("value"));
+        children.Add(_duration.GetXAttribute("duration"));
+
+        if (_cachingType != null)
         {
-            children.Add(new XAttribute("caching-type", TranslateCachingType(_catchingType)));
-        }
-        if (_key != null)
-        {
-            children.Add(_key.GetXAttribute("key"));
-        }
-        if (_defaultValue != null)
-        {
-            children.Add(_defaultValue.GetXAttribute("default-value"));
+            children.Add(new XAttribute("caching-type", TranslateCachingType(_cachingType)));
         }
 
-        return new XElement("cache-lookup-value", children.ToArray());
+        return new XElement("cache-store-value", children.ToArray());
     }
 
     private string TranslateCachingType(CachingTypeEnum? cachingType)

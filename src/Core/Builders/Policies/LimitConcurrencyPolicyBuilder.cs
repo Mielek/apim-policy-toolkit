@@ -7,7 +7,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
     [GenerateBuilderSetters]
-    public partial class LimitConcurrencyPolicyBuilder
+    public partial class LimitConcurrencyPolicyBuilder<TSectionBuilder> where TSectionBuilder : PolicySectionBuilder, new()
     {
         private IExpression<string>? _key;
         private uint? _maxCount;
@@ -15,9 +15,9 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
         [IgnoreBuilderField]
         private ICollection<XElement>? _policies;
 
-        public LimitConcurrencyPolicyBuilder Policies(Action<PolicySectionBuilder> configurator)
+        public LimitConcurrencyPolicyBuilder<TSectionBuilder> Policies(Action<TSectionBuilder> configurator)
         {
-            var builder = new PolicySectionBuilder();
+            var builder = new TSectionBuilder();
             configurator(builder);
             _policies = builder.Build();
             return this;
@@ -44,15 +44,54 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
 {
     using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
-    public partial class PolicySectionBuilder
+    public partial class InboundSectionBuilder
     {
-        public PolicySectionBuilder LimitConcurrency(Action<LimitConcurrencyPolicyBuilder> configurator)
+        public InboundSectionBuilder LimitConcurrency(Action<LimitConcurrencyPolicyBuilder<InboundSectionBuilder>> configurator)
         {
-            var builder = new LimitConcurrencyPolicyBuilder();
+            var builder = new LimitConcurrencyPolicyBuilder<InboundSectionBuilder>();
+            configurator(builder);
+            _sectionPolicies.Add(builder.Build());
+            return this;
+        }
+    }
+    public partial class OutboundSectionBuilder
+    {
+        public OutboundSectionBuilder LimitConcurrency(Action<LimitConcurrencyPolicyBuilder<OutboundSectionBuilder>> configurator)
+        {
+            var builder = new LimitConcurrencyPolicyBuilder<OutboundSectionBuilder>();
+            configurator(builder);
+            _sectionPolicies.Add(builder.Build());
+            return this;
+        }
+    }
+    public partial class BackendSectionBuilder
+    {
+        public BackendSectionBuilder LimitConcurrency(Action<LimitConcurrencyPolicyBuilder<BackendSectionBuilder>> configurator)
+        {
+            var builder = new LimitConcurrencyPolicyBuilder<BackendSectionBuilder>();
+            configurator(builder);
+            _sectionPolicies.Add(builder.Build());
+            return this;
+        }
+    }
+    public partial class OnErrorSectionBuilder
+    {
+        public OnErrorSectionBuilder LimitConcurrency(Action<LimitConcurrencyPolicyBuilder<OnErrorSectionBuilder>> configurator)
+        {
+            var builder = new LimitConcurrencyPolicyBuilder<OnErrorSectionBuilder>();
+            configurator(builder);
+            _sectionPolicies.Add(builder.Build());
+            return this;
+        }
+    }
+    public partial class PolicyFragmentBuilder
+    {
+        public PolicyFragmentBuilder LimitConcurrency(Action<LimitConcurrencyPolicyBuilder<PolicyFragmentBuilder>> configurator)
+        {
+            var builder = new LimitConcurrencyPolicyBuilder<PolicyFragmentBuilder>();
             configurator(builder);
             _sectionPolicies.Add(builder.Build());
             return this;
         }
     }
 }
-

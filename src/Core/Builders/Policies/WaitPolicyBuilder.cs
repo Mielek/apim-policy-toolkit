@@ -1,63 +1,51 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+using System.Collections.Immutable;
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+[GenerateBuilderSetters]
+[
+    AddToSectionBuilder(typeof(InboundSectionBuilder)),
+    AddToSectionBuilder(typeof(OutboundSectionBuilder)),
+    AddToSectionBuilder(typeof(BackendSectionBuilder)),
+    AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+]
+public partial class WaitPolicyBuilder<TSectionBuilder> where TSectionBuilder : PolicySectionBuilder, new()
 {
-    using System.Collections.Immutable;
-    using System.Xml.Linq;
+    public enum WaitFor { All, Any }
 
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+    private WaitFor? _for;
+    [IgnoreBuilderField]
+    private ICollection<XElement>? _policies;
 
-    [GenerateBuilderSetters]
-    public partial class WaitPolicyBuilder
+    public WaitPolicyBuilder<TSectionBuilder> Policies(Action<TSectionBuilder> configurator)
     {
-        public enum WaitFor { All, Any }
-
-        private WaitFor? _for;
-        [IgnoreBuilderField]
-        private ICollection<XElement>? _policies;
-
-        public WaitPolicyBuilder Policies(Action<PolicySectionBuilder> configurator)
-        {
-            var builder = new PolicySectionBuilder();
-            configurator(builder);
-            _policies = builder.Build();
-            return this;
-        }
-
-        public XElement Build()
-        {
-            if (_policies == null) throw new NullReferenceException();
-
-            var children = ImmutableArray.CreateBuilder<object>();
-            if(_for != null)
-            {
-                children.Add(new XAttribute("for", TranslateFor(_for)));
-            }
-
-            children.AddRange(_policies.ToArray());
-
-            return new XElement("wait", _for);
-        }
-        private static string TranslateFor(WaitFor? waitFor) => waitFor switch
-        {
-            WaitFor.All => "all",
-            WaitFor.Any => "any",
-            _ => throw new Exception(),
-        };
+        var builder = new TSectionBuilder();
+        configurator(builder);
+        _policies = builder.Build();
+        return this;
     }
-}
 
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-{
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-    public partial class PolicySectionBuilder
+    public XElement Build()
     {
-        public PolicySectionBuilder Wait(Action<WaitPolicyBuilder> configurator)
+        if (_policies == null) throw new NullReferenceException();
+
+        var children = ImmutableArray.CreateBuilder<object>();
+        if (_for != null)
         {
-            var builder = new WaitPolicyBuilder();
-            configurator(builder);
-            _sectionPolicies.Add(builder.Build());
-            return this;
+            children.Add(new XAttribute("for", TranslateFor(_for)));
         }
+
+        children.AddRange(_policies.ToArray());
+
+        return new XElement("wait", _for);
     }
+    private static string TranslateFor(WaitFor? waitFor) => waitFor switch
+    {
+        WaitFor.All => "all",
+        WaitFor.Any => "any",
+        _ => throw new Exception(),
+    };
 }

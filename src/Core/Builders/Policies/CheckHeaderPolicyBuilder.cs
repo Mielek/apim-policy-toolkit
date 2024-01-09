@@ -1,5 +1,6 @@
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 {
+
     using System.Collections.Immutable;
     using System.Xml.Linq;
 
@@ -7,6 +8,10 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
     [GenerateBuilderSetters]
+    [
+        AddToSectionBuilder(typeof(InboundSectionBuilder)),
+        AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+    ]
     public partial class CheckHeaderPolicyBuilder
     {
         private IExpression<string>? _name;
@@ -41,22 +46,6 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
             }
 
             return new XElement("check-header", children.ToArray());
-        }
-    }
-}
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-{
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-    public partial class PolicySectionBuilder
-    {
-        public PolicySectionBuilder CheckHeader(Action<CheckHeaderPolicyBuilder> configurator)
-        {
-            var builder = new CheckHeaderPolicyBuilder();
-            configurator(builder);
-            this._sectionPolicies.Add(builder.Build());
-            return this;
         }
     }
 }

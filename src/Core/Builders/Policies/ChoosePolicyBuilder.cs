@@ -1,91 +1,79 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+using System.Collections.Immutable;
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+[
+    AddToSectionBuilder(typeof(InboundSectionBuilder)),
+    AddToSectionBuilder(typeof(OutboundSectionBuilder)),
+    AddToSectionBuilder(typeof(BackendSectionBuilder)),
+    AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
+    AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+]
+public partial class ChoosePolicyBuilder<TSectionBuilder> where TSectionBuilder : PolicySectionBuilder, new()
 {
-    using System.Collections.Immutable;
-    using System.Xml.Linq;
+    private readonly ImmutableList<XElement>.Builder _whens = ImmutableList.CreateBuilder<XElement>();
+    private ICollection<XElement>? _otherwise;
 
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
-
-    public partial class ChoosePolicyBuilder
+    public ChoosePolicyBuilder<TSectionBuilder> When(Action<ChooseWhenBuilder<TSectionBuilder>> configurator)
     {
-        private readonly ImmutableList<XElement>.Builder _whens = ImmutableList.CreateBuilder<XElement>();
-        private ICollection<XElement>? _otherwise;
-
-        public ChoosePolicyBuilder When(Action<ChooseWhenBuilder> configurator)
-        {
-            var builder = new ChooseWhenBuilder();
-            configurator(builder);
-            _whens.Add(builder.Build());
-            return this;
-        }
-
-        public ChoosePolicyBuilder Otherwise(Action<PolicySectionBuilder> configurator)
-        {
-            var builder = new PolicySectionBuilder();
-            configurator(builder);
-            _otherwise = builder.Build();
-            return this;
-        }
-
-        public XElement Build()
-        {
-            var children = ImmutableArray.CreateBuilder<object>();
-
-            children.Add(_whens.ToArray());
-
-            if (_otherwise != null && _otherwise.Count > 0)
-            {
-                children.Add(new XElement("otherwise", _otherwise.ToArray()));
-            }
-
-            return new XElement("choose", children.ToArray());
-        }
+        var builder = new ChooseWhenBuilder<TSectionBuilder>();
+        configurator(builder);
+        _whens.Add(builder.Build());
+        return this;
     }
 
-    [GenerateBuilderSetters]
-    public partial class ChooseWhenBuilder
+    public ChoosePolicyBuilder<TSectionBuilder> Otherwise(Action<PolicySectionBuilder> configurator)
     {
-        private IExpression<bool>? _condition;
+        var builder = new TSectionBuilder();
+        configurator(builder);
+        _otherwise = builder.Build();
+        return this;
+    }
 
-        [IgnoreBuilderField]
-        private ICollection<XElement>? _policies;
+    public XElement Build()
+    {
+        var children = ImmutableArray.CreateBuilder<object>();
 
-        public ChooseWhenBuilder Policies(Action<PolicySectionBuilder> configurator)
+        children.Add(_whens.ToArray());
+
+        if (_otherwise != null && _otherwise.Count > 0)
         {
-            var builder = new PolicySectionBuilder();
-            configurator(builder);
-            _policies = builder.Build();
-            return this;
+            children.Add(new XElement("otherwise", _otherwise.ToArray()));
         }
 
-        public XElement Build()
-        {
-            if (_condition == null) throw new NullReferenceException();
-            if (_policies == null) throw new NullReferenceException();
-
-            var children = ImmutableArray.CreateBuilder<object>();
-            children.Add(_condition.GetXAttribute("condition"));
-            children.AddRange(_policies.ToArray());
-
-            return new XElement("when", children.ToArray());
-        }
+        return new XElement("choose", children.ToArray());
     }
 }
 
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
+[GenerateBuilderSetters]
+public partial class ChooseWhenBuilder<TSectionBuilder> where TSectionBuilder : PolicySectionBuilder, new()
 {
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+    private IExpression<bool>? _condition;
 
-    public partial class PolicySectionBuilder
+    [IgnoreBuilderField]
+    private ICollection<XElement>? _policies;
+
+    public ChooseWhenBuilder<TSectionBuilder> Policies(Action<TSectionBuilder> configurator)
     {
-        public PolicySectionBuilder Choose(Action<ChoosePolicyBuilder> configurator)
-        {
-            var builder = new ChoosePolicyBuilder();
-            configurator(builder);
-            _sectionPolicies.Add(builder.Build());
-            return this;
-        }
+        var builder = new TSectionBuilder();
+        configurator(builder);
+        _policies = builder.Build();
+        return this;
+    }
+
+    public XElement Build()
+    {
+        if (_condition == null) throw new NullReferenceException();
+        if (_policies == null) throw new NullReferenceException();
+
+        var children = ImmutableArray.CreateBuilder<object>();
+        children.Add(_condition.GetXAttribute("condition"));
+        children.AddRange(_policies.ToArray());
+
+        return new XElement("when", children.ToArray());
     }
 }
-

@@ -21,7 +21,12 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators
                 shortname = name;
             }
 
-            return attributes.Any(al => al.Attributes.Any(a => a.Name.ToString().StartsWith(shortname)));
+            return attributes.Any(al => al.Attributes.Any(a => a.IsOfName(shortname)));
+        }
+
+        public static bool IsOfName(this AttributeSyntax attribute, string name)
+        {
+            return attribute.Name.ToString().StartsWith(name);
         }
         
         public static T? FindParent<T>(this SyntaxNode node) where T : class

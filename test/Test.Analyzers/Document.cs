@@ -39,7 +39,7 @@ public class Library
 
     public XElement ApiPolicyDocument()
     {
-        return PolicyDocumentBuilder.Create()
+        return Policy.Document()
         .Inbound(i =>
         {
             i.SetHeader(sh =>
@@ -48,6 +48,6 @@ public class Library
                 .Value(context => context.Product.Id);
             });
         })
-        .Build();
+        .Create();
     }
 }

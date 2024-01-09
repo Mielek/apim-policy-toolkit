@@ -14,7 +14,7 @@ public class EchoApi
     [Document]
     public XElement ApiPolicyDocument()
     {
-        return PolicyDocumentBuilder.Create()
+        return Policy.Document()
             .Inbound(policies =>
             {
                 policies
@@ -33,7 +33,7 @@ public class EchoApi
                         policy.Name("X-Test").ExistsAction(SetHeaderPolicyBuilder.ExistsActionType.Append)
                             .Value("Test")
                             .Value(context => context.Deployment.Region)
-                            .Value(context =>
+                            .Value((context) =>
                             {
                                 if (context.Variables.ContainsKey("Variable"))
                                 {
@@ -41,11 +41,12 @@ public class EchoApi
                                 }
                                 return "NotContainVariable";
                             })
+                            .Value(Test.FilterBody2)
                             .Value(GetKnownGUIDOrGenerateNew);
                     });
             })
             .Outbound(policies => policies.Base().SetBody(policy => policy.Body(FilterBody)))
-            .Build();
+            .Create();
     }
 
     [Expression]

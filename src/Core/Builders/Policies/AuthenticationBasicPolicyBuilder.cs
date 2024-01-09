@@ -1,40 +1,27 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+[GenerateBuilderSetters]
+[
+    AddToSectionBuilder(typeof(InboundSectionBuilder)),
+    AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+]
+public partial class AuthenticationBasicPolicyBuilder
 {
-    using System.Xml.Linq;
+    private string? _username;
+    private string? _password;
 
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
-
-    [GenerateBuilderSetters]
-    public partial class AuthenticationBasicPolicyBuilder
+    public XElement Build()
     {
-        private string? _username;
-        private string? _password;
+        if (_username == null) throw new NullReferenceException();
+        if (_password == null) throw new NullReferenceException();
 
-        public XElement Build()
-        {
-            if (_username == null) throw new NullReferenceException();
-            if (_password == null) throw new NullReferenceException();
-
-            return new XElement("authentication-basic", new object[] {
+        return new XElement("authentication-basic", new object[] {
                 new XAttribute("username", _username),
                 new XAttribute("password", _password),
             });
-        }
-    }
-}
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-{
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-    public partial class PolicySectionBuilder
-    {
-        public PolicySectionBuilder AuthenticationBasic(Action<AuthenticationBasicPolicyBuilder> configurator)
-        {
-            var builder = new AuthenticationBasicPolicyBuilder();
-            configurator(builder);
-            _sectionPolicies.Add(builder.Build());
-            return this;
-        }
     }
 }

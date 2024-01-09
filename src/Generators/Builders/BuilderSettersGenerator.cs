@@ -28,6 +28,7 @@ public class BuilderSettersGenerator : ISourceGenerator
 
     private Dictionary<string, string> GenerateSetterBuilder(Compilation compilation, SyntaxTree syntaxTree)
     {
+        SemanticModel model = compilation.GetSemanticModel(syntaxTree);
         var classToBuilder = new Dictionary<string, string>();
 
         var root = syntaxTree.GetRoot();
@@ -40,7 +41,7 @@ public class BuilderSettersGenerator : ISourceGenerator
         foreach (var classDeclaration in classesWithAttribute)
         {
             var className = classDeclaration.Identifier.Text;
-            classToBuilder[className] = new ClassSetterBuilder(classDeclaration).Build();
+            classToBuilder[className] = new ClassSetterBuilder(model, classDeclaration).Build();
         }
 
         return classToBuilder;
@@ -48,6 +49,5 @@ public class BuilderSettersGenerator : ISourceGenerator
 
     public void Initialize(GeneratorInitializationContext context)
     {
-            Console.Out.WriteLine("Test");
     }
 }

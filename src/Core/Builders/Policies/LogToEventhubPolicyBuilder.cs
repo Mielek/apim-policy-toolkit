@@ -1,58 +1,46 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+using System.Collections.Immutable;
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+[GenerateBuilderSetters]
+[
+    AddToSectionBuilder(typeof(InboundSectionBuilder)),
+    AddToSectionBuilder(typeof(OutboundSectionBuilder)),
+    AddToSectionBuilder(typeof(BackendSectionBuilder)),
+    AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
+    AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+]
+public partial class LogToEventhubPolicyBuilder
 {
-    using System.Collections.Immutable;
-    using System.Xml.Linq;
+    private string? _loggerId;
+    private IExpression<string>? _value;
+    private string? _partitionId;
+    private string? _partitionKey;
 
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
-
-    [GenerateBuilderSetters]
-    public partial class LogToEventhubPolicyBuilder
+    public XElement Build()
     {
-        private string? _loggerId;
-        private IExpression<string>? _value;
-        private string? _partitionId;
-        private string? _partitionKey;
+        if (_loggerId == null) throw new NullReferenceException();
+        if (_value == null) throw new NullReferenceException();
 
-        public XElement Build()
+        var children = ImmutableArray.CreateBuilder<object>();
+        children.Add(new XAttribute("logger-id", _loggerId));
+
+        if (_partitionId != null)
         {
-            if (_loggerId == null) throw new NullReferenceException();
-            if (_value == null) throw new NullReferenceException();
-
-            var children = ImmutableArray.CreateBuilder<object>();
-            children.Add(new XAttribute("logger-id", _loggerId));
-
-            if (_partitionId != null)
-            {
-                children.Add(new XAttribute("partition-id", _partitionId));
-            }
-
-            if (_partitionKey != null)
-            {
-                children.Add(new XAttribute("partition-key", _partitionKey));
-            }
-
-            children.Add(_value.GetXText());
-
-            return new XElement("log-to-eventhub", children.ToArray());
+            children.Add(new XAttribute("partition-id", _partitionId));
         }
+
+        if (_partitionKey != null)
+        {
+            children.Add(new XAttribute("partition-key", _partitionKey));
+        }
+
+        children.Add(_value.GetXText());
+
+        return new XElement("log-to-eventhub", children.ToArray());
     }
 }
-
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-{
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-    public partial class PolicySectionBuilder
-    {
-        public PolicySectionBuilder LimitConcurrency(Action<LogToEventhubPolicyBuilder> configurator)
-        {
-            var builder = new LogToEventhubPolicyBuilder();
-            configurator(builder);
-            _sectionPolicies.Add(builder.Build());
-            return this;
-        }
-    }
-}
-

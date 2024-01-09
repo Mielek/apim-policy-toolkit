@@ -1,89 +1,76 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+using System.Collections.Immutable;
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+
+[GenerateBuilderSetters]
+[
+    AddToSectionBuilder(typeof(InboundSectionBuilder)),
+    AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+]
+public partial class IpFilterPolicyBuilder
 {
-    using System.Collections.Immutable;
-    using System.Xml.Linq;
+    public enum IpFilterAction { Allow, Forbid }
 
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+    public interface IIpFilterValue { };
+    public sealed record IpFilterAddress(string Ip) : IIpFilterValue;
+    public sealed record IpFilterAddressRange(string FromIp, string ToIp) : IIpFilterValue;
 
+    private IpFilterAction? _action;
 
-    [GenerateBuilderSetters]
-    public partial class IpFilterPolicyBuilder
+    [IgnoreBuilderField]
+    private readonly ImmutableList<IIpFilterValue>.Builder _values = ImmutableList.CreateBuilder<IIpFilterValue>();
+
+    public IpFilterPolicyBuilder Address(string address)
     {
-        public enum IpFilterAction { Allow, Forbid }
+        _values.Add(new IpFilterAddress(address));
+        return this;
+    }
 
-        public interface IIpFilterValue { };
-        public sealed record IpFilterAddress(string Ip) : IIpFilterValue;
-        public sealed record IpFilterAddressRange(string FromIp, string ToIp) : IIpFilterValue;
+    public IpFilterPolicyBuilder AddressRange(string from, string to)
+    {
+        _values.Add(new IpFilterAddressRange(from, to));
+        return this;
+    }
 
-        private IpFilterAction? _action;
+    public XElement Build()
+    {
+        if (_action == null) throw new NullReferenceException();
+        if (_values.Count == 0) throw new Exception();
 
-        [IgnoreBuilderField]
-        private readonly ImmutableList<IIpFilterValue>.Builder _values = ImmutableList.CreateBuilder<IIpFilterValue>();
+        var children = ImmutableArray.CreateBuilder<object>();
 
-        public IpFilterPolicyBuilder Address(string address)
+        children.Add(new XAttribute("action", TranslateAction(_action)));
+
+        foreach (var ipFilterValue in _values)
         {
-            _values.Add(new IpFilterAddress(address));
-            return this;
-        }
-
-        public IpFilterPolicyBuilder AddressRange(string from, string to)
-        {
-            _values.Add(new IpFilterAddressRange(from, to));
-            return this;
-        }
-
-        public XElement Build()
-        {
-            if (_action == null) throw new NullReferenceException();
-            if (_values.Count == 0) throw new Exception();
-
-            var children = ImmutableArray.CreateBuilder<object>();
-
-            children.Add(new XAttribute("action", TranslateAction(_action)));
-
-            foreach (var ipFilterValue in _values)
+            switch (ipFilterValue)
             {
-                switch (ipFilterValue)
-                {
-                    case IpFilterAddress address:
-                        children.Add(new XElement("address", address.Ip));
-                        break;
-                    case IpFilterAddressRange range:
-                        children.Add(new XElement("address-range",
-                            new XAttribute("from", range.FromIp),
-                            new XAttribute("to", range.ToIp)
-                        ));
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
+                case IpFilterAddress address:
+                    children.Add(new XElement("address", address.Ip));
+                    break;
+                case IpFilterAddressRange range:
+                    children.Add(new XElement("address-range",
+                        new XAttribute("from", range.FromIp),
+                        new XAttribute("to", range.ToIp)
+                    ));
+                    break;
+                default:
+                    throw new NotImplementedException();
             }
-
-            return new XElement("ip-filter", children.ToArray());
         }
 
-        private string TranslateAction(IpFilterAction? action) => action switch
-        {
-            IpFilterAction.Allow => "allow",
-            IpFilterAction.Forbid => "forbid",
-            _ => throw new NotImplementedException(),
-        };
-
+        return new XElement("ip-filter", children.ToArray());
     }
-}
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-{
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-    public partial class PolicySectionBuilder
+    private string TranslateAction(IpFilterAction? action) => action switch
     {
-        public PolicySectionBuilder IpFilter(Action<IpFilterPolicyBuilder> configurator)
-        {
-            var builder = new IpFilterPolicyBuilder();
-            configurator(builder);
-            _sectionPolicies.Add(builder.Build());
-            return this;
-        }
-    }
+        IpFilterAction.Allow => "allow",
+        IpFilterAction.Forbid => "forbid",
+        _ => throw new NotImplementedException(),
+    };
+
 }

@@ -1,65 +1,52 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+using System.Collections.Immutable;
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+[GenerateBuilderSetters]
+[ 
+    AddToSectionBuilder(typeof(InboundSectionBuilder)),
+    AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+]
+public partial class AuthenticationCertificatePolicyBuilder
 {
-    using System.Collections.Immutable;
-    using System.Xml.Linq;
+    private string? _thumbprint;
+    private string? _certificateId;
+    private IExpression<string>? _body;
+    private string? _password;
 
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
-
-    [GenerateBuilderSetters]
-    public partial class AuthenticationCertificatePolicyBuilder
+    public XElement Build()
     {
-        private string? _thumbprint;
-        private string? _certificateId;
-        private IExpression<string>? _body;
-        private string? _password;
+        if ((_thumbprint == null) == (_certificateId == null)) throw new Exception();
+        if (_password != null && _body == null) throw new Exception();
 
-        public XElement Build()
+
+        var attributes = ImmutableArray.CreateBuilder<object>();
+
+        if (_thumbprint != null)
         {
-            if ((_thumbprint == null) == (_certificateId == null)) throw new Exception();
-            if (_password != null && _body == null) throw new Exception();
-
-
-            var attributes = ImmutableArray.CreateBuilder<object>();
-
-            if (_thumbprint != null)
-            {
-                attributes.Add(new XAttribute("thumbprint", _thumbprint));
-            }
-
-            if (_certificateId != null)
-            {
-                attributes.Add(new XAttribute("certificate-id", _certificateId));
-            }
-
-            if (_body != null)
-            {
-                attributes.Add(_body.GetXAttribute("body"));
-            }
-
-            if (_password != null)
-            {
-                attributes.Add(new XAttribute("password", _password));
-            }
-
-
-            return new XElement("authentication-certificate", attributes.ToArray());
+            attributes.Add(new XAttribute("thumbprint", _thumbprint));
         }
-    }
-}
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-{
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-    public partial class PolicySectionBuilder
-    {
-        public PolicySectionBuilder AuthenticationCertificate(Action<AuthenticationCertificatePolicyBuilder> configurator)
+        if (_certificateId != null)
         {
-            var builder = new AuthenticationCertificatePolicyBuilder();
-            configurator(builder);
-            _sectionPolicies.Add(builder.Build());
-            return this;
+            attributes.Add(new XAttribute("certificate-id", _certificateId));
         }
+
+        if (_body != null)
+        {
+            attributes.Add(_body.GetXAttribute("body"));
+        }
+
+        if (_password != null)
+        {
+            attributes.Add(new XAttribute("password", _password));
+        }
+
+
+        return new XElement("authentication-certificate", attributes.ToArray());
     }
 }

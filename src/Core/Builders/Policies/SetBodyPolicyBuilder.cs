@@ -1,77 +1,66 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+using System.Collections.Immutable;
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+[GenerateBuilderSetters]
+[
+    AddToSectionBuilder(typeof(InboundSectionBuilder)),
+    AddToSectionBuilder(typeof(OutboundSectionBuilder)),
+    AddToSectionBuilder(typeof(BackendSectionBuilder)),
+    AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+]
+public partial class SetBodyPolicyBuilder
 {
-    using System.Collections.Immutable;
-    using System.Xml.Linq;
+    public enum BodyTemplate { Liquid }
+    public enum XsiNilType { Blank, Null }
 
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+    private IExpression<string>? _body;
+    private IExpression<string>? _template;
+    private IExpression<string>? _xsiNil;
 
-    [GenerateBuilderSetters]
-    public partial class SetBodyPolicyBuilder
+    public SetBodyPolicyBuilder Template(BodyTemplate template)
     {
-        public enum BodyTemplate { Liquid }
-        public enum XsiNilType { Blank, Null }
-
-        private IExpression<string>? _body;
-        private IExpression<string>? _template;
-        private IExpression<string>? _xsiNil;
-
-        public SetBodyPolicyBuilder Template(BodyTemplate template)
-        {
-            return Template(TranslateTemplate(template));
-        }
-
-        private string TranslateTemplate(BodyTemplate template) => template switch
-        {
-            BodyTemplate.Liquid => "liquid",
-            _ => throw new Exception(),
-        };
-
-        public SetBodyPolicyBuilder XsiNil(XsiNilType xsiNil)
-        {
-            return XsiNil(TranslateXsiNil(xsiNil));
-        }
-
-        private string TranslateXsiNil(XsiNilType xsiNil) => xsiNil switch
-        {
-            XsiNilType.Blank => "blank",
-            XsiNilType.Null => "null",
-            _ => throw new Exception(),
-        };
-
-        public XElement Build()
-        {
-            if (_body == null) throw new NullReferenceException();
-
-            var children = ImmutableArray.CreateBuilder<object>();
-            if (_template != null)
-            {
-                children.Add(_template.GetXAttribute("template"));
-            }
-            if (_xsiNil != null)
-            {
-                children.Add(_xsiNil.GetXAttribute("xsi-nil"));
-            }
-
-            children.Add(_body.GetXText());
-
-            return new XElement("set-body", children.ToArray());
-        }
+        return Template(TranslateTemplate(template));
     }
-}
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-{
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-    public partial class PolicySectionBuilder
+    private string TranslateTemplate(BodyTemplate template) => template switch
     {
-        public PolicySectionBuilder SetBody(Action<SetBodyPolicyBuilder> configurator)
+        BodyTemplate.Liquid => "liquid",
+        _ => throw new Exception(),
+    };
+
+    public SetBodyPolicyBuilder XsiNil(XsiNilType xsiNil)
+    {
+        return XsiNil(TranslateXsiNil(xsiNil));
+    }
+
+    private string TranslateXsiNil(XsiNilType xsiNil) => xsiNil switch
+    {
+        XsiNilType.Blank => "blank",
+        XsiNilType.Null => "null",
+        _ => throw new Exception(),
+    };
+
+    public XElement Build()
+    {
+        if (_body == null) throw new NullReferenceException();
+
+        var children = ImmutableArray.CreateBuilder<object>();
+        if (_template != null)
         {
-            var builder = new SetBodyPolicyBuilder();
-            configurator(builder);
-            _sectionPolicies.Add(builder.Build());
-            return this;
+            children.Add(_template.GetXAttribute("template"));
         }
+        if (_xsiNil != null)
+        {
+            children.Add(_xsiNil.GetXAttribute("xsi-nil"));
+        }
+
+        children.Add(_body.GetXText());
+
+        return new XElement("set-body", children.ToArray());
     }
 }

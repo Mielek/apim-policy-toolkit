@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
@@ -20,13 +21,18 @@ internal class ClassSetterBuilder
     private readonly ClassDeclarationSyntax _classDeclaration;
     private readonly BuilderClassBuilder _classBuilder;
 
-    public ClassSetterBuilder(ClassDeclarationSyntax classDeclaration)
+    public ClassSetterBuilder(SemanticModel model, ClassDeclarationSyntax classDeclaration)
     {
         _classDeclaration = classDeclaration;
-        var syntax = _classDeclaration.FindParent<NamespaceDeclarationSyntax>();
-        if (syntax == null) throw new Exception();
-        var namespaceName = syntax.Name.ToString();
-        _classBuilder = new BuilderClassBuilder(namespaceName, classDeclaration.Identifier.Text);
+
+        var symbol = model.GetDeclaredSymbol(classDeclaration) as INamedTypeSymbol ?? throw new Exception("Cannot find symbol model");
+        var className = symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+        
+        var namespaceName = symbol?.ContainingNamespace.ToDisplayString();
+        // namespaceName ??= _classDeclaration.FindParent<FileScopedNamespaceDeclarationSyntax>()?.Name.ToString();
+        // namespaceName ??= _classDeclaration.FindParent<NamespaceDeclarationSyntax>()?.Name.ToString();
+        if (namespaceName == null) throw new Exception($"Cannot find namespace for class {className}");
+        _classBuilder = new BuilderClassBuilder(namespaceName, className);
     }
 
     public string Build()

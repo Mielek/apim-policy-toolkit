@@ -1,43 +1,33 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+[GenerateBuilderSetters]
+[
+    AddToSectionBuilder(typeof(InboundSectionBuilder)),
+    AddToSectionBuilder(typeof(OutboundSectionBuilder)),
+    AddToSectionBuilder(typeof(BackendSectionBuilder)),
+    AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
+    AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+]
+public partial class SetVariablePolicyBuilder
 {
-    using System.Xml.Linq;
+    private string? _name;
+    private IExpression<string>? _value;
 
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
-
-    [GenerateBuilderSetters]
-    public partial class SetVariablePolicyBuilder
+    public XElement Build()
     {
-        private string? _name;
-        private IExpression<string>? _value;
+        if (_name == null) throw new NullReferenceException();
+        if (_value == null) throw new NullReferenceException();
 
-        public XElement Build()
-        {
-            if (_name == null) throw new NullReferenceException();
-            if (_value == null) throw new NullReferenceException();
-
-            var children = new[] {
+        var children = new[] {
                 new XAttribute("name", _name),
                 _value.GetXAttribute("value")
             };
-            return new XElement("set-variable", children);
-        }
-
+        return new XElement("set-variable", children);
     }
-}
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-{
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-    public partial class PolicySectionBuilder
-    {
-        public PolicySectionBuilder SetVariable(Action<SetVariablePolicyBuilder> configurator)
-        {
-            var builder = new SetVariablePolicyBuilder();
-            configurator(builder);
-            _sectionPolicies.Add(builder.Build());
-            return this;
-        }
-
-    }
 }

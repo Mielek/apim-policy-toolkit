@@ -1,51 +1,38 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+using System.Collections.Immutable;
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+[GenerateBuilderSetters]
+[
+    AddToSectionBuilder(typeof(InboundSectionBuilder)),
+    AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+]
+public partial class ProxyPolicyBuilder
 {
-    using System.Collections.Immutable;
-    using System.Xml.Linq;
+    private string? _url;
+    private string? _username;
+    private string? _password;
 
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
-
-    [GenerateBuilderSetters]
-    public partial class ProxyPolicyBuilder
+    public XElement Build()
     {
-        private string? _url;
-        private string? _username;
-        private string? _password;
+        if (_url == null) throw new NullReferenceException();
+        var children = ImmutableArray.CreateBuilder<object>();
 
-        public XElement Build()
+        children.Add(new XAttribute("url", _url));
+
+        if (_username != null)
         {
-            if (_url == null) throw new NullReferenceException();
-            var children = ImmutableArray.CreateBuilder<object>();
-
-            children.Add(new XAttribute("url", _url));
-
-            if (_username != null)
-            {
-                children.Add(new XAttribute("username", _username));
-            }
-
-            if (_password != null)
-            {
-                children.Add(new XAttribute("password", _password));
-            }
-
-            return new XElement("proxy", children.ToArray());
+            children.Add(new XAttribute("username", _username));
         }
-    }
-}
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-{
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-    public partial class PolicySectionBuilder
-    {
-        public PolicySectionBuilder AuthenticationCertificate(Action<ProxyPolicyBuilder> configurator)
+        if (_password != null)
         {
-            var builder = new ProxyPolicyBuilder();
-            configurator(builder);
-            _sectionPolicies.Add(builder.Build());
-            return this;
+            children.Add(new XAttribute("password", _password));
         }
+
+        return new XElement("proxy", children.ToArray());
     }
 }

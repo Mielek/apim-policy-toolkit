@@ -1,66 +1,54 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+[GenerateBuilderSetters]
+[
+    AddToSectionBuilder(typeof(InboundSectionBuilder)),
+    AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
+    AddToSectionBuilder(typeof(PolicyFragmentBuilder))
+]
+public partial class SetMethodPolicyBuilder
 {
-    using System.Xml.Linq;
+    private IExpression<string>? _method;
 
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
-
-    [GenerateBuilderSetters]
-    public partial class SetMethodPolicyBuilder
+    public SetMethodPolicyBuilder Get()
     {
-        private IExpression<string>? _method;
-
-        public SetMethodPolicyBuilder Get()
-        {
-            return Method(HttpMethod.Get);
-        }
-        public SetMethodPolicyBuilder Post()
-        {
-            return Method(HttpMethod.Post);
-        }
-        public SetMethodPolicyBuilder Head()
-        {
-            return Method(HttpMethod.Head);
-        }
-        public SetMethodPolicyBuilder Delete()
-        {
-            return Method(HttpMethod.Delete);
-        }
-        public SetMethodPolicyBuilder Put()
-        {
-            return Method(HttpMethod.Put);
-        }
-        public SetMethodPolicyBuilder Options()
-        {
-            return Method(HttpMethod.Options);
-        }
-
-        public SetMethodPolicyBuilder Method(HttpMethod method)
-        {
-            return Method(method.Method);
-        }
-
-        public XElement Build()
-        {
-            if (_method == null) throw new NullReferenceException();
-
-            return new XElement("set-method", _method.GetXText());
-        }
+        return Method(HttpMethod.Get);
     }
-}
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-{
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-    public partial class PolicySectionBuilder
+    public SetMethodPolicyBuilder Post()
     {
-        public PolicySectionBuilder SetMethod(Action<SetMethodPolicyBuilder> configurator)
-        {
-            var builder = new SetMethodPolicyBuilder();
-            configurator(builder);
-            _sectionPolicies.Add(builder.Build());
-            return this;
-        }
+        return Method(HttpMethod.Post);
+    }
+    public SetMethodPolicyBuilder Head()
+    {
+        return Method(HttpMethod.Head);
+    }
+    public SetMethodPolicyBuilder Delete()
+    {
+        return Method(HttpMethod.Delete);
+    }
+    public SetMethodPolicyBuilder Put()
+    {
+        return Method(HttpMethod.Put);
+    }
+    public SetMethodPolicyBuilder Options()
+    {
+        return Method(HttpMethod.Options);
+    }
 
+    public SetMethodPolicyBuilder Method(HttpMethod method)
+    {
+        return Method(method.Method);
+    }
+
+    public XElement Build()
+    {
+        if (_method == null) throw new NullReferenceException();
+
+        return new XElement("set-method", _method.GetXText());
     }
 }

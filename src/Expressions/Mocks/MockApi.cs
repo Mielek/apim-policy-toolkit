@@ -4,7 +4,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
 
 public class MockApi : IApi
 {
-    public string Id { get; set; } = "abcdefgh";
+    public string Id { get; set; } = "CVjSPi5XPE";
     public string Name { get; set; } = "mock-api";
 
     public string Path { get; set; } = "/mock";

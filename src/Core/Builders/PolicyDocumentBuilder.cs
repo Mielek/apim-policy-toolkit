@@ -3,47 +3,45 @@
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
 public class PolicyDocumentBuilder
 {
-    public static PolicyDocumentBuilder Create() => new();
-
     private ICollection<XElement>? _inbound;
     private ICollection<XElement>? _backend;
     private ICollection<XElement>? _outbound;
     private ICollection<XElement>? _onError;
 
-    private PolicyDocumentBuilder() { }
+    public PolicyDocumentBuilder() { }
 
-    public PolicyDocumentBuilder Inbound(Action<PolicySectionBuilder> configurator)
+    public PolicyDocumentBuilder Inbound(Action<InboundSectionBuilder> configurator)
     {
         _inbound = BuildSection(configurator);
         return this;
     }
 
-    public PolicyDocumentBuilder Backend(Action<PolicySectionBuilder> configurator)
+    public PolicyDocumentBuilder Backend(Action<BackendSectionBuilder> configurator)
     {
         _backend = BuildSection(configurator);
         return this;
     }
 
-    public PolicyDocumentBuilder Outbound(Action<PolicySectionBuilder> configurator)
+    public PolicyDocumentBuilder Outbound(Action<OutboundSectionBuilder> configurator)
     {
         _outbound = BuildSection(configurator);
         return this;
     }
 
-    public PolicyDocumentBuilder OnError(Action<PolicySectionBuilder> configurator)
+    public PolicyDocumentBuilder OnError(Action<OnErrorSectionBuilder> configurator)
     {
         _onError = BuildSection(configurator);
         return this;
     }
 
-    private ICollection<XElement> BuildSection(Action<PolicySectionBuilder> configurator)
+    private ICollection<XElement> BuildSection<Builder>(Action<Builder> configurator) where Builder : PolicySectionBuilder, new()
     {
-        var builder = new PolicySectionBuilder();
+        var builder = new Builder();
         configurator(builder);
         return builder.Build();
     }
 
-    public XElement Build()
+    public XElement Create()
     {
         var document = new XElement("policies");
         if(_inbound != null && _inbound.Count > 0)

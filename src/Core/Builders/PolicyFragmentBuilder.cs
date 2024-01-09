@@ -1,23 +1,14 @@
+using System.Collections.Immutable;
 using System.Xml.Linq;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
 
-public class PolicyFragmentBuilder
+public partial class PolicyFragmentBuilder : PolicySectionBuilder
 {
-    public static PolicyFragmentBuilder Create() => new();
+    public PolicyFragmentBuilder() { }
 
-    private readonly PolicySectionBuilder _innerBuilder = new();
-
-    private PolicyFragmentBuilder() { }
-
-    public PolicyFragmentBuilder Policies(Action<PolicySectionBuilder> configurator)
+    public XElement Create()
     {
-        configurator(_innerBuilder);
-        return this;
-    }
-
-    public XElement Build()
-    {
-        return new XElement("fragment", _innerBuilder.Build().ToArray());
+        return new XElement("fragment", _sectionPolicies.ToArray());
     }
 }
