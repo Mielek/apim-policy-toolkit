@@ -41,7 +41,6 @@ public class EchoApi
                                 }
                                 return "NotContainVariable";
                             })
-                            .Value(Test.FilterBody2)
                             .Value(GetKnownGUIDOrGenerateNew);
                     });
             })
