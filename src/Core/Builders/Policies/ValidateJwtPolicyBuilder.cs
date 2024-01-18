@@ -1,17 +1,17 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class ValidateJwtPolicyBuilder
+public partial class ValidateJwtPolicyBuilder : BaseBuilder<ValidateJwtPolicyBuilder>
 {
     private string? _headerName;
     private string? _queryParameterName;
@@ -42,72 +42,72 @@ public partial class ValidateJwtPolicyBuilder
 
     public XElement Build()
     {
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("validate-jwt");
 
         if (_headerName != null)
         {
-            children.Add(new XAttribute("header-name", _headerName));
+            element.Add(new XAttribute("header-name", _headerName));
         }
         if (_queryParameterName != null)
         {
-            children.Add(new XAttribute("query-parameter-name", _queryParameterName));
+            element.Add(new XAttribute("query-parameter-name", _queryParameterName));
         }
         if (_tokenValue != null)
         {
-            children.Add(new XAttribute("token-value", _tokenValue));
+            element.Add(new XAttribute("token-value", _tokenValue));
         }
         if (_failedValidationHttpCode != null)
         {
-            children.Add(new XAttribute("failed-validation-httpcode", _failedValidationHttpCode));
+            element.Add(new XAttribute("failed-validation-httpcode", _failedValidationHttpCode));
         }
         if (_failedValidationErrorMessage != null)
         {
-            children.Add(new XAttribute("failed-validation-error-message", _failedValidationErrorMessage));
+            element.Add(new XAttribute("failed-validation-error-message", _failedValidationErrorMessage));
         }
         if (_requireExpirationTime != null)
         {
-            children.Add(new XAttribute("require-expiration-time", _requireExpirationTime));
+            element.Add(new XAttribute("require-expiration-time", _requireExpirationTime));
         }
         if (_requireScheme != null)
         {
-            children.Add(new XAttribute("require-scheme", _requireScheme));
+            element.Add(new XAttribute("require-scheme", _requireScheme));
         }
         if (_requireSignedTokens != null)
         {
-            children.Add(new XAttribute("require-signed-tokens", _requireSignedTokens));
+            element.Add(new XAttribute("require-signed-tokens", _requireSignedTokens));
         }
         if (_clockSkew != null)
         {
-            children.Add(new XAttribute("clock-skew", _clockSkew));
+            element.Add(new XAttribute("clock-skew", _clockSkew));
         }
 
         if (_outputTokenVariableName != null)
         {
-            children.Add(new XAttribute("output-token-variable-name", _outputTokenVariableName));
+            element.Add(new XAttribute("output-token-variable-name", _outputTokenVariableName));
         }
 
         if (_issuerSigningKeys != null && _issuerSigningKeys.Count > 0)
         {
-            children.Add(new XElement("issuer-signing-keys", _issuerSigningKeys.Select(i => new XElement("key", i)).ToArray()));
+            element.Add(new XElement("issuer-signing-keys", _issuerSigningKeys.Select(i => new XElement("key", i)).ToArray()));
         }
         if (_decryptionKeys != null && _decryptionKeys.Count > 0)
         {
-            children.Add(new XElement("decryption-keys", _decryptionKeys.Select(i => new XElement("key", i)).ToArray()));
+            element.Add(new XElement("decryption-keys", _decryptionKeys.Select(i => new XElement("key", i)).ToArray()));
         }
         if (_audiences != null && _audiences.Count > 0)
         {
-            children.Add(new XElement("audiences", _audiences.Select(i => new XElement("audience", i.GetXText())).ToArray()));
+            element.Add(new XElement("audiences", _audiences.Select(i => new XElement("audience", i.GetXText())).ToArray()));
         }
         if (_issuers != null && _issuers.Count > 0)
         {
-            children.Add(new XElement("issuers", _issuers.Select(i => new XElement("issuer", i)).ToArray()));
+            element.Add(new XElement("issuers", _issuers.Select(i => new XElement("issuer", i)).ToArray()));
         }
         if (_requiredClaims != null && _requiredClaims.Count > 0)
         {
-            children.Add(new XElement("required-claims", _requiredClaims.ToArray()));
+            element.Add(new XElement("required-claims", _requiredClaims.ToArray()));
         }
 
-        return new XElement("validate-azure-ad-token", children.ToArray());
+        return element;
     }
 }
 

@@ -1,10 +1,11 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -13,7 +14,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(BackendSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class TracePolicyBuilder
+public partial class TracePolicyBuilder : BaseBuilder<TracePolicyBuilder>
 {
     public enum TraceSeverity { Verbose, Information, Error }
 
@@ -34,24 +35,24 @@ public partial class TracePolicyBuilder
 
     public XElement Build()
     {
-        if (_source == null) throw new NullReferenceException();
-        if (_message == null) throw new NullReferenceException();
+        if (_source == null) throw new PolicyValidationException("Source is required for Trace");
+        if (_message == null) throw new PolicyValidationException("Message is required for Trace");
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("trace");
 
-        children.Add(new XAttribute("source", _source));
+        element.Add(new XAttribute("source", _source));
         if (_severity != null)
         {
-            children.Add(new XAttribute("severity", TranslateSeverity(_severity)));
+            element.Add(new XAttribute("severity", TranslateSeverity(_severity)));
         }
-        children.Add(new XElement("message", _message.GetXText()));
+        element.Add(new XElement("message", _message.GetXText()));
 
         if (_metadatas != null && _metadatas.Count > 0)
         {
-            children.AddRange(_metadatas.ToArray());
+            element.Add(_metadatas.ToArray());
         }
 
-        return new XElement("trace", children.ToArray());
+        return element;
     }
 
     private static string TranslateSeverity(TraceSeverity? severity) => severity switch
@@ -59,7 +60,7 @@ public partial class TracePolicyBuilder
         TraceSeverity.Verbose => "verbose",
         TraceSeverity.Information => "information",
         TraceSeverity.Error => "error",
-        _ => throw new Exception(),
+        _ => throw new PolicyValidationException("Unknown severity for Trace"),
     };
 }
 

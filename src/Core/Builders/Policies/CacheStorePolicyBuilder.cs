@@ -1,36 +1,35 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(OutboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class CacheStorePolicyBuilder
+public partial class CacheStorePolicyBuilder : BaseBuilder<CacheStorePolicyBuilder>
 {
     private IExpression<uint>? _duration;
     private bool? _cacheResponse;
 
     public XElement Build()
     {
-        if (_duration == null) throw new PolicyValidationException("Duration is required for CacheStore");
+        if (_duration == null)
+            throw new PolicyValidationException("Duration is required for CacheStore");
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("cache-store");
 
-        children.Add(_duration.GetXAttribute("duration"));
+        element.Add(_duration.GetXAttribute("duration"));
 
         if (_cacheResponse != null)
         {
-            children.Add(new XAttribute("client-id", _cacheResponse));
+            element.Add(new XAttribute("client-id", _cacheResponse));
         }
 
-        return new XElement("cache-store", children.ToArray());
+        return element;
     }
 }

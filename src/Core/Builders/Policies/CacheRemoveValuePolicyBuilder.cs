@@ -1,12 +1,10 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -16,7 +14,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class CacheRemoveValuePolicyBuilder
+public partial class CacheRemoveValuePolicyBuilder : BaseBuilder<CacheRemoveValuePolicyBuilder>
 {
     public enum CachingTypeEnum { Internal, External, PreferExternal }
 
@@ -25,18 +23,19 @@ public partial class CacheRemoveValuePolicyBuilder
 
     public XElement Build()
     {
-        if (_key == null) throw new PolicyValidationException("Key is required for CacheRemoveValue");
+        if (_key == null)
+            throw new PolicyValidationException("Key is required for CacheRemoveValue");
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("cache-remove-value");
 
-        children.Add(_key.GetXAttribute("key"));
+        element.Add(_key.GetXAttribute("key"));
 
         if (_cachingType != null)
         {
-            children.Add(new XAttribute("caching-type", TranslateCachingType(_cachingType)));
+            element.Add(new XAttribute("caching-type", TranslateCachingType(_cachingType)));
         }
 
-        return new XElement("cache-remove-value", children.ToArray());
+        return element;
     }
 
     private string TranslateCachingType(CachingTypeEnum? cachingType)

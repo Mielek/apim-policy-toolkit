@@ -1,12 +1,11 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
@@ -15,7 +14,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class ChoosePolicyBuilder<TSectionBuilder> where TSectionBuilder : PolicySectionBuilder, new()
+public partial class ChoosePolicyBuilder<TSectionBuilder> : BaseBuilder<ChoosePolicyBuilder<TSectionBuilder>> where TSectionBuilder : PolicySectionBuilder, new()
 {
     private readonly ImmutableList<XElement>.Builder _whens = ImmutableList.CreateBuilder<XElement>();
     private ICollection<XElement>? _otherwise;
@@ -40,16 +39,16 @@ public partial class ChoosePolicyBuilder<TSectionBuilder> where TSectionBuilder 
     {
         if(_whens.Count == 0) throw new PolicyValidationException("At least one When is required for Choose");
         
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("choose");
 
-        children.Add(_whens.ToArray());
+        element.Add(_whens.ToArray());
 
         if (_otherwise != null && _otherwise.Count > 0)
         {
-            children.Add(new XElement("otherwise", _otherwise.ToArray()));
+            element.Add(new XElement("otherwise", _otherwise.ToArray()));
         }
 
-        return new XElement("choose", children.ToArray());
+        return element;
     }
 }
 

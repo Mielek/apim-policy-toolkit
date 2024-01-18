@@ -1,10 +1,10 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -14,7 +14,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class LogToEventhubPolicyBuilder
+public partial class LogToEventhubPolicyBuilder : BaseBuilder<LogToEventhubPolicyBuilder>
 {
     private string? _loggerId;
     private IExpression<string>? _value;
@@ -23,24 +23,24 @@ public partial class LogToEventhubPolicyBuilder
 
     public XElement Build()
     {
-        if (_loggerId == null) throw new NullReferenceException();
-        if (_value == null) throw new NullReferenceException();
+        if (_loggerId == null) throw new PolicyValidationException("LoggerId is required for LogToEventhub");
+        if (_value == null) throw new PolicyValidationException("Value is required for LogToEventhub");
 
-        var children = ImmutableArray.CreateBuilder<object>();
-        children.Add(new XAttribute("logger-id", _loggerId));
+        var element = this.CreateElement("log-to-eventhub");
+        element.Add(new XAttribute("logger-id", _loggerId));
 
         if (_partitionId != null)
         {
-            children.Add(new XAttribute("partition-id", _partitionId));
+            element.Add(new XAttribute("partition-id", _partitionId));
         }
 
         if (_partitionKey != null)
         {
-            children.Add(new XAttribute("partition-key", _partitionKey));
+            element.Add(new XAttribute("partition-key", _partitionKey));
         }
 
-        children.Add(_value.GetXText());
+        element.Add(_value.GetXText());
 
-        return new XElement("log-to-eventhub", children.ToArray());
+        return element;
     }
 }

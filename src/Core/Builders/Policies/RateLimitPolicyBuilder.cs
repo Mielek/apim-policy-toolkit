@@ -1,11 +1,11 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
-public abstract class RateLimitBaseBuilder<T> where T : RateLimitBaseBuilder<T>
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+
+public abstract class RateLimitBaseBuilder<T> : BaseBuilder<RateLimitBaseBuilder<T>> where T : RateLimitBaseBuilder<T>
 {
     protected uint? _calls = null;
     protected uint? _renewalPeriod = null;
@@ -127,7 +127,9 @@ public class RateLimitApiOperationBuilder : RateLimitWithIdentificationBuilder<R
 {
     public XElement Build()
     {
-        return new XElement("operation", BuildBasic());
+        var element = this.CreateElement("operation");
+        element.Add(BuildBasic());
+        return element;
     }
 }
 
@@ -145,7 +147,13 @@ public class RateLimitApiBuilder : RateLimitWithIdentificationBuilder<RateLimitA
 
     public XElement Build()
     {
-        return new XElement("api", BuildBasic());
+        var element = this.CreateElement("api");
+        element.Add(BuildBasic());
+        if (_operations != null && _operations.Count > 0)
+        {
+            element.Add(_operations.ToArray());
+        }
+        return element;
     }
 
 }
@@ -168,6 +176,12 @@ public class RateLimitPolicyBuilder : RateLimitBaseBuilder<RateLimitPolicyBuilde
 
     public XElement Build()
     {
-        return new XElement("rate-limit", BuildBasic());
+        var element = this.CreateElement("rate-limit");
+        element.Add(BuildBasic());
+        if (_apis != null && _apis.Count > 0)
+        {
+            element.Add(_apis.ToArray());
+        }
+        return element;
     }
 }

@@ -1,10 +1,11 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -13,9 +14,10 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class XmlToJsonPolicyBuilder
+public partial class XmlToJsonPolicyBuilder : BaseBuilder<XmlToJsonPolicyBuilder>
 {
     public enum XmlToJsonKind { JavascriptFriendly, Direct }
+
     public enum XmlToJsonApply { Always, ContentTypeXml }
 
     private IExpression<string>? _kind;
@@ -36,20 +38,20 @@ public partial class XmlToJsonPolicyBuilder
 
     public XElement Build()
     {
-        if (_kind == null) throw new NullReferenceException();
-        if (_apply == null) throw new NullReferenceException();
+        if (_kind == null) throw new PolicyValidationException("Kind is required for XmlToJson");
+        if (_apply == null) throw new PolicyValidationException("Apply is required for XmlToJson");
 
-        var children = ImmutableArray.CreateBuilder<XObject>();
+        var element = this.CreateElement("xml-to-json");
 
-        children.Add(_kind.GetXAttribute("kind"));
-        children.Add(_apply.GetXAttribute("apply"));
+        element.Add(_kind.GetXAttribute("kind"));
+        element.Add(_apply.GetXAttribute("apply"));
 
         if (_considerAcceptHeader != null)
         {
-            children.Add(_considerAcceptHeader.GetXAttribute("consider-accept-header"));
+            element.Add(_considerAcceptHeader.GetXAttribute("consider-accept-header"));
         }
 
-        return new XElement("xml-to-json", children.ToArray());
+        return element;
     }
 
     private string TranslateKind(XmlToJsonKind kind)
@@ -58,7 +60,7 @@ public partial class XmlToJsonPolicyBuilder
         {
             XmlToJsonKind.JavascriptFriendly => "javascript-friendly",
             XmlToJsonKind.Direct => "direct",
-            _ => throw new NotImplementedException(),
+            _ => throw new PolicyValidationException("Unknown kind for XmlToJson policy"),
         };
     }
 
@@ -68,7 +70,7 @@ public partial class XmlToJsonPolicyBuilder
         {
             XmlToJsonApply.Always => "always",
             XmlToJsonApply.ContentTypeXml => "content-type-xml",
-            _ => throw new NotImplementedException(),
+            _ => throw new PolicyValidationException("Unknown apply for XmlToJson policy"),
         };
     }
 }

@@ -1,17 +1,17 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class ValidateClientCertificatePolicyBuilder
+public partial class ValidateClientCertificatePolicyBuilder : BaseBuilder<ValidateClientCertificatePolicyBuilder>
 {
 
     [IgnoreBuilderField]
@@ -33,33 +33,33 @@ public partial class ValidateClientCertificatePolicyBuilder
 
     public XElement Build()
     {
-        if (_identities == null || _identities.Count == 0) throw new Exception();
+        if (_identities == null || _identities.Count == 0) throw new PolicyValidationException("At least one identity is required for ValidateClientCertificate");
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("validate-client-certificate");
         if (_validateRevocation != null)
         {
-            children.Add(new XAttribute("validate-revocation", _validateRevocation));
+            element.Add(new XAttribute("validate-revocation", _validateRevocation));
         }
         if (_validateTrust != null)
         {
-            children.Add(new XAttribute("validate-trust", _validateTrust));
+            element.Add(new XAttribute("validate-trust", _validateTrust));
         }
         if (_validateNotBefore != null)
         {
-            children.Add(new XAttribute("validate-not-before", _validateNotBefore));
+            element.Add(new XAttribute("validate-not-before", _validateNotBefore));
         }
         if (_validateNotAfter != null)
         {
-            children.Add(new XAttribute("validate-not-after", _validateNotAfter));
+            element.Add(new XAttribute("validate-not-after", _validateNotAfter));
         }
         if (_ignoreError != null)
         {
-            children.Add(new XAttribute("ignore-error", _ignoreError));
+            element.Add(new XAttribute("ignore-error", _ignoreError));
         }
 
-        children.Add(new XElement("identities", _identities.ToArray()));
+        element.Add(new XElement("identities", _identities.ToArray()));
 
-        return new XElement("validate-client-certificate", children.ToArray());
+        return element;
     }
 }
 

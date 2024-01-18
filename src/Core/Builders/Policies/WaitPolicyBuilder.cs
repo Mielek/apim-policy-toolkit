@@ -1,9 +1,10 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -12,13 +13,14 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(BackendSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class WaitPolicyBuilder<TSectionBuilder> where TSectionBuilder : PolicySectionBuilder, new()
+public partial class WaitPolicyBuilder<TSectionBuilder> : BaseBuilder<WaitPolicyBuilder<TSectionBuilder>>
+    where TSectionBuilder : PolicySectionBuilder, new()
 {
     public enum WaitFor { All, Any }
 
     private WaitFor? _for;
-    [IgnoreBuilderField]
-    private ICollection<XElement>? _policies;
+
+    [IgnoreBuilderField] private ICollection<XElement>? _policies;
 
     public WaitPolicyBuilder<TSectionBuilder> Policies(Action<TSectionBuilder> configurator)
     {
@@ -30,22 +32,23 @@ public partial class WaitPolicyBuilder<TSectionBuilder> where TSectionBuilder : 
 
     public XElement Build()
     {
-        if (_policies == null) throw new NullReferenceException();
+        if (_policies == null) throw new PolicyValidationException("Policies are required for Wait");
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("wait");
         if (_for != null)
         {
-            children.Add(new XAttribute("for", TranslateFor(_for)));
+            element.Add(new XAttribute("for", TranslateFor(_for)));
         }
 
-        children.AddRange(_policies.ToArray());
+        element.Add(_policies.ToArray());
 
-        return new XElement("wait", _for);
+        return element;
     }
+
     private static string TranslateFor(WaitFor? waitFor) => waitFor switch
     {
         WaitFor.All => "all",
         WaitFor.Any => "any",
-        _ => throw new Exception(),
+        _ => throw new PolicyValidationException("Invalid value for WaitFor"),
     };
 }

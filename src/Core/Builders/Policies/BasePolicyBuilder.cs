@@ -1,6 +1,6 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
-
 using System.Xml.Linq;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
 
 public partial class InboundSectionBuilder
 {

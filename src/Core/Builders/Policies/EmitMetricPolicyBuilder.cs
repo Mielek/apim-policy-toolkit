@@ -1,12 +1,11 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -16,7 +15,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class EmitMetricPolicyBuilder
+public partial class EmitMetricPolicyBuilder : BaseBuilder<EmitMetricPolicyBuilder>
 {
     private string? _name;
     [IgnoreBuilderField]
@@ -36,23 +35,23 @@ public partial class EmitMetricPolicyBuilder
     {
         if (_name == null) throw new PolicyValidationException("Name is required for EmitMetric");
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("emit-metric");
 
-        children.Add(new XAttribute("name", _name));
+        element.Add(new XAttribute("name", _name));
 
         if (_value != null)
         {
-            children.Add(_value.GetXAttribute("value"));
+            element.Add(_value.GetXAttribute("value"));
         }
 
         if (_namespace != null)
         {
-            children.Add(new XAttribute("namespace", _namespace));
+            element.Add(new XAttribute("namespace", _namespace));
         }
 
-        children.Add(_dimensions);
+        element.Add(_dimensions);
 
-        return new XElement("emit-metric", children.ToArray());
+        return element;
     }
 }
 

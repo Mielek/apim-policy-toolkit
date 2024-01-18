@@ -1,12 +1,10 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -16,7 +14,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class FindAndReplacePolicyBuilder
+public partial class FindAndReplacePolicyBuilder : BaseBuilder<FindAndReplacePolicyBuilder>
 {
     private IExpression<string>? _from;
     private IExpression<string>? _to;
@@ -26,11 +24,11 @@ public partial class FindAndReplacePolicyBuilder
         if (_from == null) throw new PolicyValidationException("From is required for FindAndReplace");
         if (_to == null) throw new PolicyValidationException("To is required for FindAndReplace");
 
-        var children = ImmutableArray.CreateBuilder<XObject>();
+        var element = this.CreateElement("find-and-replace");
 
-        children.Add(_from.GetXAttribute("from"));
-        children.Add(_to.GetXAttribute("to"));
+        element.Add(_from.GetXAttribute("from"));
+        element.Add(_to.GetXAttribute("to"));
 
-        return new XElement("find-and-replace", children.ToArray());
+        return element;
     }
 }

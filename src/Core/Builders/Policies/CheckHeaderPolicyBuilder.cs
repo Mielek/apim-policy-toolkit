@@ -1,20 +1,18 @@
+using System.Collections.Immutable;
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 {
-
-    using System.Collections.Immutable;
-    using System.Xml.Linq;
-
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
-
     [GenerateBuilderSetters]
     [
         AddToSectionBuilder(typeof(InboundSectionBuilder)),
         AddToSectionBuilder(typeof(PolicyFragmentBuilder))
     ]
-    public partial class CheckHeaderPolicyBuilder
+    public partial class CheckHeaderPolicyBuilder : BaseBuilder<CheckHeaderPolicyBuilder>
     {
         private IExpression<string>? _name;
         private IExpression<string>? _failedCheckHttpCode;
@@ -35,19 +33,19 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
             if (_ignoreCase == null) throw new NullReferenceException("CheckHeader requires ignore-case");
             if (_values == null) throw new NullReferenceException("CheckHeader requires values");
 
-            var children = ImmutableArray.CreateBuilder<object>();
+            var element = this.CreateElement("check-header");
 
-            children.Add(_name.GetXAttribute("name"));
-            children.Add(_failedCheckHttpCode.GetXAttribute("failed-check-httpcode"));
-            children.Add(_failedCheckErrorMessage.GetXAttribute("failed-check-error-message"));
-            children.Add(_ignoreCase.GetXAttribute("ignore-case"));
+            element.Add(_name.GetXAttribute("name"));
+            element.Add(_failedCheckHttpCode.GetXAttribute("failed-check-httpcode"));
+            element.Add(_failedCheckErrorMessage.GetXAttribute("failed-check-error-message"));
+            element.Add(_ignoreCase.GetXAttribute("ignore-case"));
 
             foreach (var value in _values.ToArray())
             {
-                children.Add(new XElement("value", value.GetXText()));
+                element.Add(new XElement("value", value.GetXText()));
             }
 
-            return new XElement("check-header", children.ToArray());
+            return element;
         }
     }
 }

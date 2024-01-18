@@ -1,9 +1,9 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -13,7 +13,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class ReturnResponsePolicyBuilder
+public partial class ReturnResponsePolicyBuilder : BaseBuilder<ReturnResponsePolicyBuilder>
 {
     [IgnoreBuilderField]
     private ImmutableList<XElement>.Builder? _setHeaderPolicies;
@@ -47,24 +47,24 @@ public partial class ReturnResponsePolicyBuilder
 
     public XElement Build()
     {
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("return-response");
         if (_responseVariableName != null)
         {
-            children.Add(new XAttribute("response-variable-name", _responseVariableName));
+            element.Add(new XAttribute("response-variable-name", _responseVariableName));
         }
         if (_setStatusPolicy != null)
         {
-            children.Add(_setStatusPolicy);
+            element.Add(_setStatusPolicy);
         }
         if (_setHeaderPolicies != null && _setHeaderPolicies.Count > 0)
         {
-            children.AddRange(_setHeaderPolicies.ToImmutable());
+            element.Add(_setHeaderPolicies.ToImmutable());
         }
         if (_setBodyPolicy != null)
         {
-            children.Add(_setBodyPolicy);
+            element.Add(_setBodyPolicy);
         }
 
-        return new XElement("return-response", children.ToArray());
+        return element;
     }
 }

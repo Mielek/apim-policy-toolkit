@@ -1,20 +1,18 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class CorsPolicyBuilder
+public partial class CorsPolicyBuilder : BaseBuilder<CorsPolicyBuilder>
 {
     private IExpression<bool>? _allowCredentials;
     private IExpression<bool>? _terminateUnmatchedRequest;
@@ -37,19 +35,19 @@ public partial class CorsPolicyBuilder
         if (_allowedOrigins == null) throw new PolicyValidationException("At least one allowed-origin is required for Cors");
         if (_allowedHeaders == null) throw new PolicyValidationException("At least one allowed-header is required for Cors");
 
-        var children = ImmutableArray.CreateBuilder<XObject>();
+        var element = this.CreateElement("cors");
 
         if (_allowCredentials != null)
         {
-            children.Add(_allowCredentials.GetXAttribute("allow-credentials"));
+            element.Add(_allowCredentials.GetXAttribute("allow-credentials"));
         }
         if (_terminateUnmatchedRequest != null)
         {
-            children.Add(_terminateUnmatchedRequest.GetXAttribute("terminate-unmatched-request"));
+            element.Add(_terminateUnmatchedRequest.GetXAttribute("terminate-unmatched-request"));
         }
 
         var allowedOrigins = new XElement("allowed-origins", _allowedOrigins.ToImmutable().Select(origin => new XElement("origin", origin)).ToArray());
-        children.Add(allowedOrigins);
+        element.Add(allowedOrigins);
 
         if (_allowedMethods != null && _allowedMethods.Count > 0)
         {
@@ -64,14 +62,14 @@ public partial class CorsPolicyBuilder
         }
 
         var allowedHeaders = new XElement("allowed-headers", _allowedHeaders.ToImmutable().Select(header => new XElement("header", header)).ToArray());
-        children.Add(allowedHeaders);
+        element.Add(allowedHeaders);
 
         if (_exposeHeaders != null && _exposeHeaders.Count > 0)
         {
             var exposeHeaders = new XElement("expose-headers", _exposeHeaders.ToImmutable().Select(header => new XElement("header", header)).ToArray());
-            children.Add(exposeHeaders);
+            element.Add(exposeHeaders);
         }
 
-        return new XElement("cors", children.ToArray());
+        return element;
     }
 }

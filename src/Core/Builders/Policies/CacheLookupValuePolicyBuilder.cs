@@ -1,12 +1,10 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -16,7 +14,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class CacheLookupValuePolicyBuilder
+public partial class CacheLookupValuePolicyBuilder : BaseBuilder<CacheLookupValuePolicyBuilder>
 {
     public enum CachingTypeEnum { Internal, External, PreferExternal }
 
@@ -27,24 +25,25 @@ public partial class CacheLookupValuePolicyBuilder
 
     public XElement Build()
     {
-        if (_variableName == null) throw new PolicyValidationException("Variable name is required for CacheLookupValue");
+        if (_variableName == null)
+            throw new PolicyValidationException("Variable name is required for CacheLookupValue");
 
-        var children = ImmutableArray.CreateBuilder<XObject>();
-        children.Add(new XAttribute("variable-name", _variableName));
+        var element = this.CreateElement("cache-lookup-value");
+        element.Add(new XAttribute("variable-name", _variableName));
         if (_catchingType != null)
         {
-            children.Add(new XAttribute("caching-type", TranslateCachingType(_catchingType)));
+            element.Add(new XAttribute("caching-type", TranslateCachingType(_catchingType)));
         }
         if (_key != null)
         {
-            children.Add(_key.GetXAttribute("key"));
+            element.Add(_key.GetXAttribute("key"));
         }
         if (_defaultValue != null)
         {
-            children.Add(_defaultValue.GetXAttribute("default-value"));
+            element.Add(_defaultValue.GetXAttribute("default-value"));
         }
 
-        return new XElement("cache-lookup-value", children.ToArray());
+        return element;
     }
 
     private string TranslateCachingType(CachingTypeEnum? cachingType)

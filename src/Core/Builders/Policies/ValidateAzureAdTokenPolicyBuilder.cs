@@ -1,17 +1,18 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class ValidateAzureAdTokenPolicyBuilder
+public partial class ValidateAzureAdTokenPolicyBuilder : BaseBuilder<ValidateAzureAdTokenPolicyBuilder>
 {
     private ImmutableList<string>.Builder? _clientApplicationIds;
     private string? _headerName;
@@ -37,55 +38,55 @@ public partial class ValidateAzureAdTokenPolicyBuilder
 
     public XElement Build()
     {
-        if (_clientApplicationIds == null) throw new NullReferenceException();
+        if (_clientApplicationIds == null) throw new PolicyValidationException("ClientApplicationIds is required for ValidateAzureAdToken");
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("validate-azure-ad-token");
 
         if (_tenantId != null)
         {
-            children.Add(new XAttribute("tenant-id", _tenantId));
+            element.Add(new XAttribute("tenant-id", _tenantId));
         }
         if (_headerName != null)
         {
-            children.Add(new XAttribute("header-name", _headerName));
+            element.Add(new XAttribute("header-name", _headerName));
         }
         if (_queryParameterName != null)
         {
-            children.Add(new XAttribute("query-parameter-name", _queryParameterName));
+            element.Add(new XAttribute("query-parameter-name", _queryParameterName));
         }
         if (_tokenValue != null)
         {
-            children.Add(new XAttribute("token-value", _tokenValue));
+            element.Add(new XAttribute("token-value", _tokenValue));
         }
         if (_failedValidationHttpCode != null)
         {
-            children.Add(new XAttribute("failed-validation-httpcode", _failedValidationHttpCode));
+            element.Add(new XAttribute("failed-validation-httpcode", _failedValidationHttpCode));
         }
         if (_failedValidationErrorMessage != null)
         {
-            children.Add(new XAttribute("failed-validation-error-message", _failedValidationErrorMessage));
+            element.Add(new XAttribute("failed-validation-error-message", _failedValidationErrorMessage));
         }
         if (_outputTokenVariableName != null)
         {
-            children.Add(new XAttribute("output-token-variable-name", _outputTokenVariableName));
+            element.Add(new XAttribute("output-token-variable-name", _outputTokenVariableName));
         }
 
-        children.Add(new XElement("client-application-ids", _clientApplicationIds.Select(i => new XElement("application-id", i)).ToArray()));
+        element.Add(new XElement("client-application-ids", _clientApplicationIds.Select(i => new XElement("application-id", i)).ToArray()));
 
         if (_backendApplicationIds != null && _backendApplicationIds.Count > 0)
         {
-            children.Add(new XElement("backend-application-ids", _backendApplicationIds.Select(i => new XElement("application-id", i)).ToArray()));
+            element.Add(new XElement("backend-application-ids", _backendApplicationIds.Select(i => new XElement("application-id", i)).ToArray()));
         }
         if (_audiences != null && _audiences.Count > 0)
         {
-            children.Add(new XElement("audiences", _audiences.Select(i => new XElement("audience", i.GetXText())).ToArray()));
+            element.Add(new XElement("audiences", _audiences.Select(i => new XElement("audience", i.GetXText())).ToArray()));
         }
         if (_requiredClaims != null && _requiredClaims.Count > 0)
         {
-            children.Add(new XElement("required-claims", _requiredClaims.ToArray()));
+            element.Add(new XElement("required-claims", _requiredClaims.ToArray()));
         }
 
-        return new XElement("validate-azure-ad-token", children.ToArray());
+        return element;
     }
 }
 
@@ -124,6 +125,6 @@ public partial class ValidateAzureAdTokenClaimBuilder
     {
         ClaimMatch.All => "all",
         ClaimMatch.Any => "any",
-        _ => throw new NotImplementedException(),
+        _ => throw new PolicyValidationException("Unknown match for ValidateAzureAdTokenClaim"),
     };
 }

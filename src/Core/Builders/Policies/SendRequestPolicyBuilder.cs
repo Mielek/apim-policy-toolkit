@@ -1,11 +1,11 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -15,7 +15,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class SendRequestPolicyBuilder
+public partial class SendRequestPolicyBuilder : BaseBuilder<SendRequestPolicyBuilder>
 {
     public enum SendRequestMode { New, Copy }
 
@@ -60,56 +60,56 @@ public partial class SendRequestPolicyBuilder
 
     public XElement Build()
     {
-        if (_responseVariableName == null) throw new NullReferenceException();
+        if (_responseVariableName == null) throw new PolicyValidationException("ResponseVariableName is required for SendRequest");
         if (_mode != SendRequestMode.Copy)
         {
-            if (_setUrl == null) throw new NullReferenceException();
-            if (_setMethod == null) throw new NullReferenceException();
+            if (_setUrl == null) throw new PolicyValidationException("SetUrl is required for SendRequest");
+            if (_setMethod == null) throw new PolicyValidationException("SetMethod is required for SendRequest");
         }
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("send-request");
 
         if (_mode != null)
         {
-            children.Add(new XAttribute("mode", TranslateMode(_mode)));
+            element.Add(new XAttribute("mode", TranslateMode(_mode)));
         }
-        children.Add(new XAttribute("response-variable-name", _responseVariableName));
+        element.Add(new XAttribute("response-variable-name", _responseVariableName));
         if (_timeout != null)
         {
-            children.Add(new XAttribute("timeout", _timeout));
+            element.Add(new XAttribute("timeout", _timeout));
         }
         if (_ignoreError != null)
         {
-            children.Add(new XAttribute("ignore-error", _ignoreError));
+            element.Add(new XAttribute("ignore-error", _ignoreError));
         }
 
         if (_setMethod != null)
         {
-            children.Add(_setMethod);
+            element.Add(_setMethod);
         }
         if (_setUrl != null)
         {
-            children.Add(new XElement("set-url", _setUrl.GetXText()));
+            element.Add(new XElement("set-url", _setUrl.GetXText()));
         }
         if (_setHeaders != null && _setHeaders.Count > 0)
         {
-            children.AddRange(_setHeaders.ToArray());
+            element.Add(_setHeaders.ToArray());
         }
         if (_setBody != null)
         {
-            children.Add(new XElement("set-body", _setBody.GetXText()));
+            element.Add(new XElement("set-body", _setBody.GetXText()));
         }
         if (_authenticationCertificate != null)
         {
-            children.Add(_authenticationCertificate);
+            element.Add(_authenticationCertificate);
         }
 
-        return new XElement("send-request", children.ToArray());
+        return element;
     }
     private static string TranslateMode(SendRequestMode? mode) => mode switch
     {
         SendRequestMode.Copy => "copy",
         SendRequestMode.New => "new",
-        _ => throw new Exception(),
+        _ => throw new PolicyValidationException("Unknown mode for SendRequest"),
     };
 }

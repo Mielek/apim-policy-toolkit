@@ -1,9 +1,8 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -12,25 +11,25 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class MockResponsePolicyBuilder
+public partial class MockResponsePolicyBuilder : BaseBuilder<MockResponsePolicyBuilder>
 {
     private uint? _statusCode;
     private string? _contentType;
 
     public XElement Build()
     {
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("mock-response");
 
         if (_statusCode != null)
         {
-            children.Add(new XAttribute("status-code", _statusCode));
+            element.Add(new XAttribute("status-code", _statusCode));
         }
 
         if (_contentType != null)
         {
-            children.Add(new XAttribute("content-type", _contentType));
+            element.Add(new XAttribute("content-type", _contentType));
         }
 
-        return new XElement("mock-response", children.ToArray());
+        return element;
     }
 }

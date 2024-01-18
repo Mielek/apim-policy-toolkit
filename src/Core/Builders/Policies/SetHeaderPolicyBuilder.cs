@@ -1,13 +1,11 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -17,7 +15,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class SetHeaderPolicyBuilder
+public partial class SetHeaderPolicyBuilder : BaseBuilder<SetHeaderPolicyBuilder>
 {
     public enum ExistsActionType { Override, Skip, Append, Delete }
 
@@ -43,17 +41,17 @@ public partial class SetHeaderPolicyBuilder
     {
         if (_name == null) throw new PolicyValidationException("SetHeader requires name");
 
-        var children = ImmutableArray.CreateBuilder<object>();
-        children.Add(_name.GetXAttribute("name"));
+        var element = this.CreateElement("set-header");
+        element.Add(_name.GetXAttribute("name"));
         if (_existsAction != null)
         {
-            children.Add(_existsAction.GetXAttribute("exists-action"));
+            element.Add(_existsAction.GetXAttribute("exists-action"));
         }
         if (_values != null && _values.Count > 0)
         {
-            children.AddRange(_values.ToImmutable().Select(v => new XElement("value", v.GetXText())));
+            element.Add(_values.ToImmutable().Select(v => new XElement("value", v.GetXText())));
         }
 
-        return new XElement("set-header", children.ToArray());
+        return element;
     }
 }

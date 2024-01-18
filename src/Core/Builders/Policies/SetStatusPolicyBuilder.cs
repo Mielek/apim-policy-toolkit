@@ -1,12 +1,10 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -16,7 +14,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class SetStatusPolicyBuilder
+public partial class SetStatusPolicyBuilder : BaseBuilder<SetStatusPolicyBuilder>
 {
     private IExpression<string>? _code;
     private IExpression<string>? _reason;
@@ -30,12 +28,12 @@ public partial class SetStatusPolicyBuilder
     {
         if (_code == null) throw new PolicyValidationException("Code is required for SetStatus");
 
-        var children = ImmutableArray.CreateBuilder<object>();
-        children.Add(_code.GetXAttribute("code"));
+        var element = this.CreateElement("set-status");
+        element.Add(_code.GetXAttribute("code"));
         if (_reason != null)
         {
-            children.Add(_reason.GetXAttribute("reason"));
+            element.Add(_reason.GetXAttribute("reason"));
         }
-        return new XElement("set-status", children.ToArray());
+        return element;
     }
 }

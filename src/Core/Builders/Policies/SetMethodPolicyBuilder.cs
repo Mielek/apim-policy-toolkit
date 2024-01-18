@@ -1,11 +1,10 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -13,7 +12,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class SetMethodPolicyBuilder
+public partial class SetMethodPolicyBuilder : BaseBuilder<SetMethodPolicyBuilder>
 {
     private IExpression<string>? _method;
 
@@ -50,7 +49,8 @@ public partial class SetMethodPolicyBuilder
     public XElement Build()
     {
         if (_method == null) throw new PolicyValidationException("Method is required for SetMethod");
-
-        return new XElement("set-method", _method.GetXText());
+        var element = this.CreateElement("set-method");
+        element.Add(_method.GetXText());
+        return element;
     }
 }

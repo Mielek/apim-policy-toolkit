@@ -1,17 +1,17 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Xml.Linq;
-using System.Collections.Immutable;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class GetAuthorizationContextPolicyBuilder
+public partial class GetAuthorizationContextPolicyBuilder : BaseBuilder<GetAuthorizationContextPolicyBuilder>
 {
     public enum IdentityTypeEnum { Managed, JWT }
 
@@ -24,37 +24,37 @@ public partial class GetAuthorizationContextPolicyBuilder
 
     public XElement Build()
     {
-        if (_providerId == null) throw new NullReferenceException();
-        if (_authorizationId == null) throw new NullReferenceException();
-        if (_contextVariableName == null) throw new NullReferenceException();
+        if (_providerId == null) throw new PolicyValidationException("ProviderId is required for GetAuthorizationContext");
+        if (_authorizationId == null) throw new PolicyValidationException("AuthorizationId is required for GetAuthorizationContext");
+        if (_contextVariableName == null) throw new PolicyValidationException("ContextVariableName is required for GetAuthorizationContext");
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("get-authorization-context");
 
-        children.Add(_providerId.GetXAttribute("provider-id"));
-        children.Add(_authorizationId.GetXAttribute("authorization-id"));
-        children.Add(new XAttribute("context-variable", _contextVariableName));
+        element.Add(_providerId.GetXAttribute("provider-id"));
+        element.Add(_authorizationId.GetXAttribute("authorization-id"));
+        element.Add(new XAttribute("context-variable", _contextVariableName));
 
         if (_identityType != null)
         {
-            children.Add(new XAttribute("identity-type", TranslateIdentity(_identityType)));
+            element.Add(new XAttribute("identity-type", TranslateIdentity(_identityType)));
         }
         if (_identity != null)
         {
-            children.Add(_identity.GetXAttribute("identity"));
+            element.Add(_identity.GetXAttribute("identity"));
         }
         if (_ignoreError != null)
         {
-            children.Add(new XAttribute("ignore-error", _ignoreError));
+            element.Add(new XAttribute("ignore-error", _ignoreError));
         }
 
-        return new XElement("get-authorization-context", children.ToArray());
+        return element;
     }
 
     private string TranslateIdentity(IdentityTypeEnum? identityType) => identityType switch
     {
         IdentityTypeEnum.Managed => "managed",
         IdentityTypeEnum.JWT => "jwt",
-        _ => throw new NotImplementedException(),
+        _ => throw new PolicyValidationException("Unknown IdentityType for GetAuthorizationContext"),
     };
 
 }

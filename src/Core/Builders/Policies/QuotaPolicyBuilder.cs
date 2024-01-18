@@ -1,16 +1,17 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class QuotaPolicyBuilder
+public partial class QuotaPolicyBuilder : BaseBuilder<QuotaPolicyBuilder>
 {
     private uint? _renewalPeriod;
     private uint? _calls;
@@ -29,26 +30,26 @@ public partial class QuotaPolicyBuilder
 
     public XElement Build()
     {
-        if (!_renewalPeriod.HasValue) throw new NullReferenceException();
+        if (!_renewalPeriod.HasValue) throw new PolicyValidationException("RenewalPeriod is required for Quota");
 
-        var children = ImmutableArray.CreateBuilder<object>();
-        children.Add(new XAttribute("renewal-period", _renewalPeriod));
+        var element = this.CreateElement("quota");
+        element.Add(new XAttribute("renewal-period", _renewalPeriod));
 
         if (_calls != null)
         {
-            children.Add(new XAttribute("calls", _calls));
+            element.Add(new XAttribute("calls", _calls));
         }
         if (_bandwidth != null)
         {
-            children.Add(new XAttribute("bandwidth", _bandwidth));
+            element.Add(new XAttribute("bandwidth", _bandwidth));
         }
 
         if (_apis != null && _apis.Count > 0)
         {
-            children.AddRange(_apis.ToArray());
+            element.Add(_apis.ToArray());
         }
 
-        return new XElement("quota-by-key", children.ToArray());
+        return element;
     }
 }
 

@@ -1,23 +1,21 @@
-
-
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class CacheLookupPolicyBuilder
+public partial class CacheLookupPolicyBuilder : BaseBuilder<CacheLookupPolicyBuilder>
 {
     public enum CacheLookupCachingType { PreferExternal, External, Internal }
+
     public enum CacheLookupDownstreamCachingType { None, Private, Public }
 
     private bool? _varyByDeveloper;
@@ -31,36 +29,43 @@ public partial class CacheLookupPolicyBuilder
 
     public XElement Build()
     {
-        if (_varyByDeveloper == null) throw new PolicyValidationException("Vary by developer is required for CacheLookup");
-        if (_varyByDeveloperGroup == null) throw new PolicyValidationException("Vary by developer group is required for CacheLookup");
+        if (_varyByDeveloper == null)
+            throw new PolicyValidationException("Vary by developer is required for CacheLookup");
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        if (_varyByDeveloperGroup == null)
+            throw new PolicyValidationException("Vary by developer group is required for CacheLookup");
 
-        children.Add(new XAttribute("vary-by-developer", _varyByDeveloper));
-        children.Add(new XAttribute("vary-by-developer-group", _varyByDeveloperGroup));
+        var element = this.CreateElement("cache-lookup");
+
+        element.Add(new XAttribute("vary-by-developer", _varyByDeveloper));
+        element.Add(new XAttribute("vary-by-developer-group", _varyByDeveloperGroup));
 
         if (_catchingType != null)
         {
-            children.Add(new XAttribute("cache-type", TranslateCachingType(_catchingType)));
+            element.Add(new XAttribute("cache-type", TranslateCachingType(_catchingType)));
         }
+
         if (_downstreamCachingType != null)
         {
-            children.Add(new XAttribute("downstream-caching-type", TranslateDownstreamCachingType(_downstreamCachingType)));
+            element.Add(new XAttribute("downstream-caching-type",
+                TranslateDownstreamCachingType(_downstreamCachingType)));
         }
+
         if (_mustRevalidate != null)
         {
-            children.Add(new XAttribute("must-revalidate", _mustRevalidate));
+            element.Add(new XAttribute("must-revalidate", _mustRevalidate));
         }
+
         if (_allowPrivateResponseCaching != null)
         {
-            children.Add(_allowPrivateResponseCaching.GetXAttribute("allow-private-response-caching"));
+            element.Add(_allowPrivateResponseCaching.GetXAttribute("allow-private-response-caching"));
         }
 
         if (_varyByHeaders != null)
         {
             foreach (var varyByHeader in _varyByHeaders)
             {
-                children.Add(new XElement("vary-by-header", varyByHeader));
+                element.Add(new XElement("vary-by-header", varyByHeader));
             }
         }
 
@@ -68,11 +73,11 @@ public partial class CacheLookupPolicyBuilder
         {
             foreach (var varyByQueryParam in _varyByQueryParameters)
             {
-                children.Add(new XElement("vary-by-query-parameter", varyByQueryParam));
+                element.Add(new XElement("vary-by-query-parameter", varyByQueryParam));
             }
         }
 
-        return new XElement("cache-lookup", children.ToArray());
+        return element;
     }
 
     private static string TranslateCachingType(CacheLookupCachingType? type) => type switch

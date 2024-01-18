@@ -1,13 +1,14 @@
+using System.Xml.Linq;
+
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 {
-    using System.Collections.Immutable;
-    using System.Xml.Linq;
-
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
-
     [GenerateBuilderSetters]
-    public partial class LimitConcurrencyPolicyBuilder<TSectionBuilder> where TSectionBuilder : PolicySectionBuilder, new()
+    public partial class LimitConcurrencyPolicyBuilder<TSectionBuilder> : BaseBuilder<LimitConcurrencyPolicyBuilder<TSectionBuilder>> where TSectionBuilder : PolicySectionBuilder, new()
     {
         private IExpression<string>? _key;
         private uint? _maxCount;
@@ -25,16 +26,16 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 
         public XElement Build()
         {
-            if (_key == null) throw new NullReferenceException();
-            if (_maxCount == null) throw new NullReferenceException();
-            if (_policies == null) throw new NullReferenceException();
+            if (_key == null) throw new PolicyValidationException("Key is required for LimitConcurrency");
+            if (_maxCount == null) throw new PolicyValidationException("MaxCount is required for LimitConcurrency");
+            if (_policies == null) throw new PolicyValidationException("Policies is required for LimitConcurrency");
 
-            var children = ImmutableArray.CreateBuilder<object>();
-            children.Add(_key.GetXAttribute("key"));
-            children.Add(new XAttribute("max-count", _maxCount));
-            children.AddRange(_policies.ToArray());
+            var element = this.CreateElement("limit-concurrency");
+            element.Add(_key.GetXAttribute("key"));
+            element.Add(new XAttribute("max-count", _maxCount));
+            element.Add(_policies.ToArray());
 
-            return new XElement("limit-concurrency", children.ToArray());
+            return element;
         }
     }
 }
@@ -42,8 +43,6 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders
 {
-    using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
     public partial class InboundSectionBuilder
     {
         public InboundSectionBuilder LimitConcurrency(Action<LimitConcurrencyPolicyBuilder<InboundSectionBuilder>> configurator)

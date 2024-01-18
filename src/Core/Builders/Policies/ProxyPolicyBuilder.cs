@@ -1,16 +1,16 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class ProxyPolicyBuilder
+public partial class ProxyPolicyBuilder : BaseBuilder<ProxyPolicyBuilder>
 {
     private string? _url;
     private string? _username;
@@ -18,21 +18,22 @@ public partial class ProxyPolicyBuilder
 
     public XElement Build()
     {
-        if (_url == null) throw new NullReferenceException();
-        var children = ImmutableArray.CreateBuilder<object>();
+        if (_url == null) throw new PolicyValidationException("Url is required for Proxy");
 
-        children.Add(new XAttribute("url", _url));
+        var element = this.CreateElement("proxy");
+
+        element.Add(new XAttribute("url", _url));
 
         if (_username != null)
         {
-            children.Add(new XAttribute("username", _username));
+            element.Add(new XAttribute("username", _username));
         }
 
         if (_password != null)
         {
-            children.Add(new XAttribute("password", _password));
+            element.Add(new XAttribute("password", _password));
         }
 
-        return new XElement("proxy", children.ToArray());
+        return element;
     }
 }

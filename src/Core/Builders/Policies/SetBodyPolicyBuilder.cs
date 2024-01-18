@@ -1,12 +1,10 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -15,7 +13,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(BackendSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class SetBodyPolicyBuilder
+public partial class SetBodyPolicyBuilder : BaseBuilder<SetBodyPolicyBuilder>
 {
     public enum BodyTemplate { Liquid }
     public enum XsiNilType { Blank, Null }
@@ -32,7 +30,7 @@ public partial class SetBodyPolicyBuilder
     private string TranslateTemplate(BodyTemplate template) => template switch
     {
         BodyTemplate.Liquid => "liquid",
-        _ => throw new Exception(),
+        _ => throw new PolicyValidationException("Unknown template type for SetBody"),
     };
 
     public SetBodyPolicyBuilder XsiNil(XsiNilType xsiNil)
@@ -44,25 +42,25 @@ public partial class SetBodyPolicyBuilder
     {
         XsiNilType.Blank => "blank",
         XsiNilType.Null => "null",
-        _ => throw new Exception(),
+        _ => throw new PolicyValidationException("Unknown xsi-nil type for SetBody"),
     };
 
     public XElement Build()
     {
         if (_body == null) throw new PolicyValidationException("Body is required for SetBody");
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("set-body");
         if (_template != null)
         {
-            children.Add(_template.GetXAttribute("template"));
+            element.Add(_template.GetXAttribute("template"));
         }
         if (_xsiNil != null)
         {
-            children.Add(_xsiNil.GetXAttribute("xsi-nil"));
+            element.Add(_xsiNil.GetXAttribute("xsi-nil"));
         }
 
-        children.Add(_body.GetXText());
+        element.Add(_body.GetXText());
 
-        return new XElement("set-body", children.ToArray());
+        return element;
     }
 }

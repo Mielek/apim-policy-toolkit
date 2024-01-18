@@ -1,17 +1,17 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class RateLimitByKeyPolicyBuilder
+public partial class RateLimitByKeyPolicyBuilder : BaseBuilder<RateLimitByKeyPolicyBuilder>
 {
     private uint? _calls;
     private uint? _renewalPeriod;
@@ -26,44 +26,44 @@ public partial class RateLimitByKeyPolicyBuilder
 
     public XElement Build()
     {
-        if (_calls == null) throw new NullReferenceException();
-        if (_renewalPeriod == null) throw new NullReferenceException();
-        if (_counterKey == null) throw new NullReferenceException();
+        if (_calls == null) throw new PolicyValidationException("Calls is required for RateLimitByKey");
+        if (_renewalPeriod == null) throw new PolicyValidationException("RenewalPeriod is required for RateLimitByKey");
+        if (_counterKey == null) throw new PolicyValidationException("CounterKey is required for RateLimitByKey");
 
-        var children = ImmutableArray.CreateBuilder<object>();
-        children.Add(new XAttribute("calls", _calls));
-        children.Add(new XAttribute("renewal-period", _renewalPeriod));
-        children.Add(_counterKey.GetXAttribute("counter-key"));
+        var element = this.CreateElement("rate-limit-by-key");
+        element.Add(new XAttribute("calls", _calls));
+        element.Add(new XAttribute("renewal-period", _renewalPeriod));
+        element.Add(_counterKey.GetXAttribute("counter-key"));
 
         if (_incrementCondition != null)
         {
-            children.Add(_incrementCondition.GetXAttribute("increment-condition"));
+            element.Add(_incrementCondition.GetXAttribute("increment-condition"));
         }
         if (_incrementCount != null)
         {
-            children.Add(new XAttribute("increment-count", _incrementCount));
+            element.Add(new XAttribute("increment-count", _incrementCount));
         }
         if (_retryAfterHeaderName != null)
         {
-            children.Add(new XAttribute("retry-after-header-name", _retryAfterHeaderName));
+            element.Add(new XAttribute("retry-after-header-name", _retryAfterHeaderName));
         }
         if (_retryAfterVariableName != null)
         {
-            children.Add(new XAttribute("retry-after-variable-name", _retryAfterVariableName));
+            element.Add(new XAttribute("retry-after-variable-name", _retryAfterVariableName));
         }
         if (_remainingCallsHeaderName != null)
         {
-            children.Add(new XAttribute("remaining-calls-header-name", _remainingCallsHeaderName));
+            element.Add(new XAttribute("remaining-calls-header-name", _remainingCallsHeaderName));
         }
         if (_remainingCallsVariableName != null)
         {
-            children.Add(new XAttribute("remaining-calls-variable-name", _remainingCallsVariableName));
+            element.Add(new XAttribute("remaining-calls-variable-name", _remainingCallsVariableName));
         }
         if (_totalCallsHeaderName != null)
         {
-            children.Add(new XAttribute("total-calls-header-name", _totalCallsHeaderName));
+            element.Add(new XAttribute("total-calls-header-name", _totalCallsHeaderName));
         }
 
-        return new XElement("rate-limit-by-key", children.ToArray());
+        return element;
     }
 }

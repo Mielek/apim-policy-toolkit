@@ -1,9 +1,7 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 // TODO graphql
 public partial class HttpDataSourcePolicyBuilder

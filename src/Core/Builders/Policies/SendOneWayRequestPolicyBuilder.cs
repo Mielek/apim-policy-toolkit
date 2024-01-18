@@ -1,10 +1,11 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
 using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
@@ -14,7 +15,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
     AddToSectionBuilder(typeof(OnErrorSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class SendOneWayRequestPolicyBuilder
+public partial class SendOneWayRequestPolicyBuilder : BaseBuilder<SendOneWayRequestPolicyBuilder>
 {
     public enum SendOneWayRequestMode { New, Copy }
 
@@ -59,48 +60,48 @@ public partial class SendOneWayRequestPolicyBuilder
     {
         if (_mode != SendOneWayRequestMode.Copy)
         {
-            if (_setUrl == null) throw new NullReferenceException();
-            if (_setMethod == null) throw new NullReferenceException();
+            if (_setUrl == null) throw new PolicyValidationException("SetUrl is required for SendOneWayRequest");
+            if (_setMethod == null) throw new PolicyValidationException("SetMethod is required for SendOneWayRequest");
         }
 
-        var children = ImmutableArray.CreateBuilder<object>();
+        var element = this.CreateElement("send-one-way-request");
 
         if (_mode != null)
         {
-            children.Add(new XAttribute("mode", TranslateMode(_mode)));
+            element.Add(new XAttribute("mode", TranslateMode(_mode)));
         }
         if (_timeout != null)
         {
-            children.Add(new XAttribute("timeout", _timeout));
+            element.Add(new XAttribute("timeout", _timeout));
         }
         if (_setMethod != null)
         {
-            children.Add(_setMethod);
+            element.Add(_setMethod);
         }
         if (_setUrl != null)
         {
-            children.Add(new XElement("set-url", _setUrl.GetXText()));
+            element.Add(new XElement("set-url", _setUrl.GetXText()));
         }
         if (_setHeaders != null && _setHeaders.Count > 0)
         {
-            children.AddRange(_setHeaders.ToArray());
+            element.Add(_setHeaders.ToArray());
         }
         if (_setBody != null)
         {
-            children.Add(new XElement("set-body", _setBody.GetXText()));
+            element.Add(new XElement("set-body", _setBody.GetXText()));
         }
         if (_authenticationCertificate != null)
         {
-            children.Add(_authenticationCertificate);
+            element.Add(_authenticationCertificate);
         }
 
-        return new XElement("send-one-way-request", children.ToArray());
+        return element;
     }
 
     private static string TranslateMode(SendOneWayRequestMode? mode) => mode switch
     {
         SendOneWayRequestMode.Copy => "copy",
         SendOneWayRequestMode.New => "new",
-        _ => throw new Exception(),
+        _ => throw new PolicyValidationException("Unknown mode for SendOneWayRequest"),
     };
 }

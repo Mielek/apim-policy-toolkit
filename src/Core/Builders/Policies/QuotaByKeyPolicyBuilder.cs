@@ -1,17 +1,17 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using System.Collections.Immutable;
 using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Generators.Attributes;
+
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 [GenerateBuilderSetters]
 [
     AddToSectionBuilder(typeof(InboundSectionBuilder)),
     AddToSectionBuilder(typeof(PolicyFragmentBuilder))
 ]
-public partial class QuotaByKeyPolicyBuilder
+public partial class QuotaByKeyPolicyBuilder : BaseBuilder<QuotaByKeyPolicyBuilder>
 {
     private IExpression<string>? _counterKey;
     private uint? _renewalPeriod;
@@ -22,30 +22,30 @@ public partial class QuotaByKeyPolicyBuilder
 
     public XElement Build()
     {
-        if (_counterKey == null) throw new NullReferenceException();
-        if (_renewalPeriod == null) throw new NullReferenceException();
+        if (_counterKey == null) throw new PolicyValidationException("CounterKey is required for QuotaByKey");
+        if (_renewalPeriod == null) throw new PolicyValidationException("RenewalPeriod is required for QuotaByKey");
 
-        var children = ImmutableArray.CreateBuilder<object>();
-        children.Add(_counterKey.GetXAttribute("counter-key"));
-        children.Add(new XAttribute("renewal-period", _renewalPeriod));
+        var element = this.CreateElement("quota-by-key");
+        element.Add(_counterKey.GetXAttribute("counter-key"));
+        element.Add(new XAttribute("renewal-period", _renewalPeriod));
 
         if (_calls != null)
         {
-            children.Add(new XAttribute("calls", _calls));
+            element.Add(new XAttribute("calls", _calls));
         }
         if (_bandwidth != null)
         {
-            children.Add(new XAttribute("bandwidth", _bandwidth));
+            element.Add(new XAttribute("bandwidth", _bandwidth));
         }
         if (_incrementCondition != null)
         {
-            children.Add(_incrementCondition.GetXAttribute("increment-condition"));
+            element.Add(_incrementCondition.GetXAttribute("increment-condition"));
         }
         if (_firstPeriodStart != null)
         {
-            children.Add(new XAttribute("first-period-start", _firstPeriodStart));
+            element.Add(new XAttribute("first-period-start", _firstPeriodStart));
         }
 
-        return new XElement("quota-by-key", children.ToArray());
+        return element;
     }
 }
