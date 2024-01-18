@@ -14,8 +14,4 @@
     <PackageReference Include="Mielek.Azure.ApiManagement.PolicyToolkit" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
-
-  <Target Name="TranformToPolicies" AfterTargets="Build">
-    <Exec Command="dotnet policy-transformer --dllFile  $(TargetPath) --out $(ProjectDir)..\target --format true" />
-  </Target>
 </Project>

@@ -8,6 +8,6 @@ public class EchoApiBuildTests
     [TestMethod]
     public void ShouldBuildCorrectly()
     {
-        new EchoApi().RetrieveResource();
+        new SimpleEchoApi().RetrieveResourcePolicyDocument();
     }
 }
