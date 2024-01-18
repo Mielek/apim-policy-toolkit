@@ -1,5 +1,3 @@
-using System.Data;
-
 using Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
 
@@ -17,22 +15,41 @@ public class TypeUsedTests
     public async Task Should()
     {
         await VerifyAsync(
-            $$"""
-            class Test 
-            { 
-                [Expression]
-                string Method(IContext context)
-                { 
-                    if(context.Request.Headers.TryGetValue("Authorization", out var value))
-                    {
-                        return value[0];
-                    } else 
-                    {
-                        return "";
-                    }
-                }
-            }
-            """
+"""
+[Library]
+class Test 
+{
+    [Document]
+    public XElement ApiPolicyDocument()
+    {
+        var t = "test".GetType().FullName;
+        return Policy.Document()
+            .Inbound(policies => policies.SetBody(policy => policy.Body(ExpressionLibrary.Method)))
+            .Create();
+    }
+
+}
+
+public static class ExpressionLibrary
+{
+    [Expression]
+    public static string Method(IContext context)
+    { 
+        if(context.Request.Headers.TryGetValue("Authorization", out var value))
+        {
+            return value[0];
+        } else 
+        {
+            return "";
+        }
+    }
+
+    public static string Good(IContext context)
+    { 
+        return "test".GetType().FullName;
+    }
+}
+"""
         );
     }
 }

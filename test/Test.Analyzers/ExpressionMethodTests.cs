@@ -6,23 +6,75 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Test.Analyzers;
 
 [TestClass]
-public class ExpressionMethodTests
+public class ExpressionDefinitionTests
 {
     public static Task VerifyAsync(string source, params DiagnosticResult[] diags)
     {
-        return new BaseAnalyzerTest<ExpressionMethodAnalyzer>(source, diags).RunAsync();
+        return new BaseAnalyzerTest<ExpressionDefinitionAnalyzer>(source, diags).RunAsync();
     }
-
+    
+    [TestMethod]
+    public async Task ShouldReportWrongParameterNameForParenthesisLambda()
+    {
+        await VerifyAsync(
+"""
+class Test
+{
+    void Method()
+    {
+        Policy.Document()
+            .Inbound(policies => policies
+                .SetBody(policy => policy
+                    .Body([Expression] (IContext c1) => "10")
+                )
+            )
+            .Create();
+    }
+}
+""",
+            DiagnosticResult
+                .CompilerError(Rules.Expression.WrongParameterName.Id)
+                .WithSpan(15, 37, 15, 39)
+                .WithArguments("c1", "context")
+        );
+    }
+    
+    [TestMethod]
+    public async Task ShouldReportWrongParameterNameForSimpleLambda()
+    {
+        await VerifyAsync(
+"""
+class Test
+{
+    void Method()
+    {
+        Policy.Document()
+            .Inbound(policies => policies
+                .SetBody(policy => policy
+                    .Body([Expression] (c1) => "10")
+                )
+            )
+            .Create();
+    }
+}
+""",
+            DiagnosticResult
+                .CompilerError(Rules.Expression.WrongParameterName.Id)
+                .WithSpan(15, 27, 15, 29)
+                .WithArguments("c1", "context")
+        );
+    }
+    
     [TestMethod]
     public async Task ShouldReportWrongReturnType()
     {
         await VerifyAsync(
             """
-            class Test 
-            { 
+            class Test
+            {
                 [Expression]
-                void Method(IContext context) 
-                { 
+                void Method(IContext context)
+                {
                     return;
                 }
             }
@@ -42,15 +94,15 @@ public class ExpressionMethodTests
     {
         await VerifyAsync(
             $$"""
-            class Test 
-            { 
-                [Expression]
-                int Method({{parameters}})
-                { 
-                    return 10;
-                }
-            }
-            """,
+              class Test
+              {
+                  [Expression]
+                  int Method({{parameters}})
+                  {
+                      return 10;
+                  }
+              }
+              """,
             DiagnosticResult
                 .CompilerError(Rules.Expression.WrongParameterCount.Id)
                 .WithSpan(11, 15, 11, 15 + parameters.Length + 2)

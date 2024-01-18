@@ -34,7 +34,7 @@ public class PolicyDocumentMethodAnalyzer : DiagnosticAnalyzer
         }
         var model = context.SemanticModel;
 
-        var isDocument = method.ContainsAttributeOfType(model, PolicyDocumentAttribute);
+        var isDocument = method.AttributeLists.ContainsAttributeOfType(model, PolicyDocumentAttribute);
         if (!isDocument) return;
 
         var type = model.GetTypeInfo(method.ReturnType).Type;
