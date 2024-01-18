@@ -26,14 +26,8 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
                 SyntaxKind.AnonymousObjectCreationExpression);
     }
 
-    private const string ExpressionAttribute = "Mielek.Azure.ApiManagement.PolicyToolkit.Attributes.ExpressionAttribute";
-
-    private static readonly Regex ExpressionDelegateTypeMatcher = new Regex("Mielek\\\\.Azure\\\\.ApiManagement\\\\.PolicyToolkit\\\\.Builders\\\\.Expressions\\\\.ExpressionBuilder<.?>\\\\.ExpressionDelegate");
-
     private readonly static IReadOnlySet<string> AllowedTypes = new HashSet<string>()
     {
-        #region Expression
-
         #region  mslib
         "System.Array",
         "System.BitConverter",
@@ -190,83 +184,6 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
         "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IUser",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IUserIdentity",
         #endregion Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context
-
-        #endregion Expression
-
-        // #region Mielek.Azure.ApiManagement.PolicyToolkit.Builders
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policy",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.PolicyDocumentBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.PolicyFragmentBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.InboundSectionBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.BackendSectionBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.OutboundSectionBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.OnErrorSectionBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions.ExpressionBuilder<T>",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.AuthenticationBasicPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.AuthenticationCertificatePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.AuthenticationManagedIdentityPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheLookupPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheLookupPolicyBuilder.CacheLookupCachingType",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheLookupPolicyBuilder.CacheLookupDownstreamCachingType",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheLookupValuePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheLookupValuePolicyBuilder.CachingTypeEnum",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheRemoveValuePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheRemoveValuePolicyBuilder.CachingTypeEnum",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheStorePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheStoreValuePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CacheStoreValuePolicyBuilder.CachingTypeEnum",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CheckHeaderPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ChoosePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ChooseWhenBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.CorsPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.EmitMetricPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.EmitMetricDimensionBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.FindAndReplacePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ForwardRequestPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.GetAuthorizationContextPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.GetAuthorizationContextPolicyBuilder.IdentityTypeEnum",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.HttpDataSourcePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.HttpDataSourceHttpRequestBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.HttpDataSourceHttpBackendBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.HttpDataSourceHttpResponseBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.IncludeFragmentPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.IpFilterPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.IpFilterPolicyBuilder.IpFilterAction",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.LimitConcurrencyPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.LogToEventhubPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.MockResponsePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ProxyPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.QuotaByKeyPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.QuotaPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.RateLimitByKeyPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.RateLimitApiOperationBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.RateLimitApiBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.RateLimitPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.RetryPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ReturnResponsePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SendOneWayRequestPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SendRequestPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SendRequestPolicyBuilder.SendRequestMode",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetBodyPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetBodyPolicyBuilder.BodyTemplate",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetBodyPolicyBuilder.XsiNilType",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetHeaderPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetHeaderPolicyBuilder.ExistsActionType",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetStatusPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetVariablePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.TracePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.TracePolicyBuilder.TraceSeverity",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateAzureAdTokenPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateAzureAdTokenClaimBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateAzureAdTokenClaimBuilder.ClaimMatch",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateClientCertificatePolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateClientCertificateIdentityBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateJwtPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateJwtClaimBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.ValidateJwtClaimBuilder.ClaimMatch",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.WaitPolicyBuilder",
-        // "Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.WaitPolicyBuilder.WaitFor",
-        // #endregion Mielek.Azure.ApiManagement.PolicyToolkit.Builders
     };
 
     private readonly static IReadOnlyDictionary<string, IReadOnlySet<string>> AllowedInTypes = new Dictionary<string, IReadOnlySet<String>>()
