@@ -32,33 +32,36 @@ var assembly = Assembly.LoadFrom(dllFile);
 Console.Out.WriteLine($"Loaded assembly in {stopwatch.Elapsed}");
 
 var libraries = assembly.GetExportedTypes().Where(t => t.GetCustomAttribute<LibraryAttribute>() != null);
-foreach (var type in libraries)
+foreach (var libraryType in libraries)
 {
-    var instance = Activator.CreateInstance(type);
-    var documents = type.GetMethods().Where(m => m.GetCustomAttribute<DocumentAttribute>() != null);
+    var libraryName = libraryType.GetCustomAttribute<LibraryAttribute>()?.Name ?? libraryType.Name;
+    var instance = Activator.CreateInstance(libraryType);
+    var documents = libraryType.GetMethods().Where(m => m.GetCustomAttribute<DocumentAttribute>() != null);
 
-    foreach (var document in documents)
+    foreach (var documentMethod in documents)
     {
-        if (document.ReturnType != typeof(XElement) || document.GetParameters().Length != 0)
+        if (documentMethod.ReturnType != typeof(XElement) || documentMethod.GetParameters().Length != 0)
         {
-            Console.Out.WriteLine($"Method {document.Name} should be accept no parameters and return PolicyDocument type");
+            Console.Out.WriteLine($"Method {documentMethod.Name} should be accept no parameters and return XElement type");
             continue;
         }
 
-        var documentName = $"{type.Name}.{document.Name}";
-        Console.Out.WriteLine($"Document of {documentName}");
-        var policyDoc = document.Invoke(instance, null) as XElement;
+        var documentName = documentMethod.GetCustomAttribute<DocumentAttribute>()?.Name ?? documentMethod.Name;
+        
+        var fullName =  $"{libraryName}.{documentName}";
+        Console.Out.WriteLine($"Document of {fullName}");
+        var policyDocumentValue = documentMethod.Invoke(instance, null) as XElement;
 
-        if (policyDoc == null)
+        if (policyDocumentValue == null)
         {
-            Console.Out.WriteLine($"Method {document.Name} returned {policyDoc}");
+            Console.Out.WriteLine($"Method {documentMethod.Name} returned {policyDocumentValue}");
             continue;
         }
 
-        StringBuilder codeBuilder = new StringBuilder();
+        var codeBuilder = new StringBuilder();
         using (var writer = CustomXmlWriter.Create(codeBuilder, writerSettings))
         {
-            writer.Write(policyDoc);
+            writer.Write(policyDocumentValue);
         }
         var code = codeBuilder.ToString();
 
@@ -67,7 +70,7 @@ foreach (var type in libraries)
             code = new RazorCodeFormatter(code).Format();
         }
 
-        var targetFile = Path.Combine(output, $"{documentName}.xml");
+        var targetFile = Path.Combine(output, $"{fullName}.xml");
         File.WriteAllText(targetFile, code);
 
         Console.Out.WriteLine($"Created {targetFile}");

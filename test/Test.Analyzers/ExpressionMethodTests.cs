@@ -25,7 +25,7 @@ class Test
         Policy.Document()
             .Inbound(policies => policies
                 .SetBody(policy => policy
-                    .Body([Expression] (IContext c1) => "10")
+                    .Body((IContext c1) => "10")
                 )
             )
             .Create();
@@ -51,7 +51,7 @@ class Test
         Policy.Document()
             .Inbound(policies => policies
                 .SetBody(policy => policy
-                    .Body([Expression] (c1) => "10")
+                    .Body(c1 => "10")
                 )
             )
             .Create();

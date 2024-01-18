@@ -21,7 +21,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>policy-transformer</ToolCommandName>
     <PackageOutputPath>..\..\output</PackageOutputPath>

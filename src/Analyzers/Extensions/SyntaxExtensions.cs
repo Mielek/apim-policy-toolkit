@@ -36,7 +36,38 @@ public static class SyntaxExtensions
     public static bool IsPartOfPolicyExpressionDelegate(this SyntaxNode syntaxNode, SemanticModel model)
     {
         return syntaxNode.Ancestors()
-            .OfType<ParenthesizedLambdaExpressionSyntax>()
-            .Any(c => c.AttributeLists.ContainsExpressionAttribute(model));
+            .OfType<LambdaExpressionSyntax>()
+            .Any(l => l.IsExpressionLambda(model));
+    }
+    
+    private static readonly Regex ExpressionDelegateTypeMatcher =
+        new Regex(
+            @"Mielek\.Azure\.ApiManagement\.PolicyToolkit\.Builders\.Expressions\.ExpressionBuilder<.*?>\.ExpressionDelegate",
+            RegexOptions.Compiled);
+
+    public static bool IsExpressionLambda(this LambdaExpressionSyntax syntaxNode, SemanticModel model)
+    {
+        var syntax = syntaxNode.Ancestors()
+            .OfType<InvocationExpressionSyntax>()
+            .FirstOrDefault();
+        if (syntax == null)
+        {
+            return false;
+        }
+
+        var symbol = model.GetSymbolInfo(syntax).Symbol;
+        if(symbol is not IMethodSymbol methodSymbol)
+        {
+            return false;
+        }
+        
+        var parameter = methodSymbol.Parameters.FirstOrDefault();
+        if (parameter == null)
+        {
+            return false;
+        }
+
+        var displayName = parameter.OriginalDefinition.Type.ToDisplayString();
+        return ExpressionDelegateTypeMatcher.IsMatch(displayName);
     }
 }

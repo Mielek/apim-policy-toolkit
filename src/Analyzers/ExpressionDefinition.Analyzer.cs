@@ -89,7 +89,7 @@ public class ExpressionDefinitionAnalyzer : DiagnosticAnalyzer
             throw new Exception();
         }
 
-        if (!lambda.IsPartOfPolicyExpressionDelegate(context.SemanticModel))
+        if (!lambda.IsExpressionLambda(context.SemanticModel))
         {
             return;
         }
