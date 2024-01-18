@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -20,8 +22,8 @@ public partial class AuthenticationCertificatePolicyBuilder
 
     public XElement Build()
     {
-        if ((_thumbprint == null) == (_certificateId == null)) throw new Exception();
-        if (_password != null && _body == null) throw new Exception();
+        if ((_thumbprint == null) == (_certificateId == null)) throw new PolicyValidationException("Either thumbprint or certificate-id is required for AuthenticationCertificate");
+        if (_password != null && _body == null) throw new PolicyValidationException("Password is only valid with body for AuthenticationCertificate");
 
 
         var attributes = ImmutableArray.CreateBuilder<object>();

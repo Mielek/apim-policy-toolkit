@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -47,7 +49,7 @@ public partial class SetBodyPolicyBuilder
 
     public XElement Build()
     {
-        if (_body == null) throw new NullReferenceException();
+        if (_body == null) throw new PolicyValidationException("Body is required for SetBody");
 
         var children = ImmutableArray.CreateBuilder<object>();
         if (_template != null)

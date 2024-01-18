@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -34,12 +36,12 @@ public partial class SetHeaderPolicyBuilder
         ExistsActionType.Append => "append",
         ExistsActionType.Delete => "delete",
         ExistsActionType.Skip => "skip",
-        _ => throw new Exception(),
+        _ => throw new PolicyValidationException("Unknown exists action for SetHeader policy"),
     };
 
     public XElement Build()
     {
-        if (_name == null) throw new NullReferenceException();
+        if (_name == null) throw new PolicyValidationException("SetHeader requires name");
 
         var children = ImmutableArray.CreateBuilder<object>();
         children.Add(_name.GetXAttribute("name"));

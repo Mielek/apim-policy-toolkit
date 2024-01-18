@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -26,7 +28,7 @@ public partial class SetStatusPolicyBuilder
 
     public XElement Build()
     {
-        if (_code == null) throw new NullReferenceException();
+        if (_code == null) throw new PolicyValidationException("Code is required for SetStatus");
 
         var children = ImmutableArray.CreateBuilder<object>();
         children.Add(_code.GetXAttribute("code"));

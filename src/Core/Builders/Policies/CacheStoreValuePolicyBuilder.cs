@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -25,9 +27,9 @@ public partial class CacheStoreValuePolicyBuilder
 
     public XElement Build()
     {
-        if (_key == null) throw new NullReferenceException();
-        if (_value == null) throw new NullReferenceException();
-        if (_duration == null) throw new NullReferenceException();
+        if (_key == null) throw new PolicyValidationException("Key is required for CacheStoreValue");
+        if (_value == null) throw new PolicyValidationException("Value is required for CacheStoreValue");
+        if (_duration == null) throw new PolicyValidationException("Duration is required for CacheStoreValue");
 
         var children = ImmutableArray.CreateBuilder<object>();
 
@@ -50,7 +52,7 @@ public partial class CacheStoreValuePolicyBuilder
             CachingTypeEnum.Internal => "internal",
             CachingTypeEnum.External => "external",
             CachingTypeEnum.PreferExternal => "prefer-external",
-            _ => throw new NotImplementedException(),
+            _ => throw new PolicyValidationException("Unknown caching type for CacheStoreValue"),
         };
     }
 }

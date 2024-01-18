@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -36,6 +38,8 @@ public partial class ChoosePolicyBuilder<TSectionBuilder> where TSectionBuilder 
 
     public XElement Build()
     {
+        if(_whens.Count == 0) throw new PolicyValidationException("At least one When is required for Choose");
+        
         var children = ImmutableArray.CreateBuilder<object>();
 
         children.Add(_whens.ToArray());
@@ -67,8 +71,8 @@ public partial class ChooseWhenBuilder<TSectionBuilder> where TSectionBuilder : 
 
     public XElement Build()
     {
-        if (_condition == null) throw new NullReferenceException();
-        if (_policies == null) throw new NullReferenceException();
+        if (_condition == null) throw new PolicyValidationException("Condition is required for When");
+        if (_policies == null) throw new PolicyValidationException("Policies are required for When");
 
         var children = ImmutableArray.CreateBuilder<object>();
         children.Add(_condition.GetXAttribute("condition"));

@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 {
 
@@ -27,11 +29,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
 
         public XElement Build()
         {
-            if (_name == null) throw new NullReferenceException();
-            if (_failedCheckHttpCode == null) throw new NullReferenceException();
-            if (_failedCheckErrorMessage == null) throw new NullReferenceException();
-            if (_ignoreCase == null) throw new NullReferenceException();
-            if (_values == null) throw new NullReferenceException();
+            if (_name == null) throw new PolicyValidationException("CheckHeader requires name");
+            if (_failedCheckHttpCode == null) throw new PolicyValidationException("CheckHeader requires failed-check-httpcode");
+            if (_failedCheckErrorMessage == null) throw new NullReferenceException("CheckHeader requires failed-check-error-message");
+            if (_ignoreCase == null) throw new NullReferenceException("CheckHeader requires ignore-case");
+            if (_values == null) throw new NullReferenceException("CheckHeader requires values");
 
             var children = ImmutableArray.CreateBuilder<object>();
 

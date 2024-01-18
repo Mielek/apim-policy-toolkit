@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -23,7 +25,7 @@ public partial class CrossDomainPolicyBuilder
 
     public XElement Build()
     {
-        if (_policy == null || _policy.Count == 0) throw new NullReferenceException();
+        if (_policy == null || _policy.Count == 0) throw new PolicyValidationException("At least one Policy is required for CrossDomain");
 
         return new XElement("cross-domain", _policy.ToArray());
     }

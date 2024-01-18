@@ -1,5 +1,7 @@
 
 
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -29,8 +31,8 @@ public partial class CacheLookupPolicyBuilder
 
     public XElement Build()
     {
-        if (_varyByDeveloper == null) throw new NullReferenceException();
-        if (_varyByDeveloperGroup == null) throw new NullReferenceException();
+        if (_varyByDeveloper == null) throw new PolicyValidationException("Vary by developer is required for CacheLookup");
+        if (_varyByDeveloperGroup == null) throw new PolicyValidationException("Vary by developer group is required for CacheLookup");
 
         var children = ImmutableArray.CreateBuilder<object>();
 
@@ -78,7 +80,7 @@ public partial class CacheLookupPolicyBuilder
         CacheLookupCachingType.PreferExternal => "prefer-external",
         CacheLookupCachingType.External => "external",
         CacheLookupCachingType.Internal => "internal",
-        _ => throw new Exception(),
+        _ => throw new PolicyValidationException("Unknown caching type for CacheLookup"),
     };
 
     private static string TranslateDownstreamCachingType(CacheLookupDownstreamCachingType? type) => type switch
@@ -86,6 +88,6 @@ public partial class CacheLookupPolicyBuilder
         CacheLookupDownstreamCachingType.None => "none",
         CacheLookupDownstreamCachingType.Private => "private",
         CacheLookupDownstreamCachingType.Public => "public",
-        _ => throw new Exception(),
+        _ => throw new PolicyValidationException("Unknown downstream caching type for CacheLookup"),
     };
 }

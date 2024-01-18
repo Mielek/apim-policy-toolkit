@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -25,7 +27,7 @@ public partial class CacheLookupValuePolicyBuilder
 
     public XElement Build()
     {
-        if (_variableName == null) throw new NullReferenceException();
+        if (_variableName == null) throw new PolicyValidationException("Variable name is required for CacheLookupValue");
 
         var children = ImmutableArray.CreateBuilder<XObject>();
         children.Add(new XAttribute("variable-name", _variableName));
@@ -52,7 +54,7 @@ public partial class CacheLookupValuePolicyBuilder
             CachingTypeEnum.Internal => "internal",
             CachingTypeEnum.External => "external",
             CachingTypeEnum.PreferExternal => "prefer-external",
-            _ => throw new NotImplementedException(),
+            _ => throw new PolicyValidationException("Unknown caching type for CacheLookupValue"),
         };
     }
 }

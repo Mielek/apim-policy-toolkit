@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -19,7 +21,7 @@ public partial class AuthenticationManagedIdentityPolicyBuilder
 
     public XElement Build()
     {
-        if (_resource == null) throw new NullReferenceException();
+        if (_resource == null) throw new PolicyValidationException("Resource is required for AuthenticationManagedIdentity");
 
         var attributes = ImmutableArray.CreateBuilder<object>();
 

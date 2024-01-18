@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Xml.Linq;
@@ -47,7 +49,7 @@ public partial class SetMethodPolicyBuilder
 
     public XElement Build()
     {
-        if (_method == null) throw new NullReferenceException();
+        if (_method == null) throw new PolicyValidationException("Method is required for SetMethod");
 
         return new XElement("set-method", _method.GetXText());
     }

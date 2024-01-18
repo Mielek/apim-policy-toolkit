@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -23,7 +25,7 @@ public partial class CacheRemoveValuePolicyBuilder
 
     public XElement Build()
     {
-        if (_key == null) throw new NullReferenceException();
+        if (_key == null) throw new PolicyValidationException("Key is required for CacheRemoveValue");
 
         var children = ImmutableArray.CreateBuilder<object>();
 
@@ -44,7 +46,7 @@ public partial class CacheRemoveValuePolicyBuilder
             CachingTypeEnum.Internal => "internal",
             CachingTypeEnum.External => "external",
             CachingTypeEnum.PreferExternal => "prefer-external",
-            _ => throw new NotImplementedException(),
+            _ => throw new PolicyValidationException("Unknown caching type for CacheRemoveValue"),
         };
     }
 }

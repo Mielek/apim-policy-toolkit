@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -32,8 +34,8 @@ public partial class CorsPolicyBuilder
 
     public XElement Build()
     {
-        if (_allowedOrigins == null) throw new NullReferenceException();
-        if (_allowedHeaders == null) throw new NullReferenceException();
+        if (_allowedOrigins == null) throw new PolicyValidationException("At least one allowed-origin is required for Cors");
+        if (_allowedHeaders == null) throw new PolicyValidationException("At least one allowed-header is required for Cors");
 
         var children = ImmutableArray.CreateBuilder<XObject>();
 

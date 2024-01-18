@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -32,7 +34,7 @@ public partial class EmitMetricPolicyBuilder
 
     public XElement Build()
     {
-        if (_name == null) throw new NullReferenceException();
+        if (_name == null) throw new PolicyValidationException("Name is required for EmitMetric");
 
         var children = ImmutableArray.CreateBuilder<object>();
 
@@ -62,7 +64,7 @@ public partial class EmitMetricDimensionBuilder
 
     public XElement Build()
     {
-        if (_name == null) throw new NullReferenceException();
+        if (_name == null) throw new PolicyValidationException("Name is required for EmitMetric Dimension");
 
         var children = ImmutableArray.CreateBuilder<object>();
         children.Add(new XAttribute("name", _name));

@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Xml.Linq;
@@ -20,8 +22,8 @@ public partial class SetVariablePolicyBuilder
 
     public XElement Build()
     {
-        if (_name == null) throw new NullReferenceException();
-        if (_value == null) throw new NullReferenceException();
+        if (_name == null) throw new PolicyValidationException("Name is required for SetVariable");
+        if (_value == null) throw new PolicyValidationException("Value is required for SetVariable");
 
         var children = new[] {
                 new XAttribute("name", _name),

@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Xml.Linq;
@@ -16,8 +18,8 @@ public partial class AuthenticationBasicPolicyBuilder
 
     public XElement Build()
     {
-        if (_username == null) throw new NullReferenceException();
-        if (_password == null) throw new NullReferenceException();
+        if (_username == null) throw new PolicyValidationException("Username is required for AuthenticationBasic");
+        if (_password == null) throw new PolicyValidationException("Password is required for AuthenticationBasic");
 
         return new XElement("authentication-basic", new object[] {
                 new XAttribute("username", _username),

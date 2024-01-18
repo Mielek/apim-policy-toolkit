@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -18,7 +20,7 @@ public partial class CacheStorePolicyBuilder
 
     public XElement Build()
     {
-        if (_duration == null) throw new NullReferenceException();
+        if (_duration == null) throw new PolicyValidationException("Duration is required for CacheStore");
 
         var children = ImmutableArray.CreateBuilder<object>();
 

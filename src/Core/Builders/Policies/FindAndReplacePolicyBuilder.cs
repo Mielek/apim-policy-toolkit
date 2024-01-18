@@ -1,3 +1,5 @@
+using Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 using System.Collections.Immutable;
@@ -21,8 +23,8 @@ public partial class FindAndReplacePolicyBuilder
 
     public XElement Build()
     {
-        if (_from == null) throw new NullReferenceException();
-        if (_to == null) throw new NullReferenceException();
+        if (_from == null) throw new PolicyValidationException("From is required for FindAndReplace");
+        if (_to == null) throw new PolicyValidationException("To is required for FindAndReplace");
 
         var children = ImmutableArray.CreateBuilder<XObject>();
 
