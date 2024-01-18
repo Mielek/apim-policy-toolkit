@@ -1,14 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Mielek.Example</PackageId>
+    <PackageId>Contoso.Apis</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
-    <Authors>Mielek</Authors>
-    <!-- <Description>Awesome application logging utility</Description>
-      <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-      <PackageReleaseNotes>First release</PackageReleaseNotes>
-      <Copyright>Copyright 2016 (c) Contoso Corporation. All rights reserved.</Copyright>
-      <PackageTags>logger logging logs</PackageTags> -->
   </PropertyGroup>
 
   <PropertyGroup>
