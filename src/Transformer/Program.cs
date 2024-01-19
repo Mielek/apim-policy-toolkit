@@ -4,7 +4,6 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;

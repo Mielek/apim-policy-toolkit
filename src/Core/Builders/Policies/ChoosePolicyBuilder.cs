@@ -27,7 +27,7 @@ public partial class ChoosePolicyBuilder<TSectionBuilder> : BaseBuilder<ChoosePo
         return this;
     }
 
-    public ChoosePolicyBuilder<TSectionBuilder> Otherwise(Action<PolicySectionBuilder> configurator)
+    public ChoosePolicyBuilder<TSectionBuilder> Otherwise(Action<TSectionBuilder> configurator)
     {
         var builder = new TSectionBuilder();
         configurator(builder);

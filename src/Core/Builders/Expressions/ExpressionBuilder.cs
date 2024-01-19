@@ -31,7 +31,7 @@ public class ExpressionBuilder<T>
 
         var info = lambda.GetMethodInfo();
         ValidateParameters(info);
-        _expression = new LambdaExpression<T>(info, lambdaCode);
+        _expression = new LambdaExpression<T>(lambdaCode);
         return this;
     }
 

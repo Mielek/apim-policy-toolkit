@@ -9,15 +9,13 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
 
-public sealed record LambdaExpression<T>(MethodInfo LambdaInfo, string Code) : IExpression<T>
+public sealed record LambdaExpression<T>(string Code) : IExpression<T>
 {
     public string Source => Serialize();
 
     public XText GetXText() => new XText(Source);
 
     public XAttribute GetXAttribute(XName name) => new XAttribute(name, Source);
-
-    
 
     private string Serialize()
     {
