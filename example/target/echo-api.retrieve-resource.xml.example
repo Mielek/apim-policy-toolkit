@@ -1,0 +1,35 @@
+<policies>
+  <inbound>
+    <base />
+    <choose>
+      <when condition="@(context.Request.IpAddress.StartsWith("10.0.0."))">
+        <set-header name="X-Company">
+          <value>true</value>
+        </set-header>
+        <authentication-basic username="{{username}}" password="{{password}}" />
+      </when>
+      <otherwise>
+        <authentication-managed-identity resource="resource" output-token-variable-name="token" />
+        <set-header name="Authorization">
+          <value>@($"Bearer {context.Variables["token"]}")</value>
+        </set-header>
+      </otherwise>
+    </choose>
+  </inbound>
+  <outbound>
+    <set-header name="Backend-Statistics" exists-action="delete" />
+    <set-body>@{
+        var body = context.Response.Body.As<JObject>();
+        foreach (var internalProperty in new string[]{"location", "secret"})
+        {
+            if (body.ContainsKey(internalProperty))
+            {
+                body.Remove(internalProperty);
+            }
+        }
+        
+        return body.ToString();
+    }</set-body>
+    <base />
+  </outbound>
+</policies>

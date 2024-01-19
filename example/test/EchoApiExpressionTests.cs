@@ -1,6 +1,7 @@
+using Contoso.Apis;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
-using Contoso.Apis;
+
 using Newtonsoft.Json.Linq;
 
 namespace Contoso.Test.Apis;
@@ -23,6 +24,7 @@ public class EchoApiExpressionTests
             """;
 
         var newBody = new SimpleEchoApi().FilterBody(context);
+
         Assert.IsTrue(JObject.DeepEquals(JObject.Parse(newBody), JObject.Parse("""
                                                                                {
                                                                                    "title": "Software Engineer",

@@ -46,12 +46,14 @@ public class ComplexEchoApi
     [Expression]
     public string FilterBody(IContext context)
     {
-        var response = context.Response.Body.As<JObject>();
-        foreach (var key in new[] { "current", "minutely", "hourly", "daily", "alerts" })
+        var body = context.Response.Body.As<JObject>();
+        foreach (var internalProperty in new string[]{ "location", "secret" })
         {
-            response.Property(key)?.Remove();
+            if (body.ContainsKey(internalProperty))
+            {
+                body.Remove(internalProperty);
+            }
         }
-
-        return response.ToString();
+        return body.ToString();
     }
 }

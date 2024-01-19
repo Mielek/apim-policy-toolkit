@@ -15,9 +15,7 @@ public class SimpleEchoApi
     public XElement RetrieveResourcePolicyDocument()
     {
         return Policy.Document()
-            .Outbound(o => o
-                .Base()
-                .SetBody(p => p.Body(FilterBody)))
+            .Outbound(o => o.Base().SetBody(p => p.Body(FilterBody)))
             .Create();
     }
 
