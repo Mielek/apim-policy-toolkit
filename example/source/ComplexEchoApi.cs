@@ -17,49 +17,30 @@ public class ComplexEchoApi
     public XElement RetrieveResource()
     {
         return Policy.Document()
-            .Inbound(policies =>
-            {
-                policies
-                    .CheckHeader(policy =>
-                        policy.Name("X-Checked")
-                            .FailedCheckHttpCode(400)
-                            .FailedCheckErrorMessage("Bad request")
-                            .IgnoreCase(IsVariableSet)
-                            .Value("Test")
-                            .Value("Other-Test"))
-                    .Base()
-                    .SetHeader(policy =>
-                        policy.Name("X-Test").ExistsAction(ExistsActionType.Append)
-                            .Value("Test")
-                            .Value(context => context.Deployment.Region)
-                            .Value((context) =>
-                            {
-                                if (context.Variables.ContainsKey("Variable"))
-                                {
-                                    return "ContainsVariable";
-                                }
-
-                                return "NotContainVariable";
-                            })
-                            .Value(GetKnownGUIDOrGenerateNew));
-            })
-            .Outbound(policies => policies.Base().SetBody(policy => policy.Body(ExternalExpressions.FilterBody)))
+            .Inbound(policies => policies
+                .Base()
+                .Choose(c => c
+                    .When(w => w
+                        .Condition(context => context.Request.IpAddress.StartsWith("10.0.0."))
+                        .Policies(p => p
+                            .SetHeader(s => s.Name("X-Company").Value("true"))
+                            .AuthenticationBasic(a => a.Username("{{username}}").Password("{{password}}"))
+                        )
+                    )
+                    .Otherwise(o => o
+                        .AuthenticationManagedIdentity(a => a.Resource("resource").OutputTokenVariableName("token"))
+                        .SetHeader(s =>
+                            s.Name("Authorization").Value(context => $"Bearer {context.Variables["token"]}")
+                        )
+                    )
+                )
+            )
+            .Outbound(policies => policies
+                .SetHeader(s => s.Name("Backend-Statistics").ExistsAction(ExistsActionType.Delete))
+                .SetBody(policy => policy.Body(FilterBody))
+                .Base()
+            )
             .Create();
-    }
-
-    [Expression]
-    public bool IsVariableSet(IContext context) => context.Variables.ContainsKey("Variable");
-
-    [Expression]
-    public string GetKnownGUIDOrGenerateNew(IContext context)
-    {
-        if (!context.Variables
-                .TryGetValue("KnownGUID", out var guid))
-        {
-            guid = Guid.NewGuid();
-        }
-
-        return $"{guid}";
     }
 
     [Expression]

@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Expressions\Context\Context.csproj" />
     <ProjectReference Include="..\Generators\Attributes\Attributes.csproj" />
+    <ProjectReference Include="..\CodeContext\CodeContext.csproj" />
     <ProjectReference Include="..\Generators\Builders\Builders.csproj"
       OutputItemType="Analyzer"
       ReferenceOutputAssembly="false" />

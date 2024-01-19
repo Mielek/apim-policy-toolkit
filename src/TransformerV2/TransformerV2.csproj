@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageId>Mielek.Azure.ApiManagement.PolicyToolkit.TransformerV2</PackageId>
+        <PackageVersion>1.0.0</PackageVersion>
+        <Authors>Mielek</Authors>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>.net7</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>policy-transformer-v2</ToolCommandName>
+        <PackageOutputPath>..\..\output</PackageOutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Core\Core.csproj"/>
+    </ItemGroup>
+</Project>

@@ -7,6 +7,12 @@
       "commands": [
         "policy-transformer"
       ]
+    },
+    "mielek.azure.apimanagement.policytoolkit.transformerv2": {
+      "version": "1.0.0",
+      "commands": [
+        "policy-transformer-v2"
+      ]
     }
   }
 }
