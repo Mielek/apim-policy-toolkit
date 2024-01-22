@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Xml;
 
 using Microsoft.CodeAnalysis.CSharp;
@@ -32,7 +35,7 @@ foreach (var file in files)
     var fileName = Path.GetFileNameWithoutExtension(file);
     var code = File.ReadAllText(file);
     var syntax = CSharpSyntaxTree.ParseText(code);
-    
+
     var codeDocuments = syntax.GetRoot()
         .DescendantNodes()
         .OfType<ClassDeclarationSyntax>()
@@ -45,18 +48,22 @@ foreach (var file in files)
         {
             writer.Write(policy);
         }
+
         var xml = codeBuilder.ToString();
-        xml = new RazorCodeFormatter(xml).Format();
+        if (format)
+        {
+            xml = new RazorCodeFormatter(xml).Format();
+        }
 
         var attributeSyntax = document.AttributeLists.GetFirstAttributeOfType("CodeDocument");
-        var policyFileName = (attributeSyntax?.ArgumentList?.Arguments.FirstOrDefault()?.Expression as LiteralExpressionSyntax)?.Token.ValueText ?? document.Identifier.ValueText;
-            
+        var policyFileName =
+            (attributeSyntax?.ArgumentList?.Arguments.FirstOrDefault()?.Expression as LiteralExpressionSyntax)?.Token
+            .ValueText ?? document.Identifier.ValueText;
+
         var targetFile = Path.Combine(output, $"{policyFileName}.xml");
         File.WriteAllText(targetFile, xml);
         Console.Out.WriteLine($"File {targetFile} created");
-        
     }
-    
+
     Console.Out.WriteLine($"File {fileName} processed");
 }
-
