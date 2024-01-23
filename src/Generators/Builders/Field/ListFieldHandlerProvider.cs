@@ -58,7 +58,7 @@ public class ImmutableListFieldHandlerProvider : IFieldSetterHandlerProvider
                 ));
                 builder.Method(new BuilderSetMethod(
                     methodName,
-                    new[] { $"ExpressionBuilder<{innerType}>.ExpressionDelegate func, [CallerArgumentExpression(nameof(func))] string? code = null, [CallerFilePath] string? sourceFilePath = null" },
+                    new[] { $"Expression<{innerType}> func, [CallerArgumentExpression(nameof(func))] string? code = null, [CallerFilePath] string? sourceFilePath = null" },
                     new[] { $"var expression = ExpressionBuilder<{innerType}>.Builder.Function(func, code, sourceFilePath).Build();",
                             $"({variableName} ??= ImmutableList.CreateBuilder<IExpression<{innerType}>>()).Add(expression);" }
                 ));

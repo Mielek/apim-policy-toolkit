@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.Testing.Verifiers;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
 
@@ -20,11 +21,13 @@ public class BaseAnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, MSTestV
     {
         ReferenceAssemblies = new ReferenceAssemblies("net7.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "7.0.0"), Path.Combine("ref", "net7.0"));
         TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(ExpressionAttribute).Assembly.Location));
+        TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(Expression<>).Assembly.Location));
         TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(PolicyDocumentBuilder).Assembly.Location));
         TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(IContext).Assembly.Location));
         TestState.Sources.Add(
             $"""
             using System.Xml.Linq;
+            using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
             using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
             using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
             using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;

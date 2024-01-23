@@ -49,7 +49,7 @@ public class ExpressionFieldHandlerProvider : IFieldSetterHandlerProvider
                 ));
                 builder.Method(new BuilderSetMethod(
                     methodName,
-                    new[] { $"ExpressionBuilder<{type}>.ExpressionDelegate func, [CallerArgumentExpression(nameof(func))] string? code = null, [CallerFilePath] string? sourceFilePath = null" },
+                    new[] { $"Expression<{type}> func, [CallerArgumentExpression(nameof(func))] string? code = null, [CallerFilePath] string? sourceFilePath = null" },
                     new[] { $"{variableName} = ExpressionBuilder<{type}>.Builder.Function(func, code, sourceFilePath).Build();" }
                 ));
             }

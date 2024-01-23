@@ -2,13 +2,13 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
+using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
 
 public class ExpressionBuilder<T>
 {
-    public delegate T ExpressionDelegate(IContext context);
     
     public static ExpressionBuilder<T> Builder => new();
 
@@ -22,7 +22,7 @@ public class ExpressionBuilder<T>
         return this;
     }
 
-    public ExpressionBuilder<T> Lambda(ExpressionDelegate lambda, [CallerArgumentExpression(nameof(lambda))] string? lambdaCode = null)
+    public ExpressionBuilder<T> Lambda(Expression<T> lambda, [CallerArgumentExpression(nameof(lambda))] string? lambdaCode = null)
     {
         if (lambdaCode == null)
         {
@@ -35,7 +35,7 @@ public class ExpressionBuilder<T>
         return this;
     }
 
-    public ExpressionBuilder<T> Method(ExpressionDelegate method, [CallerFilePath] string? sourceFilePath = null)
+    public ExpressionBuilder<T> Method(Expression<T> method, [CallerFilePath] string? sourceFilePath = null)
     {
         if (sourceFilePath == null)
         {
@@ -48,7 +48,7 @@ public class ExpressionBuilder<T>
         return this;
     }
 
-    public ExpressionBuilder<T> Function(ExpressionDelegate func, [CallerArgumentExpression(nameof(func))] string? code = null, [CallerFilePath] string? sourceFilePath = null)
+    public ExpressionBuilder<T> Function(Expression<T> func, [CallerArgumentExpression(nameof(func))] string? code = null, [CallerFilePath] string? sourceFilePath = null)
     {
         if (code == null || sourceFilePath == null)
         {

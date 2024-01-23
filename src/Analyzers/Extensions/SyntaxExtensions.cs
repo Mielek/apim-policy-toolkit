@@ -7,7 +7,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
 
 public static class SyntaxExtensions
 {
-    public static bool ContainsAttributeOfType(this SyntaxList<AttributeListSyntax> syntax, SemanticModel model, string type)
+    public static bool ContainsAttributeOfType(this SyntaxList<AttributeListSyntax> syntax, SemanticModel model,
+        string type)
     {
         return syntax
             .SelectMany(a => a.Attributes)
@@ -39,10 +40,10 @@ public static class SyntaxExtensions
             .OfType<LambdaExpressionSyntax>()
             .Any(l => l.IsExpressionLambda(model));
     }
-    
+
     private static readonly Regex ExpressionDelegateTypeMatcher =
         new Regex(
-            @"Mielek\.Azure\.ApiManagement\.PolicyToolkit\.Builders\.Expressions\.ExpressionBuilder<.*?>\.ExpressionDelegate",
+            @"Mielek\.Azure\.ApiManagement\.PolicyToolkit\.CodeContext\.Expression<.*?>",
             RegexOptions.Compiled);
 
     public static bool IsExpressionLambda(this LambdaExpressionSyntax syntaxNode, SemanticModel model)
@@ -56,11 +57,11 @@ public static class SyntaxExtensions
         }
 
         var symbol = model.GetSymbolInfo(syntax).Symbol;
-        if(symbol is not IMethodSymbol methodSymbol)
+        if (symbol is not IMethodSymbol methodSymbol)
         {
             return false;
         }
-        
+
         var parameter = methodSymbol.Parameters.FirstOrDefault();
         if (parameter == null)
         {

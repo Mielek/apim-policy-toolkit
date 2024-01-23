@@ -29,7 +29,7 @@ public class PolicyDocumentMethodTests
             """,
             DiagnosticResult
                 .CompilerError(Rules.PolicyDocument.ReturnValue.Id)
-                .WithSpan(11, 5, 11, 9)
+                .WithSpan(12, 5, 12, 9)
                 .WithArguments(typeof(void).FullName)
         );
     }
@@ -52,7 +52,7 @@ public class PolicyDocumentMethodTests
             """,
             DiagnosticResult
                 .CompilerError(Rules.PolicyDocument.NoParametersAllowed.Id)
-                .WithSpan(11, 20, 11, 20 + parameters.Length + 2)
+                .WithSpan(12, 20, 12, 20 + parameters.Length + 2)
                 .WithArguments(count)
         );
     }
