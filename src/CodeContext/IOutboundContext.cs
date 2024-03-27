@@ -5,7 +5,6 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
 public interface IOutboundContext
 {
     void RemoveHeader(string name);
-    void SetBody(Expression<string> expression);
     void SetBody(string body);
     void Base();
     

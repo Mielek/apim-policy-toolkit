@@ -104,6 +104,12 @@ public class CSharpPolicyCompiler
             case "AuthenticationBasic":
                 ProcessAuthenticationBasic(section, invocation);
                 break;
+            case "AuthenticationManagedIdentity":
+                var resource = ProcessParameter(invocation.ArgumentList.Arguments[0].Expression);
+                section.Add(new AuthenticationManagedIdentityPolicyBuilder()
+                    .Resource(resource)
+                    .Build());
+                break;
         }
     }
 
