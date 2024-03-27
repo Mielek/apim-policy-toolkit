@@ -1,4 +1,4 @@
-dotnet nuget locals global-packages --clear
+dotnet build
 dotnet pack
 cd ./example
-./install-tool.cmd
+dotnet tool restore

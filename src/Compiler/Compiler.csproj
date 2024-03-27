@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <PackageId>Mielek.Azure.ApiManagement.PolicyToolkit.TransformerV2</PackageId>
-        <PackageVersion>1.0.0</PackageVersion>
+        <PackageId>Mielek.Azure.ApiManagement.PolicyToolkit.Compiler</PackageId>
+        <PackageVersion>0.0.1</PackageVersion>
         <Authors>Mielek</Authors>
     </PropertyGroup>
     
@@ -14,7 +14,7 @@
 
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <PackAsTool>true</PackAsTool>
-        <ToolCommandName>policy-transformer-v2</ToolCommandName>
+        <ToolCommandName>policy-compiler</ToolCommandName>
         <PackageOutputPath>..\..\output</PackageOutputPath>
     </PropertyGroup>
 

@@ -2,16 +2,10 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "mielek.azure.apimanagement.policytoolkit.transformer": {
-      "version": "1.0.0",
+    "mielek.azure.apimanagement.policytoolkit.compiler": {
+      "version": "0.0.1",
       "commands": [
-        "policy-transformer"
-      ]
-    },
-    "mielek.azure.apimanagement.policytoolkit.transformerv2": {
-      "version": "1.0.0",
-      "commands": [
-        "policy-transformer-v2"
+        "policy-compiler"
       ]
     }
   }

@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7164E855-2349-489D-9FCE-3D35992D9924}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transformer", "src\Transformer\Transformer.csproj", "{E3B6666B-05DA-477A-98B9-D5DDF2AAB421}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Expressions", "Expressions", "{8257B470-BCF0-4B2F-A60F-392EB10881D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Context", "src\Expressions\Context\Context.csproj", "{F6DA29DA-DE65-491C-999D-55C582FC2C4E}"
@@ -37,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core.cspro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Core", "test\Test.Core\Test.Core.csproj", "{8D84BFBB-55D9-4EE9-A29A-B84675E81A2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransformerV2", "src\TransformerV2\TransformerV2.csproj", "{694264F5-CC50-4942-BE9D-93B2A2321A9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compiler", "src\Compiler\Compiler.csproj", "{694264F5-CC50-4942-BE9D-93B2A2321A9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeContext", "src\CodeContext\CodeContext.csproj", "{ECCCED99-A802-4D0C-9A43-C1F083859163}"
 EndProject
@@ -52,10 +50,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E3B6666B-05DA-477A-98B9-D5DDF2AAB421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3B6666B-05DA-477A-98B9-D5DDF2AAB421}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3B6666B-05DA-477A-98B9-D5DDF2AAB421}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3B6666B-05DA-477A-98B9-D5DDF2AAB421}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6DA29DA-DE65-491C-999D-55C582FC2C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6DA29DA-DE65-491C-999D-55C582FC2C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6DA29DA-DE65-491C-999D-55C582FC2C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -114,7 +108,6 @@ Global
 		{AF9014D0-576C-4F83-8354-B11F4ED89E6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E3B6666B-05DA-477A-98B9-D5DDF2AAB421} = {7164E855-2349-489D-9FCE-3D35992D9924}
 		{8257B470-BCF0-4B2F-A60F-392EB10881D9} = {7164E855-2349-489D-9FCE-3D35992D9924}
 		{F6DA29DA-DE65-491C-999D-55C582FC2C4E} = {8257B470-BCF0-4B2F-A60F-392EB10881D9}
 		{B1427B18-042D-468D-A827-38EF0EB21574} = {7164E855-2349-489D-9FCE-3D35992D9924}
