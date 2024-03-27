@@ -10,7 +10,8 @@
 * Clone repository to your local machine.
 * Build the nuget packages by running `dotnet build` and then `dotnet pack` in the root folder of the repository.
 
-:exclamation: Currently the libraries and compiler is not available on nuget. To be able to skip the project setup we recommend to use `example` folder with example project from repository. The steps for that you can find (here)[#setup-example-project].
+| :exclamation: Currently the libraries and compiler is not available on nuget. To be able to skip the project setup we recommend to use `example` folder with example project from repository. The steps for that you can find [here](#setup-example-project). |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 ### Setting up the policy project
 
@@ -43,7 +44,8 @@ public class ApiOperationPolicy : ICodeDocument
 
 The `ICodeContext` interface contains methods `Inbound`, `Outbound`, `Backend` and `OnError` which are used to define policy sections.
 
-:exclamation: Currently only `Inbound` and `Outbound` methods are supported.
+| :exclamation: Currently only `Inbound` and `Outbound` methods are supported. |
+|------------------------------------------------------------------------------|
 
 Lets implement `Inbound` method which will set header `X-Hello` with value `World`.
 
