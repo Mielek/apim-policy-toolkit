@@ -10,8 +10,8 @@
 * Clone repository to your local machine.
 * Build the nuget packages by running `dotnet build` and then `dotnet pack` in the root folder of the repository.
 
-| :exclamation: Currently the libraries and compiler is not available on nuget. To be able to skip the project setup we recommend to use `example` folder with example project from repository. The steps for that you can find (here)[#Setup example project]. |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| :exclamation: Currently the libraries and compiler is not available on nuget. To be able to skip the project setup we recommend to use `example` folder with example project from repository. The steps for that you can find (here)[# Setup example project]. |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 ### Setting up the policy project
 
