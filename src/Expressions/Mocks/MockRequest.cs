@@ -19,7 +19,7 @@ public class MockRequest : IRequest
     };
     public IReadOnlyDictionary<string, string[]> Headers => throw new NotImplementedException();
 
-    public string IpAddress => throw new NotImplementedException();
+    public string IpAddress { get; set; } = "192.168.0.1";
 
     public IReadOnlyDictionary<string, string> MatchedParameters => throw new NotImplementedException();
 
