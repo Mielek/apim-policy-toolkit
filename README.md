@@ -23,8 +23,7 @@
 
 ## Writing simple policy document
 
-In this section we will describe how to create a simple policy document. But before we start we need to set up a policy
-authoring project.
+In this section we will describe how to create a simple policy document.
 
 ### Writing the document
 
