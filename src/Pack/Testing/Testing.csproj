@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>.net7</TargetFramework>
+    <TargetFramework>.net8</TargetFramework>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>

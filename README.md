@@ -16,8 +16,8 @@
     ```
 * Setup the example solution by doing steps from [here](#setup-the-solution)
 
-| :exclamation: Instead of setting up the solution we recommend using example folder from repository for the testing purposes. You can find the automated steps for setting example solution up are available [here](#setup-the-example-solution). |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| :exclamation: Instead of setting up the solution we recommend using example folder from repository for the testing purposes. You can find the automated steps for setting example solution up [here](#setup-the-example-solution). |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 * Open the solution in your IDE of choice. We tested [VS](https://visualstudio.microsoft.com), [Raider](https://www.jetbrains.com/rider/), [VS code](https://code.visualstudio.com/) with [C# devkit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit), but any IDE with C# support should work.
 
