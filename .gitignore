@@ -462,3 +462,5 @@ $RECYCLE.BIN/
 ### configuration of Omnisharp for script intelisens 
 ###
 !starter.rsp
+
+.mono/
