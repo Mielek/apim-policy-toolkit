@@ -44,19 +44,19 @@ public class PolicyDocumentBuilder
     public XElement Create()
     {
         var document = new XElement("policies");
-        if(_inbound != null && _inbound.Count > 0)
+        if (_inbound != null && _inbound.Count > 0)
         {
             document.Add(new XElement("inbound", _inbound.ToArray()));
         }
-        if(_backend != null && _backend.Count > 0)
+        if (_backend != null && _backend.Count > 0)
         {
             document.Add(new XElement("backend", _backend.ToArray()));
         }
-        if(_outbound != null && _outbound.Count > 0)
+        if (_outbound != null && _outbound.Count > 0)
         {
             document.Add(new XElement("outbound", _outbound.ToArray()));
         }
-        if(_onError != null && _onError.Count > 0)
+        if (_onError != null && _onError.Count > 0)
         {
             document.Add(new XElement("on-error", _onError.ToArray()));
         }

@@ -5,12 +5,12 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 public static class SyntaxExtensions
 {
-    
+
     public static bool ContainsAttributeOfType(this SyntaxList<AttributeListSyntax> syntax, string type)
     {
         return syntax.GetFirstAttributeOfType(type) != null;
     }
-    
+
     public static AttributeSyntax? GetFirstAttributeOfType(this SyntaxList<AttributeListSyntax> syntax, string type)
     {
         return syntax

@@ -16,8 +16,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class SetStatusPolicyBuilder : BaseBuilder<SetStatusPolicyBuilder>
 {
-    private IExpression<string>? _code;
-    private IExpression<string>? _reason;
+    private readonly IExpression<string>? _code;
+    private readonly IExpression<string>? _reason;
 
     public SetStatusPolicyBuilder Code(ushort code)
     {

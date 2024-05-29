@@ -27,7 +27,7 @@ internal class ClassSetterBuilder
 
         var symbol = model.GetDeclaredSymbol(classDeclaration) as INamedTypeSymbol ?? throw new Exception("Cannot find symbol model");
         var className = symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-        
+
         var namespaceName = symbol?.ContainingNamespace.ToDisplayString();
         // namespaceName ??= _classDeclaration.FindParent<FileScopedNamespaceDeclarationSyntax>()?.Name.ToString();
         // namespaceName ??= _classDeclaration.FindParent<NamespaceDeclarationSyntax>()?.Name.ToString();

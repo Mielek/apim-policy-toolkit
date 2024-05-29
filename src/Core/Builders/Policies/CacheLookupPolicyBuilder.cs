@@ -18,14 +18,14 @@ public partial class CacheLookupPolicyBuilder : BaseBuilder<CacheLookupPolicyBui
 
     public enum CacheLookupDownstreamCachingType { None, Private, Public }
 
-    private bool? _varyByDeveloper;
-    private bool? _varyByDeveloperGroup;
-    private CacheLookupCachingType? _catchingType;
-    private CacheLookupDownstreamCachingType? _downstreamCachingType;
-    private bool? _mustRevalidate;
-    private IExpression<bool>? _allowPrivateResponseCaching;
-    private ImmutableList<string>.Builder? _varyByHeaders;
-    private ImmutableList<string>.Builder? _varyByQueryParameters;
+    private readonly bool? _varyByDeveloper;
+    private readonly bool? _varyByDeveloperGroup;
+    private readonly CacheLookupCachingType? _catchingType;
+    private readonly CacheLookupDownstreamCachingType? _downstreamCachingType;
+    private readonly bool? _mustRevalidate;
+    private readonly IExpression<bool>? _allowPrivateResponseCaching;
+    private readonly ImmutableList<string>.Builder? _varyByHeaders;
+    private readonly ImmutableList<string>.Builder? _varyByQueryParameters;
 
     public XElement Build()
     {

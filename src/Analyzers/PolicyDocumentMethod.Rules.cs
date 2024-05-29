@@ -17,7 +17,7 @@ public static partial class Rules
             isEnabledByDefault: true,
             description: "Description.",
             helpLinkUri: "TODO",
-            customTags: new[] { "APIM", "ApiManagement"});
+            customTags: new[] { "APIM", "ApiManagement" });
 
         public readonly static DiagnosticDescriptor NoParametersAllowed = new DiagnosticDescriptor(
             "APIM202",
@@ -30,7 +30,7 @@ public static partial class Rules
             helpLinkUri: "TODO",
             customTags: new[] { "APIM", "ApiManagement" });
 
-            
+
         public readonly static ImmutableArray<DiagnosticDescriptor> All = ImmutableArray.Create(
             ReturnValue, NoParametersAllowed
         );

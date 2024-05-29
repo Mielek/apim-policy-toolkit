@@ -29,13 +29,13 @@ public class TestingCodeDocument : ICodeDocument
         c.SetBody(FilterRequest(c.Context));
         c.Base();
     }
-    
+
     bool IsFromCompanyIp(IContext context) => context.Request.IpAddress.StartsWith("10.0.0.");
 
     string FilterRequest(IContext context)
     {
         var body = context.Response.Body.As<JObject>();
-        foreach (var internalProperty in new string[]{ "location", "secret" })
+        foreach (var internalProperty in new string[] { "location", "secret" })
         {
             if (body.ContainsKey(internalProperty))
             {

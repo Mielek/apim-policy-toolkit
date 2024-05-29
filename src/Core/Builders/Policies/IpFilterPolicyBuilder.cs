@@ -19,7 +19,7 @@ public partial class IpFilterPolicyBuilder : BaseBuilder<IpFilterPolicyBuilder>
     public sealed record IpFilterAddress(string Ip) : IIpFilterValue;
     public sealed record IpFilterAddressRange(string FromIp, string ToIp) : IIpFilterValue;
 
-    private IpFilterAction? _action;
+    private readonly IpFilterAction? _action;
 
     [IgnoreBuilderField]
     private readonly ImmutableList<IIpFilterValue>.Builder _values = ImmutableList.CreateBuilder<IIpFilterValue>();

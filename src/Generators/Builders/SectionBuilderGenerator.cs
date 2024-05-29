@@ -53,7 +53,7 @@ public class SectionBuilderGenerator : ISourceGenerator
                             var sectionNamespaceName = sectionSymbol.ContainingNamespace.ToDisplayString();
                             var builder = new BuilderClassBuilder(sectionNamespaceName, sectionTypeName);
 
-                            if(!SymbolEqualityComparer.Default.Equals(sectionSymbol.ContainingNamespace, symbol.ContainingNamespace))
+                            if (!SymbolEqualityComparer.Default.Equals(sectionSymbol.ContainingNamespace, symbol.ContainingNamespace))
                             {
                                 builder.Using(symbol.ContainingNamespace.ToDisplayString());
                             }

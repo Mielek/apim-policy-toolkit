@@ -13,12 +13,12 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class QuotaByKeyPolicyBuilder : BaseBuilder<QuotaByKeyPolicyBuilder>
 {
-    private IExpression<string>? _counterKey;
-    private uint? _renewalPeriod;
-    private uint? _calls;
-    private uint? _bandwidth;
-    private IExpression<bool>? _incrementCondition;
-    private DateTime? _firstPeriodStart;
+    private readonly IExpression<string>? _counterKey;
+    private readonly uint? _renewalPeriod;
+    private readonly uint? _calls;
+    private readonly uint? _bandwidth;
+    private readonly IExpression<bool>? _incrementCondition;
+    private readonly DateTime? _firstPeriodStart;
 
     public XElement Build()
     {

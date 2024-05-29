@@ -8,6 +8,6 @@ public interface IInboundContext
     void SetHeader(string name, string value);
     void Base();
     void AuthenticationBasic(string username, string password);
-    
+
     IContext Context { get; }
 }

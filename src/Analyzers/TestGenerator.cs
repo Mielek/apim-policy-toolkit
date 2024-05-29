@@ -11,6 +11,6 @@ public class TestGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext context)
     {
-        
+
     }
 }

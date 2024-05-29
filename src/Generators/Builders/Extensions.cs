@@ -1,4 +1,5 @@
 using System.Linq;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -28,11 +29,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Generators
         {
             return attribute.Name.ToString().StartsWith(name);
         }
-        
+
         public static T? FindParent<T>(this SyntaxNode node) where T : class
         {
             var current = node;
-            while(true)
+            while (true)
             {
                 current = current.Parent;
                 if (current == null || current is T)

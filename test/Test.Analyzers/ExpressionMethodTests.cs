@@ -12,7 +12,7 @@ public class ExpressionDefinitionTests
     {
         return new BaseAnalyzerTest<ExpressionDefinitionAnalyzer>(source, diags).RunAsync();
     }
-    
+
     [TestMethod]
     public async Task ShouldReportWrongParameterNameForParenthesisLambda()
     {
@@ -38,7 +38,7 @@ class Test
                 .WithArguments("c1", "context")
         );
     }
-    
+
     [TestMethod]
     public async Task ShouldReportWrongParameterNameForSimpleLambda()
     {
@@ -64,7 +64,7 @@ class Test
                 .WithArguments("c1", "context")
         );
     }
-    
+
     [TestMethod]
     public async Task ShouldReportWrongReturnType()
     {

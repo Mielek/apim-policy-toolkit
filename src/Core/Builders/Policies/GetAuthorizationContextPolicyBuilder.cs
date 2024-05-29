@@ -15,12 +15,12 @@ public partial class GetAuthorizationContextPolicyBuilder : BaseBuilder<GetAutho
 {
     public enum IdentityTypeEnum { Managed, JWT }
 
-    private IExpression<string>? _providerId;
-    private IExpression<string>? _authorizationId;
-    private string? _contextVariableName;
-    private IdentityTypeEnum? _identityType;
-    private IExpression<string>? _identity;
-    private bool? _ignoreError;
+    private readonly IExpression<string>? _providerId;
+    private readonly IExpression<string>? _authorizationId;
+    private readonly string? _contextVariableName;
+    private readonly IdentityTypeEnum? _identityType;
+    private readonly IExpression<string>? _identity;
+    private readonly bool? _ignoreError;
 
     public XElement Build()
     {

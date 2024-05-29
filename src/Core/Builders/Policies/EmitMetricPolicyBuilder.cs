@@ -17,11 +17,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class EmitMetricPolicyBuilder : BaseBuilder<EmitMetricPolicyBuilder>
 {
-    private string? _name;
+    private readonly string? _name;
     [IgnoreBuilderField]
     private readonly ImmutableList<XElement>.Builder _dimensions = ImmutableList.CreateBuilder<XElement>();
-    private IExpression<string>? _value;
-    private string? _namespace;
+    private readonly IExpression<string>? _value;
+    private readonly string? _namespace;
 
     public EmitMetricPolicyBuilder Dimension(Action<EmitMetricDimensionBuilder> configuration)
     {
@@ -58,8 +58,8 @@ public partial class EmitMetricPolicyBuilder : BaseBuilder<EmitMetricPolicyBuild
 [GenerateBuilderSetters]
 public partial class EmitMetricDimensionBuilder
 {
-    private string? _name;
-    private IExpression<string>? _value;
+    private readonly string? _name;
+    private readonly IExpression<string>? _value;
 
     public XElement Build()
     {

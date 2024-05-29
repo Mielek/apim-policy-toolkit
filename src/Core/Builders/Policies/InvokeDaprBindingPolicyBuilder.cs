@@ -15,7 +15,7 @@ namespace Core.Builders.Policies;
 ]
 public partial class InvokeDaprBindingPolicyBuilder : BaseBuilder<InvokeDaprBindingPolicyBuilder>
 {
-    private IExpression<string>? _name;
+    private readonly IExpression<string>? _name;
 
     public XElement Build()
     {

@@ -16,8 +16,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class SetVariablePolicyBuilder : BaseBuilder<SetVariablePolicyBuilder>
 {
-    private string? _name;
-    private IExpression<string>? _value;
+    private readonly string? _name;
+    private readonly IExpression<string>? _value;
 
     public XElement Build()
     {

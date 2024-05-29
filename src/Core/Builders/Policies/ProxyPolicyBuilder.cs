@@ -12,9 +12,9 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class ProxyPolicyBuilder : BaseBuilder<ProxyPolicyBuilder>
 {
-    private string? _url;
-    private string? _username;
-    private string? _password;
+    private readonly string? _url;
+    private readonly string? _username;
+    private readonly string? _password;
 
     public XElement Build()
     {

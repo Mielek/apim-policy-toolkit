@@ -11,19 +11,19 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 public class CSharpPolicyCompiler
 {
-    private ClassDeclarationSyntax document;
-    
+    private readonly ClassDeclarationSyntax document;
+
     public CSharpPolicyCompiler(ClassDeclarationSyntax document)
     {
         this.document = document;
     }
-    
+
     public XElement Compile()
     {
         var methods = document.DescendantNodes()
             .OfType<MethodDeclarationSyntax>();
         var policyDocument = new XElement("policies");
-        
+
         foreach (var method in methods)
         {
             switch (method.Identifier.ValueText)
@@ -70,13 +70,13 @@ public class CSharpPolicyCompiler
     {
         var choose = new XElement("choose");
         sectionElement.Add(choose);
-        
+
         var whenSection = CompileSection("when", syntax.Statement as BlockSyntax);
         choose.Add(whenSection);
 
         whenSection.Add(new XAttribute("condition", FindCode(syntax.Condition as InvocationExpressionSyntax)));
-        
-        if(syntax.Else != null)
+
+        if (syntax.Else != null)
         {
             var otherwiseSection = CompileSection("otherwise", syntax.Else.Statement as BlockSyntax);
             choose.Add(otherwiseSection);

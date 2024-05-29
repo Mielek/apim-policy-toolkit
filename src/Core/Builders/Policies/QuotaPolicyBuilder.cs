@@ -13,9 +13,9 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class QuotaPolicyBuilder : BaseBuilder<QuotaPolicyBuilder>
 {
-    private uint? _renewalPeriod;
-    private uint? _calls;
-    private uint? _bandwidth;
+    private readonly uint? _renewalPeriod;
+    private readonly uint? _calls;
+    private readonly uint? _bandwidth;
 
     [IgnoreBuilderField]
     private ImmutableList<XElement>.Builder? _apis;
@@ -56,9 +56,9 @@ public partial class QuotaPolicyBuilder : BaseBuilder<QuotaPolicyBuilder>
 [GenerateBuilderSetters]
 public partial class QuotaApiBuilder
 {
-    private uint? _calls;
-    private string? _name;
-    private string? _id;
+    private readonly uint? _calls;
+    private readonly string? _name;
+    private readonly string? _id;
 
     [IgnoreBuilderField]
     private ImmutableList<XElement>.Builder? _operations;
@@ -100,9 +100,9 @@ public partial class QuotaApiBuilder
 [GenerateBuilderSetters]
 public partial class QuotaOperationBuilder
 {
-    private uint? _calls;
-    private string? _name;
-    private string? _id;
+    private readonly uint? _calls;
+    private readonly string? _name;
+    private readonly string? _id;
 
     public XElement Build()
     {

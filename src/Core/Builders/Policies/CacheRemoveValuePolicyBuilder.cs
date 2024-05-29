@@ -18,8 +18,8 @@ public partial class CacheRemoveValuePolicyBuilder : BaseBuilder<CacheRemoveValu
 {
     public enum CachingTypeEnum { Internal, External, PreferExternal }
 
-    private IExpression<string>? _key;
-    private CachingTypeEnum? _cachingType;
+    private readonly IExpression<string>? _key;
+    private readonly CachingTypeEnum? _cachingType;
 
     public XElement Build()
     {

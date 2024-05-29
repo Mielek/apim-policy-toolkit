@@ -13,7 +13,7 @@ public abstract class PolicySectionBuilder
     }
 }
 
-public partial class InboundSectionBuilder : PolicySectionBuilder{};
-public partial class BackendSectionBuilder : PolicySectionBuilder{};
-public partial class OutboundSectionBuilder : PolicySectionBuilder{};
-public partial class OnErrorSectionBuilder : PolicySectionBuilder{};
+public partial class InboundSectionBuilder : PolicySectionBuilder { };
+public partial class BackendSectionBuilder : PolicySectionBuilder { };
+public partial class OutboundSectionBuilder : PolicySectionBuilder { };
+public partial class OnErrorSectionBuilder : PolicySectionBuilder { };

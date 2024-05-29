@@ -35,7 +35,7 @@ public class ApiOperationPolicy : ICodeDocument
     public bool IsCompanyIP(IContext context)
         => context.Request.IpAddress.StartsWith("10.0.0.");
 
-    
+
     [Expression]
     public string FilterSecrets(IContext context)
     {

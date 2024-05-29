@@ -13,8 +13,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class CacheStorePolicyBuilder : BaseBuilder<CacheStorePolicyBuilder>
 {
-    private IExpression<uint>? _duration;
-    private bool? _cacheResponse;
+    private readonly IExpression<uint>? _duration;
+    private readonly bool? _cacheResponse;
 
     public XElement Build()
     {

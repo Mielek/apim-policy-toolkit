@@ -80,7 +80,7 @@ public class ExpressionDefinitionAnalyzer : DiagnosticAnalyzer
         CheckParameters(context, method.ParameterList);
     }
 
-    
+
 
     private static void AnalyzeLambda(SyntaxNodeAnalysisContext context)
     {

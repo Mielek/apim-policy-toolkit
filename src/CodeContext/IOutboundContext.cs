@@ -7,6 +7,6 @@ public interface IOutboundContext
     void RemoveHeader(string name);
     void SetBody(string body);
     void Base();
-    
+
     IContext Context { get; }
 }

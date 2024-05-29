@@ -9,7 +9,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
 
 public class ExpressionBuilder<T>
 {
-    
+
     public static ExpressionBuilder<T> Builder => new();
 
     private IExpression<T>? _expression;

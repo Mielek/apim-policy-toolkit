@@ -13,11 +13,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class JsonpPolicyBuilder : BaseBuilder<JsonpPolicyBuilder>
 {
-    private IExpression<string>? _callbackParameterName;
+    private readonly IExpression<string>? _callbackParameterName;
 
     public XElement Build()
     {
-        if(_callbackParameterName == null) throw new PolicyValidationException("CallbackParameterName is required for Jsonp");
+        if (_callbackParameterName == null) throw new PolicyValidationException("CallbackParameterName is required for Jsonp");
         var element = this.CreateElement("jsonp");
         element.Add(_callbackParameterName.GetXAttribute("callback-parameter-name"));
         return element;

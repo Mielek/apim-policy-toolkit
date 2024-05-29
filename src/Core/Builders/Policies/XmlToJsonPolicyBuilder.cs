@@ -21,8 +21,8 @@ public partial class XmlToJsonPolicyBuilder : BaseBuilder<XmlToJsonPolicyBuilder
     public enum XmlToJsonApply { Always, ContentTypeXml }
 
     private IExpression<string>? _kind;
-    private IExpression<string>? _apply;
-    private IExpression<bool>? _considerAcceptHeader;
+    private readonly IExpression<string>? _apply;
+    private readonly IExpression<bool>? _considerAcceptHeader;
 
     public XmlToJsonPolicyBuilder Kind(XmlToJsonKind kind)
     {

@@ -13,16 +13,16 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class RateLimitByKeyPolicyBuilder : BaseBuilder<RateLimitByKeyPolicyBuilder>
 {
-    private uint? _calls;
-    private uint? _renewalPeriod;
-    private IExpression<string>? _counterKey;
-    private IExpression<bool>? _incrementCondition;
-    private uint? _incrementCount;
-    private string? _retryAfterHeaderName;
-    private string? _retryAfterVariableName;
-    private string? _remainingCallsHeaderName;
-    private string? _remainingCallsVariableName;
-    private string? _totalCallsHeaderName;
+    private readonly uint? _calls;
+    private readonly uint? _renewalPeriod;
+    private readonly IExpression<string>? _counterKey;
+    private readonly IExpression<bool>? _incrementCondition;
+    private readonly uint? _incrementCount;
+    private readonly string? _retryAfterHeaderName;
+    private readonly string? _retryAfterVariableName;
+    private readonly string? _remainingCallsHeaderName;
+    private readonly string? _remainingCallsVariableName;
+    private readonly string? _totalCallsHeaderName;
 
     public XElement Build()
     {

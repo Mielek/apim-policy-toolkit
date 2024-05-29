@@ -13,21 +13,21 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class ValidateJwtPolicyBuilder : BaseBuilder<ValidateJwtPolicyBuilder>
 {
-    private string? _headerName;
-    private string? _queryParameterName;
-    private string? _tokenValue;
-    private ushort? _failedValidationHttpCode;
-    private string? _failedValidationErrorMessage;
-    private bool? _requireExpirationTime;
-    private string? _requireScheme;
-    private bool? _requireSignedTokens;
-    private uint? _clockSkew;
-    private string? _outputTokenVariableName;
-    private string? _openIdConfigUrl;
-    private ImmutableList<string>.Builder? _issuerSigningKeys;
-    private ImmutableList<string>.Builder? _decryptionKeys;
-    private ImmutableList<IExpression<string>>.Builder? _audiences;
-    private ImmutableList<string>.Builder? _issuers;
+    private readonly string? _headerName;
+    private readonly string? _queryParameterName;
+    private readonly string? _tokenValue;
+    private readonly ushort? _failedValidationHttpCode;
+    private readonly string? _failedValidationErrorMessage;
+    private readonly bool? _requireExpirationTime;
+    private readonly string? _requireScheme;
+    private readonly bool? _requireSignedTokens;
+    private readonly uint? _clockSkew;
+    private readonly string? _outputTokenVariableName;
+    private readonly string? _openIdConfigUrl;
+    private readonly ImmutableList<string>.Builder? _issuerSigningKeys;
+    private readonly ImmutableList<string>.Builder? _decryptionKeys;
+    private readonly ImmutableList<IExpression<string>>.Builder? _audiences;
+    private readonly ImmutableList<string>.Builder? _issuers;
 
     [IgnoreBuilderField]
     private ImmutableList<XElement>.Builder? _requiredClaims;
@@ -115,10 +115,10 @@ public partial class ValidateJwtPolicyBuilder : BaseBuilder<ValidateJwtPolicyBui
 public partial class ValidateJwtClaimBuilder
 {
     public enum ClaimMatch { All, Any }
-    private string? _name;
-    private ImmutableList<string>.Builder? _values;
-    private ClaimMatch? _match;
-    private string? _separator;
+    private readonly string? _name;
+    private readonly ImmutableList<string>.Builder? _values;
+    private readonly ClaimMatch? _match;
+    private readonly string? _separator;
 
     public XElement Build()
     {

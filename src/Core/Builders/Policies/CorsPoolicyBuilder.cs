@@ -14,15 +14,15 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class CorsPolicyBuilder : BaseBuilder<CorsPolicyBuilder>
 {
-    private IExpression<bool>? _allowCredentials;
-    private IExpression<bool>? _terminateUnmatchedRequest;
-    private ImmutableList<string>.Builder? _allowedOrigins;
+    private readonly IExpression<bool>? _allowCredentials;
+    private readonly IExpression<bool>? _terminateUnmatchedRequest;
+    private readonly ImmutableList<string>.Builder? _allowedOrigins;
 
-    private IExpression<int>? _preflightResultMaxAge;
-    private ImmutableList<string>.Builder? _allowedMethods;
+    private readonly IExpression<int>? _preflightResultMaxAge;
+    private readonly ImmutableList<string>.Builder? _allowedMethods;
 
-    private ImmutableList<string>.Builder? _allowedHeaders;
-    private ImmutableList<string>.Builder? _exposeHeaders;
+    private readonly ImmutableList<string>.Builder? _allowedHeaders;
+    private readonly ImmutableList<string>.Builder? _exposeHeaders;
 
     public CorsPolicyBuilder AllowedOrigin(Uri uri)
         => AllowedOrigin(uri.ToString());

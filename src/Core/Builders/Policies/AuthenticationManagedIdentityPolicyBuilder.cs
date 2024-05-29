@@ -13,10 +13,10 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 public partial class
     AuthenticationManagedIdentityPolicyBuilder : BaseBuilder<AuthenticationManagedIdentityPolicyBuilder>
 {
-    private string? _resource;
-    private string? _clientId;
-    private string? _outputTokenVariableName;
-    private bool? _ignoreError;
+    private readonly string? _resource;
+    private readonly string? _clientId;
+    private readonly string? _outputTokenVariableName;
+    private readonly bool? _ignoreError;
 
     public XElement Build()
     {

@@ -37,8 +37,8 @@ public partial class ChoosePolicyBuilder<TSectionBuilder> : BaseBuilder<ChoosePo
 
     public XElement Build()
     {
-        if(_whens.Count == 0) throw new PolicyValidationException("At least one When is required for Choose");
-        
+        if (_whens.Count == 0) throw new PolicyValidationException("At least one When is required for Choose");
+
         var element = this.CreateElement("choose");
 
         element.Add(_whens.ToArray());
@@ -55,7 +55,7 @@ public partial class ChoosePolicyBuilder<TSectionBuilder> : BaseBuilder<ChoosePo
 [GenerateBuilderSetters]
 public partial class ChooseWhenBuilder<TSectionBuilder> where TSectionBuilder : PolicySectionBuilder, new()
 {
-    private IExpression<bool>? _condition;
+    private readonly IExpression<bool>? _condition;
 
     [IgnoreBuilderField]
     private ICollection<XElement>? _policies;

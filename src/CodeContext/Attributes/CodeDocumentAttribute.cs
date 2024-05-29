@@ -4,7 +4,7 @@
 public class CodeDocumentAttribute : Attribute
 {
     public string? Name { get; }
-    
+
     public CodeDocumentAttribute(string? name = null)
     {
         Name = name;

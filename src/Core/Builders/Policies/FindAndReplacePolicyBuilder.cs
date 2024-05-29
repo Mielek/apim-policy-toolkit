@@ -16,8 +16,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class FindAndReplacePolicyBuilder : BaseBuilder<FindAndReplacePolicyBuilder>
 {
-    private IExpression<string>? _from;
-    private IExpression<string>? _to;
+    private readonly IExpression<string>? _from;
+    private readonly IExpression<string>? _to;
 
     public XElement Build()
     {

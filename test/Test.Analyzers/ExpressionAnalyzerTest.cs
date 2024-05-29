@@ -8,10 +8,10 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
 using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
 

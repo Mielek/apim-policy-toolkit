@@ -14,7 +14,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class IncludeFragmentPolicyBuilder : BaseBuilder<IncludeFragmentPolicyBuilder>
 {
-    private string? _fragmentId;
+    private readonly string? _fragmentId;
     public XElement Build()
     {
         if (_fragmentId == null) throw new PolicyValidationException("FragmentId is required for IncludeFragment");

@@ -14,7 +14,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class SetMethodPolicyBuilder : BaseBuilder<SetMethodPolicyBuilder>
 {
-    private IExpression<string>? _method;
+    private readonly IExpression<string>? _method;
 
     public SetMethodPolicyBuilder Get()
     {

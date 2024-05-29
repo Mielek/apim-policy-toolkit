@@ -11,11 +11,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class ForwardRequestPolicyBuilder : BaseBuilder<ForwardRequestPolicyBuilder>
 {
-    private uint? _timeout;
-    private bool? _followRedirects;
-    private bool? _bufferRequestBody;
-    private bool? _bufferResponse;
-    private bool? _failOnErrorStatusCode;
+    private readonly uint? _timeout;
+    private readonly bool? _followRedirects;
+    private readonly bool? _bufferRequestBody;
+    private readonly bool? _bufferResponse;
+    private readonly bool? _failOnErrorStatusCode;
 
     public XElement Build()
     {
