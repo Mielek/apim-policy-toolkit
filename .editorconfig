@@ -67,7 +67,7 @@ dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
 dotnet_style_prefer_simplified_interpolation = true:suggestion
 
 # Field preferences
-dotnet_style_readonly_field = true:info
+dotnet_style_readonly_field = true:suggestion
 
 # Parameter preferences
 dotnet_code_quality_unused_parameters = all:suggestion
@@ -176,7 +176,7 @@ csharp_preserve_single_line_statements = true
 
 # TODO: Reenable before release
 # RS2008: Enable analyzer release tracking
-dotnet_diagnostic.RS2008.severity = info
+dotnet_diagnostic.RS2008.severity = suggestion
 
 [*.{cs,vb}]
 
@@ -367,7 +367,7 @@ dotnet_naming_style.s_camelcase.required_prefix = s_
 
 # TODO: Reenable before release
 # Default severity for analyzer diagnostics with category 'MicrosoftCodeAnalysisReleaseTracking'
-dotnet_analyzer_diagnostic.category-MicrosoftCodeAnalysisReleaseTracking.severity = info
+dotnet_analyzer_diagnostic.category-MicrosoftCodeAnalysisReleaseTracking.severity = suggestion
 dotnet_naming_style.s_camelcase.required_suffix = 
 dotnet_naming_style.s_camelcase.word_separator = 
 dotnet_naming_style.s_camelcase.capitalization = camel_case
