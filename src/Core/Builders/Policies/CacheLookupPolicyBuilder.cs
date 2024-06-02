@@ -35,7 +35,7 @@ public partial class CacheLookupPolicyBuilder : BaseBuilder<CacheLookupPolicyBui
         if (_varyByDeveloperGroup == null)
             throw new PolicyValidationException("Vary by developer group is required for CacheLookup");
 
-        var element = this.CreateElement("cache-lookup");
+        var element = CreateElement("cache-lookup");
 
         element.Add(new XAttribute("vary-by-developer", _varyByDeveloper));
         element.Add(new XAttribute("vary-by-developer-group", _varyByDeveloperGroup));

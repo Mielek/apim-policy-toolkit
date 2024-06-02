@@ -25,7 +25,7 @@ public partial class QuotaByKeyPolicyBuilder : BaseBuilder<QuotaByKeyPolicyBuild
         if (_counterKey == null) throw new PolicyValidationException("CounterKey is required for QuotaByKey");
         if (_renewalPeriod == null) throw new PolicyValidationException("RenewalPeriod is required for QuotaByKey");
 
-        var element = this.CreateElement("quota-by-key");
+        var element = CreateElement("quota-by-key");
         element.Add(_counterKey.GetXAttribute("counter-key"));
         element.Add(new XAttribute("renewal-period", _renewalPeriod));
 

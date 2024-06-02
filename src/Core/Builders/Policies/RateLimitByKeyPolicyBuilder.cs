@@ -30,7 +30,7 @@ public partial class RateLimitByKeyPolicyBuilder : BaseBuilder<RateLimitByKeyPol
         if (_renewalPeriod == null) throw new PolicyValidationException("RenewalPeriod is required for RateLimitByKey");
         if (_counterKey == null) throw new PolicyValidationException("CounterKey is required for RateLimitByKey");
 
-        var element = this.CreateElement("rate-limit-by-key");
+        var element = CreateElement("rate-limit-by-key");
         element.Add(new XAttribute("calls", _calls));
         element.Add(new XAttribute("renewal-period", _renewalPeriod));
         element.Add(_counterKey.GetXAttribute("counter-key"));

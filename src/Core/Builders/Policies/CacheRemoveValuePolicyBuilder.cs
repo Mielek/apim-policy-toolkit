@@ -26,7 +26,7 @@ public partial class CacheRemoveValuePolicyBuilder : BaseBuilder<CacheRemoveValu
         if (_key == null)
             throw new PolicyValidationException("Key is required for CacheRemoveValue");
 
-        var element = this.CreateElement("cache-remove-value");
+        var element = CreateElement("cache-remove-value");
 
         element.Add(_key.GetXAttribute("key"));
 

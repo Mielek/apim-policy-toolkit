@@ -19,7 +19,7 @@ public partial class InvokeDaprBindingPolicyBuilder : BaseBuilder<InvokeDaprBind
 
     public XElement Build()
     {
-        var element = this.CreateElement("invoke-dapr-binding");
+        var element = CreateElement("invoke-dapr-binding");
         return element;
     }
 }

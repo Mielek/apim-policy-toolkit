@@ -24,7 +24,7 @@ public partial class FindAndReplacePolicyBuilder : BaseBuilder<FindAndReplacePol
         if (_from == null) throw new PolicyValidationException("From is required for FindAndReplace");
         if (_to == null) throw new PolicyValidationException("To is required for FindAndReplace");
 
-        var element = this.CreateElement("find-and-replace");
+        var element = CreateElement("find-and-replace");
 
         element.Add(_from.GetXAttribute("from"));
         element.Add(_to.GetXAttribute("to"));

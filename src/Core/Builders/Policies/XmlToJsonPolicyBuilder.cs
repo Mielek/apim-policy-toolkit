@@ -41,7 +41,7 @@ public partial class XmlToJsonPolicyBuilder : BaseBuilder<XmlToJsonPolicyBuilder
         if (_kind == null) throw new PolicyValidationException("Kind is required for XmlToJson");
         if (_apply == null) throw new PolicyValidationException("Apply is required for XmlToJson");
 
-        var element = this.CreateElement("xml-to-json");
+        var element = CreateElement("xml-to-json");
 
         element.Add(_kind.GetXAttribute("kind"));
         element.Add(_apply.GetXAttribute("apply"));

@@ -40,7 +40,7 @@ public partial class ValidateAzureAdTokenPolicyBuilder : BaseBuilder<ValidateAzu
     {
         if (_clientApplicationIds == null) throw new PolicyValidationException("ClientApplicationIds is required for ValidateAzureAdToken");
 
-        var element = this.CreateElement("validate-azure-ad-token");
+        var element = CreateElement("validate-azure-ad-token");
 
         if (_tenantId != null)
         {

@@ -49,7 +49,7 @@ public partial class SetMethodPolicyBuilder : BaseBuilder<SetMethodPolicyBuilder
     public XElement Build()
     {
         if (_method == null) throw new PolicyValidationException("Method is required for SetMethod");
-        var element = this.CreateElement("set-method");
+        var element = CreateElement("set-method");
         element.Add(_method.GetXText());
         return element;
     }

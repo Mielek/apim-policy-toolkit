@@ -42,7 +42,7 @@ public partial class ValidateJwtPolicyBuilder : BaseBuilder<ValidateJwtPolicyBui
 
     public XElement Build()
     {
-        var element = this.CreateElement("validate-jwt");
+        var element = CreateElement("validate-jwt");
 
         if (_headerName != null)
         {

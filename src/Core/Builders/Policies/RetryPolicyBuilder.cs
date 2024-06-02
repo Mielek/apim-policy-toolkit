@@ -40,7 +40,7 @@ public partial class RetryPolicyBuilder<TSectionBuilder> : BaseBuilder<RetryPoli
         if (_interval == null) throw new PolicyValidationException("Interval is required for Retry");
         if (_policies == null) throw new PolicyValidationException("Policies is required for Retry");
 
-        var element = this.CreateElement("retry");
+        var element = CreateElement("retry");
         element.Add(_condition.GetXAttribute("condition"));
         element.Add(new XAttribute("count", _count));
         element.Add(new XAttribute("interval", _interval));

@@ -38,7 +38,7 @@ public partial class TracePolicyBuilder : BaseBuilder<TracePolicyBuilder>
         if (_source == null) throw new PolicyValidationException("Source is required for Trace");
         if (_message == null) throw new PolicyValidationException("Message is required for Trace");
 
-        var element = this.CreateElement("trace");
+        var element = CreateElement("trace");
 
         element.Add(new XAttribute("source", _source));
         if (_severity != null)

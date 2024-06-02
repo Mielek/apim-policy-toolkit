@@ -18,7 +18,7 @@ public partial class IncludeFragmentPolicyBuilder : BaseBuilder<IncludeFragmentP
     public XElement Build()
     {
         if (_fragmentId == null) throw new PolicyValidationException("FragmentId is required for IncludeFragment");
-        var element = this.CreateElement("include-fragment");
+        var element = CreateElement("include-fragment");
         element.Add(new XAttribute("fragment-id", _fragmentId));
         return element;
     }

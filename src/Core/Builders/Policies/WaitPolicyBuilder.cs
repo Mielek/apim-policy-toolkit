@@ -34,7 +34,7 @@ public partial class WaitPolicyBuilder<TSectionBuilder> : BaseBuilder<WaitPolicy
     {
         if (_policies == null) throw new PolicyValidationException("Policies are required for Wait");
 
-        var element = this.CreateElement("wait");
+        var element = CreateElement("wait");
         if (_for != null)
         {
             element.Add(new XAttribute("for", TranslateFor(_for)));

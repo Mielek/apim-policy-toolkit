@@ -24,7 +24,7 @@ public partial class SetVariablePolicyBuilder : BaseBuilder<SetVariablePolicyBui
         if (_name == null) throw new PolicyValidationException("Name is required for SetVariable");
         if (_value == null) throw new PolicyValidationException("Value is required for SetVariable");
 
-        var element = this.CreateElement("set-variable");
+        var element = CreateElement("set-variable");
         element.Add(
             new XAttribute("name", _name),
             _value.GetXAttribute("value")

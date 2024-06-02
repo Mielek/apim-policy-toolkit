@@ -23,7 +23,7 @@ public partial class
         if (_resource == null)
             throw new PolicyValidationException("Resource is required for AuthenticationManagedIdentity");
 
-        var element = this.CreateElement("authentication-managed-identity");
+        var element = CreateElement("authentication-managed-identity");
 
         element.Add(new XAttribute("resource", _resource));
 

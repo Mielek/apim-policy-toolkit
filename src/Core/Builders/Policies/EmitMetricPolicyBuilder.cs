@@ -35,7 +35,7 @@ public partial class EmitMetricPolicyBuilder : BaseBuilder<EmitMetricPolicyBuild
     {
         if (_name == null) throw new PolicyValidationException("Name is required for EmitMetric");
 
-        var element = this.CreateElement("emit-metric");
+        var element = CreateElement("emit-metric");
 
         element.Add(new XAttribute("name", _name));
 

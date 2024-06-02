@@ -20,7 +20,7 @@ public partial class AuthenticationBasicPolicyBuilder : BaseBuilder<Authenticati
         if (_username == null) throw new PolicyValidationException("Username is required for AuthenticationBasic");
         if (_password == null) throw new PolicyValidationException("Password is required for AuthenticationBasic");
 
-        var element = this.CreateElement("authentication-basic");
+        var element = CreateElement("authentication-basic");
         element.Add(new XAttribute("username", _username));
         element.Add(new XAttribute("password", _password));
         return element;

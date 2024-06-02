@@ -29,7 +29,7 @@ public partial class CacheStoreValuePolicyBuilder : BaseBuilder<CacheRemoveValue
         if (_value == null) throw new PolicyValidationException("Value is required for CacheStoreValue");
         if (_duration == null) throw new PolicyValidationException("Duration is required for CacheStoreValue");
 
-        var element = this.CreateElement("cache-store-value");
+        var element = CreateElement("cache-store-value");
 
         element.Add(new XAttribute("key", _key));
         element.Add(_value.GetXAttribute("value"));

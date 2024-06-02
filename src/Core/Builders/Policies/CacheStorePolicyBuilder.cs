@@ -21,7 +21,7 @@ public partial class CacheStorePolicyBuilder : BaseBuilder<CacheStorePolicyBuild
         if (_duration == null)
             throw new PolicyValidationException("Duration is required for CacheStore");
 
-        var element = this.CreateElement("cache-store");
+        var element = CreateElement("cache-store");
 
         element.Add(_duration.GetXAttribute("duration"));
 

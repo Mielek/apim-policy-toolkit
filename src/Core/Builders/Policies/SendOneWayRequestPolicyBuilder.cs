@@ -64,7 +64,7 @@ public partial class SendOneWayRequestPolicyBuilder : BaseBuilder<SendOneWayRequ
             if (_setMethod == null) throw new PolicyValidationException("SetMethod is required for SendOneWayRequest");
         }
 
-        var element = this.CreateElement("send-one-way-request");
+        var element = CreateElement("send-one-way-request");
 
         if (_mode != null)
         {

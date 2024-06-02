@@ -35,7 +35,7 @@ public partial class ValidateClientCertificatePolicyBuilder : BaseBuilder<Valida
     {
         if (_identities == null || _identities.Count == 0) throw new PolicyValidationException("At least one identity is required for ValidateClientCertificate");
 
-        var element = this.CreateElement("validate-client-certificate");
+        var element = CreateElement("validate-client-certificate");
         if (_validateRevocation != null)
         {
             element.Add(new XAttribute("validate-revocation", _validateRevocation));

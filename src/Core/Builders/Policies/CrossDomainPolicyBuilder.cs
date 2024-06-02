@@ -26,7 +26,7 @@ public partial class CrossDomainPolicyBuilder : BaseBuilder<CrossDomainPolicyBui
     {
         if (_policy == null || _policy.Count == 0) throw new PolicyValidationException("At least one Policy is required for CrossDomain");
 
-        var element = this.CreateElement("cross-domain");
+        var element = CreateElement("cross-domain");
         element.Add(_policy.ToArray());
         return element;
     }

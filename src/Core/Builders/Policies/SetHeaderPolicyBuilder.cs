@@ -41,7 +41,7 @@ public partial class SetHeaderPolicyBuilder : BaseBuilder<SetHeaderPolicyBuilder
     {
         if (_name == null) throw new PolicyValidationException("SetHeader requires name");
 
-        var element = this.CreateElement("set-header");
+        var element = CreateElement("set-header");
         element.Add(_name.GetXAttribute("name"));
         if (_existsAction != null)
         {

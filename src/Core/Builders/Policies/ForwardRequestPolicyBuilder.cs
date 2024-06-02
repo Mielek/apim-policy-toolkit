@@ -19,7 +19,7 @@ public partial class ForwardRequestPolicyBuilder : BaseBuilder<ForwardRequestPol
 
     public XElement Build()
     {
-        var element = this.CreateElement("forward-request");
+        var element = CreateElement("forward-request");
 
         if (_timeout != null)
         {

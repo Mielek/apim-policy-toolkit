@@ -32,7 +32,7 @@ public partial class QuotaPolicyBuilder : BaseBuilder<QuotaPolicyBuilder>
     {
         if (!_renewalPeriod.HasValue) throw new PolicyValidationException("RenewalPeriod is required for Quota");
 
-        var element = this.CreateElement("quota");
+        var element = CreateElement("quota");
         element.Add(new XAttribute("renewal-period", _renewalPeriod));
 
         if (_calls != null)

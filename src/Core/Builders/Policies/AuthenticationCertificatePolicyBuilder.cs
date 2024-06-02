@@ -27,7 +27,7 @@ public partial class AuthenticationCertificatePolicyBuilder : BaseBuilder<Authen
         if (_password != null && _body == null)
             throw new PolicyValidationException("Password is only valid with body for AuthenticationCertificate");
 
-        var element = this.CreateElement("authentication-certificate");
+        var element = CreateElement("authentication-certificate");
 
         if (_thumbprint != null)
         {

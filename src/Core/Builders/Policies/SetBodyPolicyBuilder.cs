@@ -49,7 +49,7 @@ public partial class SetBodyPolicyBuilder : BaseBuilder<SetBodyPolicyBuilder>
     {
         if (_body == null) throw new PolicyValidationException("Body is required for SetBody");
 
-        var element = this.CreateElement("set-body");
+        var element = CreateElement("set-body");
         if (_template != null)
         {
             element.Add(_template.GetXAttribute("template"));

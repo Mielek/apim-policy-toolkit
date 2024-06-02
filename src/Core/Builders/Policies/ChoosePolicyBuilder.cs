@@ -39,7 +39,7 @@ public partial class ChoosePolicyBuilder<TSectionBuilder> : BaseBuilder<ChoosePo
     {
         if (_whens.Count == 0) throw new PolicyValidationException("At least one When is required for Choose");
 
-        var element = this.CreateElement("choose");
+        var element = CreateElement("choose");
 
         element.Add(_whens.ToArray());
 

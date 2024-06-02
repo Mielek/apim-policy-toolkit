@@ -20,7 +20,7 @@ public partial class ProxyPolicyBuilder : BaseBuilder<ProxyPolicyBuilder>
     {
         if (_url == null) throw new PolicyValidationException("Url is required for Proxy");
 
-        var element = this.CreateElement("proxy");
+        var element = CreateElement("proxy");
 
         element.Add(new XAttribute("url", _url));
 

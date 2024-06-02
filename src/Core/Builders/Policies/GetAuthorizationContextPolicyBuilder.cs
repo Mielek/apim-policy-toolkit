@@ -28,7 +28,7 @@ public partial class GetAuthorizationContextPolicyBuilder : BaseBuilder<GetAutho
         if (_authorizationId == null) throw new PolicyValidationException("AuthorizationId is required for GetAuthorizationContext");
         if (_contextVariableName == null) throw new PolicyValidationException("ContextVariableName is required for GetAuthorizationContext");
 
-        var element = this.CreateElement("get-authorization-context");
+        var element = CreateElement("get-authorization-context");
 
         element.Add(_providerId.GetXAttribute("provider-id"));
         element.Add(_authorizationId.GetXAttribute("authorization-id"));

@@ -47,7 +47,7 @@ public partial class ReturnResponsePolicyBuilder : BaseBuilder<ReturnResponsePol
 
     public XElement Build()
     {
-        var element = this.CreateElement("return-response");
+        var element = CreateElement("return-response");
         if (_responseVariableName != null)
         {
             element.Add(new XAttribute("response-variable-name", _responseVariableName));

@@ -18,7 +18,7 @@ public partial class JsonpPolicyBuilder : BaseBuilder<JsonpPolicyBuilder>
     public XElement Build()
     {
         if (_callbackParameterName == null) throw new PolicyValidationException("CallbackParameterName is required for Jsonp");
-        var element = this.CreateElement("jsonp");
+        var element = CreateElement("jsonp");
         element.Add(_callbackParameterName.GetXAttribute("callback-parameter-name"));
         return element;
     }

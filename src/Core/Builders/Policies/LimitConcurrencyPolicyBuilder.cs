@@ -30,7 +30,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
             if (_maxCount == null) throw new PolicyValidationException("MaxCount is required for LimitConcurrency");
             if (_policies == null) throw new PolicyValidationException("Policies is required for LimitConcurrency");
 
-            var element = this.CreateElement("limit-concurrency");
+            var element = CreateElement("limit-concurrency");
             element.Add(_key.GetXAttribute("key"));
             element.Add(new XAttribute("max-count", _maxCount));
             element.Add(_policies.ToArray());

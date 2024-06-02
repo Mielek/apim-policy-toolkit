@@ -35,7 +35,7 @@ public partial class CorsPolicyBuilder : BaseBuilder<CorsPolicyBuilder>
         if (_allowedOrigins == null) throw new PolicyValidationException("At least one allowed-origin is required for Cors");
         if (_allowedHeaders == null) throw new PolicyValidationException("At least one allowed-header is required for Cors");
 
-        var element = this.CreateElement("cors");
+        var element = CreateElement("cors");
 
         if (_allowCredentials != null)
         {

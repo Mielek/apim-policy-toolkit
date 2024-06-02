@@ -28,7 +28,7 @@ public partial class CacheLookupValuePolicyBuilder : BaseBuilder<CacheLookupValu
         if (_variableName == null)
             throw new PolicyValidationException("Variable name is required for CacheLookupValue");
 
-        var element = this.CreateElement("cache-lookup-value");
+        var element = CreateElement("cache-lookup-value");
         element.Add(new XAttribute("variable-name", _variableName));
         if (_catchingType != null)
         {

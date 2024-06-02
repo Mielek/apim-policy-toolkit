@@ -67,7 +67,7 @@ public partial class SendRequestPolicyBuilder : BaseBuilder<SendRequestPolicyBui
             if (_setMethod == null) throw new PolicyValidationException("SetMethod is required for SendRequest");
         }
 
-        var element = this.CreateElement("send-request");
+        var element = CreateElement("send-request");
 
         if (_mode != null)
         {

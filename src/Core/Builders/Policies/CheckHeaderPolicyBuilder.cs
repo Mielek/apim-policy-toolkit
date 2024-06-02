@@ -33,7 +33,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
             if (_ignoreCase == null) throw new NullReferenceException("CheckHeader requires ignore-case");
             if (_values == null) throw new NullReferenceException("CheckHeader requires values");
 
-            var element = this.CreateElement("check-header");
+            var element = CreateElement("check-header");
 
             element.Add(_name.GetXAttribute("name"));
             element.Add(_failedCheckHttpCode.GetXAttribute("failed-check-httpcode"));

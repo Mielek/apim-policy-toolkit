@@ -28,7 +28,7 @@ public partial class SetStatusPolicyBuilder : BaseBuilder<SetStatusPolicyBuilder
     {
         if (_code == null) throw new PolicyValidationException("Code is required for SetStatus");
 
-        var element = this.CreateElement("set-status");
+        var element = CreateElement("set-status");
         element.Add(_code.GetXAttribute("code"));
         if (_reason != null)
         {

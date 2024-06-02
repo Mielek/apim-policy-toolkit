@@ -18,7 +18,7 @@ public partial class MockResponsePolicyBuilder : BaseBuilder<MockResponsePolicyB
 
     public XElement Build()
     {
-        var element = this.CreateElement("mock-response");
+        var element = CreateElement("mock-response");
 
         if (_statusCode != null)
         {

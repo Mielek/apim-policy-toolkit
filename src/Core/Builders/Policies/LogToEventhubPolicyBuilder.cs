@@ -26,7 +26,7 @@ public partial class LogToEventhubPolicyBuilder : BaseBuilder<LogToEventhubPolic
         if (_loggerId == null) throw new PolicyValidationException("LoggerId is required for LogToEventhub");
         if (_value == null) throw new PolicyValidationException("Value is required for LogToEventhub");
 
-        var element = this.CreateElement("log-to-eventhub");
+        var element = CreateElement("log-to-eventhub");
         element.Add(new XAttribute("logger-id", _loggerId));
 
         if (_partitionId != null)
