@@ -1,4 +1,4 @@
-﻿using Contoso.Apis;
+using Contoso.Apis;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
 

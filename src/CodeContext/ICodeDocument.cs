@@ -1,4 +1,4 @@
-﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
 
 public interface ICodeDocument
 {

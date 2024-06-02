@@ -1,4 +1,4 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;

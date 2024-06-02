@@ -1,4 +1,4 @@
-﻿using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext.Attributes;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
 using Newtonsoft.Json.Linq;

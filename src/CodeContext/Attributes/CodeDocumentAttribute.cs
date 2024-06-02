@@ -1,4 +1,4 @@
-﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext.Attributes;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 public class CodeDocumentAttribute : Attribute

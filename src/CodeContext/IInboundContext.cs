@@ -1,4 +1,4 @@
-﻿using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
 
