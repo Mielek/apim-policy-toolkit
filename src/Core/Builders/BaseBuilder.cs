@@ -4,7 +4,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
 
 public abstract class BaseBuilder<T> where T : BaseBuilder<T>
 {
-    private string? _id;
+    protected string? _id;
 
     public T Id(string id)
     {

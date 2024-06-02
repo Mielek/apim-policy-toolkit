@@ -173,6 +173,11 @@ csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
 
 #### Naming styles ####
+
+# TODO: Reenable before release
+# RS2008: Enable analyzer release tracking
+dotnet_diagnostic.RS2008.severity = info
+
 [*.{cs,vb}]
 
 # Naming rules
@@ -359,6 +364,10 @@ dotnet_naming_style.camelcase.word_separator =
 dotnet_naming_style.camelcase.capitalization = camel_case
 
 dotnet_naming_style.s_camelcase.required_prefix = s_
+
+# TODO: Reenable before release
+# Default severity for analyzer diagnostics with category 'MicrosoftCodeAnalysisReleaseTracking'
+dotnet_analyzer_diagnostic.category-MicrosoftCodeAnalysisReleaseTracking.severity = info
 dotnet_naming_style.s_camelcase.required_suffix = 
 dotnet_naming_style.s_camelcase.word_separator = 
 dotnet_naming_style.s_camelcase.capitalization = camel_case

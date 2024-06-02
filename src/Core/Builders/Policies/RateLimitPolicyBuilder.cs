@@ -87,14 +87,7 @@ public abstract class RateLimitBaseBuilder<T> : BaseBuilder<RateLimitBaseBuilder
 
 public abstract class RateLimitWithIdentificationBuilder<T> : RateLimitBaseBuilder<T> where T : RateLimitWithIdentificationBuilder<T>
 {
-    protected string? _id = null;
     protected string? _name = null;
-
-    public T Id(string value)
-    {
-        _id = value;
-        return (T)this;
-    }
 
     public T Name(string value)
     {
@@ -127,7 +120,7 @@ public class RateLimitApiOperationBuilder : RateLimitWithIdentificationBuilder<R
 {
     public XElement Build()
     {
-        var element = this.CreateElement("operation");
+        var element = CreateElement("operation");
         element.Add(BuildBasic());
         return element;
     }
@@ -147,7 +140,7 @@ public class RateLimitApiBuilder : RateLimitWithIdentificationBuilder<RateLimitA
 
     public XElement Build()
     {
-        var element = this.CreateElement("api");
+        var element = CreateElement("api");
         element.Add(BuildBasic());
         if (_operations != null && _operations.Count > 0)
         {
@@ -176,7 +169,7 @@ public class RateLimitPolicyBuilder : RateLimitBaseBuilder<RateLimitPolicyBuilde
 
     public XElement Build()
     {
-        var element = this.CreateElement("rate-limit");
+        var element = CreateElement("rate-limit");
         element.Add(BuildBasic());
         if (_apis != null && _apis.Count > 0)
         {

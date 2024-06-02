@@ -39,9 +39,9 @@ public partial class IpFilterPolicyBuilder : BaseBuilder<IpFilterPolicyBuilder>
     public XElement Build()
     {
         if (_action == null) throw new PolicyValidationException("Action is required for IpFilter");
-        if (_values != null && _values.Count == 0) throw new PolicyValidationException("At least one Address or AddressRange is required for IpFilter");
+        if (_values == null || _values.Count == 0) throw new PolicyValidationException("At least one Address or AddressRange is required for IpFilter");
 
-        var element = this.CreateElement("ip-filter");
+        var element = CreateElement("ip-filter");
 
         element.Add(new XAttribute("action", TranslateAction(_action)));
 
