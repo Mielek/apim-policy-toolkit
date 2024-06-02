@@ -13,26 +13,24 @@ public class ApiOperationPolicy : ICodeDocument
     public void Inbound(IInboundContext c)
     {
         c.Base();
-        if (IsCompanyIP(c.Context))
+        if(IsFromCompanyIp(c.Context))
         {
-            c.SetHeader("X-Company", "true");
             c.AuthenticationBasic("{{username}}", "{{password}}");
         }
         else
         {
-            var msiToken = c.AuthenticationManagedIdentity("resource-id");
-            c.SetHeader("Authorization", $"Bearer {msiToken}");
+            var testToken = c.AuthenticationManagedIdentity("test");
+            c.SetHeader("Authorization", $"Bearer {testToken}");
         }
     }
 
     public void Outbound(IOutboundContext c)
     {
-        c.RemoveHeader("Company-stats");
+        c.Base();
         c.SetBody(FilterSecrets(c.Context));
     }
 
-    [Expression]
-    public bool IsCompanyIP(IContext context)
+    public bool IsFromCompanyIp(IContext context)
         => context.Request.IpAddress.StartsWith("10.0.0.");
 
 

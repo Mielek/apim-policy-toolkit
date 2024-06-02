@@ -33,7 +33,11 @@ public class Test
                         c.SetHeader("X-Company", "true");
                         c.AuthenticationBasic("{{username}}", "{{password}}");
                     }
-                    else
+                    else if(IsInternalIp(c.Context))
+                    {
+                        c.AuthenticationBasic("{{username}}", "{{password}}");
+                    }
+                    else 
                     {
                         var testToken = c.AuthenticationManagedIdentity("test");
                         c.SetHeader("Authorization", $"Bearer {testToken}");
@@ -48,6 +52,8 @@ public class Test
                 }
                 
                 bool IsFromCompanyIp(IContext context) => context.Request.IpAddress.StartsWith("10.0.0.");
+                
+                bool IsInternalIp(IContext context) => context.Request.IpAddress.StartsWith("10.1.0.");
             
                 string FilterRequest(IContext context)
                 {

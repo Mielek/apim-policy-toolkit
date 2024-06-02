@@ -6,38 +6,55 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Syntax;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 public class CSharpPolicyCompiler
 {
-    private readonly ClassDeclarationSyntax document;
+    private ClassDeclarationSyntax _document;
+
+    private BlockCompiler _blockCompiler;
 
     public CSharpPolicyCompiler(ClassDeclarationSyntax document)
     {
-        this.document = document;
+        _document = document;
+        var invStatement = new InvocationExpressionCompiler([
+            new BaseCompiler(),
+            new SetHeaderCompiler(),
+            new SetBodyCompiler(),
+            new AuthenticationBasicCompiler()
+        ]);
+        var loc = new LocalDeclarationStatementCompiler([
+            new AuthenticationManageIdentityCompiler()
+        ]);
+        _blockCompiler = new([
+            invStatement,
+            loc
+        ]);
+        _blockCompiler.AddCompiler(new IfStatementCompiler(_blockCompiler));
     }
 
     public XElement Compile()
     {
-        var methods = document.DescendantNodes()
+        var methods = _document.DescendantNodes()
             .OfType<MethodDeclarationSyntax>();
         var policyDocument = new XElement("policies");
 
         foreach (var method in methods)
         {
-            switch (method.Identifier.ValueText)
+            var sectionName = method.Identifier.ValueText switch
             {
-                case nameof(ICodeDocument.Inbound):
-                    var inbound = CompileSection("inbound", method.Body);
-                    policyDocument.Add(inbound);
-                    break;
-                case nameof(ICodeDocument.Outbound):
-                    var outbound = CompileSection("outbound", method.Body);
-                    policyDocument.Add(outbound);
-                    break;
+                nameof(ICodeDocument.Inbound) => "inbound",
+                nameof(ICodeDocument.Outbound) => "outbound",
+                nameof(ICodeDocument.Backend) => "inbound",
+                nameof(ICodeDocument.OnError) => "on-error",
+                _ => throw new InvalidOperationException("Invalid section")
+            };
 
-            }
+            var section = CompileSection(sectionName, method.Body);
+            policyDocument.Add(section);
         }
 
         return policyDocument;
@@ -47,21 +64,23 @@ public class CSharpPolicyCompiler
     private XElement CompileSection(string section, BlockSyntax block)
     {
         var sectionElement = new XElement(section);
-        foreach (var statement in block.Statements)
-        {
-            switch (statement)
-            {
-                case LocalDeclarationStatementSyntax syntax:
-                    ProcessLocalDeclaration(syntax, sectionElement);
-                    break;
-                case ExpressionStatementSyntax syntax:
-                    ProcessExpression(syntax, sectionElement);
-                    break;
-                case IfStatementSyntax syntax:
-                    ProcessIf(syntax, sectionElement);
-                    break;
-            }
-        }
+        var context = new CompilationContext(_document, sectionElement);
+        _blockCompiler.Compile(context, block);
+        // foreach (var statement in block.Statements)
+        // {
+        //     switch (statement)
+        //     {
+        //         case LocalDeclarationStatementSyntax syntax:
+        //             ProcessLocalDeclaration(syntax, sectionElement);
+        //             break;
+        //         case ExpressionStatementSyntax syntax:
+        //             ProcessExpression(syntax, sectionElement);
+        //             break;
+        //         case IfStatementSyntax syntax:
+        //             ProcessIf(syntax, sectionElement);
+        //             break;
+        //     }
+        // }
 
         return sectionElement;
     }
@@ -71,14 +90,23 @@ public class CSharpPolicyCompiler
         var choose = new XElement("choose");
         sectionElement.Add(choose);
 
-        var whenSection = CompileSection("when", syntax.Statement as BlockSyntax);
-        choose.Add(whenSection);
-
-        whenSection.Add(new XAttribute("condition", FindCode(syntax.Condition as InvocationExpressionSyntax)));
-
-        if (syntax.Else != null)
+        IfStatementSyntax? nextIf = syntax;
+        IfStatementSyntax currentIf;
+        do
         {
-            var otherwiseSection = CompileSection("otherwise", syntax.Else.Statement as BlockSyntax);
+            currentIf = nextIf;
+            var whenSection = CompileSection("when", currentIf.Statement as BlockSyntax);
+            choose.Add(whenSection);
+
+            whenSection.Add(new XAttribute("condition", FindCode(currentIf.Condition as InvocationExpressionSyntax)));
+
+            nextIf = currentIf.Else?.Statement as IfStatementSyntax;
+        } while (nextIf != null);
+        
+        
+        if(currentIf.Else != null)
+        {
+            var otherwiseSection = CompileSection("otherwise", currentIf.Else.Statement as BlockSyntax);
             choose.Add(otherwiseSection);
         }
     }
@@ -146,6 +174,7 @@ public class CSharpPolicyCompiler
         var headerValue = ProcessParameter(invocation.ArgumentList.Arguments[1].Expression);
         section.Add(new SetHeaderPolicyBuilder()
             .Name(headerName)
+            .ExistsAction(SetHeaderPolicyBuilder.ExistsActionType.Override)
             .Value(headerValue)
             .Build());
     }
@@ -195,7 +224,7 @@ public class CSharpPolicyCompiler
     private string FindCode(InvocationExpressionSyntax syntax)
     {
         var methodIdentifier = (syntax.Expression as IdentifierNameSyntax).Identifier.ValueText;
-        var expressionMethod = document.DescendantNodes()
+        var expressionMethod = _document.DescendantNodes()
             .OfType<MethodDeclarationSyntax>()
             .First(m => m.Identifier.ValueText == methodIdentifier);
 

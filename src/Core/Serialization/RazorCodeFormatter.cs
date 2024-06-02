@@ -7,9 +7,9 @@ using Microsoft.CodeAnalysis.CSharp;
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
 public class RazorCodeFormatter
 {
-    private static readonly Regex CSharpCodeStart = new Regex("(@\\()|(@{)", RegexOptions.Compiled);
-    private readonly string code;
-    private readonly StringBuilder result = new StringBuilder();
+    private static Regex CSharpCodeStart = new Regex("(@\\()|(@{)", RegexOptions.Compiled);
+    private string code;
+    private StringBuilder result = new StringBuilder();
 
     public RazorCodeFormatter(string code)
     {

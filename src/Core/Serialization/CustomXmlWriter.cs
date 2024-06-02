@@ -7,7 +7,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
 
 public class CustomXmlWriter : IDisposable
 {
-    private readonly XmlWriter _xmlWriter;
+    private XmlWriter _xmlWriter;
 
     public static CustomXmlWriter Create(StringBuilder stringBuilder, XmlWriterSettings options) => new CustomXmlWriter(XmlWriter.Create(stringBuilder, options));
     public static CustomXmlWriter Create(string outputFileName, XmlWriterSettings options) => new CustomXmlWriter(XmlWriter.Create(outputFileName, options));

@@ -25,11 +25,17 @@ public class ApiOperationPolicyTest
 
         var newBody = new ApiOperationPolicy().FilterSecrets(context);
 
-        Assert.IsTrue(JObject.DeepEquals(JObject.Parse(newBody), JObject.Parse("""
-                                                                               {
-                                                                                   "title": "Software Engineer",
-                                                                                   "name": "John Doe"
-                                                                               }
-                                                                               """)));
+        var expected = """
+                       {
+                           "title": "Software Engineer",
+                           "name": "John Doe"
+                       }
+                       """;
+        Assert.IsTrue(
+            JObject.DeepEquals(
+                JObject.Parse(newBody),
+                JObject.Parse(expected)
+            )
+        );
     }
 }
