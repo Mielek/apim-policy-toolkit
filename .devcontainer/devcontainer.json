@@ -12,8 +12,7 @@
             "extensions": [
                 "ms-dotnettools.csdevkit",
                 "EditorConfig.EditorConfig",
-                "streetsidesoftware.code-spell-checker",
-                "xyz.local-history"
+                "streetsidesoftware.code-spell-checker"
             ]
         }
     }
