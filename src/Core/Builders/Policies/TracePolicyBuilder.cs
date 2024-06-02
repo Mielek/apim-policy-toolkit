@@ -18,9 +18,9 @@ public partial class TracePolicyBuilder : BaseBuilder<TracePolicyBuilder>
 {
     public enum TraceSeverity { Verbose, Information, Error }
 
-    private readonly string? _source;
-    private readonly IExpression<string>? _message;
-    private readonly TraceSeverity? _severity;
+    private string? _source;
+    private IExpression<string>? _message;
+    private TraceSeverity? _severity;
 
     [IgnoreBuilderField]
     private ImmutableList<XElement>.Builder? _metadatas;
@@ -68,8 +68,8 @@ public partial class TracePolicyBuilder : BaseBuilder<TracePolicyBuilder>
 [GenerateBuilderSetters]
 public partial class TraceMetadataBuilder
 {
-    private readonly string? _name;
-    private readonly IExpression<string>? _value;
+    private string? _name;
+    private IExpression<string>? _value;
 
     public XElement Build()
     {

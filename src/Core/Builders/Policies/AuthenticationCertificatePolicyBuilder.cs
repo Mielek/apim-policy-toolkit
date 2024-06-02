@@ -13,10 +13,10 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class AuthenticationCertificatePolicyBuilder : BaseBuilder<AuthenticationBasicPolicyBuilder>
 {
-    private readonly string? _thumbprint;
-    private readonly string? _certificateId;
-    private readonly IExpression<string>? _body;
-    private readonly string? _password;
+    private string? _thumbprint;
+    private string? _certificateId;
+    private IExpression<string>? _body;
+    private string? _password;
 
     public XElement Build()
     {

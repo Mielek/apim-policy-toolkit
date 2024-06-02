@@ -18,9 +18,9 @@ public partial class SetBodyPolicyBuilder : BaseBuilder<SetBodyPolicyBuilder>
     public enum BodyTemplate { Liquid }
     public enum XsiNilType { Blank, Null }
 
-    private readonly IExpression<string>? _body;
-    private readonly IExpression<string>? _template;
-    private readonly IExpression<string>? _xsiNil;
+    private IExpression<string>? _body;
+    private IExpression<string>? _template;
+    private IExpression<string>? _xsiNil;
 
     public SetBodyPolicyBuilder Template(BodyTemplate template)
     {

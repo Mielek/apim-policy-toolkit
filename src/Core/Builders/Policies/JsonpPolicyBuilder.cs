@@ -13,7 +13,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class JsonpPolicyBuilder : BaseBuilder<JsonpPolicyBuilder>
 {
-    private readonly IExpression<string>? _callbackParameterName;
+    private IExpression<string>? _callbackParameterName;
 
     public XElement Build()
     {

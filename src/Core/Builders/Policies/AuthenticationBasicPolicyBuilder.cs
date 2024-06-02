@@ -12,8 +12,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class AuthenticationBasicPolicyBuilder : BaseBuilder<AuthenticationBasicPolicyBuilder>
 {
-    private readonly string? _username;
-    private readonly string? _password;
+    private string? _username;
+    private string? _password;
 
     public XElement Build()
     {

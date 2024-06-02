@@ -14,16 +14,16 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class ValidateAzureAdTokenPolicyBuilder : BaseBuilder<ValidateAzureAdTokenPolicyBuilder>
 {
-    private readonly ImmutableList<string>.Builder? _clientApplicationIds;
-    private readonly string? _headerName;
-    private readonly string? _queryParameterName;
-    private readonly string? _tokenValue;
-    private readonly string? _tenantId;
-    private readonly ushort? _failedValidationHttpCode;
-    private readonly string? _failedValidationErrorMessage;
-    private readonly string? _outputTokenVariableName;
-    private readonly ImmutableList<string>.Builder? _backendApplicationIds;
-    private readonly ImmutableList<IExpression<string>>.Builder? _audiences;
+    private ImmutableList<string>.Builder? _clientApplicationIds;
+    private string? _headerName;
+    private string? _queryParameterName;
+    private string? _tokenValue;
+    private string? _tenantId;
+    private ushort? _failedValidationHttpCode;
+    private string? _failedValidationErrorMessage;
+    private string? _outputTokenVariableName;
+    private ImmutableList<string>.Builder? _backendApplicationIds;
+    private ImmutableList<IExpression<string>>.Builder? _audiences;
 
     [IgnoreBuilderField]
     private ImmutableList<XElement>.Builder? _requiredClaims;
@@ -95,10 +95,10 @@ public partial class ValidateAzureAdTokenClaimBuilder
 {
     public enum ClaimMatch { All, Any }
 
-    private readonly string? _name;
-    private readonly ImmutableList<string>.Builder? _values;
-    private readonly ClaimMatch? _match;
-    private readonly string? _separator;
+    private string? _name;
+    private ImmutableList<string>.Builder? _values;
+    private ClaimMatch? _match;
+    private string? _separator;
 
     public XElement Build()
     {

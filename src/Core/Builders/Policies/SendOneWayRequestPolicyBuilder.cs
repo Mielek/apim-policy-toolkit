@@ -19,12 +19,12 @@ public partial class SendOneWayRequestPolicyBuilder : BaseBuilder<SendOneWayRequ
 {
     public enum SendOneWayRequestMode { New, Copy }
 
-    private readonly SendOneWayRequestMode? _mode;
-    private readonly uint? _timeout;
-    private readonly IExpression<string>? _setUrl;
+    private SendOneWayRequestMode? _mode;
+    private uint? _timeout;
+    private IExpression<string>? _setUrl;
     [IgnoreBuilderField]
     private XElement? _setMethod;
-    private readonly IExpression<string>? _setBody;
+    private IExpression<string>? _setBody;
 
     [IgnoreBuilderField]
     private ImmutableList<XElement>.Builder? _setHeaders;

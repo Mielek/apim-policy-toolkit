@@ -21,7 +21,7 @@ public partial class ReturnResponsePolicyBuilder : BaseBuilder<ReturnResponsePol
     private XElement? _setBodyPolicy;
     [IgnoreBuilderField]
     private XElement? _setStatusPolicy;
-    private readonly string? _responseVariableName;
+    private string? _responseVariableName;
 
     public ReturnResponsePolicyBuilder SetHeader(Action<SetHeaderPolicyBuilder> configuration)
     {

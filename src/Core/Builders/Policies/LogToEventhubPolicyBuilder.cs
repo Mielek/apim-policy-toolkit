@@ -16,10 +16,10 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class LogToEventhubPolicyBuilder : BaseBuilder<LogToEventhubPolicyBuilder>
 {
-    private readonly string? _loggerId;
-    private readonly IExpression<string>? _value;
-    private readonly string? _partitionId;
-    private readonly string? _partitionKey;
+    private string? _loggerId;
+    private IExpression<string>? _value;
+    private string? _partitionId;
+    private string? _partitionKey;
 
     public XElement Build()
     {

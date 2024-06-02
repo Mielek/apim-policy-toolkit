@@ -16,7 +16,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class ChoosePolicyBuilder<TSectionBuilder> : BaseBuilder<ChoosePolicyBuilder<TSectionBuilder>> where TSectionBuilder : PolicySectionBuilder, new()
 {
-    private readonly ImmutableList<XElement>.Builder _whens = ImmutableList.CreateBuilder<XElement>();
+    private ImmutableList<XElement>.Builder _whens = ImmutableList.CreateBuilder<XElement>();
     private ICollection<XElement>? _otherwise;
 
     public ChoosePolicyBuilder<TSectionBuilder> When(Action<ChooseWhenBuilder<TSectionBuilder>> configurator)
@@ -55,7 +55,7 @@ public partial class ChoosePolicyBuilder<TSectionBuilder> : BaseBuilder<ChoosePo
 [GenerateBuilderSetters]
 public partial class ChooseWhenBuilder<TSectionBuilder> where TSectionBuilder : PolicySectionBuilder, new()
 {
-    private readonly IExpression<bool>? _condition;
+    private IExpression<bool>? _condition;
 
     [IgnoreBuilderField]
     private ICollection<XElement>? _policies;

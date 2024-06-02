@@ -19,9 +19,9 @@ public partial class SetHeaderPolicyBuilder : BaseBuilder<SetHeaderPolicyBuilder
 {
     public enum ExistsActionType { Override, Skip, Append, Delete }
 
-    private readonly IExpression<string>? _name;
-    private readonly ImmutableList<IExpression<string>>.Builder? _values;
-    private readonly IExpression<string>? _existsAction;
+    private IExpression<string>? _name;
+    private ImmutableList<IExpression<string>>.Builder? _values;
+    private IExpression<string>? _existsAction;
 
     public SetHeaderPolicyBuilder ExistsAction(ExistsActionType existsAction)
     {

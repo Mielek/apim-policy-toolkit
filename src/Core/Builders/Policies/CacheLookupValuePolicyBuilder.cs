@@ -18,10 +18,10 @@ public partial class CacheLookupValuePolicyBuilder : BaseBuilder<CacheLookupValu
 {
     public enum CachingTypeEnum { Internal, External, PreferExternal }
 
-    private readonly string? _variableName;
-    private readonly CachingTypeEnum? _catchingType;
-    private readonly IExpression<string>? _key;
-    private readonly IExpression<string>? _defaultValue;
+    private string? _variableName;
+    private CachingTypeEnum? _catchingType;
+    private IExpression<string>? _key;
+    private IExpression<string>? _defaultValue;
 
     public XElement Build()
     {

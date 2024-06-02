@@ -14,11 +14,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     ]
     public partial class CheckHeaderPolicyBuilder : BaseBuilder<CheckHeaderPolicyBuilder>
     {
-        private readonly IExpression<string>? _name;
-        private readonly IExpression<string>? _failedCheckHttpCode;
-        private readonly IExpression<string>? _failedCheckErrorMessage;
-        private readonly IExpression<bool>? _ignoreCase;
-        private readonly ImmutableList<IExpression<string>>.Builder? _values;
+        private IExpression<string>? _name;
+        private IExpression<string>? _failedCheckHttpCode;
+        private IExpression<string>? _failedCheckErrorMessage;
+        private IExpression<bool>? _ignoreCase;
+        private ImmutableList<IExpression<string>>.Builder? _values;
 
         public CheckHeaderPolicyBuilder FailedCheckHttpCode(ushort code)
         {

@@ -19,14 +19,14 @@ public partial class SendRequestPolicyBuilder : BaseBuilder<SendRequestPolicyBui
 {
     public enum SendRequestMode { New, Copy }
 
-    private readonly string? _responseVariableName;
-    private readonly SendRequestMode? _mode;
-    private readonly uint? _timeout;
-    private readonly bool? _ignoreError;
-    private readonly IExpression<string>? _setUrl;
+    private string? _responseVariableName;
+    private SendRequestMode? _mode;
+    private uint? _timeout;
+    private bool? _ignoreError;
+    private IExpression<string>? _setUrl;
     [IgnoreBuilderField]
     private XElement? _setMethod;
-    private readonly IExpression<string>? _setBody;
+    private IExpression<string>? _setBody;
 
     [IgnoreBuilderField]
     private ImmutableList<XElement>.Builder? _setHeaders;

@@ -18,7 +18,7 @@ public partial class WaitPolicyBuilder<TSectionBuilder> : BaseBuilder<WaitPolicy
 {
     public enum WaitFor { All, Any }
 
-    private readonly WaitFor? _for;
+    private WaitFor? _for;
 
     [IgnoreBuilderField] private ICollection<XElement>? _policies;
 

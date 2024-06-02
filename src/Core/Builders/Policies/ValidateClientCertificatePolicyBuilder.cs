@@ -16,11 +16,11 @@ public partial class ValidateClientCertificatePolicyBuilder : BaseBuilder<Valida
 
     [IgnoreBuilderField]
     private ImmutableList<XElement>.Builder? _identities;
-    private readonly bool? _validateRevocation;
-    private readonly bool? _validateTrust;
-    private readonly bool? _validateNotBefore;
-    private readonly bool? _validateNotAfter;
-    private readonly bool? _ignoreError;
+    private bool? _validateRevocation;
+    private bool? _validateTrust;
+    private bool? _validateNotBefore;
+    private bool? _validateNotAfter;
+    private bool? _ignoreError;
 
 
     public ValidateClientCertificatePolicyBuilder RequiredClaim(Action<ValidateClientCertificateIdentityBuilder> configurator)
@@ -66,14 +66,14 @@ public partial class ValidateClientCertificatePolicyBuilder : BaseBuilder<Valida
 [GenerateBuilderSetters]
 public partial class ValidateClientCertificateIdentityBuilder
 {
-    private readonly string? _thumbprint;
-    private readonly string? _serialNumber;
-    private readonly string? _commonName;
-    private readonly string? _subject;
-    private readonly string? _dnsName;
-    private readonly string? _issuerSubject;
-    private readonly string? _issuerThumbprint;
-    private readonly string? _issuerCertificateId;
+    private string? _thumbprint;
+    private string? _serialNumber;
+    private string? _commonName;
+    private string? _subject;
+    private string? _dnsName;
+    private string? _issuerSubject;
+    private string? _issuerThumbprint;
+    private string? _issuerCertificateId;
 
     public XElement Build()
     {

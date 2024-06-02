@@ -13,8 +13,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class MockResponsePolicyBuilder : BaseBuilder<MockResponsePolicyBuilder>
 {
-    private readonly uint? _statusCode;
-    private readonly string? _contentType;
+    private uint? _statusCode;
+    private string? _contentType;
 
     public XElement Build()
     {

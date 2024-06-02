@@ -10,8 +10,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies
     [GenerateBuilderSetters]
     public partial class LimitConcurrencyPolicyBuilder<TSectionBuilder> : BaseBuilder<LimitConcurrencyPolicyBuilder<TSectionBuilder>> where TSectionBuilder : PolicySectionBuilder, new()
     {
-        private readonly IExpression<string>? _key;
-        private readonly uint? _maxCount;
+        private IExpression<string>? _key;
+        private uint? _maxCount;
 
         [IgnoreBuilderField]
         private ICollection<XElement>? _policies;

@@ -16,14 +16,14 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 ]
 public partial class RetryPolicyBuilder<TSectionBuilder> : BaseBuilder<RetryPolicyBuilder<TSectionBuilder>> where TSectionBuilder : PolicySectionBuilder, new()
 {
-    private readonly IExpression<bool>? _condition;
-    private readonly uint? _count;
-    private readonly uint? _interval;
+    private IExpression<bool>? _condition;
+    private uint? _count;
+    private uint? _interval;
     [IgnoreBuilderField]
     private ICollection<XElement>? _policies;
-    private readonly uint? _maxInterval;
-    private readonly uint? _delta;
-    private readonly IExpression<string>? _firstFastRetry;
+    private uint? _maxInterval;
+    private uint? _delta;
+    private IExpression<string>? _firstFastRetry;
 
     public RetryPolicyBuilder<TSectionBuilder> Policies(Action<TSectionBuilder> configurator)
     {
