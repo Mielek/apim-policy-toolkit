@@ -33,7 +33,7 @@ public static class CompilerUtils
     public static string FindCode(ICompilationContext context, InvocationExpressionSyntax syntax)
     {
         var methodIdentifier = (syntax.Expression as IdentifierNameSyntax).Identifier.ValueText;
-        var expressionMethod = context.Root.DescendantNodes()
+        var expressionMethod = context.SyntaxRoot.DescendantNodes()
             .OfType<MethodDeclarationSyntax>()
             .First(m => m.Identifier.ValueText == methodIdentifier);
 

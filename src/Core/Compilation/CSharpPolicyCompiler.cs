@@ -20,9 +20,10 @@ public class CSharpPolicyCompiler
     public CSharpPolicyCompiler(ClassDeclarationSyntax document)
     {
         _document = document;
-        var invStatement = new InvocationExpressionCompiler([
+        var invStatement = new ExpressionStatementCompiler([
             new BaseCompiler(),
             new SetHeaderCompiler(),
+            new RemoveHeaderCompiler(),
             new SetBodyCompiler(),
             new AuthenticationBasicCompiler()
         ]);
@@ -36,11 +37,12 @@ public class CSharpPolicyCompiler
         _blockCompiler.AddCompiler(new IfStatementCompiler(_blockCompiler));
     }
 
-    public XElement Compile()
+    public ICompilationResult Compile()
     {
         var methods = _document.DescendantNodes()
             .OfType<MethodDeclarationSyntax>();
         var policyDocument = new XElement("policies");
+        var context = new CompilationContext(_document, policyDocument);
 
         foreach (var method in methods)
         {
@@ -50,22 +52,27 @@ public class CSharpPolicyCompiler
                 nameof(ICodeDocument.Outbound) => "outbound",
                 nameof(ICodeDocument.Backend) => "inbound",
                 nameof(ICodeDocument.OnError) => "on-error",
-                _ => throw new InvalidOperationException("Invalid section")
+                _ => string.Empty
             };
 
-            var section = CompileSection(sectionName, method.Body);
-            policyDocument.Add(section);
+            if (string.IsNullOrEmpty(sectionName))
+            {
+                continue;
+            }
+
+            var section = CompileSection(context, sectionName, method.Body);
+            context.AddPolicy(section);
         }
 
-        return policyDocument;
+        return context;
     }
 
 
-    private XElement CompileSection(string section, BlockSyntax block)
+    private XElement CompileSection(ICompilationContext context, string section, BlockSyntax block)
     {
         var sectionElement = new XElement(section);
-        var context = new CompilationContext(_document, sectionElement);
-        _blockCompiler.Compile(context, block);
+        var sectionContext = new SubCompilationContext(context, sectionElement);
+        _blockCompiler.Compile(sectionContext, block);
         // foreach (var statement in block.Statements)
         // {
         //     switch (statement)
@@ -85,31 +92,31 @@ public class CSharpPolicyCompiler
         return sectionElement;
     }
 
-    private void ProcessIf(IfStatementSyntax syntax, XElement sectionElement)
-    {
-        var choose = new XElement("choose");
-        sectionElement.Add(choose);
+    // private void ProcessIf(IfStatementSyntax syntax, XElement sectionElement)
+    // {
+    //     var choose = new XElement("choose");
+    //     sectionElement.Add(choose);
 
-        IfStatementSyntax? nextIf = syntax;
-        IfStatementSyntax currentIf;
-        do
-        {
-            currentIf = nextIf;
-            var whenSection = CompileSection("when", currentIf.Statement as BlockSyntax);
-            choose.Add(whenSection);
+    //     IfStatementSyntax? nextIf = syntax;
+    //     IfStatementSyntax currentIf;
+    //     do
+    //     {
+    //         currentIf = nextIf;
+    //         var whenSection = CompileSection("when", currentIf.Statement as BlockSyntax);
+    //         choose.Add(whenSection);
 
-            whenSection.Add(new XAttribute("condition", FindCode(currentIf.Condition as InvocationExpressionSyntax)));
+    //         whenSection.Add(new XAttribute("condition", FindCode(currentIf.Condition as InvocationExpressionSyntax)));
 
-            nextIf = currentIf.Else?.Statement as IfStatementSyntax;
-        } while (nextIf != null);
-        
-        
-        if(currentIf.Else != null)
-        {
-            var otherwiseSection = CompileSection("otherwise", currentIf.Else.Statement as BlockSyntax);
-            choose.Add(otherwiseSection);
-        }
-    }
+    //         nextIf = currentIf.Else?.Statement as IfStatementSyntax;
+    //     } while (nextIf != null);
+
+
+    //     if (currentIf.Else != null)
+    //     {
+    //         var otherwiseSection = CompileSection("otherwise", currentIf.Else.Statement as BlockSyntax);
+    //         choose.Add(otherwiseSection);
+    //     }
+    // }
 
     private void ProcessExpression(ExpressionStatementSyntax syntax, XElement section)
     {

@@ -75,7 +75,9 @@ public class Test
             .DescendantNodes()
             .OfType<ClassDeclarationSyntax>()
             .First(c => c.AttributeLists.ContainsAttributeOfType("CodeDocument"));
-        var d = new CSharpPolicyCompiler(policy).Compile();
-        Assert.IsNotNull(d);
+        var result = new CSharpPolicyCompiler(policy).Compile();
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.Errors.Count == 0);
+        Assert.IsNotNull(result.Document);
     }
 }

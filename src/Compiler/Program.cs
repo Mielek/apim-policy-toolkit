@@ -42,11 +42,17 @@ foreach (var file in files)
         .Where(c => c.AttributeLists.ContainsAttributeOfType("CodeDocument"));
     foreach (var document in codeDocuments)
     {
-        var policy = new CSharpPolicyCompiler(document).Compile();
+        var result = new CSharpPolicyCompiler(document).Compile();
+
+        foreach(var error in result.Errors)
+        {
+            Console.Out.WriteLine(error);
+        }
+
         var codeBuilder = new StringBuilder();
         using (var writer = CustomXmlWriter.Create(codeBuilder, writerSettings))
         {
-            writer.Write(policy);
+            writer.Write(result.Document);
         }
 
         var xml = codeBuilder.ToString();

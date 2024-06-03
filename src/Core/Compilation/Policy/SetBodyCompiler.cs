@@ -12,23 +12,13 @@ public class SetBodyCompiler : IMethodPolicyHandler
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
         var arguments = node.ArgumentList.Arguments;
-        if (arguments.Count < 2)
+        if (arguments.Count != 1)
         {
-            context.ReportError("");
+            context.ReportError($"Wrong argument count for set-body policy. {node.GetLocation()}");
             return;
         }
-        
-        var headerName = CompilerUtils.ProcessParameter(context, node.ArgumentList.Arguments[0].Expression);
-        var builder = new SetHeaderPolicyBuilder()
-            .Name(headerName)
-            .ExistsAction(SetHeaderPolicyBuilder.ExistsActionType.Override);
 
-        for (int i = 1; i < arguments.Count; i++)
-        {
-            builder.Value(CompilerUtils.ProcessParameter(context, arguments[i].Expression));
-        }
-
-        var policy = builder.Build();
-        context.AddPolicy(policy);
+        var value = CompilerUtils.ProcessParameter(context, node.ArgumentList.Arguments[0].Expression);
+        context.AddPolicy(new SetBodyPolicyBuilder().Body(value).Build());
     }
 }

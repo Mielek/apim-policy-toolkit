@@ -4,20 +4,24 @@ using Microsoft.CodeAnalysis;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
-public class CompilationContext : ICompilationContext
+public class CompilationContext : ICompilationContext, ICompilationResult
 {
-    public IList<string> Errors = new List<string>();
-    private XElement _section;
+    private readonly IList<string> _errors = new List<string>();
+    private readonly XElement _rootElement;
     
-    public CompilationContext(SyntaxNode root, XElement section)
+    public CompilationContext(SyntaxNode syntaxRoot, XElement rootElement)
     {
-        Root = root;
-        this._section = section;
+        SyntaxRoot = syntaxRoot;
+        _rootElement = rootElement;
     }
     
-    public void AddPolicy(XElement element) => _section.Add(element);
+    public void AddPolicy(XElement element) => _rootElement.Add(element);
 
-    public void ReportError(string message) => Errors.Add(message);
+    public void ReportError(string message) => _errors.Add(message);
 
-    public SyntaxNode Root { get; }
+    public SyntaxNode SyntaxRoot { get; }
+
+    public XElement Document => _rootElement;
+
+    public IReadOnlyList<string> Errors => _errors.AsReadOnly();
 }

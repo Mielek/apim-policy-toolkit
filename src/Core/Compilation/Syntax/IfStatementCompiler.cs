@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Net;
+using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -22,16 +23,17 @@ public class IfStatementCompiler : ISyntaxCompiler
         var ifStatement = node as IfStatementSyntax ?? throw new NullReferenceException();
 
         var choose = new XElement("choose");
+        context.AddPolicy(choose);
+
         IfStatementSyntax? nextIf = ifStatement;
         IfStatementSyntax currentIf;
         do
         {
             currentIf = nextIf;
-            var innerContext = new IfBlockCompilationContext(context, "when");
+            var section = new XElement("when");
+            var innerContext = new SubCompilationContext(context, section);
             _blockCompiler.Compile(innerContext, currentIf.Statement as BlockSyntax);
-            var section = innerContext.SectionElement;
-            section.Add(new XAttribute("condition",
-                CompilerUtils.FindCode(context, currentIf.Condition as InvocationExpressionSyntax)));
+            section.Add(new XAttribute("condition", CompilerUtils.FindCode(context, currentIf.Condition as InvocationExpressionSyntax)));
             choose.Add(section);
 
             nextIf = currentIf.Else?.Statement as IfStatementSyntax;
@@ -40,28 +42,11 @@ public class IfStatementCompiler : ISyntaxCompiler
 
         if (currentIf.Else != null)
         {
-            var innerContext = new IfBlockCompilationContext(context, "otherwise");
+            var section = new XElement("otherwise");
+            var innerContext = new SubCompilationContext(context, section);
             _blockCompiler.Compile(innerContext, currentIf.Else.Statement as BlockSyntax);
-            choose.Add(innerContext.SectionElement);
+            choose.Add(section);
         }
     }
 
-    class IfBlockCompilationContext : ICompilationContext
-    {
-        public XElement SectionElement { get; }
-
-        private ICompilationContext _parent;
-
-        public IfBlockCompilationContext(ICompilationContext parent, string name)
-        {
-            this._parent = parent;
-            this.SectionElement = new XElement(name);
-        }
-
-        public void AddPolicy(XElement element) => SectionElement.Add(element);
-
-        public void ReportError(string message) => _parent.ReportError(message);
-
-        public SyntaxNode Root => _parent.Root;
-    }
 }
