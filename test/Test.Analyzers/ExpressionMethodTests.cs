@@ -32,7 +32,7 @@ class Test
 """,
             DiagnosticResult
                 .CompilerError(Rules.Expression.WrongParameterName.Id)
-                .WithSpan(16, 37, 16, 39)
+                .WithSpan(15, 37, 15, 39)
                 .WithArguments("c1", "context")
         );
     }
@@ -58,7 +58,7 @@ class Test
 """,
             DiagnosticResult
                 .CompilerError(Rules.Expression.WrongParameterName.Id)
-                .WithSpan(16, 27, 16, 29)
+                .WithSpan(15, 27, 15, 29)
                 .WithArguments("c1", "context")
         );
     }
@@ -79,7 +79,7 @@ class Test
             """,
             DiagnosticResult
                 .CompilerError(Rules.Expression.ReturnTypeNotAllowed.Id)
-                .WithSpan(12, 5, 12, 9)
+                .WithSpan(11, 5, 11, 9)
                 .WithArguments(typeof(void).FullName)
         );
     }
@@ -103,7 +103,7 @@ class Test
               """,
             DiagnosticResult
                 .CompilerError(Rules.Expression.WrongParameterCount.Id)
-                .WithSpan(12, 15, 12, 15 + parameters.Length + 2)
+                .WithSpan(11, 15, 11, 15 + parameters.Length + 2)
                 .WithArguments(count)
         );
     }

@@ -21,10 +21,9 @@ public class BaseAnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, MSTestV
         TestState.Sources.Add(
             $"""
             using System.Xml.Linq;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
+            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
             using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
 
             namespace Mielek.Test;
 
