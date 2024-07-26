@@ -16,20 +16,6 @@ public class TypeUsedTests
     {
         await VerifyAsync(
 """
-[Library]
-class Test 
-{
-    [Document]
-    public XElement ApiPolicyDocument()
-    {
-        var t = "test".GetType().FullName;
-        return Policy.Document()
-            .Inbound(policies => policies.SetBody(policy => policy.Body(ExpressionLibrary.Method)))
-            .Create();
-    }
-
-}
-
 public static class ExpressionLibrary
 {
     [Expression]

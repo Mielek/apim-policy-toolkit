@@ -165,25 +165,25 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
         "Newtonsoft.Json.Linq.JValue",
         #endregion Newtonsoft.Json
 
-        #region Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IApi",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IContext",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IContextApi",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IDeployment",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IGroup",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.ILastError",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IMessageBody",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IOperation",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IPrivateEndpointConnection",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IProduct",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IRequest",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IResponse",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.ISubscription",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.ISubscriptionKeyParameterNames",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IUrl",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IUser",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IUserIdentity",
-        #endregion Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context
+        #region Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IApi",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IContext",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IContextApi",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IDeployment",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IGroup",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.ILastError",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IMessageBody",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IOperation",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IPrivateEndpointConnection",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IProduct",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IRequest",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IResponse",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.ISubscription",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.ISubscriptionKeyParameterNames",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IUrl",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IUser",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IUserIdentity",
+        #endregion Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions
     };
 
     private readonly static IReadOnlyDictionary<string, IReadOnlySet<string>> AllowedInTypes = new Dictionary<string, IReadOnlySet<String>>()

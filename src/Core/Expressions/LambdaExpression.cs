@@ -1,6 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Xml;
 using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis;

@@ -44,7 +44,7 @@ public class ExpressionDefinitionAnalyzer : DiagnosticAnalyzer
         "Newtonsoft.Json.Linq.JObject",
     };
 
-    private const string ContextParamType = "Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.IContext";
+    private const string ContextParamType = "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IContext";
     private const string ContextParamName = "context";
 
     private static void AnalyzeMethod(SyntaxNodeAnalysisContext context)

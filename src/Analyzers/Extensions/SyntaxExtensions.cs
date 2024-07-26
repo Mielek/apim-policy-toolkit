@@ -20,7 +20,7 @@ public static class SyntaxExtensions
     }
 
     private const string ExpressionAttribute =
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Attributes.ExpressionAttribute";
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.ExpressionAttribute";
 
     public static bool ContainsExpressionAttribute(this SyntaxList<AttributeListSyntax> syntax, SemanticModel model)
     {
@@ -43,7 +43,7 @@ public static class SyntaxExtensions
 
     private static readonly Regex ExpressionDelegateTypeMatcher =
         new Regex(
-            @"Mielek\.Azure\.ApiManagement\.PolicyToolkit\.CodeContext\.Expression<.*?>",
+            @"Mielek\.Azure\.ApiManagement\.PolicyToolkit\.Authoring\.Expression<.*?>",
             RegexOptions.Compiled);
 
     public static bool IsExpressionLambda(this LambdaExpressionSyntax syntaxNode, SemanticModel model)

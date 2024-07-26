@@ -46,9 +46,9 @@ internal class ClassSetterBuilder
     {
         _classBuilder.Using("System.Collections.Immutable");
         _classBuilder.Using("System.Runtime.CompilerServices");
-        _classBuilder.Using("Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext");
+        _classBuilder.Using("Mielek.Azure.ApiManagement.PolicyToolkit.Authoring");
+        _classBuilder.Using("Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions");
         _classBuilder.Using("Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions");
-        _classBuilder.Using("Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context");
     }
 
     private void AddFieldSetters()

@@ -1,13 +1,13 @@
 using System.Text;
 using System.Xml.Linq;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Test;
 
-[Library]
+[Document("echo-api.retrieve-resource")]
 public class Library
 {
 

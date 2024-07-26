@@ -1,9 +1,4 @@
-using System.Text;
-using System.Xml;
-
-using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Test;
 

@@ -29,9 +29,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Expressions\Context\Context.csproj" />
-    <ProjectReference Include="..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\..\CodeContext\CodeContext.csproj" />
+    <ProjectReference Include="..\..\Authoring\Authoring.csproj" />
+<!--    <ProjectReference Include="..\..\Core\Core.csproj" />-->
     <ProjectReference Include="..\..\Analyzers\Analyzers.csproj" />
   </ItemGroup>
 
@@ -53,12 +52,10 @@
       <Output TaskParameter="NuGetShortFolderName" PropertyName="_NuGetShortFolderName" />
     </GetNuGetShortFolderName>
     <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)\Context.dll"
+      <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\CodeContext.dll"
-        PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Core.dll"
-        PackagePath="lib/$(_NuGetShortFolderName)" />
+<!--      <TfmSpecificPackageFile Include="$(OutputPath)\Core.dll"-->
+<!--        PackagePath="lib/$(_NuGetShortFolderName)" />-->
     </ItemGroup>
   </Target>
 

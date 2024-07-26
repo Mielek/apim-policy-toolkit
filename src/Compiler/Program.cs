@@ -39,7 +39,7 @@ foreach (var file in files)
     var codeDocuments = syntax.GetRoot()
         .DescendantNodes()
         .OfType<ClassDeclarationSyntax>()
-        .Where(c => c.AttributeLists.ContainsAttributeOfType("CodeDocument"));
+        .Where(c => c.AttributeLists.ContainsAttributeOfType("Document"));
     foreach (var document in codeDocuments)
     {
         var result = new CSharpPolicyCompiler(document).Compile();
@@ -61,7 +61,7 @@ foreach (var file in files)
             xml = new RazorCodeFormatter(xml).Format();
         }
 
-        var attributeSyntax = document.AttributeLists.GetFirstAttributeOfType("CodeDocument");
+        var attributeSyntax = document.AttributeLists.GetFirstAttributeOfType("Document");
         var policyFileName =
             (attributeSyntax?.ArgumentList?.Arguments.FirstOrDefault()?.Expression as LiteralExpressionSyntax)?.Token
             .ValueText ?? document.Identifier.ValueText;

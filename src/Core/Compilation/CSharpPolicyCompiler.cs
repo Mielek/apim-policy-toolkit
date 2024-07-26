@@ -1,11 +1,11 @@
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Syntax;
 
@@ -48,10 +48,10 @@ public class CSharpPolicyCompiler
         {
             var sectionName = method.Identifier.ValueText switch
             {
-                nameof(ICodeDocument.Inbound) => "inbound",
-                nameof(ICodeDocument.Outbound) => "outbound",
-                nameof(ICodeDocument.Backend) => "inbound",
-                nameof(ICodeDocument.OnError) => "on-error",
+                nameof(IDocument.Inbound) => "inbound",
+                nameof(IDocument.Outbound) => "outbound",
+                nameof(IDocument.Backend) => "inbound",
+                nameof(IDocument.OnError) => "on-error",
                 _ => string.Empty
             };
 

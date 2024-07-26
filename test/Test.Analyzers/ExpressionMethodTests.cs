@@ -1,5 +1,3 @@
-using System.Data;
-
 using Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
 

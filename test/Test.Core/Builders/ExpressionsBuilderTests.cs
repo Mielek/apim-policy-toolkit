@@ -1,6 +1,6 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization.Test;
 

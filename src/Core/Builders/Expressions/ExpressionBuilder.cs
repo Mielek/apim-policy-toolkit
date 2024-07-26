@@ -2,8 +2,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
 

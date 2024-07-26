@@ -31,8 +31,8 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Expressions\Context\Context.csproj" />
-    <ProjectReference Include="..\..\Expressions\Mocks\Mocks.csproj" />
+    <ProjectReference Include="..\..\Authoring\Authoring.csproj" />
+    <ProjectReference Include="..\..\Emulator\Emulator.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,9 +47,9 @@
       <Output TaskParameter="NuGetShortFolderName" PropertyName="_NuGetShortFolderName" />
     </GetNuGetShortFolderName>
     <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)\Context.dll"
+      <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Mocks.dll"
+      <TfmSpecificPackageFile Include="$(OutputPath)\Emulator.dll"
         PackagePath="lib/$(_NuGetShortFolderName)" />
     </ItemGroup>
   </Target>

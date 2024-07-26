@@ -1,14 +1,12 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
-using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
-using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext.Attributes;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 using Newtonsoft.Json.Linq;
 
 namespace Contoso.Apis;
 
-[CodeDocument("echo-api.retrieve-resource")]
-public class ApiOperationPolicy : ICodeDocument
+[Document("echo-api.retrieve-resource")]
+public class ApiOperationPolicy : IDocument
 {
     public void Inbound(IInboundContext c)
     {

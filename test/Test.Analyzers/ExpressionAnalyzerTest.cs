@@ -1,17 +1,11 @@
-
-using System.Collections.Immutable;
-using System.Reflection.Metadata;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
-using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
 
