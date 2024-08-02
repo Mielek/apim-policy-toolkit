@@ -23,6 +23,8 @@ public class CSharpPolicyCompiler
         var invStatement = new ExpressionStatementCompiler([
             new BaseCompiler(),
             new SetHeaderCompiler(),
+            new SetHeaderIfNotExistCompiler(),
+            new AppendHeaderCompiler(),
             new RemoveHeaderCompiler(),
             new SetBodyCompiler(),
             new AuthenticationBasicCompiler()

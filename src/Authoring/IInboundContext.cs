@@ -5,6 +5,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 public interface IInboundContext : IHaveExpressionContext
 {
     void SetHeader(string name, params string[] values);
+    void SetHeaderIfNotExist(string name, params string[] values);
     void AppendHeader(string name, params string[] values);
     void RemoveHeader(string name);
     void Base();

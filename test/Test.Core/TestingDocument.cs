@@ -13,13 +13,13 @@ public class TestingDocument : IDocument
         c.Base();
         if (IsFromCompanyIp(c.ExpressionContext))
         {
-            c.OverrideHeader("X-Company", "true");
+            c.SetHeader("X-Company", "true");
             c.AuthenticationBasic("{{username}}", "{{password}}");
         }
         else
         {
             var testToken = c.AuthenticationManagedIdentity("test");
-            c.OverrideHeader("Authorization", $"Bearer {testToken}");
+            c.SetHeader("Authorization", $"Bearer {testToken}");
         }
     }
 
