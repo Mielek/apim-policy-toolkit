@@ -78,10 +78,10 @@ public class ExpressionBuilderTests
     }
 
     [Expression]
-    public string ExpressionMethod(IContext context) => context.Product.Name;
+    public string ExpressionMethod(IExpressionContext context) => context.Product.Name;
 
     [Expression]
-    public string BodyMethod(IContext context)
+    public string BodyMethod(IExpressionContext context)
     {
         return context.Product.Name;
     }

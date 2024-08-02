@@ -79,9 +79,9 @@ public class ExpressionBuilder<T>
         }
 
         var parameter = parameters[0];
-        if (parameter.ParameterType != typeof(IContext))
+        if (parameter.ParameterType != typeof(IExpressionContext))
         {
-            throw new Exception($"Parameter should be of type \"IContext\" but is \"{parameter.ParameterType}\"");
+            throw new Exception($"Parameter should be of type \"IExpressionContext\" but is \"{parameter.ParameterType}\"");
         }
 
         if (parameter.Name != "context")

@@ -51,11 +51,11 @@ public class Test
                     c.Base();
                 }
                 
-                bool IsFromCompanyIp(IContext context) => context.Request.IpAddress.StartsWith("10.0.0.");
+                bool IsFromCompanyIp(IExpressionContext context) => context.Request.IpAddress.StartsWith("10.0.0.");
                 
-                bool IsInternalIp(IContext context) => context.Request.IpAddress.StartsWith("10.1.0.");
+                bool IsInternalIp(IExpressionContext context) => context.Request.IpAddress.StartsWith("10.1.0.");
             
-                string FilterRequest(IContext context)
+                string FilterRequest(IExpressionContext context)
                 {
                     var body = context.Response.Body.As<JObject>();
                     foreach (var internalProperty in new string[]{ "location", "secret" })

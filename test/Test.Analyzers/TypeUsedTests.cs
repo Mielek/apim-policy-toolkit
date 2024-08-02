@@ -19,7 +19,7 @@ public class TypeUsedTests
 public static class ExpressionLibrary
 {
     [Expression]
-    public static string Method(IContext context)
+    public static string Method(IExpressionContext context)
     { 
         if(context.Request.Headers.TryGetValue("Authorization", out var value))
         {
@@ -30,7 +30,7 @@ public static class ExpressionLibrary
         }
     }
 
-    public static string Good(IContext context)
+    public static string Good(IExpressionContext context)
     { 
         return "test".GetType().FullName;
     }

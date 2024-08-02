@@ -17,7 +17,7 @@ public class BaseAnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, MSTestV
         TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(ExpressionAttribute).Assembly.Location));
         TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(Expression<>).Assembly.Location));
         TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(PolicyDocumentBuilder).Assembly.Location));
-        TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(IContext).Assembly.Location));
+        TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(IExpressionContext).Assembly.Location));
         TestState.Sources.Add(
             $"""
             using System.Xml.Linq;

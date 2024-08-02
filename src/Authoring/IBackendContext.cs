@@ -1,6 +1,7 @@
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-public interface IBackendContext
+public interface IBackendContext : IHaveExpressionContext
 {
+    void ForwardRequest();
 
 }

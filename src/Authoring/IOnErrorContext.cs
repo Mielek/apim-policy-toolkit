@@ -1,6 +1,6 @@
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-public interface IOnErrorContext
+public interface IOnErrorContext : IHaveExpressionContext
 {
 
 }

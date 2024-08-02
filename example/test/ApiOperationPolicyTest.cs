@@ -12,7 +12,7 @@ public class ApiOperationPolicyTest
     [TestMethod]
     public void FilterSecrets()
     {
-        var context = new MockContext();
+        var context = new MockExpressionContext();
         context.MockResponse.MockBody.Content =
             """
             {

@@ -24,7 +24,7 @@ public class Library
     }
 
     [Expression]
-    public static string Test(IContext context)
+    public static string Test(IExpressionContext context)
     {
         string[] value;
         if (context.Request.Headers.TryGetValue("Authorization", out value))

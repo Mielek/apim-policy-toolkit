@@ -23,7 +23,7 @@ class Test
         Policy.Document()
             .Inbound(policies => policies
                 .SetBody(policy => policy
-                    .Body((IContext c1) => "10")
+                    .Body((IExpressionContext c1) => "10")
                 )
             )
             .Create();
@@ -32,7 +32,7 @@ class Test
 """,
             DiagnosticResult
                 .CompilerError(Rules.Expression.WrongParameterName.Id)
-                .WithSpan(15, 37, 15, 39)
+                .WithSpan(15, 47, 15, 49)
                 .WithArguments("c1", "context")
         );
     }
@@ -71,7 +71,7 @@ class Test
             class Test
             {
                 [Expression]
-                void Method(IContext context)
+                void Method(IExpressionContext context)
                 {
                     return;
                 }
@@ -86,8 +86,8 @@ class Test
 
     [TestMethod]
     [DataRow("", 0)]
-    [DataRow("IContext c1, IContext c2", 2)]
-    [DataRow("IContext c1, IContext c2, IContext c3", 3)]
+    [DataRow("IExpressionContext c1, IExpressionContext c2", 2)]
+    [DataRow("IExpressionContext c1, IExpressionContext c2, IExpressionContext c3", 3)]
     public async Task ShouldReportWrongParameterCount(string parameters, int count)
     {
         await VerifyAsync(

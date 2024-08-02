@@ -2,16 +2,16 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-public interface IInboundContext
+public interface IInboundContext : IHaveExpressionContext
 {
-    string AuthenticationManagedIdentity(string resource);
     void SetHeader(string name, params string[] values);
-    void AddHeader(string name, params string[] values);
+    void AppendHeader(string name, params string[] values);
     void RemoveHeader(string name);
     void Base();
+
+    string AuthenticationManagedIdentity(string resource);
     void AuthenticationBasic(string username, string password);
 
-    void ForwardRequest();
     void RateLimit();
     void Quota();
     void RewriteUri();
@@ -30,6 +30,4 @@ public interface IInboundContext
     void RateLimitByKey();
     void SetMethod();
     void SetQueryParameter();
-
-    IContext Context { get; }
 }

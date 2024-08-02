@@ -147,7 +147,7 @@ public class ApiOperationPolicy : ICodeDocument
         }
     }
     
-    public bool IsCompanyIP(IContext context)
+    public bool IsCompanyIP(IExpressionContext context)
         => context.Request.IpAddress.StartsWith("10.0.0.");
 }
 ```
@@ -158,8 +158,8 @@ Lets unpack the code above it:
 * `IsCompanyIP` is a method which checks if request comes from company IP addresses and it is mapped to a policy
   expression
 * Every method other then section method are treated as expressions. They need to accept one parameter of name context
-  with `IContext` type from `Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context` namespace.
-* `IContext` type contains the same properties as `context` object in policy expressions.
+  with `IExpressionContext` type from `Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context` namespace.
+* `IExpressionContext` type contains the same properties as `context` object in policy expressions.
 * `AuthenticationBasic` method is mapped to `authentication-basic` policy.
 * `AuthenticationManagedIdentity` method is mapped to `authentication-managed-identity` policy.
 
@@ -206,7 +206,7 @@ public class ApiOperationPolicy : ICodeDocument
         }
     }
     
-    public bool IsCompanyIP(IContext context)
+    public bool IsCompanyIP(IExpressionContext context)
         => context.Request.IpAddress.StartsWith("10.0.0.");
 }
 ```
@@ -249,7 +249,7 @@ In this section we will write a simple test for the expression from the previous
 Lets create a new `ApiOperationPolicyTests.cs` file in the test project which will be our test class.
 In the test class we need to add reference to the `Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks`
 namespace.
-In this namespace the `MockContext` class is available which is a mock of the `IContext` interface.
+In this namespace the `MockExpressionContext` class is available which is a mock of the `IExpressionContext` interface.
 
 Lets write a test for the `IsCompanyIP` method.
 
@@ -265,7 +265,7 @@ public class ApiOperationPolicyTest
     [TestMethod]
     public void TestIsCompanyIP()
     {
-        var context = new MockContext();
+        var context = new MockExpressionContext();
         var document = new ApiOperationPolicy();
 
         context.Request.IpAddress = "10.0.0.1";

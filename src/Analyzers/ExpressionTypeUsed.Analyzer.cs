@@ -167,7 +167,7 @@ public class TypeUsedAnalyzer : DiagnosticAnalyzer
 
         #region Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions
         "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IApi",
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IContext",
+        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IExpressionContext",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IContextApi",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IDeployment",
         "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IGroup",

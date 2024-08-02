@@ -28,12 +28,12 @@ public class ApiOperationPolicy : IDocument
         c.SetBody(FilterSecrets(c.Context));
     }
 
-    public bool IsFromCompanyIp(IContext context)
+    public bool IsFromCompanyIp(IExpressionContext context)
         => context.Request.IpAddress.StartsWith("10.0.0.");
 
 
     [Expression]
-    public string FilterSecrets(IContext context)
+    public string FilterSecrets(IExpressionContext context)
     {
         var body = context.Response.Body.As<JObject>();
         foreach (var internalProperty in new string[] { "location", "secret" })
