@@ -2,7 +2,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
-public class MockContext : IExpressionContext
+public class MockExpressionContext : IExpressionContext
 {
     public Guid RequestId { get; set; } = Guid.NewGuid();
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
