@@ -30,24 +30,22 @@ In this section we will describe how to create a simple policy document.
 One policy document is one C# class in one `cs` file. Lets create a new `ApiOperationPolicy.cs` file in the project
 which will be our policy document.
 
-The class in the file should inherit from `ICodeContext` interface
-from `Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext` and have `CodeDocument` attribute
-from `Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext.Attributes` namespace.
+The class in the file should inherit from `IDocument` interface and have `Document` attribute
+from `Mielek.Azure.ApiManagement.PolicyToolkit.Authoring`.
 
 ```csharp
-using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
-using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext.Attributes;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
 namespace Contoso.Apis;
 
-[CodeDocument]
-public class ApiOperationPolicy : ICodeDocument
+[Document]
+public class ApiOperationPolicy : IDocument
 {
     
 }
 ```
 
-The `ICodeContext` type contains methods `Inbound`, `Outbound`, `Backend` and `OnError` which are used to define policy
+The `IDocument` type contains methods `Inbound`, `Outbound`, `Backend` and `OnError` which are used to define policy
 sections.
 
 | :exclamation: Currently only `Inbound` and `Outbound` methods are supported. |
@@ -56,8 +54,8 @@ sections.
 Lets implement `Inbound` method. In the method lets add the policy to set header `X-Hello` to value `World`.
 
 ```csharp
-[CodeDocument]
-public class ApiOperationPolicy : ICodeDocument
+[Document]
+public class ApiOperationPolicy : IDocument
 {
     public void Inbound(IInboundContext c)
     {
@@ -126,14 +124,13 @@ and `password` from named values.
 If request comes from other IP addresses it should use `Bearer` token received from https://graph.microsoft.com.
 
 ```csharp
-using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
-using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext.Attributes;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 namespace Contoso.Apis;
 
-[CodeDocument]
-public class ApiOperationPolicy : ICodeDocument
+[Document]
+public class ApiOperationPolicy : IDocument
 {
     public void Inbound(IInboundContext c)
     {
@@ -190,8 +187,8 @@ Cool right? But what if we want to create a bearer token by ourselves?
 We can save the result of the `AuthenticationManagedIdentity` method to a variable and use it in the `SetHeader` method.
 
 ```csharp
-[CodeDocument]
-public class ApiOperationPolicy : ICodeDocument
+[Document]
+public class ApiOperationPolicy : IDocument
 {
     public void Inbound(IInboundContext c)
     {
@@ -247,7 +244,7 @@ In this section we will write a simple test for the expression from the previous
 ### Writing the test
 
 Lets create a new `ApiOperationPolicyTests.cs` file in the test project which will be our test class.
-In the test class we need to add reference to the `Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks`
+In the test class we need to add reference to the `Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions`
 namespace.
 In this namespace the `MockExpressionContext` class is available which is a mock of the `IExpressionContext` interface.
 
@@ -255,7 +252,7 @@ Lets write a test for the `IsCompanyIP` method.
 
 ```csharp
 using Contoso.Apis;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context.Mocks;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
 namespace Contoso.Test.Apis;
 

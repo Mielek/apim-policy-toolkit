@@ -6,7 +6,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 public interface ICompilationContext
 {
-    void AddPolicy(XElement element);
+    void AddPolicy(XNode element);
     void ReportError(string message);
 
     SyntaxNode SyntaxRoot { get; }

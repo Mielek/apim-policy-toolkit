@@ -22,10 +22,10 @@ public class CSharpPolicyCompiler
         _document = document;
         var invStatement = new ExpressionStatementCompiler([
             new BaseCompiler(),
-            new SetHeaderCompiler(),
-            new SetHeaderIfNotExistCompiler(),
-            new AppendHeaderCompiler(),
-            new RemoveHeaderCompiler(),
+            SetHeaderCompiler.AppendCompiler,
+            SetHeaderCompiler.SetCompiler,
+            SetHeaderCompiler.SetIfNotExistCompiler,
+            SetHeaderCompiler.RemoveCompiler,
             new SetBodyCompiler(),
             new AuthenticationBasicCompiler()
         ]);
@@ -52,13 +52,19 @@ public class CSharpPolicyCompiler
             {
                 nameof(IDocument.Inbound) => "inbound",
                 nameof(IDocument.Outbound) => "outbound",
-                nameof(IDocument.Backend) => "inbound",
+                nameof(IDocument.Backend) => "backend",
                 nameof(IDocument.OnError) => "on-error",
                 _ => string.Empty
             };
 
             if (string.IsNullOrEmpty(sectionName))
             {
+                continue;
+            }
+
+            if (method.Body is null)
+            {
+                context.ReportError($"Method {sectionName} is not allowed as expression. ({method.GetLocation()})");
                 continue;
             }
 

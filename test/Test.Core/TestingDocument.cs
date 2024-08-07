@@ -8,18 +8,18 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
 [Document("echo-api.retrieve-resource")]
 public class TestingDocument : IDocument
 {
-    public void Inbound(IInboundContext c)
+    public void Inbound(IInboundContext context)
     {
-        c.Base();
-        if (IsFromCompanyIp(c.ExpressionContext))
+        context.Base();
+        if (IsFromCompanyIp(context.ExpressionContext))
         {
-            c.SetHeader("X-Company", "true");
-            c.AuthenticationBasic("{{username}}", "{{password}}");
+            context.SetHeader("X-Company", "true");
+            context.AuthenticationBasic("{{username}}", "{{password}}");
         }
         else
         {
-            var testToken = c.AuthenticationManagedIdentity("test");
-            c.SetHeader("Authorization", $"Bearer {testToken}");
+            var testToken = context.AuthenticationManagedIdentity("test");
+            context.SetHeader("Authorization", $"Bearer {testToken}");
         }
     }
 

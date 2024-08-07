@@ -15,7 +15,7 @@ public class SubCompilationContext : ICompilationContext
         _element = element;
     }
 
-    public void AddPolicy(XElement element) => _element.Add(element);
+    public void AddPolicy(XNode element) => _element.Add(element);
 
     public void ReportError(string message) => _parent.ReportError(message);
 

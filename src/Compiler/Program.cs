@@ -36,11 +36,11 @@ foreach (var file in files)
     var code = File.ReadAllText(file);
     var syntax = CSharpSyntaxTree.ParseText(code);
 
-    var codeDocuments = syntax.GetRoot()
+    var Documents = syntax.GetRoot()
         .DescendantNodes()
         .OfType<ClassDeclarationSyntax>()
         .Where(c => c.AttributeLists.ContainsAttributeOfType("Document"));
-    foreach (var document in codeDocuments)
+    foreach (var document in Documents)
     {
         var result = new CSharpPolicyCompiler(document).Compile();
 

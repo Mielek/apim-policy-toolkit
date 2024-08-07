@@ -1,10 +1,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
-
-namespace CodeContext;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 [TestClass]
 public class Test
@@ -15,25 +12,25 @@ public class Test
     {
         var syntaxTree = CSharpSyntaxTree.ParseText(
             """
-            using Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext.Attributes;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context;
+            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
             
             using Newtonsoft.Json.Linq;
             
             namespace Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
             
-            [CodeDocument("echo-api.retrieve-resource")]
-            public class TestingCodeDocument : ICodeDocument
+            [Document("echo-api.retrieve-resource")]
+            public class TestingDocument : IDocument
             {
                 public void Inbound(IInboundContext c)
                 {
                     c.Base();
-                    if (IsFromCompanyIp(c.Context))
+                    if (IsFromCompanyIp(c.ExpressionContext))
                     {
                         c.SetHeader("X-Company", "true");
                         c.AuthenticationBasic("{{username}}", "{{password}}");
                     }
-                    else if(IsInternalIp(c.Context))
+                    else if(IsInternalIp(c.ExpressionContext))
                     {
                         c.AuthenticationBasic("{{username}}", "{{password}}");
                     }
@@ -47,7 +44,7 @@ public class Test
                 public void Outbound(IOutboundContext c)
                 {
                     c.RemoveHeader("Backend-Statistics");
-                    c.SetBody(FilterRequest(c.Context));
+                    c.SetBody(FilterRequest(c.ExpressionContext));
                     c.Base();
                 }
                 
@@ -74,10 +71,10 @@ public class Test
             .GetRoot()
             .DescendantNodes()
             .OfType<ClassDeclarationSyntax>()
-            .First(c => c.AttributeLists.ContainsAttributeOfType("CodeDocument"));
+            .First(c => c.AttributeLists.ContainsAttributeOfType("Document"));
         var result = new CSharpPolicyCompiler(policy).Compile();
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.Errors.Count == 0);
+        Assert.IsTrue(result.Errors.Count == 0, string.Join(",", result.Errors));
         Assert.IsNotNull(result.Document);
     }
 }

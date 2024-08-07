@@ -2,8 +2,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
 public interface IDocument
 {
-    void Inbound(IInboundContext section) { }
-    void Outbound(IOutboundContext section) { }
-    void Backend(IBackendContext section) { }
-    void OnError(IOnErrorContext section) { }
+    void Inbound(IInboundContext context) { }
+    void Outbound(IOutboundContext context) { }
+    void Backend(IBackendContext context) { }
+    void OnError(IOnErrorContext context) { }
 }

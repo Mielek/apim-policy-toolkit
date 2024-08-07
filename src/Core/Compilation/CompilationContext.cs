@@ -15,7 +15,7 @@ public class CompilationContext : ICompilationContext, ICompilationResult
         _rootElement = rootElement;
     }
     
-    public void AddPolicy(XElement element) => _rootElement.Add(element);
+    public void AddPolicy(XNode element) => _rootElement.Add(element);
 
     public void ReportError(string message) => _errors.Add(message);
 
