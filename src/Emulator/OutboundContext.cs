@@ -20,5 +20,5 @@ public class OutboundContext : IOutboundContext
         throw new NotImplementedException();
     }
 
-    public IContext Context { get; }
+    public IExpressionContext ExpressionContext { get; }
 }
