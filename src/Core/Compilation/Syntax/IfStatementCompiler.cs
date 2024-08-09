@@ -30,23 +30,44 @@ public class IfStatementCompiler : ISyntaxCompiler
         do
         {
             currentIf = nextIf;
+
+            if (currentIf.Statement is not BlockSyntax block)
+            {
+                context.ReportError(
+                    $"{currentIf.Statement.GetType().Name} is not supported. ({currentIf.Statement.GetLocation()})");
+                continue;
+            }
+
+            if (currentIf.Condition is not InvocationExpressionSyntax condition)
+            {
+                context.ReportError(
+                    $"{currentIf.Condition.GetType().Name} is not supported. ({currentIf.Condition.GetLocation()})");
+                continue;
+            }
+
             var section = new XElement("when");
             var innerContext = new SubCompilationContext(context, section);
-            _blockCompiler.Compile(innerContext, currentIf.Statement as BlockSyntax);
-            section.Add(new XAttribute("condition", CompilerUtils.FindCode(context, currentIf.Condition as InvocationExpressionSyntax)));
+            _blockCompiler.Compile(innerContext, block);
+            section.Add(new XAttribute("condition", CompilerUtils.FindCode(context, condition)));
             choose.Add(section);
 
             nextIf = currentIf.Else?.Statement as IfStatementSyntax;
         } while (nextIf != null);
 
-
         if (currentIf.Else != null)
         {
             var section = new XElement("otherwise");
             var innerContext = new SubCompilationContext(context, section);
-            _blockCompiler.Compile(innerContext, currentIf.Else.Statement as BlockSyntax);
-            choose.Add(section);
+            if (currentIf.Else.Statement is BlockSyntax block)
+            {
+                _blockCompiler.Compile(innerContext, block);
+                choose.Add(section);
+            }
+            else
+            {
+                context.ReportError(
+                    $"{currentIf.Else.Statement.GetType().Name} is not supported. ({currentIf.Else.Statement.GetLocation()})");
+            }
         }
     }
-
 }
