@@ -52,6 +52,7 @@ public interface IInboundContext : IHaveExpressionContext
 
     string AuthenticationManagedIdentity(string resource);
     void AuthenticationBasic(string username, string password);
+    void SetBody(string body);
 
     void RateLimit();
     void Quota();
@@ -66,7 +67,6 @@ public interface IInboundContext : IHaveExpressionContext
     void ValidateJwt();
     void SetVariable();
     void ReturnResponse();
-    void SetBody();
     void SendRequest();
     void RateLimitByKey();
     void SetMethod();
