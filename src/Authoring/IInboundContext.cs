@@ -5,7 +5,8 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 public interface IInboundContext : IHaveExpressionContext
 {
     /// <summary>
-    /// Adds header of specified name with values or overrides values if header already exists.
+    /// Adds header of specified name with values or overrides values if header already exists.<br />
+    /// Compiled to <a href="https://learn.microsoft.com/en-us/azure/api-management/set-header-policy">set-header</a> policy.
     /// </summary>
     /// <param name="name">
     /// Specifies name of the header to be added. Policy expressions are allowed.
@@ -16,7 +17,8 @@ public interface IInboundContext : IHaveExpressionContext
     void SetHeader(string name, params string[] values);
 
     /// <summary>
-    /// Sets header of specified name and values if header not already exist.
+    /// Sets header of specified name and values if header not already exist.<br />
+    /// Compiled to <a href="https://learn.microsoft.com/en-us/azure/api-management/set-header-policy">set-header</a> policy.
     /// </summary>
     /// <param name="name">
     /// Specifies name of the header to be added. Policy expressions are allowed.
@@ -27,7 +29,8 @@ public interface IInboundContext : IHaveExpressionContext
     void SetHeaderIfNotExist(string name, params string[] values);
 
     /// <summary>
-    /// Adds header of specified name with values or appends values if header already exists.
+    /// Adds header of specified name with values or appends values if header already exists.<br />
+    /// Compiled to <a href="https://learn.microsoft.com/en-us/azure/api-management/set-header-policy">set-header</a> policy.
     /// </summary>
     /// <param name="name">
     /// Specifies name of the header to be added. Policy expressions are allowed.
@@ -38,7 +41,8 @@ public interface IInboundContext : IHaveExpressionContext
     void AppendHeader(string name, params string[] values);
 
     /// <summary>
-    /// Deletes header of specified name.
+    /// Deletes header of specified name.<br />
+    /// Compiled to <a href="https://learn.microsoft.com/en-us/azure/api-management/set-header-policy">set-header</a> policy.
     /// </summary>
     /// <param name="name">
     /// Specifies name of the header to be deleted. Policy expressions are allowed.
