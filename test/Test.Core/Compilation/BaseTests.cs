@@ -18,11 +18,6 @@ public class BaseTests
     {
         var code = CSharpSyntaxTree.ParseText(
         """
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
-
-            namespace Com.Contoso.Policies;
-
             [Document]
             public class PolicyDocument : IDocument
             {

@@ -1,4 +1,3 @@
-
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -23,25 +22,20 @@ public class SetHeaderCompilationTests
     public void ShouldCompileSetHeaderPolicyInSections(string method, string type)
     {
         var code = CSharpSyntaxTree.ParseText(
-        $$"""
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
-
-            namespace Com.Contoso.Policies;
-
-            [Document]
-            public class PolicyDocument : IDocument
-            {
-                public void Inbound(IInboundContext context) 
-                { 
-                    context.{{method}}("X-Header", "1");
-                }
-                public void Outbound(IOutboundContext context)
-                {
-                    context.{{method}}("X-Header", "1");
-                }
-            }
-        """);
+            $$"""
+                  [Document]
+                  public class PolicyDocument : IDocument
+                  {
+                      public void Inbound(IInboundContext context) 
+                      { 
+                          context.{{method}}("X-Header", "1");
+                      }
+                      public void Outbound(IOutboundContext context)
+                      {
+                          context.{{method}}("X-Header", "1");
+                      }
+                  }
+              """);
         var policy = code
             .GetRoot()
             .DescendantNodes()
@@ -56,19 +50,19 @@ public class SetHeaderCompilationTests
 
         var expectedXml = XElement.Parse(
             $$"""
-            <policies>
-                <inbound>
-                    <set-header name="X-Header" exists-action="{{type}}">
-                        <value>1</value>
-                    </set-header>
-                </inbound>
-                <outbound>
-                    <set-header name="X-Header" exists-action="{{type}}">
-                        <value>1</value>
-                    </set-header>
-                </outbound>
-            </policies>
-            """);
+              <policies>
+                  <inbound>
+                      <set-header name="X-Header" exists-action="{{type}}">
+                          <value>1</value>
+                      </set-header>
+                  </inbound>
+                  <outbound>
+                      <set-header name="X-Header" exists-action="{{type}}">
+                          <value>1</value>
+                      </set-header>
+                  </outbound>
+              </policies>
+              """);
         result.Document.Should().BeEquivalentTo(expectedXml);
     }
 
@@ -76,25 +70,20 @@ public class SetHeaderCompilationTests
     public void ShouldCompileRemoveHeaderPolicyInSections()
     {
         var code = CSharpSyntaxTree.ParseText(
-        """
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
-
-            namespace Com.Contoso.Policies;
-
-            [Document]
-            public class PolicyDocument : IDocument
-            {
-                public void Inbound(IInboundContext context) 
+            """
+                [Document]
+                public class PolicyDocument : IDocument
                 {
-                    context.RemoveHeader("Delete");
+                    public void Inbound(IInboundContext context) 
+                    {
+                        context.RemoveHeader("Delete");
+                    }
+                    public void Outbound(IOutboundContext context)
+                    {
+                        context.RemoveHeader("Delete");
+                    }
                 }
-                public void Outbound(IOutboundContext context)
-                {
-                    context.RemoveHeader("Delete");
-                }
-            }
-        """);
+            """);
         var policy = code
             .GetRoot()
             .DescendantNodes()
@@ -129,24 +118,19 @@ public class SetHeaderCompilationTests
     {
         var code = CSharpSyntaxTree.ParseText(
             $$"""
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
-
-            namespace Com.Contoso.Policies;
-
-            [Document]
-            public class PolicyDocument : IDocument
-            {
-                public void Inbound(IInboundContext context) 
-                {
-                    context.{{method}}("X-Header", "1", "2", "3");
-                }
-                public void Outbound(IOutboundContext context)
-                {
-                    context.{{method}}("X-Header", "3", "2", "1");
-                }
-            }
-        """);
+                  [Document]
+                  public class PolicyDocument : IDocument
+                  {
+                      public void Inbound(IInboundContext context) 
+                      {
+                          context.{{method}}("X-Header", "1", "2", "3");
+                      }
+                      public void Outbound(IOutboundContext context)
+                      {
+                          context.{{method}}("X-Header", "3", "2", "1");
+                      }
+                  }
+              """);
         var policy = code
             .GetRoot()
             .DescendantNodes()
@@ -161,23 +145,23 @@ public class SetHeaderCompilationTests
 
         var expectedXml = XElement.Parse(
             $$"""
-            <policies>
-                <inbound>
-                    <set-header name="X-Header" exists-action="{{type}}">
-                        <value>1</value>
-                        <value>2</value>
-                        <value>3</value>
-                    </set-header>
-                </inbound>
-                <outbound>
-                    <set-header name="X-Header" exists-action="{{type}}">
-                        <value>3</value>
-                        <value>2</value>
-                        <value>1</value>
-                    </set-header>
-                </outbound>
-            </policies>
-            """);
+              <policies>
+                  <inbound>
+                      <set-header name="X-Header" exists-action="{{type}}">
+                          <value>1</value>
+                          <value>2</value>
+                          <value>3</value>
+                      </set-header>
+                  </inbound>
+                  <outbound>
+                      <set-header name="X-Header" exists-action="{{type}}">
+                          <value>3</value>
+                          <value>2</value>
+                          <value>1</value>
+                      </set-header>
+                  </outbound>
+              </policies>
+              """);
         result.Document.Should().BeEquivalentTo(expectedXml);
     }
 
@@ -185,12 +169,7 @@ public class SetHeaderCompilationTests
     public void ShouldCompileSetHeaderPolicyWithPolicyExpressionInName()
     {
         var code = CSharpSyntaxTree.ParseText(
-            $$"""
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
-
-            namespace Com.Contoso.Policies;
-
+            """
             [Document]
             public class PolicyDocument : IDocument
             {
@@ -202,10 +181,10 @@ public class SetHeaderCompilationTests
                 {
                     context.SetHeader(NameFromExpression(context.ExpressionContext), "1");
                 }
-
+            
                 public string NameFromExpression(IExpressionContext context) => "name" + context.RequestId;
             }
-        """);
+            """);
         var policy = code
             .GetRoot()
             .DescendantNodes()
@@ -233,7 +212,7 @@ public class SetHeaderCompilationTests
                 </outbound>
             </policies>
             """;
-        
+
         result.Document.Should().BeEquivalentTo(expectedXml);
     }
 
@@ -241,12 +220,7 @@ public class SetHeaderCompilationTests
     public void ShouldCompileSetHeaderPolicyWithPolicyExpressionInValue()
     {
         var code = CSharpSyntaxTree.ParseText(
-            $$"""
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
-
-            namespace Com.Contoso.Policies;
-
+            """
             [Document]
             public class PolicyDocument : IDocument
             {
@@ -258,10 +232,10 @@ public class SetHeaderCompilationTests
                 {
                     context.SetHeader("X-Header", "1", ValueFromExpression(context.ExpressionContext), "2");
                 }
-
+            
                 public string ValueFromExpression(IExpressionContext context) => "value" + context.RequestId;
             }
-        """);
+            """);
         var policy = code
             .GetRoot()
             .DescendantNodes()
@@ -293,7 +267,7 @@ public class SetHeaderCompilationTests
                 </outbound>
             </policies>
             """);
-        
+
         result.Document.Should().BeEquivalentTo(expectedXml);
     }
 }
