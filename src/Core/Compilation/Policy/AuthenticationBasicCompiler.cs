@@ -10,6 +10,12 @@ public class AuthenticationBasicCompiler : IMethodPolicyHandler
     public string MethodName => nameof(IInboundContext.AuthenticationBasic);
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
+        if(node.ArgumentList.Arguments.Count != 2)
+        {
+            context.ReportError($"Wrong argument count for authentication-basic policy. {node.GetLocation()}");
+            return;
+        }
+
         var username = CompilerUtils.ProcessParameter(context, node.ArgumentList.Arguments[0].Expression);
         var password = CompilerUtils.ProcessParameter(context, node.ArgumentList.Arguments[1].Expression);
         var policy = new AuthenticationBasicPolicyBuilder()
