@@ -11,7 +11,7 @@ public class ApiOperationPolicy : IDocument
     public void Inbound(IInboundContext c)
     {
         c.Base();
-        if(IsFromCompanyIp(c.Context))
+        if(IsFromCompanyIp(c.ExpressionContext))
         {
             c.AuthenticationBasic("{{username}}", "{{password}}");
         }
@@ -25,7 +25,7 @@ public class ApiOperationPolicy : IDocument
     public void Outbound(IOutboundContext c)
     {
         c.Base();
-        c.SetBody(FilterSecrets(c.Context));
+        c.SetBody(FilterSecrets(c.ExpressionContext));
     }
 
     public bool IsFromCompanyIp(IExpressionContext context)
