@@ -1,17 +1,15 @@
 using System.Text;
 using System.Xml;
 
-using FluentAssertions;
 using FluentAssertions.Xml;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
 
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Tests;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Tests.Extensions;
 
 public static class XElementAssertionsExtensions
 {
-    static XmlWriterSettings DefaultSerializeSettings = new XmlWriterSettings()
+    readonly static XmlWriterSettings DefaultSerializeSettings = new()
     {
         OmitXmlDeclaration = true,
         ConformanceLevel = ConformanceLevel.Fragment,

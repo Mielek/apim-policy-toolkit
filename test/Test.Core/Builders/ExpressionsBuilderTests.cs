@@ -2,7 +2,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization.Test;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
 
 [TestClass]
 public class ExpressionBuilderTests

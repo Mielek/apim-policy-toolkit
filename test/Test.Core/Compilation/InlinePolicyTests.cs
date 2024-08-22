@@ -1,13 +1,7 @@
-﻿using System.Xml.Linq;
-
-using FluentAssertions;
-
-using Microsoft.CodeAnalysis.CSharp;
+﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Tests;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 [TestClass]
 public class InlinePolicyTests
@@ -50,7 +44,7 @@ public class InlinePolicyTests
         Assert.IsTrue(result.Errors.Count == 0);
         Assert.IsNotNull(result.Document);
 
-        var expectedXml = XElement.Parse(
+        var expectedXml = 
             """
             <policies>
                 <inbound>
@@ -66,7 +60,7 @@ public class InlinePolicyTests
                     <any-xml />
                 </on-error>
             </policies>
-            """);
+            """;
         result.Document.Should().BeEquivalentTo(expectedXml);
     }
 }

@@ -60,25 +60,24 @@ public class CSharpPolicyCompiler
                 continue;
             }
 
-            if (method.Body is null)
-            {
-                context.ReportError($"Method {sectionName} is not allowed as expression. ({method.GetLocation()})");
-                continue;
-            }
-
-            var section = CompileSection(context, sectionName, method.Body);
-            context.AddPolicy(section);
+            CompileSection(context, sectionName, method);
         }
 
         return context;
     }
 
 
-    private XElement CompileSection(ICompilationContext context, string section, BlockSyntax block)
+    private void CompileSection(ICompilationContext context, string section, MethodDeclarationSyntax method)
     {
+        if (method.Body is null)
+        {
+            context.ReportError($"Method {section} is not allowed as expression. ({method.GetLocation()})");
+            return;
+        }
+
         var sectionElement = new XElement(section);
         var sectionContext = new SubCompilationContext(context, sectionElement);
-        _blockCompiler.Compile(sectionContext, block);
-        return sectionElement;
+        _blockCompiler.Compile(sectionContext, method.Body);
+        context.AddPolicy(sectionElement);
     }
 }

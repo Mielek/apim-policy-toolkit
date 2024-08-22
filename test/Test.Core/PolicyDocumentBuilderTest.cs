@@ -1,6 +1,6 @@
 using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Test;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders;
 
 [TestClass]
 public class PolicyDocumentBuilderTest

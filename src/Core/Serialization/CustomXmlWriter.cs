@@ -5,12 +5,12 @@ using System.Xml.Linq;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
 
-public class CustomXmlWriter : IDisposable
+public sealed class CustomXmlWriter : IDisposable
 {
-    private XmlWriter _xmlWriter;
+    private readonly XmlWriter _xmlWriter;
 
-    public static CustomXmlWriter Create(StringBuilder stringBuilder, XmlWriterSettings options) => new CustomXmlWriter(XmlWriter.Create(stringBuilder, options));
-    public static CustomXmlWriter Create(string outputFileName, XmlWriterSettings options) => new CustomXmlWriter(XmlWriter.Create(outputFileName, options));
+    public static CustomXmlWriter Create(StringBuilder stringBuilder, XmlWriterSettings? options = null) => new CustomXmlWriter(XmlWriter.Create(stringBuilder, options));
+    public static CustomXmlWriter Create(string outputFileName, XmlWriterSettings? options = null) => new CustomXmlWriter(XmlWriter.Create(outputFileName, options));
 
     CustomXmlWriter(XmlWriter xmlWriter)
     {

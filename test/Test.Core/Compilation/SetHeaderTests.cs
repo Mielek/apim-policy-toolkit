@@ -1,16 +1,7 @@
-using System.Text;
-using System.Xml;
-using System.Xml.Linq;
-
-using FluentAssertions;
-
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Tests;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 [TestClass]
 public class SetHeaderCompilationTests
@@ -48,7 +39,7 @@ public class SetHeaderCompilationTests
         Assert.IsTrue(result.Errors.Count == 0);
         Assert.IsNotNull(result.Document);
 
-        var expectedXml = XElement.Parse(
+        var expectedXml =
             $$"""
               <policies>
                   <inbound>
@@ -62,7 +53,7 @@ public class SetHeaderCompilationTests
                       </set-header>
                   </outbound>
               </policies>
-              """);
+              """;
         result.Document.Should().BeEquivalentTo(expectedXml);
     }
 
@@ -96,7 +87,7 @@ public class SetHeaderCompilationTests
         Assert.IsTrue(result.Errors.Count == 0);
         Assert.IsNotNull(result.Document);
 
-        var expectedXml = XElement.Parse(
+        var expectedXml =
             """
             <policies>
                 <inbound>
@@ -106,7 +97,7 @@ public class SetHeaderCompilationTests
                     <set-header name="Delete" exists-action="delete" />
                 </outbound>
             </policies>
-            """);
+            """;
         result.Document.Should().BeEquivalentTo(expectedXml);
     }
 
@@ -143,25 +134,25 @@ public class SetHeaderCompilationTests
         Assert.IsTrue(result.Errors.Count == 0);
         Assert.IsNotNull(result.Document);
 
-        var expectedXml = XElement.Parse(
-            $$"""
+        var expectedXml =
+            $"""
               <policies>
                   <inbound>
-                      <set-header name="X-Header" exists-action="{{type}}">
+                      <set-header name="X-Header" exists-action="{type}">
                           <value>1</value>
                           <value>2</value>
                           <value>3</value>
                       </set-header>
                   </inbound>
                   <outbound>
-                      <set-header name="X-Header" exists-action="{{type}}">
+                      <set-header name="X-Header" exists-action="{type}">
                           <value>3</value>
                           <value>2</value>
                           <value>1</value>
                       </set-header>
                   </outbound>
               </policies>
-              """);
+              """;
         result.Document.Should().BeEquivalentTo(expectedXml);
     }
 
@@ -248,7 +239,7 @@ public class SetHeaderCompilationTests
         Assert.IsTrue(result.Errors.Count == 0);
         Assert.IsNotNull(result.Document);
 
-        var expectedXml = XElement.Parse(
+        var expectedXml =
             """
             <policies>
                 <inbound>
@@ -266,7 +257,7 @@ public class SetHeaderCompilationTests
                     </set-header>
                 </outbound>
             </policies>
-            """);
+            """;
 
         result.Document.Should().BeEquivalentTo(expectedXml);
     }

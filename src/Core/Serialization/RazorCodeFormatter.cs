@@ -5,27 +5,22 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
-public class RazorCodeFormatter
+
+public static class RazorCodeFormatter
 {
-    private static Regex CSharpCodeStart = new Regex("(@\\()|(@{)", RegexOptions.Compiled);
-    private string code;
-    private StringBuilder result = new StringBuilder();
+    private readonly static Regex CSharpCodeStart = new Regex("(@\\()|(@{)", RegexOptions.Compiled);
 
-    public RazorCodeFormatter(string code)
+    public static string Format(string code)
     {
-        this.code = code;
-    }
-
-    public string Format()
-    {
+        var result = new StringBuilder();
         var lastIndex = 0;
         foreach (Match match in CSharpCodeStart.Matches(code))
         {
             result.Append(code, lastIndex, match.Index - lastIndex + 2);
-            var index = FindClosingIndex(match, out bool isMultiline);
+            var index = FindClosingIndex(code, match, out bool isMultiline);
             if (isMultiline) result.AppendLine();
 
-            var cSharpCode = code.Substring(match.Index + 2, index - match.Index - 2);
+            var cSharpCode = code.Substring(match.Index + 2, index - match.Index - 2).Trim();
             var formattedCode = FormatCSharpCode(cSharpCode);
             result.Append(formattedCode);
 
@@ -38,7 +33,7 @@ public class RazorCodeFormatter
         return result.ToString();
     }
 
-    private int FindClosingIndex(Match match, out bool isMultiline)
+    private static int FindClosingIndex(string code, Match match, out bool isMultiline)
     {
         var index = match.Index + 2;
         int open = 1;
@@ -55,7 +50,7 @@ public class RazorCodeFormatter
         return --index;
     }
 
-    private string FormatCSharpCode(string code)
+    private static string FormatCSharpCode(string code)
     {
         return CSharpSyntaxTree.ParseText(code)
             .GetRoot()
