@@ -8,4 +8,8 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <NoWarn>1591</NoWarn> <!-- Disable warning CS1591: Missing XML comment for publicly visible type or member, should be removed in the future -->
+    </PropertyGroup>
+
 </Project>
