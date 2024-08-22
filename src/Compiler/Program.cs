@@ -58,7 +58,7 @@ foreach (var file in files)
         var xml = codeBuilder.ToString();
         if (format)
         {
-            xml = new RazorCodeFormatter(xml).Format();
+            xml = RazorCodeFormatter.Format(xml);
         }
 
         var attributeSyntax = document.AttributeLists.GetFirstAttributeOfType("Document");
