@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
 
 public static class RazorCodeFormatter
@@ -30,6 +32,28 @@ public static class RazorCodeFormatter
         }
 
         result.Append(code, lastIndex, code.Length - lastIndex);
+        return result.ToString();
+    }
+
+    public static string ToCleanXml(string code, out IReadOnlyDictionary<string, string> markerToCode)
+    {
+        var expressions = new Dictionary<string, string>();
+        var result = new StringBuilder();
+        var lastIndex = 0;
+        foreach (Match match in CSharpCodeStart.Matches(code))
+        {
+            result.Append(code, lastIndex, match.Index - lastIndex);
+            var index = FindClosingIndex(code, match, out var isMultiline);
+            var cSharpCode = code.Substring(match.Index + 2, index - match.Index - 2).Trim();
+            var formatlessCode =  new TriviaRemoverRewriter().Visit(CSharpSyntaxTree.ParseText(cSharpCode).GetRoot()).NormalizeWhitespace("", "").ToString();
+            var marker = $"__expression__{Guid.NewGuid()}__";
+            expressions.Add(marker, isMultiline ? $"@{{{formatlessCode}}}" : $"@({formatlessCode})");
+            result.Append(marker);
+            lastIndex = index + 1;
+        }
+
+        result.Append(code, lastIndex, code.Length - lastIndex);
+        markerToCode = expressions;
         return result.ToString();
     }
 

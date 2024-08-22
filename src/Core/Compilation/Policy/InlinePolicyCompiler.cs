@@ -1,8 +1,10 @@
-﻿using System.Xml.Linq;
+﻿using System.Xml;
+using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 
@@ -25,7 +27,35 @@ public class InlinePolicyCompiler : IMethodPolicyHandler
             context.ReportError($"Inline policy must be a string literal. {node.GetLocation()}");
             return;
         }
+
+        XElement xml = CreateRazorFromString(literal);
+        context.AddPolicy(xml);
+    }
+
+    private static XElement CreateRazorFromString(LiteralExpressionSyntax literal)
+    {
+        var cleanXml = RazorCodeFormatter.ToCleanXml(literal.Token.ValueText, out var markerToCode);
+        var xml = XElement.Parse(cleanXml);
         
-        context.AddPolicy(XElement.Parse(literal.Token.ValueText));
+        foreach (XElement element in xml.DescendantsAndSelf())
+        {
+            if (element.HasAttributes)
+            {
+                foreach (var a in element.Attributes())
+                {
+                    if (markerToCode.TryGetValue(a.Value, out var attributeCode))
+                    {
+                        a.Value = attributeCode;
+                    }
+                }
+            }
+
+            if (markerToCode.TryGetValue(element.Value, out var valueCode))
+            {
+                element.Value = valueCode;
+            }
+        }
+
+        return xml;
     }
 }

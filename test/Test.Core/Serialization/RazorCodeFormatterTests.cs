@@ -21,7 +21,7 @@ public class RazorCodeFormatterTests
         var result = RazorCodeFormatter.Format(notFormatted);
         result.Should().Be(formatted);
     }
-    
+
     [TestMethod]
     [DataRow("<element>@{var a=1;}</element>",
         """
@@ -29,7 +29,7 @@ public class RazorCodeFormatterTests
         var a = 1;
         }</element>
         """)]
-    [DataRow("<element>@{return context.Request.IpAddress.StartsWith(\"10.0.0.\")?\"a\":\"b\";}</element>", 
+    [DataRow("<element>@{return context.Request.IpAddress.StartsWith(\"10.0.0.\")?\"a\":\"b\";}</element>",
         """
         <element>@{
         return context.Request.IpAddress.StartsWith("10.0.0.") ? "a" : "b";
@@ -81,5 +81,61 @@ public class RazorCodeFormatterTests
     {
         var result = RazorCodeFormatter.Format(notFormatted);
         result.Should().Be(formatted);
+    }
+
+    [TestMethod]
+    [DataRow(
+        "<element att1=\"@(var a=1;)\" />",
+        "@(var a = 1;)",
+        "<element att1=\"{0}\" />")]
+    [DataRow(
+        "<element att1=\"@{var a=1;}\" />",
+        "@{var a = 1;}",
+        "<element att1=\"{0}\" />")]
+    [DataRow(
+        "<element>@(var a=1;)</element>",
+        "@(var a = 1;)",
+        "<element>{0}</element>")]
+    [DataRow(
+        "<element>@{var a=1;}</element>",
+        "@{var a = 1;}",
+        "<element>{0}</element>")]
+    public void ShouldReplaceCodeWithMarkers(string code, string expression, string expected)
+    {
+        var result = RazorCodeFormatter.ToCleanXml(code, out var markerToCode);
+        markerToCode.Should().HaveCount(1);
+        var entry = markerToCode.First();
+        entry.Value.Should().Be(expression);
+        result.Should().NotBe(code).And.Be(string.Format(expected, entry.Key));
+    }
+
+    [TestMethod]
+    public void ShouldReplaceAllExpressionsInCode()
+    {
+        var code =
+            """
+            <element att1="@(var a=1;)">
+                <v>@{
+                if (context.Request.IpAddress.StartsWith("10.0.0."))
+                {
+                    return "a";
+                }
+                else
+                {
+                    return "b";
+                }
+                }</v>
+            <element>
+            """;
+        var result = RazorCodeFormatter.ToCleanXml(code, out var markerToCode);
+
+        markerToCode.Should().HaveCount(2);
+        markerToCode.Should().ContainValue("@(var a = 1;)");
+        markerToCode.Should().ContainValue("""@{if (context.Request.IpAddress.StartsWith("10.0.0.")){return "a";}else{return "b";}}""");
+        result.Should().Match("""
+                              <element att1="*">
+                                  <v>*</v>
+                              <element>
+                              """);
     }
 }
