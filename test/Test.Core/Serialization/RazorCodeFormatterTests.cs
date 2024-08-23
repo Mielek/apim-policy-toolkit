@@ -79,8 +79,8 @@ public class RazorCodeFormatterTests
         """)]
     public void ShouldFormatMultiLineCode(string notFormatted, string formatted)
     {
-        var result = RazorCodeFormatter.Format(notFormatted);
-        result.Should().Be(formatted);
+        var result = RazorCodeFormatter.Format(notFormatted.ReplaceLineEndings());
+        result.Should().Be(formatted.ReplaceLineEndings());
     }
 
     [TestMethod]
@@ -126,7 +126,7 @@ public class RazorCodeFormatterTests
                 }
                 }</v>
             <element>
-            """;
+            """.ReplaceLineEndings();
         var result = RazorCodeFormatter.ToCleanXml(code, out var markerToCode);
 
         markerToCode.Should().HaveCount(2);
@@ -136,6 +136,6 @@ public class RazorCodeFormatterTests
                               <element att1="*">
                                   <v>*</v>
                               <element>
-                              """);
+                              """.ReplaceLineEndings());
     }
 }

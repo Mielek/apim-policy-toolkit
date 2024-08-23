@@ -38,6 +38,7 @@ public class CustomXmlWriterTests
              """)]
     public void ShouldSerializeExpressionInAttribute(string expression)
     {
+        expression = expression.ReplaceLineEndings();
         var element = new XElement("element", new XAttribute("att1", expression));
 
         var result = Serialize(element);
@@ -55,6 +56,7 @@ public class CustomXmlWriterTests
              """)]
     public void ShouldSerializeExpressionInElementValue(string expression)
     {
+        expression = expression.ReplaceLineEndings();
         var element = new XElement("element", expression);
 
         var result = Serialize(element);
