@@ -15,7 +15,7 @@ public static class XElementAssertionsExtensions
         ConformanceLevel = ConformanceLevel.Fragment,
         Indent = true,
         IndentChars = "    ",
-        NewLineChars = "\r\n",
+        NewLineChars = "\n",
     };
 
     //
@@ -23,6 +23,7 @@ public static class XElementAssertionsExtensions
     //     Asserts that a string is exactly the same as policy xml serialized with indentation, without expression formatting
     public static void BeEquivalentTo(this XElementAssertions assertions, string expectedXml, string because = "", params object[] becauseArgs)
     {
+        expectedXml = expectedXml.Replace("\r", "");
         var strBuilder = new StringBuilder();
         using (var writer = CustomXmlWriter.Create(strBuilder, DefaultSerializeSettings))
         {
