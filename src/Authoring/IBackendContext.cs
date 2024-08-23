@@ -2,7 +2,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
 public interface IBackendContext : IHaveExpressionContext
 {
-    void ForwardRequest();
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void ForwardRequest(ForwardRequestConfig? config = null);
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.

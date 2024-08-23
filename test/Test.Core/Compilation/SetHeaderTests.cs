@@ -1,6 +1,3 @@
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 [TestClass]
@@ -12,32 +9,23 @@ public class SetHeaderCompilationTests
     [DataRow("SetHeaderIfNotExist", "skip")]
     public void ShouldCompileSetHeaderPolicyInSections(string method, string type)
     {
-        var code = CSharpSyntaxTree.ParseText(
+        var code =
             $$"""
-                  [Document]
-                  public class PolicyDocument : IDocument
-                  {
-                      public void Inbound(IInboundContext context) 
-                      { 
-                          context.{{method}}("X-Header", "1");
-                      }
-                      public void Outbound(IOutboundContext context)
-                      {
-                          context.{{method}}("X-Header", "1");
-                      }
+              [Document]
+              public class PolicyDocument : IDocument
+              {
+                  public void Inbound(IInboundContext context) 
+                  { 
+                      context.{{method}}("X-Header", "1");
                   }
-              """);
-        var policy = code
-            .GetRoot()
-            .DescendantNodes()
-            .OfType<ClassDeclarationSyntax>()
-            .First(c => c.AttributeLists.ContainsAttributeOfType("Document"));
+                  public void Outbound(IOutboundContext context)
+                  {
+                      context.{{method}}("X-Header", "1");
+                  }
+              }
+              """;
 
-        var result = new CSharpPolicyCompiler(policy).Compile();
-
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Errors.Count == 0);
-        Assert.IsNotNull(result.Document);
+        var result = code.CompileDocument();
 
         var expectedXml =
             $$"""
@@ -54,38 +42,29 @@ public class SetHeaderCompilationTests
                   </outbound>
               </policies>
               """;
-        result.Document.Should().BeEquivalentTo(expectedXml);
+        result.Should().BeSuccessful().And.DocumentEquivalentTo(expectedXml);
     }
 
     [TestMethod]
     public void ShouldCompileRemoveHeaderPolicyInSections()
     {
-        var code = CSharpSyntaxTree.ParseText(
+        var code =
             """
-                [Document]
-                public class PolicyDocument : IDocument
+            [Document]
+            public class PolicyDocument : IDocument
+            {
+                public void Inbound(IInboundContext context) 
                 {
-                    public void Inbound(IInboundContext context) 
-                    {
-                        context.RemoveHeader("Delete");
-                    }
-                    public void Outbound(IOutboundContext context)
-                    {
-                        context.RemoveHeader("Delete");
-                    }
+                    context.RemoveHeader("Delete");
                 }
-            """);
-        var policy = code
-            .GetRoot()
-            .DescendantNodes()
-            .OfType<ClassDeclarationSyntax>()
-            .First(c => c.AttributeLists.ContainsAttributeOfType("Document"));
+                public void Outbound(IOutboundContext context)
+                {
+                    context.RemoveHeader("Delete");
+                }
+            }
+            """;
 
-        var result = new CSharpPolicyCompiler(policy).Compile();
-
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Errors.Count == 0);
-        Assert.IsNotNull(result.Document);
+        var result = code.CompileDocument();
 
         var expectedXml =
             """
@@ -98,7 +77,7 @@ public class SetHeaderCompilationTests
                 </outbound>
             </policies>
             """;
-        result.Document.Should().BeEquivalentTo(expectedXml);
+        result.Should().BeSuccessful().And.DocumentEquivalentTo(expectedXml);
     }
 
     [TestMethod]
@@ -107,59 +86,50 @@ public class SetHeaderCompilationTests
     [DataRow("SetHeaderIfNotExist", "skip")]
     public void ShouldCompileSetHeaderPolicyWithMultipleParameters(string method, string type)
     {
-        var code = CSharpSyntaxTree.ParseText(
+        var code =
             $$"""
-                  [Document]
-                  public class PolicyDocument : IDocument
+              [Document]
+              public class PolicyDocument : IDocument
+              {
+                  public void Inbound(IInboundContext context) 
                   {
-                      public void Inbound(IInboundContext context) 
-                      {
-                          context.{{method}}("X-Header", "1", "2", "3");
-                      }
-                      public void Outbound(IOutboundContext context)
-                      {
-                          context.{{method}}("X-Header", "3", "2", "1");
-                      }
+                      context.{{method}}("X-Header", "1", "2", "3");
                   }
-              """);
-        var policy = code
-            .GetRoot()
-            .DescendantNodes()
-            .OfType<ClassDeclarationSyntax>()
-            .First(c => c.AttributeLists.ContainsAttributeOfType("Document"));
+                  public void Outbound(IOutboundContext context)
+                  {
+                      context.{{method}}("X-Header", "3", "2", "1");
+                  }
+              }
+              """;
 
-        var result = new CSharpPolicyCompiler(policy).Compile();
-
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Errors.Count == 0);
-        Assert.IsNotNull(result.Document);
+        var result = code.CompileDocument();
 
         var expectedXml =
             $"""
-              <policies>
-                  <inbound>
-                      <set-header name="X-Header" exists-action="{type}">
-                          <value>1</value>
-                          <value>2</value>
-                          <value>3</value>
-                      </set-header>
-                  </inbound>
-                  <outbound>
-                      <set-header name="X-Header" exists-action="{type}">
-                          <value>3</value>
-                          <value>2</value>
-                          <value>1</value>
-                      </set-header>
-                  </outbound>
-              </policies>
-              """;
-        result.Document.Should().BeEquivalentTo(expectedXml);
+             <policies>
+                 <inbound>
+                     <set-header name="X-Header" exists-action="{type}">
+                         <value>1</value>
+                         <value>2</value>
+                         <value>3</value>
+                     </set-header>
+                 </inbound>
+                 <outbound>
+                     <set-header name="X-Header" exists-action="{type}">
+                         <value>3</value>
+                         <value>2</value>
+                         <value>1</value>
+                     </set-header>
+                 </outbound>
+             </policies>
+             """;
+        result.Should().BeSuccessful().And.DocumentEquivalentTo(expectedXml);
     }
 
     [TestMethod]
     public void ShouldCompileSetHeaderPolicyWithPolicyExpressionInName()
     {
-        var code = CSharpSyntaxTree.ParseText(
+        var code =
             """
             [Document]
             public class PolicyDocument : IDocument
@@ -175,18 +145,9 @@ public class SetHeaderCompilationTests
             
                 public string NameFromExpression(IExpressionContext context) => "name" + context.RequestId;
             }
-            """);
-        var policy = code
-            .GetRoot()
-            .DescendantNodes()
-            .OfType<ClassDeclarationSyntax>()
-            .First(c => c.AttributeLists.ContainsAttributeOfType("Document"));
+            """;
 
-        var result = new CSharpPolicyCompiler(policy).Compile();
-
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Errors.Count == 0);
-        Assert.IsNotNull(result.Document);
+        var result = code.CompileDocument();
 
         var expectedXml =
             """
@@ -203,14 +164,13 @@ public class SetHeaderCompilationTests
                 </outbound>
             </policies>
             """;
-
-        result.Document.Should().BeEquivalentTo(expectedXml);
+        result.Should().BeSuccessful().And.DocumentEquivalentTo(expectedXml);
     }
 
     [TestMethod]
     public void ShouldCompileSetHeaderPolicyWithPolicyExpressionInValue()
     {
-        var code = CSharpSyntaxTree.ParseText(
+        var code = 
             """
             [Document]
             public class PolicyDocument : IDocument
@@ -226,18 +186,9 @@ public class SetHeaderCompilationTests
             
                 public string ValueFromExpression(IExpressionContext context) => "value" + context.RequestId;
             }
-            """);
-        var policy = code
-            .GetRoot()
-            .DescendantNodes()
-            .OfType<ClassDeclarationSyntax>()
-            .First(c => c.AttributeLists.ContainsAttributeOfType("Document"));
+            """;
 
-        var result = new CSharpPolicyCompiler(policy).Compile();
-
-        Assert.IsNotNull(result);
-        Assert.IsTrue(result.Errors.Count == 0);
-        Assert.IsNotNull(result.Document);
+        var result = code.CompileDocument();
 
         var expectedXml =
             """
@@ -258,7 +209,6 @@ public class SetHeaderCompilationTests
                 </outbound>
             </policies>
             """;
-
-        result.Document.Should().BeEquivalentTo(expectedXml);
+        result.Should().BeSuccessful().And.DocumentEquivalentTo(expectedXml);
     }
 }
