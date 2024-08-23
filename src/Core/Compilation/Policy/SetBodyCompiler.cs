@@ -18,7 +18,7 @@ public class SetBodyCompiler : IMethodPolicyHandler
             return;
         }
 
-        var value = CompilerUtils.ProcessParameter(context, node.ArgumentList.Arguments[0].Expression);
+        var value = node.ArgumentList.Arguments[0].Expression.ProcessParameter(context);
         context.AddPolicy(new SetBodyPolicyBuilder().Body(value).Build());
     }
 }

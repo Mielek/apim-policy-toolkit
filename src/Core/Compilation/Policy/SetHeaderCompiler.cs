@@ -2,17 +2,26 @@
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+
 using System.Xml.Linq;
+
 using static Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetHeaderPolicyBuilder;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 
 public class SetHeaderCompiler : IMethodPolicyHandler
 {
-    public static SetHeaderCompiler AppendCompiler => new SetHeaderCompiler(nameof(IInboundContext.AppendHeader), ExistsActionType.Append);
-    public static SetHeaderCompiler SetCompiler => new SetHeaderCompiler(nameof(IInboundContext.SetHeader), ExistsActionType.Override);
-    public static SetHeaderCompiler SetIfNotExistCompiler => new SetHeaderCompiler(nameof(IInboundContext.SetHeaderIfNotExist), ExistsActionType.Skip);
-    public static SetHeaderCompiler RemoveCompiler => new SetHeaderCompiler(nameof(IInboundContext.RemoveHeader), ExistsActionType.Delete);
+    public static SetHeaderCompiler AppendCompiler =>
+        new SetHeaderCompiler(nameof(IInboundContext.AppendHeader), ExistsActionType.Append);
+
+    public static SetHeaderCompiler SetCompiler =>
+        new SetHeaderCompiler(nameof(IInboundContext.SetHeader), ExistsActionType.Override);
+
+    public static SetHeaderCompiler SetIfNotExistCompiler =>
+        new SetHeaderCompiler(nameof(IInboundContext.SetHeaderIfNotExist), ExistsActionType.Skip);
+
+    public static SetHeaderCompiler RemoveCompiler =>
+        new SetHeaderCompiler(nameof(IInboundContext.RemoveHeader), ExistsActionType.Delete);
 
     readonly ExistsActionType _type;
 
@@ -27,21 +36,22 @@ public class SetHeaderCompiler : IMethodPolicyHandler
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
         var arguments = node.ArgumentList.Arguments;
-        if (_type != ExistsActionType.Delete && arguments.Count < 2 || _type == ExistsActionType.Delete && arguments.Count != 1 )
+        if (_type != ExistsActionType.Delete && arguments.Count < 2 ||
+            _type == ExistsActionType.Delete && arguments.Count != 1)
         {
             context.ReportError($"Wrong argument count for set-header policy. {node.GetLocation()}");
             context.AddPolicy(new XComment("Issue: set-header"));
             return;
         }
 
-        var headerName = CompilerUtils.ProcessParameter(context, node.ArgumentList.Arguments[0].Expression);
+        var headerName = node.ArgumentList.Arguments[0].Expression.ProcessParameter(context);
         var builder = new SetHeaderPolicyBuilder()
             .Name(headerName)
             .ExistsAction(_type);
 
         for (int i = 1; i < arguments.Count; i++)
         {
-            builder.Value(CompilerUtils.ProcessParameter(context, arguments[i].Expression));
+            builder.Value(arguments[i].Expression.ProcessParameter(context));
         }
 
         var policy = builder.Build();

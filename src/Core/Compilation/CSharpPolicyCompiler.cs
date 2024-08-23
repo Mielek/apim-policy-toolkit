@@ -25,7 +25,8 @@ public class CSharpPolicyCompiler
             SetHeaderCompiler.RemoveCompiler,
             new SetBodyCompiler(),
             new AuthenticationBasicCompiler(),
-            new InlinePolicyCompiler()
+            new InlinePolicyCompiler(),
+            new ForwardRequestCompiler(),
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityCompiler()

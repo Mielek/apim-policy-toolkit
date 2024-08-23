@@ -27,6 +27,7 @@ public static class XElementAssertionsExtensions
         {
             writer.Write(assertions.Subject);
         }
-        strBuilder.ToString().Should().BeEquivalentTo(expectedXml, because, becauseArgs);
+        var document = strBuilder.ToString();
+        document.Should().BeEquivalentTo(expectedXml, because, becauseArgs);
     }
 }

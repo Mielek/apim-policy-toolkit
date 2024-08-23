@@ -22,7 +22,7 @@ public class InlinePolicyCompiler : IMethodPolicyHandler
 
         var expression = node.ArgumentList.Arguments[0].Expression;
 
-        if(expression is not LiteralExpressionSyntax literal)
+        if (expression is not LiteralExpressionSyntax literal)
         {
             context.ReportError($"Inline policy must be a string literal. {node.GetLocation()}");
             return;
@@ -36,7 +36,7 @@ public class InlinePolicyCompiler : IMethodPolicyHandler
     {
         var cleanXml = RazorCodeFormatter.ToCleanXml(literal.Token.ValueText, out var markerToCode);
         var xml = XElement.Parse(cleanXml);
-        
+
         foreach (XElement element in xml.DescendantsAndSelf())
         {
             if (element.HasAttributes)

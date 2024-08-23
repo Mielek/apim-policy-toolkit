@@ -48,7 +48,7 @@ public class IfStatementCompiler : ISyntaxCompiler
             var section = new XElement("when");
             var innerContext = new SubCompilationContext(context, section);
             _blockCompiler.Compile(innerContext, block);
-            section.Add(new XAttribute("condition", CompilerUtils.FindCode(context, condition)));
+            section.Add(new XAttribute("condition", CompilerUtils.FindCode(condition, context)));
             choose.Add(section);
 
             nextIf = currentIf.Else?.Statement as IfStatementSyntax;

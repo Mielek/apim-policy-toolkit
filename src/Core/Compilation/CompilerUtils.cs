@@ -6,7 +6,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 public static class CompilerUtils
 {
-    public static string ProcessParameter(ICompilationContext context, ExpressionSyntax expression)
+    public static string ProcessParameter(this ExpressionSyntax expression, ICompilationContext context)
     {
         switch (expression)
         {
@@ -24,13 +24,13 @@ public static class CompilerUtils
             case AnonymousFunctionExpressionSyntax syntax:
                 return new LambdaExpression<string>(syntax.ToString()).Source;
             case InvocationExpressionSyntax syntax:
-                return FindCode(context, syntax);
+                return FindCode(syntax, context);
         }
 
         return "";
     }
-    
-    public static string FindCode(ICompilationContext context, InvocationExpressionSyntax syntax)
+
+    public static string FindCode(this InvocationExpressionSyntax syntax, ICompilationContext context)
     {
         var methodIdentifier = (syntax.Expression as IdentifierNameSyntax).Identifier.ValueText;
         var expressionMethod = context.SyntaxRoot.DescendantNodes()
@@ -49,5 +49,29 @@ public static class CompilerUtils
         {
             throw new InvalidOperationException("Invalid expression");
         }
+    }
+
+    public static IReadOnlyDictionary<string, string> ProcessInitializerExpression(
+        this InitializerExpressionSyntax initializeSyntax, ICompilationContext context,
+        IReadOnlyDictionary<string, string>? nameReplace = null)
+    {
+        var result = new Dictionary<string, string>();
+        foreach (var expression in initializeSyntax.Expressions)
+        {
+            if (expression is not AssignmentExpressionSyntax assignment)
+            {
+                context.ReportError(
+                    $"Forward request policy argument must be an object initializer. {expression.GetLocation()}");
+                continue;
+            }
+
+            var name = assignment.Left.ToString();
+            name = nameReplace?.GetValueOrDefault(name, name) ?? name;
+
+            var value = assignment.Right.ProcessParameter(context);
+            result[name] = value;
+        }
+
+        return result;
     }
 }

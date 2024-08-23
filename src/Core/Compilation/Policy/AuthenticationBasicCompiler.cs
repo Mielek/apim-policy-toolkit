@@ -16,8 +16,8 @@ public class AuthenticationBasicCompiler : IMethodPolicyHandler
             return;
         }
 
-        var username = CompilerUtils.ProcessParameter(context, node.ArgumentList.Arguments[0].Expression);
-        var password = CompilerUtils.ProcessParameter(context, node.ArgumentList.Arguments[1].Expression);
+        var username = node.ArgumentList.Arguments[0].Expression.ProcessParameter(context);
+        var password = node.ArgumentList.Arguments[1].Expression.ProcessParameter(context);
         var policy = new AuthenticationBasicPolicyBuilder()
             .Username(username)
             .Password(password)
