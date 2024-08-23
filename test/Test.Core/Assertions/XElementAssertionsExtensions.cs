@@ -14,7 +14,8 @@ public static class XElementAssertionsExtensions
         OmitXmlDeclaration = true,
         ConformanceLevel = ConformanceLevel.Fragment,
         Indent = true,
-        IndentChars = "    "
+        IndentChars = "    ",
+        NewLineChars = "\r\n",
     };
 
     //
