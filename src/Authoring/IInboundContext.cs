@@ -60,9 +60,28 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="config"></param>
     void Cors(CorsConfig config);
 
-    string AuthenticationManagedIdentity(string resource);
-    void AuthenticationBasic(string username, string password);
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="body"></param>
+    /// <param name="config"></param>
     void SetBody(string body, SetBodyConfig? config = null);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    void SetVariable(string name, dynamic value);
+
+    string AuthenticationManagedIdentity(string resource);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="password"></param>
+    void AuthenticationBasic(string username, string password);
 
     void RateLimit();
     void Quota();
@@ -73,7 +92,6 @@ public interface IInboundContext : IHaveExpressionContext
     void SetBackendService();
     void Jsonp();
     void JsonToXml();
-    void Cors();
     void ValidateJwt();
     void SetVariable();
     void ReturnResponse();

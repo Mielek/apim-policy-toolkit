@@ -9,6 +9,13 @@ public interface IBackendContext : IHaveExpressionContext
     void ForwardRequest(ForwardRequestConfig? config = null);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    void SetVariable(string name, dynamic value);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">

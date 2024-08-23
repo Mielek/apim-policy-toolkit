@@ -50,7 +50,19 @@ public interface IOutboundContext : IHaveExpressionContext
     /// </summary>
     void Base();
 
-    void SetBody(string body);
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="body"></param>
+    /// <param name="config"></param>
+    void SetBody(string body, SetBodyConfig? config = null);
+
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    void SetVariable(string name, dynamic value);
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.
