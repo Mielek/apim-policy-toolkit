@@ -22,9 +22,10 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Check format
-      run: dotnet format style --verify-no-changes
     - name: Build
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Check format
+      if: ${{ always() }}
+      run: dotnet format style --verify-no-changes
