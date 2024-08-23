@@ -39,7 +39,7 @@ public class ForwardRequestCompiler : IMethodPolicyHandler
                 return;
             }
             
-            var initializer = config.Process(context, FieldToAttribute);
+            var initializer = config.Process(context);
             if(initializer.Type != nameof(ForwardRequestConfig))
             {
                 context.ReportError($"Forward request policy argument must be of type ForwardRequestConfig. {node.GetLocation()}");
@@ -48,14 +48,16 @@ public class ForwardRequestCompiler : IMethodPolicyHandler
             
             if (initializer.NamedValues is not null)
             {
-                if(initializer.NamedValues.ContainsKey("timeout") && initializer.NamedValues.ContainsKey("timeout-ms"))
+                if(initializer.NamedValues.ContainsKey(nameof(ForwardRequestConfig.Timeout)) 
+                   && initializer.NamedValues.ContainsKey(nameof(ForwardRequestConfig.TimeoutMs)))
                 {
                     context.ReportError($"Forward request policy cannot have both timeout and timeout-ms. {node.GetLocation()}");
                 }
                 
                 foreach ((string key, InitializerValue value) in initializer.NamedValues)
                 {
-                    element.Add(new XAttribute(key, value.Value!));
+                    var name = FieldToAttribute.GetValueOrDefault(key, key);
+                    element.Add(new XAttribute(name, value.Value!));
                 }
             }
         }
