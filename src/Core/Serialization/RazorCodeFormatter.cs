@@ -78,7 +78,7 @@ public static class RazorCodeFormatter
     {
         return CSharpSyntaxTree.ParseText(code)
             .GetRoot()
-            .NormalizeWhitespace()
+            .NormalizeWhitespace(eol: Environment.NewLine)
             .ToFullString()
             .Trim();
     }
