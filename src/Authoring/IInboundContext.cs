@@ -54,6 +54,12 @@ public interface IInboundContext : IHaveExpressionContext
     /// </summary>
     void Base();
 
+    /// <summary>
+    /// The cors policy adds cross-origin resource sharing (CORS) support to an operation or an API to allow cross-domain calls from browser-based clients.
+    /// </summary>
+    /// <param name="config"></param>
+    void Cors(CorsConfig config);
+
     string AuthenticationManagedIdentity(string resource);
     void AuthenticationBasic(string username, string password);
     void SetBody(string body);

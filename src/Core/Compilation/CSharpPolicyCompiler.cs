@@ -27,6 +27,7 @@ public class CSharpPolicyCompiler
             new AuthenticationBasicCompiler(),
             new InlinePolicyCompiler(),
             new ForwardRequestCompiler(),
+            new CorsCompiler(),
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityCompiler()
