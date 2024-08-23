@@ -17,9 +17,6 @@ public class BaseTests
                 public void OnError(IOnErrorContext context) { context.Base(); }
             }
             """;
-
-        var result = code.CompileDocument();
-
         var expectedXml =
             """
             <policies>
@@ -37,6 +34,7 @@ public class BaseTests
                 </on-error>
             </policies>
             """;
-        result.Should().BeSuccessful().And.DocumentEquivalentTo(expectedXml);
+
+        code.CompileDocument().Should().BeSuccessful().And.DocumentEquivalentTo(expectedXml);
     }
 }
