@@ -170,7 +170,7 @@ public class SetHeaderCompilationTests
     [TestMethod]
     public void ShouldCompileSetHeaderPolicyWithPolicyExpressionInValue()
     {
-        var code = 
+        var code =
             """
             [Document]
             public class PolicyDocument : IDocument

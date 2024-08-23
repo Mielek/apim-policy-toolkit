@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
@@ -70,7 +70,8 @@ public static class CompilerUtils
 
         return new InitializerValue
         {
-            Type = (creationSyntax.Type as IdentifierNameSyntax)?.Identifier.ValueText, NamedValues = result,
+            Type = (creationSyntax.Type as IdentifierNameSyntax)?.Identifier.ValueText,
+            NamedValues = result,
         };
     }
 

@@ -1,4 +1,4 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -19,7 +19,7 @@ public class ForwardRequestCompiler : IMethodPolicyHandler
         { nameof(ForwardRequestConfig.BufferResponse), "buffer-response" },
         { nameof(ForwardRequestConfig.FailOnErrorStatusCode), "fail-on-error-status-code" }
     };
-    
+
     public string MethodName => nameof(IBackendContext.ForwardRequest);
 
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
@@ -35,25 +35,28 @@ public class ForwardRequestCompiler : IMethodPolicyHandler
         {
             if (node.ArgumentList.Arguments[0].Expression is not ObjectCreationExpressionSyntax config)
             {
-                context.ReportError($"Forward request policy argument must be an object creation expression. {node.GetLocation()}");
+                context.ReportError(
+                    $"Forward request policy argument must be an object creation expression. {node.GetLocation()}");
                 return;
             }
-            
+
             var initializer = config.Process(context);
-            if(initializer.Type != nameof(ForwardRequestConfig))
+            if (initializer.Type != nameof(ForwardRequestConfig))
             {
-                context.ReportError($"Forward request policy argument must be of type ForwardRequestConfig. {node.GetLocation()}");
+                context.ReportError(
+                    $"Forward request policy argument must be of type ForwardRequestConfig. {node.GetLocation()}");
                 return;
             }
-            
+
             if (initializer.NamedValues is not null)
             {
-                if(initializer.NamedValues.ContainsKey(nameof(ForwardRequestConfig.Timeout)) 
-                   && initializer.NamedValues.ContainsKey(nameof(ForwardRequestConfig.TimeoutMs)))
+                if (initializer.NamedValues.ContainsKey(nameof(ForwardRequestConfig.Timeout))
+                    && initializer.NamedValues.ContainsKey(nameof(ForwardRequestConfig.TimeoutMs)))
                 {
-                    context.ReportError($"Forward request policy cannot have both timeout and timeout-ms. {node.GetLocation()}");
+                    context.ReportError(
+                        $"Forward request policy cannot have both timeout and timeout-ms. {node.GetLocation()}");
                 }
-                
+
                 foreach ((string key, InitializerValue value) in initializer.NamedValues)
                 {
                     var name = FieldToAttribute.GetValueOrDefault(key, key);

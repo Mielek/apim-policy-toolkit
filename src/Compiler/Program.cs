@@ -44,7 +44,7 @@ foreach (var file in files)
     {
         var result = new CSharpPolicyCompiler(document).Compile();
 
-        foreach(var error in result.Errors)
+        foreach (var error in result.Errors)
         {
             Console.Out.WriteLine(error);
         }

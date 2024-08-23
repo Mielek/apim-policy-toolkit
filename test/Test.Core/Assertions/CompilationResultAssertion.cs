@@ -1,4 +1,4 @@
-﻿
+
 using FluentAssertions.Execution;
 using FluentAssertions.Primitives;
 
@@ -21,7 +21,7 @@ public class CompilationResultAssertion : ObjectAssertions<ICompilationResult, C
         Subject.Document.Should().NotBeNull();
         return new AndConstraint<CompilationResultAssertion>(this);
     }
-    
+
     public AndConstraint<CompilationResultAssertion> DocumentEquivalentTo(string expectedXml, string because = "", params object[] becauseArgs)
     {
         Subject.Document.Should().BeEquivalentTo(expectedXml, because, becauseArgs);

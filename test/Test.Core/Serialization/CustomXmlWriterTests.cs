@@ -1,4 +1,4 @@
-﻿
+
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -13,7 +13,7 @@ public class CustomXmlWriterTests
         OmitXmlDeclaration = true,
         ConformanceLevel = ConformanceLevel.Fragment,
     };
-    
+
     [TestMethod]
     [DataRow("<empty />")]
     [DataRow("<with-attributes att1=\"some-text\" att2=\"123\" />")]
@@ -22,7 +22,7 @@ public class CustomXmlWriterTests
     public void ShouldWriteSimpleElement(string elementString)
     {
         var element = XElement.Parse(elementString);
-        
+
         var result = Serialize(element);
 
         result.Should().Be(elementString);
@@ -44,7 +44,7 @@ public class CustomXmlWriterTests
 
         result.Should().Be($"<element att1=\"{expression}\" />");
     }
-    
+
     [TestMethod]
     [DataRow("@( context.Request.IpAddress.StartsWith(\"10.0.0.\") )")]
     [DataRow("@{ return context.Request.IpAddress.StartsWith(\"10.0.0.\"); }")]
@@ -61,7 +61,7 @@ public class CustomXmlWriterTests
 
         result.Should().Be($"<element>{expression}</element>");
     }
-    
+
     private string Serialize(XElement element)
     {
         var builder = new StringBuilder();

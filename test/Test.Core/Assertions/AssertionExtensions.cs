@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.Contracts;
+using System.Diagnostics.Contracts;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 

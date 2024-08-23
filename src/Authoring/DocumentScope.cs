@@ -1,4 +1,4 @@
-﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
 public enum DocumentScope
 {

@@ -1,6 +1,6 @@
-﻿using Mielek.Azure.ApiManagement.PolicyToolkit.Emulator;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Emulator;
 
 public class ApimRuntimeEmulator
 {
-    
+
 }

@@ -45,7 +45,7 @@ public static class RazorCodeFormatter
             result.Append(code, lastIndex, match.Index - lastIndex);
             var index = FindClosingIndex(code, match, out var isMultiline);
             var cSharpCode = code.Substring(match.Index + 2, index - match.Index - 2).Trim();
-            var formatlessCode =  new TriviaRemoverRewriter().Visit(CSharpSyntaxTree.ParseText(cSharpCode).GetRoot()).NormalizeWhitespace("", "").ToString();
+            var formatlessCode = new TriviaRemoverRewriter().Visit(CSharpSyntaxTree.ParseText(cSharpCode).GetRoot()).NormalizeWhitespace("", "").ToString();
             var marker = $"__expression__{Guid.NewGuid()}__";
             expressions.Add(marker, isMultiline ? $"@{{{formatlessCode}}}" : $"@({formatlessCode})");
             result.Append(marker);

@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -26,7 +26,7 @@ public class ExpressionStatementCompiler : ISyntaxCompiler
         }
 
         var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
-        if(memberAccess == null)
+        if (memberAccess == null)
         {
             context.ReportError($"{invocation.Expression.GetType().Name} is not supported. {invocation.Expression.GetLocation()}");
             return;

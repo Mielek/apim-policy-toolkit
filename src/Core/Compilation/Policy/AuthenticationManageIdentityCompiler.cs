@@ -1,7 +1,7 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 

@@ -1,4 +1,4 @@
-﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 [TestClass]
 public class InlinePolicyTests

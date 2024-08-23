@@ -1,4 +1,4 @@
-﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
 
 [TestClass]
 public class RazorCodeFormatterTests

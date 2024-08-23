@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -17,13 +17,13 @@ public class BlockCompiler : ISyntaxCompiler
     {
         _compilers.Add(compiler.Syntax, compiler);
     }
-    
+
     public SyntaxKind Syntax => SyntaxKind.Block;
 
     public void Compile(ICompilationContext context, SyntaxNode node)
     {
         var block = node as BlockSyntax ?? throw new NullReferenceException();
-        
+
         foreach (var statement in block.Statements)
         {
             if (_compilers.TryGetValue(statement.Kind(), out var compiler))
