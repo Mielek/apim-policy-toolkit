@@ -9,7 +9,7 @@ public class CorsTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.Cors(new CorsConfig()
                     {
                         AllowedOrigins = ["contoso.com"],
@@ -39,7 +39,7 @@ public class CorsTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.Cors(new CorsConfig()
                     {
                         AllowedOrigins = ["contoso.com", "fabrikam.com"],
@@ -70,7 +70,7 @@ public class CorsTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.Cors(new CorsConfig()
                     {
                         AllowedOrigins = ["contoso.com"],
@@ -101,7 +101,7 @@ public class CorsTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.Cors(new CorsConfig()
                     {
                         AllowCredentials = true,
@@ -132,7 +132,7 @@ public class CorsTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.Cors(new CorsConfig()
                     {
                         AllowedOrigins = ["contoso.com"],
@@ -167,7 +167,7 @@ public class CorsTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.Cors(new CorsConfig()
                     {
                         AllowedOrigins = ["contoso.com"],
@@ -203,7 +203,7 @@ public class CorsTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.Cors(new CorsConfig()
                     {
                         AllowedOrigins = ["contoso.com"],

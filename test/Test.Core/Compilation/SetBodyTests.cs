@@ -9,10 +9,10 @@ public class SetBodyTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.SetBody("inbound");
             }
-            public void Outbound(IBackendContext context) {
+            public void Outbound(IOutboundContext context) {
                 context.SetBody("outbound");
             }
         }
@@ -34,10 +34,10 @@ public class SetBodyTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.SetBody(Exp(context.ExpressionContext));
             }
-            public void Outbound(IBackendContext context) {
+            public void Outbound(IOutboundContext context) {
                 context.SetBody(Exp(context.ExpressionContext));
             }
             
@@ -64,12 +64,12 @@ public class SetBodyTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.SetBody("inbound", new SetBodyConfig {
                     Template = "liquid",
                 });
             }
-            public void Outbound(IBackendContext context) {
+            public void Outbound(IOutboundContext context) {
                 context.SetBody("outbound", new SetBodyConfig {
                     Template = "liquid",
                 });
@@ -93,12 +93,12 @@ public class SetBodyTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.SetBody("inbound", new SetBodyConfig {
                     XsiNil = "blank",
                 });
             }
-            public void Outbound(IBackendContext context) {
+            public void Outbound(IOutboundContext context) {
                 context.SetBody("outbound", new SetBodyConfig {
                     XsiNil = "null",
                 });
@@ -122,12 +122,12 @@ public class SetBodyTests
         [Document]
         public class PolicyDocument : IDocument
         {
-            public void Inbound(IBackendContext context) {
+            public void Inbound(IInboundContext context) {
                 context.SetBody("inbound", new SetBodyConfig {
                     ParseDate = true,
                 });
             }
-            public void Outbound(IBackendContext context) {
+            public void Outbound(IOutboundContext context) {
                 context.SetBody("outbound", new SetBodyConfig {
                     ParseDate = false,
                 });
