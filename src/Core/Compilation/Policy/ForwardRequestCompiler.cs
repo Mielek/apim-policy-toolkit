@@ -40,7 +40,7 @@ public class ForwardRequestCompiler : IMethodPolicyHandler
             }
             
             var initializer = config.Process(context, FieldToAttribute);
-            if(initializer.Type != "ForwardRequestConfig")
+            if(initializer.Type != nameof(ForwardRequestConfig))
             {
                 context.ReportError($"Forward request policy argument must be of type ForwardRequestConfig. {node.GetLocation()}");
                 return;

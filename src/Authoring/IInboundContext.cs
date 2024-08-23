@@ -62,7 +62,7 @@ public interface IInboundContext : IHaveExpressionContext
 
     string AuthenticationManagedIdentity(string resource);
     void AuthenticationBasic(string username, string password);
-    void SetBody(string body);
+    void SetBody(string body, SetBodyConfig? config = null);
 
     void RateLimit();
     void Quota();

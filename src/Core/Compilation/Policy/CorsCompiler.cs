@@ -25,7 +25,7 @@ public class CorsCompiler : IMethodPolicyHandler
         }
 
         var initializer = config.Process(context);
-        if (initializer.Type != "CorsConfig")
+        if (initializer.Type != nameof(CorsConfig))
         {
             context.ReportError($"Cors policy argument must be of type CorsConfig. {node.GetLocation()}");
             return;
