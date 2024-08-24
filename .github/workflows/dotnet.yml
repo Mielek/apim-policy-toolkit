@@ -22,10 +22,23 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
+    - name: Build with dotnet
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Test with dotnet
+      run: dotnet test --no-build --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+    - name: Upload dotnet test results
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-test-results-${{ matrix.dotnet-version }}
+        path: TestResults-${{ matrix.dotnet-version }}
     - name: Check format
       if: ${{ always() }}
-      run: dotnet format style --verify-no-changes
+      run: dotnet format style --verify-no-changes --report "FormatReport-${{ matrix.dotnet-version }}"
+    - name: Upload dotnet test results
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-format-report-${{ matrix.dotnet-version }}
+        path: FormatReport-${{ matrix.dotnet-version }}
+      
