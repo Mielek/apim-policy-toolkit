@@ -155,7 +155,7 @@ Lets unpack the code above it:
 * `IsCompanyIP` is a method which checks if request comes from company IP addresses and it is mapped to a policy
   expression
 * Every method other then section method are treated as expressions. They need to accept one parameter of name context
-  with `IExpressionContext` type from `Mielek.Azure.ApiManagement.PolicyToolkit.Expressions.Context` namespace.
+  with `IExpressionContext` type from `Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions` namespace.
 * `IExpressionContext` type contains the same properties as `context` object in policy expressions.
 * `AuthenticationBasic` method is mapped to `authentication-basic` policy.
 * `AuthenticationManagedIdentity` method is mapped to `authentication-managed-identity` policy.
