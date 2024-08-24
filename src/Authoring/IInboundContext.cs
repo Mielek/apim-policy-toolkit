@@ -66,7 +66,7 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="body"></param>
     /// <param name="config"></param>
     void SetBody(string body, SetBodyConfig? config = null);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
@@ -74,8 +74,14 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="value"></param>
     void SetVariable(string name, dynamic value);
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void RateLimit(RateLimitConfig config);
+
     string AuthenticationManagedIdentity(string resource);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
@@ -83,7 +89,8 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="password"></param>
     void AuthenticationBasic(string username, string password);
 
-    void RateLimit();
+
+
     void Quota();
     void RewriteUri();
     void Cache();
@@ -93,7 +100,6 @@ public interface IInboundContext : IHaveExpressionContext
     void Jsonp();
     void JsonToXml();
     void ValidateJwt();
-    void SetVariable();
     void ReturnResponse();
     void SendRequest();
     void RateLimitByKey();

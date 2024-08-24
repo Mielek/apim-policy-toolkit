@@ -1,4 +1,4 @@
-using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
@@ -72,6 +72,7 @@ public static class CompilerUtils
         {
             Type = (creationSyntax.Type as IdentifierNameSyntax)?.Identifier.ValueText,
             NamedValues = result,
+            Node = creationSyntax,
         };
     }
 
@@ -89,6 +90,7 @@ public static class CompilerUtils
         {
             Type = (creationSyntax.Type.ElementType as IdentifierNameSyntax)?.Identifier.ValueText,
             UnnamedValues = result,
+            Node = creationSyntax,
         };
     }
 
@@ -101,7 +103,7 @@ public static class CompilerUtils
             .Select(e => e.Expression)
             .Select(expression => expression.ProcessExpression(context)).ToList();
 
-        return new InitializerValue { UnnamedValues = result, };
+        return new InitializerValue { UnnamedValues = result, Node = collectionSyntax };
     }
 
     public static InitializerValue Process(
@@ -112,7 +114,7 @@ public static class CompilerUtils
             .Select(expression => expression.ProcessExpression(context))
             .ToList();
 
-        return new InitializerValue { UnnamedValues = result, };
+        return new InitializerValue { UnnamedValues = result, Node = creationSyntax };
     }
 
     public static InitializerValue ProcessExpression(
@@ -125,7 +127,7 @@ public static class CompilerUtils
             ArrayCreationExpressionSyntax array => array.Process(context),
             ImplicitArrayCreationExpressionSyntax array => array.Process(context),
             CollectionExpressionSyntax collection => collection.Process(context),
-            _ => new InitializerValue { Value = expression.ProcessParameter(context) }
+            _ => new InitializerValue { Value = expression.ProcessParameter(context), Node = expression }
         };
     }
 }
@@ -137,4 +139,6 @@ public class InitializerValue
     public string? Type { get; init; }
     public IReadOnlyCollection<InitializerValue>? UnnamedValues { get; init; }
     public IReadOnlyDictionary<string, InitializerValue>? NamedValues { get; init; }
+
+    public required SyntaxNode Node { get; init; }
 }
