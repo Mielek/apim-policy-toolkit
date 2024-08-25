@@ -30,83 +30,55 @@ public class RateLimitCompiler : IMethodPolicyHandler
             context.ReportError($"Rate limit policy argument must be of type {nameof(RateLimitConfig)}. {node.GetLocation()}");
             return;
         }
-        if (initializer.NamedValues is null)
+
+        var values = initializer.NamedValues;
+        if (values is null)
         {
-            context.ReportError($"TODO. {node.GetLocation()}");
+            context.ReportError($"No initializer. {node.GetLocation()}");
             return;
         }
 
         var element = new XElement("rate-limit");
 
-        if (initializer.NamedValues.TryGetValue(nameof(RateLimitConfig.Calls), out var rateLimitCalls))
+        if (!element.AddAttribute(values, nameof(RateLimitConfig.Calls), "calls"))
         {
-            element.Add(new XAttribute("calls", rateLimitCalls.Value!));
-        }
-        else
-        {
-            context.ReportError($"TODO. {node.GetLocation()}");
+            context.ReportError($"{nameof(RateLimitConfig.Calls)}. {node.GetLocation()}");
             return;
         }
 
-        if (initializer.NamedValues.TryGetValue(nameof(RateLimitConfig.RenewalPeriod), out var rateLimitRenewal))
+        if (!element.AddAttribute(values, nameof(RateLimitConfig.RenewalPeriod), "renewal-period"))
         {
-            element.Add(new XAttribute("renewal-period", rateLimitRenewal.Value!));
-        }
-        else
-        {
-            context.ReportError($"TODO. {node.GetLocation()}");
+            context.ReportError($"{nameof(RateLimitConfig.RenewalPeriod)}. {node.GetLocation()}");
             return;
         }
 
-        if (initializer.NamedValues.TryGetValue(nameof(RateLimitConfig.RetryAfterHeaderName), out var retryAfterHeader))
-        {
-            element.Add(new XAttribute("retry-after-header-name", retryAfterHeader.Value!));
-        }
+        element.AddAttribute(values, nameof(RateLimitConfig.RetryAfterHeaderName), "retry-after-header-name");
+        element.AddAttribute(values, nameof(RateLimitConfig.RetryAfterVariableName), "retry-after-variable-name");
+        element.AddAttribute(values, nameof(RateLimitConfig.RemainingCallsHeaderName), "remaining-calls-header-name");
+        element.AddAttribute(values, nameof(RateLimitConfig.RemainingCallsVariableName), "remaining-calls-variable-name");
+        element.AddAttribute(values, nameof(RateLimitConfig.TotalCallsHeaderName), "total-calls-header-name");
 
-        if (initializer.NamedValues.TryGetValue(nameof(RateLimitConfig.RetryAfterVariableName), out var retryAfterVariable))
-        {
-            element.Add(new XAttribute("retry-after-variable-name", retryAfterVariable.Value!));
-        }
-
-        if (initializer.NamedValues.TryGetValue(nameof(RateLimitConfig.RemainingCallsHeaderName), out var remainingCallsHeader))
-        {
-            element.Add(new XAttribute("remaining-calls-header-name", remainingCallsHeader.Value!));
-        }
-
-        if (initializer.NamedValues.TryGetValue(nameof(RateLimitConfig.RemainingCallsVariableName), out var remainingCallsVariable))
-        {
-            element.Add(new XAttribute("remaining-calls-variable-name", remainingCallsVariable.Value!));
-        }
-
-        if (initializer.NamedValues.TryGetValue(nameof(RateLimitConfig.TotalCallsHeaderName), out var totalCallsHeader))
-        {
-            element.Add(new XAttribute("total-calls-header-name", totalCallsHeader.Value!));
-        }
-
-        if (initializer.NamedValues.TryGetValue(nameof(RateLimitConfig.Apis), out var apis))
+        if (values.TryGetValue(nameof(RateLimitConfig.Apis), out var apis))
         {
             foreach (var api in apis.UnnamedValues!)
             {
-                if (!Handle(context, "api", api, out var apiElement))
+                if(!Handle(context, "api", api, out var apiElement))
                 {
                     continue;
                 }
+                element.Add(apiElement);
 
                 if (api.NamedValues!.TryGetValue(nameof(ApiRateLimit.Operations), out var operations))
                 {
                     foreach (var operation in operations.UnnamedValues!)
                     {
-                        if (!Handle(context, "operation", operation, out var operationElement))
+                        if(Handle(context, "operation", operation, out var operationElement))
                         {
-                            continue;
+                            apiElement.Add(operationElement);
                         }
-                        apiElement.Add(operationElement);
                     }
                 }
-
-                element.Add(apiElement);
             }
-
         }
 
         context.AddPolicy(element);
@@ -116,39 +88,25 @@ public class RateLimitCompiler : IMethodPolicyHandler
     {
         element = new XElement(name);
         var values = value.NamedValues!;
-        if (values.TryGetValue(nameof(EntityLimitConfig.Name), out var apiName))
-        {
-            element.Add(new XAttribute("name", apiName.Value!));
-        }
+        
+        var isNameAdded = element.AddAttribute(values, nameof(EntityLimitConfig.Name), "name");
+        var isIdAdded = element.AddAttribute(values, nameof(EntityLimitConfig.Id), "id");
 
-        if (values.TryGetValue(nameof(EntityLimitConfig.Id), out var apiId))
+        if (!isNameAdded && !isIdAdded)
         {
-            element.Add(new XAttribute("id", apiId.Value!));
-        }
-
-        if (apiName is null && apiId is null)
-        {
-            context.ReportError($"TODO. {value.Node.GetLocation()}");
+            context.ReportError($"{nameof(EntityLimitConfig.Name)} && {nameof(EntityLimitConfig.Id)}. {value.Node.GetLocation()}");
             return false;
         }
 
-        if (values.TryGetValue(nameof(EntityLimitConfig.Calls), out var apiCalls))
+        if (!element.AddAttribute(values, nameof(EntityLimitConfig.Calls), "calls"))
         {
-            element.Add(new XAttribute("calls", apiCalls.Value!));
-        }
-        else
-        {
-            context.ReportError($"TODO. {value.Node.GetLocation()}");
+            context.ReportError($"{nameof(EntityLimitConfig.Calls)}. {value.Node.GetLocation()}");
             return false;
         }
 
-        if (values.TryGetValue(nameof(EntityLimitConfig.RenewalPeriod), out var apiRenewal))
+        if (!element.AddAttribute(values, nameof(EntityLimitConfig.RenewalPeriod), "renewal-period"))
         {
-            element.Add(new XAttribute("renewal-period", apiRenewal.Value!));
-        }
-        else
-        {
-            context.ReportError($"TODO. {value.Node.GetLocation()}");
+            context.ReportError($"{nameof(EntityLimitConfig.RenewalPeriod)}. {value.Node.GetLocation()}");
             return false;
         }
 

@@ -1,3 +1,5 @@
+using System.Xml.Linq;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -80,12 +82,11 @@ public static class CompilerUtils
         this ArrayCreationExpressionSyntax creationSyntax,
         ICompilationContext context)
     {
-        var result = new List<InitializerValue>();
-        foreach (var expression in creationSyntax.Initializer?.Expressions ?? [])
-        {
-            result.Add(expression.ProcessExpression(context));
-        }
-
+        var expressions = creationSyntax.Initializer?.Expressions ?? [];
+        var result = expressions
+        .Select(expression => expression.ProcessExpression(context))
+        .ToList();
+        
         return new InitializerValue
         {
             Type = (creationSyntax.Type.ElementType as IdentifierNameSyntax)?.Identifier.ValueText,
@@ -129,6 +130,16 @@ public static class CompilerUtils
             CollectionExpressionSyntax collection => collection.Process(context),
             _ => new InitializerValue { Value = expression.ProcessParameter(context), Node = expression }
         };
+    }
+
+    public static bool AddAttribute(this  XElement element, IReadOnlyDictionary<string, InitializerValue> parameters, string key, string attName)
+    {
+        if(parameters.TryGetValue(key, out var value))
+        {
+            element.Add(new XAttribute(attName, value.Value!));
+            return true;
+        }
+        return false;
     }
 }
 

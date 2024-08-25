@@ -31,83 +31,57 @@ public class CorsCompiler : IMethodPolicyHandler
             return;
         }
 
-        var element = new XElement("cors");
-
-        if (initializer.NamedValues is null)
+        var values = initializer.NamedValues;
+        if (values is null)
         {
             context.ReportError($"TODO. {node.GetLocation()}");
             return;
         }
 
-        if (initializer.NamedValues.TryGetValue(nameof(CorsConfig.AllowCredentials), out var allowCredentials))
-        {
-            element.Add(new XAttribute("allow-credentials", allowCredentials.Value!));
-        }
+        var element = new XElement("cors");
 
-        if (initializer.NamedValues.TryGetValue(nameof(CorsConfig.TerminateUnmatchedRequest),
-                out var terminateUnmatchedRequest))
-        {
-            element.Add(new XAttribute("terminate-unmatched-request", terminateUnmatchedRequest.Value!));
-        }
+        element.AddAttribute(values, nameof(CorsConfig.AllowCredentials), "allow-credentials");
+        element.AddAttribute(values, nameof(CorsConfig.TerminateUnmatchedRequest), "terminate-unmatched-request");
 
-        if (initializer.NamedValues.TryGetValue(nameof(CorsConfig.AllowedOrigins), out var allowedOrigins))
+        if (!values.TryGetValue(nameof(CorsConfig.AllowedOrigins), out var allowedOrigins))
         {
-            var allowedOriginsElement = new XElement("allowed-origins");
-            foreach (var origin in allowedOrigins.UnnamedValues ?? [])
-            {
-                allowedOriginsElement.Add(new XElement("origin", origin.Value!));
-            }
-
-            element.Add(allowedOriginsElement);
-        }
-        else
-        {
-            context.ReportError($"Cors policy argument must be of type CorsConfig. {node.GetLocation()}");
+            context.ReportError($"{nameof(CorsConfig.AllowedOrigins)}. {node.GetLocation()}");
             return;
         }
 
-        if (initializer.NamedValues.TryGetValue(nameof(CorsConfig.AllowedHeaders), out var allowedHeaders))
-        {
-            var allowedHeadersElement = new XElement("allowed-headers");
-            foreach (var header in allowedHeaders.UnnamedValues ?? [])
-            {
-                allowedHeadersElement.Add(new XElement("header", header.Value!));
-            }
+        var allowedOriginsElement = new XElement("allowed-origins");
+        var origins = (allowedOrigins.UnnamedValues ?? []).Select(origin => new XElement("origin", origin.Value!));
+        allowedOriginsElement.Add(origins.ToArray());
+        element.Add(allowedOriginsElement);
 
-            element.Add(allowedHeadersElement);
-        }
-        else
+        if (!values.TryGetValue(nameof(CorsConfig.AllowedHeaders), out var allowedHeaders))
         {
-            context.ReportError($". {node.GetLocation()}");
+            context.ReportError($"{nameof(CorsConfig.AllowedHeaders)}. {node.GetLocation()}");
             return;
         }
 
-        if (initializer.NamedValues.TryGetValue(nameof(CorsConfig.AllowedMethods), out var allowedMethods))
+        var headers = (allowedHeaders.UnnamedValues ?? [])
+            .Select(origin => new XElement("header", origin.Value!))
+            .ToArray();
+        element.Add(new XElement("allowed-headers", headers));
+
+        if (values.TryGetValue(nameof(CorsConfig.AllowedMethods), out var allowedMethods))
         {
             var allowedMethodsElement = new XElement("allowed-methods");
-
-            if (initializer.NamedValues.TryGetValue(nameof(CorsConfig.PreflightResultMaxAge), out var maxAge))
-            {
-                allowedMethodsElement.Add(new XAttribute("preflight-result-max-age", maxAge.Value!));
-            }
-
-            foreach (var method in allowedMethods.UnnamedValues ?? [])
-            {
-                allowedMethodsElement.Add(new XElement("method", method.Value!));
-            }
-
+            allowedMethodsElement.AddAttribute(values, nameof(CorsConfig.PreflightResultMaxAge), "preflight-result-max-age");
+            var methods = (allowedMethods.UnnamedValues ?? [])
+                .Select(m => new XElement("method", m.Value!))
+                .ToArray();
+            allowedMethodsElement.Add(methods);
             element.Add(allowedMethodsElement);
         }
 
-        if (initializer.NamedValues.TryGetValue(nameof(CorsConfig.ExposeHeaders), out var exposeHeaders))
+        if (values.TryGetValue(nameof(CorsConfig.ExposeHeaders), out var exposeHeaders))
         {
-            var exposeHeadersElement = new XElement("expose-headers");
-            foreach (var header in exposeHeaders.UnnamedValues ?? [])
-            {
-                exposeHeadersElement.Add(new XElement("header", header.Value!));
-            }
-
-            element.Add(exposeHeadersElement);
+            var exposeHeadersElements = (exposeHeaders.UnnamedValues ?? [])
+                .Select(h => new XElement("header", h.Value!))
+                .ToArray();
+            element.Add(new XElement("expose-headers", exposeHeadersElements));
         }
 
         context.AddPolicy(element);
