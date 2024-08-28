@@ -40,6 +40,7 @@ public class CSharpPolicyCompiler
             SetQueryParameterCompiler.RemoveCompiler,
             new RateLimitByKeyCompiler(),
             new CheckHeaderCompiler(),
+            new MockResponseCompiler(),
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityCompiler()

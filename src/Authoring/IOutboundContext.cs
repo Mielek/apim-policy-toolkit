@@ -65,6 +65,12 @@ public interface IOutboundContext : IHaveExpressionContext
     void SetVariable(string name, dynamic value);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void MockResponse(MockResponseConfig? config = null);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">

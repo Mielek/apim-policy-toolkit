@@ -131,18 +131,24 @@ public interface IInboundContext : IHaveExpressionContext
     /// </summary>
     /// <param name="name"></param>
     void RemoveQueryParameter(string name);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
     /// <param name="config"></param>
     void RateLimitByKey(RateLimitByKeyConfig config);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
     /// <param name="config"></param>
     void CheckHeader(CheckHeaderConfig config);
+
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void MockResponse(MockResponseConfig? config = null);
 
 
     string AuthenticationManagedIdentity(string resource);

@@ -16,6 +16,12 @@ public interface IOnErrorContext : IHaveExpressionContext
     void SetMethod(string method);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void MockResponse(MockResponseConfig? config = null);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">
