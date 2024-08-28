@@ -31,6 +31,7 @@ public class CSharpPolicyCompiler
             new SetVariableCompiler(),
             new RateLimitCompiler(),
             new RewriteUriCompiler(),
+            new QuotaCompiler(),
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityCompiler()

@@ -87,6 +87,12 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="copyUnmatchedParams"></param>
     void RewriteUri(string template, bool copyUnmatchedParams = true);
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void Quota(QuotaConfig config);
+
     string AuthenticationManagedIdentity(string resource);
 
     /// <summary>
@@ -96,9 +102,6 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="password"></param>
     void AuthenticationBasic(string username, string password);
 
-
-
-    void Quota();
     void Cache();
     void CacheLookup();
     void CacheStore();
