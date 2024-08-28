@@ -79,6 +79,13 @@ public interface IInboundContext : IHaveExpressionContext
     /// </summary>
     /// <param name="config"></param>
     void RateLimit(RateLimitConfig config);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="template"></param>
+    /// <param name="copyUnmatchedParams"></param>
+    void RewriteUri(string template, bool copyUnmatchedParams = true);
 
     string AuthenticationManagedIdentity(string resource);
 
@@ -92,7 +99,6 @@ public interface IInboundContext : IHaveExpressionContext
 
 
     void Quota();
-    void RewriteUri();
     void Cache();
     void CacheLookup();
     void CacheStore();

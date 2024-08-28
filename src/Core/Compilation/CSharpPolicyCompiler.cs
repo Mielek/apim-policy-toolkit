@@ -30,6 +30,7 @@ public class CSharpPolicyCompiler
             new CorsCompiler(),
             new SetVariableCompiler(),
             new RateLimitCompiler(),
+            new RewriteUriCompiler(),
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityCompiler()
