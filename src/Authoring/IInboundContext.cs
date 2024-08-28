@@ -93,6 +93,12 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="config"></param>
     void Quota(QuotaConfig config);
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="method"></param>
+    void SetMethod(string method);
+
     string AuthenticationManagedIdentity(string resource);
 
     /// <summary>
@@ -112,7 +118,6 @@ public interface IInboundContext : IHaveExpressionContext
     void ReturnResponse();
     void SendRequest();
     void RateLimitByKey();
-    void SetMethod();
     void SetQueryParameter();
 
     /// <summary>

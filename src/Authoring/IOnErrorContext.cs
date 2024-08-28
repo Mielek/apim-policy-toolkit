@@ -10,6 +10,12 @@ public interface IOnErrorContext : IHaveExpressionContext
     void SetVariable(string name, dynamic value);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="method"></param>
+    void SetMethod(string method);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">
