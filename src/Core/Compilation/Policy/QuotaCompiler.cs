@@ -14,14 +14,14 @@ public class QuotaCompiler : IMethodPolicyHandler
     {
         if (node.ArgumentList.Arguments.Count != 1)
         {
-            context.ReportError($"Wrong argument count for rate limit policy. {node.GetLocation()}");
+            context.ReportError($"Wrong argument count for quota policy. {node.GetLocation()}");
             return;
         }
 
         if (node.ArgumentList.Arguments[0].Expression is not ObjectCreationExpressionSyntax config)
         {
             context.ReportError(
-                $"Rate limit policy argument must be an object creation expression. {node.GetLocation()}");
+                $"Quota policy argument must be an object creation expression. {node.GetLocation()}");
             return;
         }
 
@@ -30,7 +30,7 @@ public class QuotaCompiler : IMethodPolicyHandler
         if (initializer.Type != nameof(QuotaConfig))
         {
             context.ReportError(
-                $"Rate limit policy argument must be of type {nameof(QuotaConfig)}. {node.GetLocation()}");
+                $"Quota policy argument must be of type {nameof(QuotaConfig)}. {node.GetLocation()}");
             return;
         }
 
