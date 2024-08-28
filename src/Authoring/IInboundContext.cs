@@ -79,7 +79,7 @@ public interface IInboundContext : IHaveExpressionContext
     /// </summary>
     /// <param name="config"></param>
     void RateLimit(RateLimitConfig config);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
@@ -105,6 +105,34 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="config"></param>
     void IpFilter(IpFilterConfig config);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="values"></param>
+    void SetQueryParameter(string name, params string[] values);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="values"></param>
+    void SetQueryParameterIfNotExist(string name, params string[] values);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="values"></param>
+    void AppendQueryParameter(string name, params string[] values);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    void RemoveQueryParameter(string name);
+
+
     string AuthenticationManagedIdentity(string resource);
 
     /// <summary>
@@ -124,7 +152,6 @@ public interface IInboundContext : IHaveExpressionContext
     void ReturnResponse();
     void SendRequest();
     void RateLimitByKey();
-    void SetQueryParameter();
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.

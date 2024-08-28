@@ -34,6 +34,10 @@ public class CSharpPolicyCompiler
             new QuotaCompiler(),
             new SetMethodCompiler(),
             new IpFilterCompiler(),
+            SetQueryParameterCompiler.AppendCompiler,
+            SetQueryParameterCompiler.SetCompiler,
+            SetQueryParameterCompiler.SetIfNotExistCompiler,
+            SetQueryParameterCompiler.RemoveCompiler,
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityCompiler()
