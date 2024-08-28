@@ -137,6 +137,12 @@ public interface IInboundContext : IHaveExpressionContext
     /// </summary>
     /// <param name="config"></param>
     void RateLimitByKey(RateLimitByKeyConfig config);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void CheckHeader(CheckHeaderConfig config);
 
 
     string AuthenticationManagedIdentity(string resource);

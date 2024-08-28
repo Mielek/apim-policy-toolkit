@@ -27,7 +27,7 @@ public class CorsCompiler : IMethodPolicyHandler
         var initializer = config.Process(context);
         if (initializer.Type != nameof(CorsConfig))
         {
-            context.ReportError($"Cors policy argument must be of type CorsConfig. {node.GetLocation()}");
+            context.ReportError($"Cors policy argument must be of type {nameof(CorsConfig)}. {node.GetLocation()}");
             return;
         }
 
@@ -51,7 +51,7 @@ public class CorsCompiler : IMethodPolicyHandler
 
         var allowedOriginsElement = new XElement("allowed-origins");
         var origins = (allowedOrigins.UnnamedValues ?? []).Select(origin => new XElement("origin", origin.Value!));
-        allowedOriginsElement.Add(origins.ToArray());
+        allowedOriginsElement.Add(origins.ToArray<object>());
         element.Add(allowedOriginsElement);
 
         if (!values.TryGetValue(nameof(CorsConfig.AllowedHeaders), out var allowedHeaders))
@@ -62,7 +62,7 @@ public class CorsCompiler : IMethodPolicyHandler
 
         var headers = (allowedHeaders.UnnamedValues ?? [])
             .Select(origin => new XElement("header", origin.Value!))
-            .ToArray();
+            .ToArray<object>();
         element.Add(new XElement("allowed-headers", headers));
 
         if (values.TryGetValue(nameof(CorsConfig.AllowedMethods), out var allowedMethods))
@@ -71,7 +71,7 @@ public class CorsCompiler : IMethodPolicyHandler
             allowedMethodsElement.AddAttribute(values, nameof(CorsConfig.PreflightResultMaxAge), "preflight-result-max-age");
             var methods = (allowedMethods.UnnamedValues ?? [])
                 .Select(m => new XElement("method", m.Value!))
-                .ToArray();
+                .ToArray<object>();
             allowedMethodsElement.Add(methods);
             element.Add(allowedMethodsElement);
         }
@@ -80,7 +80,7 @@ public class CorsCompiler : IMethodPolicyHandler
         {
             var exposeHeadersElements = (exposeHeaders.UnnamedValues ?? [])
                 .Select(h => new XElement("header", h.Value!))
-                .ToArray();
+                .ToArray<object>();
             element.Add(new XElement("expose-headers", exposeHeadersElements));
         }
 

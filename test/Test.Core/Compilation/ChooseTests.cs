@@ -142,7 +142,7 @@ public class ChooseTests
         """,
         DisplayName = "Should compile choose with otherwise case"
     )]
-    public void ShouldCompileQuotaPolicy(string code, string expectedXml)
+    public void ShouldCompileChoosePolicy(string code, string expectedXml)
     {
         code.CompileDocument().Should().BeSuccessful().And.DocumentEquivalentTo(expectedXml);
     }
