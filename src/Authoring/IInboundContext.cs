@@ -131,6 +131,12 @@ public interface IInboundContext : IHaveExpressionContext
     /// </summary>
     /// <param name="name"></param>
     void RemoveQueryParameter(string name);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void RateLimitByKey(RateLimitByKeyConfig config);
 
 
     string AuthenticationManagedIdentity(string resource);
@@ -151,7 +157,6 @@ public interface IInboundContext : IHaveExpressionContext
     void ValidateJwt();
     void ReturnResponse();
     void SendRequest();
-    void RateLimitByKey();
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.
