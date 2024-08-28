@@ -33,6 +33,7 @@ public class CSharpPolicyCompiler
             new RewriteUriCompiler(),
             new QuotaCompiler(),
             new SetMethodCompiler(),
+            new IpFilterCompiler(),
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityCompiler()

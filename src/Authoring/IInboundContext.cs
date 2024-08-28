@@ -99,6 +99,12 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="method"></param>
     void SetMethod(string method);
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void IpFilter(IpFilterConfig config);
+
     string AuthenticationManagedIdentity(string resource);
 
     /// <summary>
