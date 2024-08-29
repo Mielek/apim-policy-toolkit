@@ -41,6 +41,7 @@ public class CSharpPolicyCompiler
             new RateLimitByKeyCompiler(),
             new CheckHeaderCompiler(),
             new MockResponseCompiler(),
+            new SendRequestCompiler(),
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityCompiler()
