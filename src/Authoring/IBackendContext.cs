@@ -16,6 +16,12 @@ public interface IBackendContext : IHaveExpressionContext
     void SetVariable(string name, dynamic value);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void SendRequest(SendRequestConfig config);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">

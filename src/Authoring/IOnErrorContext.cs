@@ -22,6 +22,12 @@ public interface IOnErrorContext : IHaveExpressionContext
     void MockResponse(MockResponseConfig? config = null);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void SendRequest(SendRequestConfig config);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">

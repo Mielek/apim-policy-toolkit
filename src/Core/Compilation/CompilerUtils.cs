@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis;
@@ -132,7 +133,7 @@ public static class CompilerUtils
         };
     }
 
-    public static bool AddAttribute(this  XElement element, IReadOnlyDictionary<string, InitializerValue> parameters, string key, string attName)
+    public static bool AddAttribute(this XElement element, IReadOnlyDictionary<string, InitializerValue> parameters, string key, string attName)
     {
         if(parameters.TryGetValue(key, out var value))
         {
@@ -141,6 +142,46 @@ public static class CompilerUtils
         }
         return false;
     }
+
+    public static bool TryExtractingConfigParameter<T>(
+        this InvocationExpressionSyntax node,
+        ICompilationContext context,
+        string policy,
+        [NotNullWhen(true)] out IReadOnlyDictionary<string, InitializerValue>? values)
+    {
+        values = null;
+
+        if (node.ArgumentList.Arguments.Count != 1)
+        {
+            context.ReportError($"Wrong argument count for {policy} policy. {node.GetLocation()}");
+            return false;
+        }
+
+        return node.ArgumentList.Arguments[0].Expression.TryExtractingConfig<T>(context, policy, out values);
+    }
+
+    public static bool TryExtractingConfig<T>(this ExpressionSyntax syntax,
+        ICompilationContext context,
+        string policy,
+        [NotNullWhen(true)] out IReadOnlyDictionary<string, InitializerValue>? values)
+    {
+        values = null;
+        if (syntax is not ObjectCreationExpressionSyntax config)
+        {
+            context.ReportError($"{policy} policy argument must be an object creation expression. {syntax.GetLocation()}");
+            return false;
+        }
+        var initializer = config.Process(context);
+        if (!initializer.TryGetValues<T>(out var result))
+        {
+            context.ReportError($"{policy} policy argument must be of type {typeof(T).Name}. {syntax.GetLocation()}");
+            return false;
+        }
+
+        values = result;
+        return true;
+    }
+    
 }
 
 public class InitializerValue
@@ -152,4 +193,15 @@ public class InitializerValue
     public IReadOnlyDictionary<string, InitializerValue>? NamedValues { get; init; }
 
     public required SyntaxNode Node { get; init; }
+
+    public bool TryGetValues<T>([NotNullWhen(true)] out IReadOnlyDictionary<string, InitializerValue>? namedValues)
+    {
+        if (Type == typeof(T).Name && NamedValues is not null)
+        {
+            namedValues = NamedValues;
+            return true;
+        }
+        namedValues = null;
+        return false;
+    }
 }

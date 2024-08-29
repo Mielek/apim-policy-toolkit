@@ -150,6 +150,11 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="config"></param>
     void MockResponse(MockResponseConfig? config = null);
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void SendRequest(SendRequestConfig config);
 
     string AuthenticationManagedIdentity(string resource);
 
@@ -168,7 +173,6 @@ public interface IInboundContext : IHaveExpressionContext
     void JsonToXml();
     void ValidateJwt();
     void ReturnResponse();
-    void SendRequest();
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.
