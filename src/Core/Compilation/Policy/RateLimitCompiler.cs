@@ -12,29 +12,8 @@ public class RateLimitCompiler : IMethodPolicyHandler
 
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
-        if (node.ArgumentList.Arguments.Count != 1)
+        if (!node.TryExtractingConfigParameter<RateLimitConfig>(context, "rate-limit", out var values))
         {
-            context.ReportError($"Wrong argument count for rate limit policy. {node.GetLocation()}");
-            return;
-        }
-
-        if (node.ArgumentList.Arguments[0].Expression is not ObjectCreationExpressionSyntax config)
-        {
-            context.ReportError($"Rate limit policy argument must be an object creation expression. {node.GetLocation()}");
-            return;
-        }
-
-        var initializer = config.Process(context);
-        if (initializer.Type != nameof(RateLimitConfig))
-        {
-            context.ReportError($"Rate limit policy argument must be of type {nameof(RateLimitConfig)}. {node.GetLocation()}");
-            return;
-        }
-
-        var values = initializer.NamedValues;
-        if (values is null)
-        {
-            context.ReportError($"No initializer. {node.GetLocation()}");
             return;
         }
 

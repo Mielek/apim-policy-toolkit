@@ -12,31 +12,8 @@ public class CheckHeaderCompiler : IMethodPolicyHandler
 
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
-        if (node.ArgumentList.Arguments.Count != 1)
+        if (!node.TryExtractingConfigParameter<CheckHeaderConfig>(context, "check-header", out var values))
         {
-            context.ReportError($"Wrong argument count for check-header policy. {node.GetLocation()}");
-            return;
-        }
-
-        if (node.ArgumentList.Arguments[0].Expression is not ObjectCreationExpressionSyntax config)
-        {
-            context.ReportError(
-                $"Check-header policy argument must be an object creation expression. {node.GetLocation()}");
-            return;
-        }
-
-        var initializer = config.Process(context);
-        if (initializer.Type != nameof(CheckHeaderConfig))
-        {
-            context.ReportError(
-                $"Check-header policy argument must be of type {nameof(CheckHeaderConfig)}. {node.GetLocation()}");
-            return;
-        }
-
-        var values = initializer.NamedValues;
-        if (values is null)
-        {
-            context.ReportError($"TODO. {node.GetLocation()}");
             return;
         }
 
@@ -84,7 +61,7 @@ public class CheckHeaderCompiler : IMethodPolicyHandler
         }
 
         element.Add(elements);
-        
+
         context.AddPolicy(element);
     }
 }

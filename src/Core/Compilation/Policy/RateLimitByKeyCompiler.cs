@@ -11,29 +11,8 @@ public class RateLimitByKeyCompiler : IMethodPolicyHandler
     public string MethodName => nameof(IInboundContext.RateLimitByKey);
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
-        if (node.ArgumentList.Arguments.Count != 1)
+        if (!node.TryExtractingConfigParameter<RateLimitByKeyConfig>(context, "rate-limit-by-key", out var values))
         {
-            context.ReportError($"Wrong argument count for rate limit by key policy. {node.GetLocation()}");
-            return;
-        }
-
-        if (node.ArgumentList.Arguments[0].Expression is not ObjectCreationExpressionSyntax config)
-        {
-            context.ReportError($"Rate limit by key policy argument must be an object creation expression. {node.GetLocation()}");
-            return;
-        }
-
-        var initializer = config.Process(context);
-        if (initializer.Type != nameof(RateLimitByKeyConfig))
-        {
-            context.ReportError($"Rate limit by key policy argument must be of type {nameof(RateLimitByKeyConfig)}. {node.GetLocation()}");
-            return;
-        }
-
-        var values = initializer.NamedValues;
-        if (values is null)
-        {
-            context.ReportError($"No initializer. {node.GetLocation()}");
             return;
         }
 

@@ -12,29 +12,8 @@ public class ReturnResponseCompiler : IMethodPolicyHandler
 
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
-        if (node.ArgumentList.Arguments.Count != 1)
+        if (!node.TryExtractingConfigParameter<ReturnResponseConfig>(context, "return-response", out var values))
         {
-            context.ReportError($"Wrong argument count for return response policy. {node.GetLocation()}");
-            return;
-        }
-
-        if (node.ArgumentList.Arguments[0].Expression is not ObjectCreationExpressionSyntax config)
-        {
-            context.ReportError($"Return response policy argument must be an object creation expression. {node.GetLocation()}");
-            return;
-        }
-
-        var initializer = config.Process(context);
-        if (initializer.Type != nameof(ReturnResponseConfig))
-        {
-            context.ReportError($"Return response policy argument must be of type {nameof(ReturnResponseConfig)}. {node.GetLocation()}");
-            return;
-        }
-
-        var values = initializer.NamedValues;
-        if (values is null)
-        {
-            context.ReportError($"TODO. {node.GetLocation()}");
             return;
         }
 

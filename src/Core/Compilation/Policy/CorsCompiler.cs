@@ -12,29 +12,8 @@ public class CorsCompiler : IMethodPolicyHandler
 
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
-        if (node.ArgumentList.Arguments.Count != 1)
+        if (!node.TryExtractingConfigParameter<CorsConfig>(context, "cors", out var values))
         {
-            context.ReportError($"Wrong argument count for cors policy. {node.GetLocation()}");
-            return;
-        }
-
-        if (node.ArgumentList.Arguments[0].Expression is not ObjectCreationExpressionSyntax config)
-        {
-            context.ReportError($"Cors policy argument must be an object creation expression. {node.GetLocation()}");
-            return;
-        }
-
-        var initializer = config.Process(context);
-        if (initializer.Type != nameof(CorsConfig))
-        {
-            context.ReportError($"Cors policy argument must be of type {nameof(CorsConfig)}. {node.GetLocation()}");
-            return;
-        }
-
-        var values = initializer.NamedValues;
-        if (values is null)
-        {
-            context.ReportError($"TODO. {node.GetLocation()}");
             return;
         }
 
@@ -68,7 +47,8 @@ public class CorsCompiler : IMethodPolicyHandler
         if (values.TryGetValue(nameof(CorsConfig.AllowedMethods), out var allowedMethods))
         {
             var allowedMethodsElement = new XElement("allowed-methods");
-            allowedMethodsElement.AddAttribute(values, nameof(CorsConfig.PreflightResultMaxAge), "preflight-result-max-age");
+            allowedMethodsElement.AddAttribute(values, nameof(CorsConfig.PreflightResultMaxAge),
+                "preflight-result-max-age");
             var methods = (allowedMethods.UnnamedValues ?? [])
                 .Select(m => new XElement("method", m.Value!))
                 .ToArray<object>();
