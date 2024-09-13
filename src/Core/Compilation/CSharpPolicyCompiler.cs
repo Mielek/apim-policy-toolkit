@@ -43,6 +43,7 @@ public class CSharpPolicyCompiler
             SetQueryParameterCompiler.SetCompiler,
             SetQueryParameterCompiler.SetIfNotExistCompiler,
             new SetVariableCompiler(),
+            new ValidateJwtCompiler(),
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityCompiler()

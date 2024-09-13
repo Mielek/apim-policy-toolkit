@@ -162,6 +162,12 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="config"></param>
     void ReturnResponse(ReturnResponseConfig config);
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="config"></param>
+    void ValidateJwt(ValidateJwtConfig config);
+    
     string AuthenticationManagedIdentity(string resource);
 
     /// <summary>
@@ -178,7 +184,6 @@ public interface IInboundContext : IHaveExpressionContext
     void Jsonp();
     void JsonToXml();
     void ValidateJwt();
-    void ReturnResponse();
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.
