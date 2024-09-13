@@ -1,6 +1,6 @@
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-public class SetBodyConfig
+public record SetBodyConfig
 {
     public string? Template { get; init; }
     public string? XsiNil { get; init; }

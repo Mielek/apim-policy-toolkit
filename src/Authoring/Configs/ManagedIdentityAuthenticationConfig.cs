@@ -1,6 +1,6 @@
 ﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-public class ManagedIdentityAuthenticationConfig : IAuthenticationConfig
+public record ManagedIdentityAuthenticationConfig : IAuthenticationConfig
 {
     public required string Resource { get; init; }
     public string? ClientId { get; init; }

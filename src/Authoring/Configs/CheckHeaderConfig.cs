@@ -1,6 +1,6 @@
 ﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-public class CheckHeaderConfig
+public record CheckHeaderConfig
 {
     public required string Name { get; init; }
     public required string FailCheckHttpCode { get; init; }

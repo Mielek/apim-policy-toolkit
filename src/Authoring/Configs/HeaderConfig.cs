@@ -1,7 +1,7 @@
 ﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
 
-public class HeaderConfig
+public record HeaderConfig
 {
     public required string Name { get; init; }
     public string? ExistsAction { get; init; }

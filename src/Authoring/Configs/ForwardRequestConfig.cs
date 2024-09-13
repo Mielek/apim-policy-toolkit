@@ -3,7 +3,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 /// <summary>
 /// Configuration of forward request policy
 /// </summary>
-public class ForwardRequestConfig
+public record ForwardRequestConfig
 {
     /// <summary>
     /// The amount of time in seconds to wait for the HTTP response headers to be returned by the backend service before a timeout error is raised.

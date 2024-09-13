@@ -1,6 +1,6 @@
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-public class SendRequestConfig
+public record SendRequestConfig
 {
     public required string ResponseVariableName { get; init; }
     

@@ -1,6 +1,6 @@
 ﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-public class MockResponseConfig
+public record MockResponseConfig
 {
     /// <summary>
     /// TODO

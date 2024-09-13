@@ -1,6 +1,6 @@
 ﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-public class RateLimitByKeyConfig
+public record RateLimitByKeyConfig
 {
     public required int Calls { get; init; }
     public required int RenewalPeriod { get; init; }

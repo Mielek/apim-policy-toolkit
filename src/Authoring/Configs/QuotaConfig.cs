@@ -3,7 +3,7 @@
 /// <summary>
 /// TODO
 /// </summary>
-public class QuotaConfig : BaseQuotaConfig
+public record QuotaConfig : BaseQuotaConfig
 {
     /// <summary>
     /// TODO
@@ -19,7 +19,7 @@ public class QuotaConfig : BaseQuotaConfig
 /// <summary>
 /// TODO
 /// </summary>
-public class ApiQuota : EntityQuotaConfig
+public record ApiQuota : EntityQuotaConfig
 {
     /// <summary>
     /// TODO
@@ -30,11 +30,11 @@ public class ApiQuota : EntityQuotaConfig
 /// <summary>
 /// TODO
 /// </summary>
-public class OperationQuota : EntityQuotaConfig
+public record OperationQuota : EntityQuotaConfig
 {
 }
 
-public abstract class EntityQuotaConfig : BaseQuotaConfig
+public abstract record EntityQuotaConfig : BaseQuotaConfig
 {
     /// <summary>
     /// TODO
@@ -55,7 +55,7 @@ public abstract class EntityQuotaConfig : BaseQuotaConfig
     }
 }
 
-public abstract class BaseQuotaConfig
+public abstract record BaseQuotaConfig
 {
     /// <summary>
     /// TODO

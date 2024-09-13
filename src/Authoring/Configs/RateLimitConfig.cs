@@ -1,6 +1,6 @@
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 
-public class RateLimitConfig
+public record RateLimitConfig
 {
     public required int Calls { get; init; }
     public required int RenewalPeriod { get; init; }
@@ -14,16 +14,16 @@ public class RateLimitConfig
     public ApiRateLimit[]? Apis { get; init; }
 }
 
-public class ApiRateLimit : EntityLimitConfig
+public record ApiRateLimit : EntityLimitConfig
 {
     public OperationRateLimit[]? Operations { get; init; }
 }
 
-public class OperationRateLimit : EntityLimitConfig
+public record OperationRateLimit : EntityLimitConfig
 {
 }
 
-public abstract class EntityLimitConfig
+public abstract record EntityLimitConfig
 {
     public string? Name { get; init; }
     public string? Id { get; init; }
