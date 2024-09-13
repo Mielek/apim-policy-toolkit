@@ -85,6 +85,31 @@ public class SendRequestTests
             {
                 context.SendRequest(new SendRequestConfig {
                     ResponseVariableName = "variable",
+                    Mode = Exp(context.ExpressionContext),
+                });
+            }
+
+            private string Exp(IExpressionContext context) => "n" + "e" + "w";
+        }
+        """,
+        """
+        <policies>
+            <inbound>
+                <send-request response-variable-name="variable" mode="@("n" + "e" + "w")" />
+            </inbound>
+        </policies>
+        """,
+        DisplayName = "Should compile send request policy with expression in mode"
+    )]
+    [DataRow(
+        """
+        [Document]
+        public class PolicyDocument : IDocument
+        {
+            public void Inbound(IInboundContext context)
+            {
+                context.SendRequest(new SendRequestConfig {
+                    ResponseVariableName = "variable",
                     Timeout = 100,
                 });
             }
@@ -98,6 +123,32 @@ public class SendRequestTests
         </policies>
         """,
         DisplayName = "Should compile send request policy with timeout"
+    )]
+    
+    [DataRow(
+        """
+        [Document]
+        public class PolicyDocument : IDocument
+        {
+            public void Inbound(IInboundContext context)
+            {
+                context.SendRequest(new SendRequestConfig {
+                    ResponseVariableName = "variable",
+                    Timeout = Exp(context.ExpressionContext),
+                });
+            }
+
+            private int Exp(IExpressionContext context) => 80 + 20;
+        }
+        """,
+        """
+        <policies>
+            <inbound>
+                <send-request response-variable-name="variable" timeout="@(80 + 20)" />
+            </inbound>
+        </policies>
+        """,
+        DisplayName = "Should compile send request policy with expression in timeout"
     )]
     [DataRow(
         """
@@ -184,10 +235,12 @@ public class SendRequestTests
                     Headers = [
                         new HeaderConfig {
                             Name = "content-type",
+                            ExistsAction = "append",
                             Values = ["plain/text"],
                         },
                         new HeaderConfig {
                             Name = "accept",
+                            ExistsAction = "override",
                             Values = ["application/json", "application/xml"],
                         },
                     ],
@@ -199,10 +252,10 @@ public class SendRequestTests
         <policies>
             <inbound>
                 <send-request response-variable-name="variable">
-                    <set-header name="content-type">
+                    <set-header name="content-type" exists-action="append">
                         <value>plain/text</value>
                     </set-header>
-                    <set-header name="accept">
+                    <set-header name="accept" exists-action="override">
                         <value>application/json</value>
                         <value>application/xml</value>
                     </set-header>
@@ -211,6 +264,51 @@ public class SendRequestTests
         </policies>
         """,
         DisplayName = "Should compile send request policy with headers"
+    )]
+    [DataRow(
+        """
+        [Document]
+        public class PolicyDocument : IDocument
+        {
+            public void Inbound(IInboundContext context)
+            {
+                context.SendRequest(new SendRequestConfig {
+                    ResponseVariableName = "variable",
+                    Headers = [
+                        new HeaderConfig {
+                            Name = "content-type",
+                            ExistsAction = "append",
+                            Values = ["plain/text"],
+                        },
+                        new HeaderConfig {
+                            Name = "accept",
+                            ExistsAction = ExpAction(context.ExpressionContext),
+                            Values = [ExpValue(context.ExpressionContext), "application/xml"],
+                        },
+                    ],
+                });
+            }
+        
+            private string ExpAction(IExpressionContext context) => "over" + "ride";
+            private string ExpValue(IExpressionContext context) => "application" + "/" + "json";
+        }
+        """,
+        """
+        <policies>
+            <inbound>
+                <send-request response-variable-name="variable">
+                    <set-header name="content-type" exists-action="append">
+                        <value>plain/text</value>
+                    </set-header>
+                    <set-header name="accept" exists-action="@("over" + "ride")">
+                        <value>@("application" + "/" + "json")</value>
+                        <value>application/xml</value>
+                    </set-header>
+                </send-request>
+            </inbound>
+        </policies>
+        """,
+        DisplayName = "Should compile send request policy with expressions in headers"
     )]
     [DataRow(
         """
@@ -241,6 +339,34 @@ public class SendRequestTests
         </policies>
         """,
         DisplayName = "Should compile send request policy with body"
+    )]
+    [DataRow(
+        """
+        [Document]
+        public class PolicyDocument : IDocument
+        {
+            public void Inbound(IInboundContext context)
+            {
+                context.SendRequest(new SendRequestConfig {
+                    ResponseVariableName = "variable",
+                    Body = new BodyConfig {
+                        Content = Exp(context.ExpressionContext),
+                    },
+                });
+            }
+            private string Exp(IExpressionContext context) => "bo" + "dy";
+        }
+        """,
+        """
+        <policies>
+            <inbound>
+                <send-request response-variable-name="variable">
+                    <set-body>@("bo" + "dy")</set-body>
+                </send-request>
+            </inbound>
+        </policies>
+        """,
+        DisplayName = "Should compile send request policy with expression in body"
     )]
     [DataRow(
         """
