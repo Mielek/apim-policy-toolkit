@@ -59,4 +59,25 @@ public class SetBodyCompiler : IMethodPolicyHandler
 
         context.AddPolicy(element);
     }
+
+    public static void HandleBody(ICompilationContext context, XElement element, InitializerValue body)
+    {
+        if (!body.TryGetValues<BodyConfig>(out var config))
+        {
+            context.ReportError($"{nameof(BodyConfig)}. {body.Node.GetLocation()}");
+            return;
+        }
+
+        if (!config.TryGetValue(nameof(BodyConfig.Content), out var content))
+        {
+            context.ReportError($"{nameof(BodyConfig.Content)}. {body.Node.GetLocation()}");
+            return;
+        }
+
+        var bodyElement = new XElement("set-body", content.Value!);
+        bodyElement.AddAttribute(config, nameof(BodyConfig.Template), "template");
+        bodyElement.AddAttribute(config, nameof(BodyConfig.XsiNil), "xsi-nil");
+        bodyElement.AddAttribute(config, nameof(BodyConfig.ParseDate), "parse-date");
+        element.Add(bodyElement);
+    }
 }

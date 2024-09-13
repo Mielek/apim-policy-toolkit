@@ -57,4 +57,35 @@ public class SetHeaderCompiler : IMethodPolicyHandler
 
         context.AddPolicy(element);
     }
+
+    public static void HandleHeaders(ICompilationContext context, XElement root, InitializerValue headers)
+    {
+        foreach (var header in headers.UnnamedValues!)
+        {
+            if (!header.TryGetValues<HeaderConfig>(out var headerValues))
+            {
+                context.ReportError($"{nameof(HeaderConfig)}. {header.Node.GetLocation()}");
+                continue;
+            }
+
+            var headerElement = new XElement("set-header");
+            if (!headerElement.AddAttribute(headerValues, nameof(HeaderConfig.Name), "name"))
+            {
+                continue;
+            }
+
+            headerElement.AddAttribute(headerValues, nameof(HeaderConfig.ExistsAction), "exists-action");
+
+            if (headerValues.TryGetValue(nameof(HeaderConfig.Values), out var values) &&
+                values.UnnamedValues is not null)
+            {
+                foreach (var value in values.UnnamedValues)
+                {
+                    headerElement.Add(new XElement("value", value.Value!));
+                }
+            }
+
+            root.Add(headerElement);
+        }
+    }
 }

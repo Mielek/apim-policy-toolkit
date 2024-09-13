@@ -22,6 +22,12 @@ public interface IBackendContext : IHaveExpressionContext
     void SendRequest(SendRequestConfig config);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void ReturnResponse(ReturnResponseConfig config);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">

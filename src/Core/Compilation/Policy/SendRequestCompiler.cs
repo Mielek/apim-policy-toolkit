@@ -42,12 +42,12 @@ public class SendRequestCompiler : IMethodPolicyHandler
 
         if (values.TryGetValue(nameof(SendRequestConfig.Headers), out var headers))
         {
-            HandleHeaders(context, element, headers);
+            SetHeaderCompiler.HandleHeaders(context, element, headers);
         }
 
         if (values.TryGetValue(nameof(SendRequestConfig.Body), out var body))
         {
-            HandleBody(context, element, body);
+            SetBodyCompiler.HandleBody(context, element, body);
         }
 
         if (values.TryGetValue(nameof(SendRequestConfig.Authentication), out var authentication))
@@ -61,58 +61,6 @@ public class SendRequestCompiler : IMethodPolicyHandler
         }
 
         context.AddPolicy(element);
-    }
-
-    private static void HandleHeaders(ICompilationContext context, XElement root, InitializerValue headers)
-    {
-        foreach (var header in headers.UnnamedValues!)
-        {
-            if (!header.TryGetValues<HeaderConfig>(out var headerValues))
-            {
-                context.ReportError($"{nameof(HeaderConfig)}. {header.Node.GetLocation()}");
-                continue;
-            }
-
-            var headerElement = new XElement("set-header");
-            if (!headerElement.AddAttribute(headerValues, nameof(HeaderConfig.Name), "name"))
-            {
-                continue;
-            }
-
-            headerElement.AddAttribute(headerValues, nameof(HeaderConfig.ExistsAction), "exists-action");
-
-            if (headerValues.TryGetValue(nameof(HeaderConfig.Values), out var values) &&
-                values.UnnamedValues is not null)
-            {
-                foreach (var value in values.UnnamedValues)
-                {
-                    headerElement.Add(new XElement("value", value.Value!));
-                }
-            }
-
-            root.Add(headerElement);
-        }
-    }
-
-    private void HandleBody(ICompilationContext context, XElement element, InitializerValue body)
-    {
-        if (!body.TryGetValues<BodyConfig>(out var config))
-        {
-            context.ReportError($"{nameof(BodyConfig)}. {body.Node.GetLocation()}");
-            return;
-        }
-
-        if (!config.TryGetValue(nameof(BodyConfig.Content), out var content))
-        {
-            context.ReportError($"{nameof(BodyConfig.Content)}. {body.Node.GetLocation()}");
-            return;
-        }
-
-        var bodyElement = new XElement("set-body", content.Value!);
-        bodyElement.AddAttribute(config, nameof(BodyConfig.Template), "template");
-        bodyElement.AddAttribute(config, nameof(BodyConfig.XsiNil), "xsi-nil");
-        bodyElement.AddAttribute(config, nameof(BodyConfig.ParseDate), "parse-date");
-        element.Add(bodyElement);
     }
 
     private void HandleProxy(ICompilationContext context, XElement element, InitializerValue value)

@@ -156,6 +156,12 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="config"></param>
     void SendRequest(SendRequestConfig config);
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void ReturnResponse(ReturnResponseConfig config);
+    
     string AuthenticationManagedIdentity(string resource);
 
     /// <summary>
