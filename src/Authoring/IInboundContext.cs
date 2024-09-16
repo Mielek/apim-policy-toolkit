@@ -183,7 +183,6 @@ public interface IInboundContext : IHaveExpressionContext
     void SetBackendService();
     void Jsonp();
     void JsonToXml();
-    void ValidateJwt();
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.
