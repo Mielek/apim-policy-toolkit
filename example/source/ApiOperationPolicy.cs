@@ -11,14 +11,27 @@ public class ApiOperationPolicy : IDocument
     public void Inbound(IInboundContext c)
     {
         c.Base();
-        if(IsFromCompanyIp(c.ExpressionContext))
+        if (IsFromCompanyIp(c.ExpressionContext))
         {
+            c.Cors(new CorsConfig
+            {
+                AllowCredentials = true,
+                AllowedOrigins = ["http://internal.contoso.example"],
+                AllowedHeaders = ["*"],
+                AllowedMethods = ["*"],
+                ExposeHeaders = ["*"],
+            });
+            c.InlinePolicy("<set-backend-service base-url=\"https://internal.contoso.example\" />");
             c.AuthenticationBasic("{{username}}", "{{password}}");
         }
         else
         {
-            var testToken = c.AuthenticationManagedIdentity("test");
-            c.SetHeader("Authorization", $"Bearer {testToken}");
+            c.AuthenticationManagedIdentity(new ManagedIdentityAuthenticationConfig()
+            {
+                Resource = "https://management.azure.com/", 
+                OutputTokenVariableName = "testToken",
+            });
+            c.SetHeader("Authorization", Bearer(c.ExpressionContext));
         }
     }
 
@@ -31,6 +44,8 @@ public class ApiOperationPolicy : IDocument
     public bool IsFromCompanyIp(IExpressionContext context)
         => context.Request.IpAddress.StartsWith("10.0.0.");
 
+    public string Bearer(IExpressionContext context)
+        => $"Bearer {context.Variables["testToken"]}";
 
     [Expression]
     public string FilterSecrets(IExpressionContext context)

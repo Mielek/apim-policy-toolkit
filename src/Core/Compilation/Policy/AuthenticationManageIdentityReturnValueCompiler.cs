@@ -5,7 +5,7 @@ using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 
-public class AuthenticationManageIdentityCompiler : IReturnValueMethodPolicyHandler
+public class AuthenticationManageIdentityReturnValueCompiler : IReturnValueMethodPolicyHandler
 {
     public string MethodName => nameof(IInboundContext.AuthenticationManagedIdentity);
 

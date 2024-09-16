@@ -18,8 +18,12 @@ public class TestingDocument : IDocument
         }
         else
         {
-            var testToken = context.AuthenticationManagedIdentity("test");
-            context.SetHeader("Authorization", $"Bearer {testToken}");
+            context.AuthenticationManagedIdentity(new ManagedIdentityAuthenticationConfig
+            {
+                Resource = "https://management.azure.com/",
+                OutputTokenVariableName = "testToken",
+            });
+            context.SetHeader("Authorization", Bearer(context.ExpressionContext));
         }
     }
 
@@ -31,6 +35,9 @@ public class TestingDocument : IDocument
     }
 
     bool IsFromCompanyIp(IExpressionContext context) => context.Request.IpAddress.StartsWith("10.0.0.");
+
+    public string Bearer(IExpressionContext context)
+        => $"Bearer {context.Variables["testToken"]}";
 
     string FilterRequest(IExpressionContext context)
     {

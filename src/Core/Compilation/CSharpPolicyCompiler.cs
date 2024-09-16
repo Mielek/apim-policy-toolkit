@@ -19,6 +19,7 @@ public class CSharpPolicyCompiler
         _document = document;
         var invStatement = new ExpressionStatementCompiler([
             new AuthenticationBasicCompiler(),
+            new AuthenticationManagedIdentityCompiler(),
             new BaseCompiler(),
             new CheckHeaderCompiler(),
             new CorsCompiler(),
@@ -46,7 +47,7 @@ public class CSharpPolicyCompiler
             new ValidateJwtCompiler(),
         ]);
         var loc = new LocalDeclarationStatementCompiler([
-            new AuthenticationManageIdentityCompiler()
+            new AuthenticationManageIdentityReturnValueCompiler()
         ]);
         _blockCompiler = new([
             invStatement,

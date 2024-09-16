@@ -161,14 +161,15 @@ public interface IInboundContext : IHaveExpressionContext
     /// </summary>
     /// <param name="config"></param>
     void ReturnResponse(ReturnResponseConfig config);
-    
+
     /// <summary>
     /// 
     /// </summary>
     /// <param name="config"></param>
     void ValidateJwt(ValidateJwtConfig config);
-    
+
     string AuthenticationManagedIdentity(string resource);
+    void AuthenticationManagedIdentity(ManagedIdentityAuthenticationConfig config);
 
     /// <summary>
     /// TODO
