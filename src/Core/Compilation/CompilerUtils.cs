@@ -181,6 +181,14 @@ public static class CompilerUtils
         values = result;
         return true;
     }
+
+    public static string ExtractDocumentFileName(this ClassDeclarationSyntax document)
+    {
+        var attributeSyntax = document.AttributeLists.GetFirstAttributeOfType("Document");
+        var attributeArgumentExpression =
+            attributeSyntax?.ArgumentList?.Arguments.FirstOrDefault()?.Expression as LiteralExpressionSyntax;
+        return attributeArgumentExpression?.Token.ValueText ?? document.Identifier.ValueText;
+    }
     
 }
 

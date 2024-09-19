@@ -1,12 +1,12 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 [TestClass]
 public class Test
 {
-
     [TestMethod]
     public void TestMethod1()
     {
@@ -14,11 +14,11 @@ public class Test
             """
             using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
             using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
-            
+
             using Newtonsoft.Json.Linq;
-            
+
             namespace Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
-            
+
             [Document("echo-api.retrieve-resource")]
             public class TestingDocument : IDocument
             {
@@ -64,7 +64,7 @@ public class Test
                     }
                     return body.ToString();
                 }
-            
+
             }
             """);
         var policy = syntaxTree

@@ -1,8 +1,7 @@
-using System;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Xml;
+using System.Text.RegularExpressions;
+
+using Compiler;
 
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,36 +10,29 @@ using Microsoft.Extensions.Configuration;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 using Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
 
-var options = new ConfigurationBuilder()
+var config = new ConfigurationBuilder()
     .AddCommandLine(args)
     .Build();
-
-var format = bool.TryParse(options["format"] ?? "false", out var fmt) && fmt;
-var sourceFolder = options["s"] ?? options["source"] ?? throw new NullReferenceException("Source folder not provided");
-var output = options["o"] ?? options["out"] ?? throw new NullReferenceException("Output folder not provided");
-
-var scriptExtensionPattern = options["e"] ?? options["extension"] ?? "*.cs";
-
-var writerSettings = new XmlWriterSettings()
-{
-    OmitXmlDeclaration = true,
-    ConformanceLevel = ConformanceLevel.Fragment,
-    Indent = format
-};
-
-var files = Directory.GetFiles(sourceFolder, scriptExtensionPattern);
+var options = new CompilerOptions(config);
+var files = Directory.GetFiles(options.SourceFolder, "*.cs", SearchOption.AllDirectories).Where(p => !Regex.IsMatch(p, @".*[\\/](obj|bin)[\\/].*"));
 
 foreach (var file in files)
 {
+    string targetFolder = Path.GetFullPath(Path.Combine(options.OutputFolder, Path.GetFullPath(file).Split(Path.GetFullPath(options.SourceFolder))[1].Replace(Path.GetFileName(file), "")));
+    if (!Directory.Exists(targetFolder))
+    {
+        Directory.CreateDirectory(targetFolder);
+    }
+
     var fileName = Path.GetFileNameWithoutExtension(file);
     var code = File.ReadAllText(file);
     var syntax = CSharpSyntaxTree.ParseText(code);
 
-    var Documents = syntax.GetRoot()
+    var documents = syntax.GetRoot()
         .DescendantNodes()
         .OfType<ClassDeclarationSyntax>()
         .Where(c => c.AttributeLists.ContainsAttributeOfType("Document"));
-    foreach (var document in Documents)
+    foreach (var document in documents)
     {
         var result = new CSharpPolicyCompiler(document).Compile();
 
@@ -50,23 +42,20 @@ foreach (var file in files)
         }
 
         var codeBuilder = new StringBuilder();
-        using (var writer = CustomXmlWriter.Create(codeBuilder, writerSettings))
+        using (var writer = CustomXmlWriter.Create(codeBuilder, options.XmlWriterSettings))
         {
             writer.Write(result.Document);
         }
 
         var xml = codeBuilder.ToString();
-        if (format)
+        if (options.Format)
         {
             xml = RazorCodeFormatter.Format(xml);
         }
 
-        var attributeSyntax = document.AttributeLists.GetFirstAttributeOfType("Document");
-        var policyFileName =
-            (attributeSyntax?.ArgumentList?.Arguments.FirstOrDefault()?.Expression as LiteralExpressionSyntax)?.Token
-            .ValueText ?? document.Identifier.ValueText;
+        var policyFileName = document.ExtractDocumentFileName();
 
-        var targetFile = Path.Combine(output, $"{policyFileName}.xml");
+        var targetFile = Path.Combine(targetFolder, $"{policyFileName}.xml");
         File.WriteAllText(targetFile, xml);
         Console.Out.WriteLine($"File {targetFile} created");
     }
