@@ -18,12 +18,6 @@ var files = Directory.GetFiles(options.SourceFolder, "*.cs", SearchOption.AllDir
 
 foreach (var file in files)
 {
-    string targetFolder = Path.GetFullPath(Path.Combine(options.OutputFolder, Path.GetFullPath(file).Split(Path.GetFullPath(options.SourceFolder))[1].Replace(Path.GetFileName(file), "")));
-    if (!Directory.Exists(targetFolder))
-    {
-        Directory.CreateDirectory(targetFolder);
-    }
-
     var fileName = Path.GetFileNameWithoutExtension(file);
     var code = File.ReadAllText(file);
     var syntax = CSharpSyntaxTree.ParseText(code);
@@ -54,8 +48,16 @@ foreach (var file in files)
         }
 
         var policyFileName = document.ExtractDocumentFileName();
+        policyFileName = policyFileName.EndsWith(".xml") ? policyFileName : $"{policyFileName}.xml";
 
-        var targetFile = Path.Combine(targetFolder, $"{policyFileName}.xml");
+        string targetFolder = Path.GetFullPath(Path.Combine(options.OutputFolder, Path.GetFullPath(file).Split(Path.GetFullPath(options.SourceFolder))[1].Replace(Path.GetFileName(file), "")));
+        var targetFile = Path.Combine(targetFolder, policyFileName);
+        var directoryPath = Path.GetDirectoryName(targetFile);
+        
+        if (directoryPath is not null && !Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
         File.WriteAllText(targetFile, xml);
         Console.Out.WriteLine($"File {targetFile} created");
     }
