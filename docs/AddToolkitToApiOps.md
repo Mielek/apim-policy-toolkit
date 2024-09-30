@@ -78,7 +78,7 @@ If you ran the compiler with the following command:
 dotnet policy-compiler --s $PATH_TO_POLICY_PROJECT\src\ --o $PATH_TO_POLICY_PROJECT\api-ops-data\
 ```
 
-Compiler with information from above  will produce a file in the following location:
+Compiler with information from above will produce a file in the following location:
 `$PATH_TO_POLICY_PROJECT\api-ops-data\apis\echo-api\operations\get\policy.xml`
 
 ## Mimic folder structure

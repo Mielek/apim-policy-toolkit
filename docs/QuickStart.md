@@ -26,11 +26,12 @@ We will cover the following topics:
     ```shell
     dotnet add package Mielek.Azure.ApiManagement.PolicyToolkit.Authoring
     ```
+
+    | :exclamation: Azure API Management Policy toolkit is not yet published to nuget.<br/>For now, please follow the repository setup guide to obtain packages mentioned in the document. |
+    |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
 * Open the solution in your IDE of choice. We tested [VS](https://visualstudio.microsoft.com), [Raider](https://www.jetbrains.com/rider/), [VS code](https://code.visualstudio.com/) with [C# devkit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit),
   but any IDE with C# support should work.
-
-| :exclamation: Azure API Management Policy toolkit is not yet published to nuget.<br/>For now, please follow the repository setup guide to obtain packages mentioned in the document. |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 ## Writing a simple policy document
 
@@ -169,7 +170,7 @@ public class ApiOperationPolicy : IDocument
 Let's unpack the code above it:
 
 * `if` statement is an equivalent of `choose` policy with `when` element.
-* `IsCompanyIP` is a method which checks if request comes from company IP addresses and it is mapped to a policy
+* `IsCompanyIP` is a method which checks if request comes from company IP addresses, and it is mapped to a policy
   expression
 * Every method, other than section method are treated as expressions. They need to accept one parameter of type `IExpressionContext`
   with name `context`. Type is available in `Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions` namespace.
