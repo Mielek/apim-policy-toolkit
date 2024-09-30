@@ -34,6 +34,42 @@ provided to policy toolkit compiler. In below listing you can find example of th
 
 ```csharp
 [Document("apis/echo-api/operations/get/policy.xml")]
+public class ApiEchoApiGetPolicy : IDocument 
+{
+    // ...
+}
+```
+
+Folder structure for the project should look like below:
+
+```
+.
+├── api-ops-data
+│    ├── policy.xml
+│    ├── apis
+│    │   └── echo-api
+│    │       ├── policy.xml
+│    │       └── operations
+│    │           ├── get
+│    │           │   └── policy.xml
+│    │           └── post
+│    │               └── policy.xml
+│    └── products
+│        └── Unlimited
+│            └── policy.xml
+└── policies
+    ├── policies.sln
+    ├── .gitignore
+    ├── src
+    │   ├── src.csproj
+    │   ├── GlobalPolicy.cs
+    │   ├── ApiEchoApiPolicy.cs
+    │   ├── ApiEchoApiGetPolicy.cs
+    │   ├── ApiEchoApiPostPolicy.cs
+    │   └── ProductUnlimitedPolicy.cs
+    └── test 
+        ├── test.csproj
+        ...
 ```
 
 If you ran the compiler with the following command:
@@ -89,12 +125,16 @@ policy file in the policy project.
 Running the compiler with will replace the policy files in the `api-ops-data` folder.
 
 ```shell
-dotnet policy-compiler --s $DIRECTORY_PATH\policies\src --o $DIRECTORY_PATH\api-ops-data\
+dotnet policy-compiler --s $DIRECTORY_PATH\policies\src\ --o $DIRECTORY_PATH\api-ops-data\
 ```
 
-Remember that compiler by default produces file names equal to class name. To make sure that `policy.xml` file is
-produce for each C# policy class make sure to set `policy.xml` as Document name.
+Remember that compiler by default produces file names equal to the name of a class when name is not provided in Document attribute.
+To make sure that `policy.xml` file is produce for each C# policy class make sure to set `policy.xml` as Document name.
 
 ```csharp
 [Document("policy.xml")]
+public class ApiEchoApiGetPolicy : IDocument 
+{
+    // ...
+}
 ```

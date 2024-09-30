@@ -1,6 +1,7 @@
 ﻿# Contributor Guide
 
 In this guide, we will cover the following topics:
+
 1. Setting up the development environment for this repository.
 2. Building, testing and packing the project.
 3. How to contribute to this repository.
@@ -9,8 +10,8 @@ In this guide, we will cover the following topics:
 
 ### Dev container
 
-Repository contains a dev container which contains all the severeness SKS to develop toolkit.
-See dev container [website](https://containers.dev/supporting) for more information how to run it. 
+Repository contains a dev container which contains all the required SDKs to develop toolkit.
+See dev container [website](https://containers.dev/supporting) for more information how to run it.
 
 ### Setting up the development environment
 
@@ -24,6 +25,7 @@ See dev container [website](https://containers.dev/supporting) for more informat
 ### Toolkit solution
 
 From the repository root directory:
+
 * Run `dotnet build` to build the project.
 * Run `dotnet test` to run the tests.
 * Run `dotnet pack` to pack the project. The package will be created in the `output` directory.
@@ -48,10 +50,22 @@ From the repository root directory:
     dotnet pack
     ```
 * Open `examples` folder in terminal.
-* Run command to create new solution.
-    ```shell
-    dotnet new sln
-    ```
+* Run command to build the example project.
+   ```shell
+   dotnet build
+   ```
+* Run command to test the example project.
+   ```shell
+   dotnet test
+   ```
+* Run command restore compiler tool in the example project.
+   ```shell
+   dotnet tool restore
+  ```
+* Run command to compile policies in the example project.
+   ```shell
+   dotnet policy-compiler --s .\source\ --o .\target\ --format true
+   ```
 
 ## Contributor guidelines
 
