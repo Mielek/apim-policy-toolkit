@@ -14,4 +14,6 @@ The C# language is mor natural and shows a process nature of policy. There is as
 
 * [Quick start](docs/QuickStart.md)
 * [Contributor guide](docs/ContributorGuide.md)
-* [Add toolkit to APIOps](docs/AddToolkitToApiOps.md)
+* [Solution structure recommendation](docs/SolutionStructureRecommendation.md)
+* [Steps for deploying policies created by the policy toolkit](docs/IntegratePolicySolution.md)
+* [Integrate policy solution with APIOps](docs/IntegratePolicySolutionWithApiOps.md)
