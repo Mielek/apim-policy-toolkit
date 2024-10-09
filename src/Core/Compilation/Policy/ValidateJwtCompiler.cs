@@ -70,7 +70,7 @@ public class ValidateJwtCompiler : IMethodPolicyHandler
             }
 
             var openIdElement = new XElement("openid-config");
-            if (openIdElement.AddAttribute(openIdConfigValues, nameof(OpenIdConfig.Url), "url"))
+            if (!openIdElement.AddAttribute(openIdConfigValues, nameof(OpenIdConfig.Url), "url"))
             {
                 context.ReportError($"{nameof(OpenIdConfig.Url)}. {openIdConfig.Node.GetLocation()}");
                 continue;
@@ -93,9 +93,9 @@ public class ValidateJwtCompiler : IMethodPolicyHandler
             }
 
             var claimElement = new XElement("claim");
-            if (claimsElement.AddAttribute(claimValue, nameof(ClaimConfig.Name), "name"))
+            if (!claimsElement.AddAttribute(claimValue, nameof(ClaimConfig.Name), "name"))
             {
-                context.ReportError($"TODO. {claim.Node.GetLocation()}");
+                context.ReportError($"{nameof(ClaimConfig.Name)}. {claim.Node.GetLocation()}");
                 continue;
             }
 
