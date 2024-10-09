@@ -30,7 +30,7 @@ public class SetBodyCompiler : IMethodPolicyHandler
                 {
                     if (template.Value != "liquid")
                     {
-                        context.ReportError($"TODO. {node.GetLocation()}");
+                        context.ReportError($"Not liquid. {node.GetLocation()}");
                     }
                     else
                     {
@@ -42,7 +42,7 @@ public class SetBodyCompiler : IMethodPolicyHandler
                 {
                     if (xsiNil.Value != "blank" && xsiNil.Value != "null")
                     {
-                        context.ReportError($"TODO. {node.GetLocation()}");
+                        context.ReportError($"Not bank or null. {node.GetLocation()}");
                     }
                     else
                     {

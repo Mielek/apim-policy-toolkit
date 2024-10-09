@@ -63,7 +63,7 @@ public static class CompilerUtils
         {
             if (expression is not AssignmentExpressionSyntax assignment)
             {
-                context.ReportError($"TODO. {expression.GetLocation()}");
+                context.ReportError($"Is not AssignmentExpressionSyntax. {expression.GetLocation()}");
                 continue;
             }
 
