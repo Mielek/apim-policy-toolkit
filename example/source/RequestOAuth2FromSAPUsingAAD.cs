@@ -92,10 +92,7 @@ public class RequestOAuth2FromSAPUsingAAD : IDocument
                     },
                     new HeaderConfig { Name = "Ocp-Apim-Subscription-Key", ExistsAction = "Delete" }
                 ],
-                Body = new BodyConfig
-                {
-                    Content = CreateSapTokenRequestBody(context.ExpressionContext),
-                }
+                Body = new BodyConfig { Content = CreateSapTokenRequestBody(context.ExpressionContext), }
             });
         }
     }
