@@ -178,13 +178,6 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="password"></param>
     void AuthenticationBasic(string username, string password);
 
-    void Cache();
-    void CacheLookup();
-    void CacheStore();
-    void SetBackendService();
-    void Jsonp();
-    void JsonToXml();
-
     /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
