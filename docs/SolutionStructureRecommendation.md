@@ -75,19 +75,19 @@ can be used:
 
 * For API policy:
     ```csharp
-    [Document("apis\echo-api\policy.xml")]
+    [Document("apis/echo-api/policy.xml")]
     public class ApiEchoApiPolicy : IDocument 
     // ...
     ```
 * For API operation policy:
     ```csharp
-    [Document("apis\echo-api\operations\get\policy.xml")]
+    [Document("apis/echo-api/operations/get/policy.xml")]
     public class ApiEchoApiGetPolicy : IDocument 
     // ...
     ```
 * For product policy:
     ```csharp
-    [Document("products\Starter\policy.xml")]
+    [Document("products/Starter/policy.xml")]
     public class ProductStarterPolicy : IDocument 
     // ...
     ```
