@@ -7,27 +7,33 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 public class MockRequest : IRequest
 {
 
-    public MockBody MockBody { get; set; } = new MockBody();
-    public IMessageBody Body => MockBody;
+    public MockBody Body { get; set; } = new MockBody();
+    IMessageBody IRequest.Body => Body;
 
 
     public X509Certificate2? Certificate { get; set; } = null;
 
     public Dictionary<string, string[]> MockHeaders { get; set; } = new Dictionary<string, string[]>()
     {
-        {"Accept", new [] {"application/json"}}
+        {"Accept", ["application/json"] }
     };
-    public IReadOnlyDictionary<string, string[]> Headers => throw new NotImplementedException();
+
+    public Dictionary<string, string[]> Headers { get; set; } = new Dictionary<string, string[]>();
+    IReadOnlyDictionary<string, string[]> IRequest.Headers => Headers;
 
     public string IpAddress { get; set; } = "192.168.0.1";
 
-    public IReadOnlyDictionary<string, string> MatchedParameters => throw new NotImplementedException();
+    public Dictionary<string, string> MatchedParameters { get; set; } = new Dictionary<string, string>();
+    IReadOnlyDictionary<string, string> IRequest.MatchedParameters => MatchedParameters;
 
-    public string Method => throw new NotImplementedException();
+    public string Method { get; set; } = "GET";
 
-    public IUrl OriginalUrl => throw new NotImplementedException();
+    public MockUrl OriginalUrl { get; set; } = new MockUrl();
+    IUrl IRequest.OriginalUrl => OriginalUrl;
 
-    public IUrl Url => throw new NotImplementedException();
+    public MockUrl Url { get; set; } = new MockUrl();
+    IUrl IRequest.Url => Url;
 
-    public IPrivateEndpointConnection? PrivateEndpointConnection => throw new NotImplementedException();
+    public MockPrivateEndpointConnection? PrivateEndpointConnection { get; set; }
+    IPrivateEndpointConnection? IRequest.PrivateEndpointConnection => PrivateEndpointConnection;
 }

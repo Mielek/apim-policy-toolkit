@@ -4,14 +4,14 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
 public class MockUser : IUser
 {
-    public string Email { get; set; } = "joe.doe@contoso.com";
+    public string Email { get; set; } = "joe.doe@contoso.example";
 
     public string FirstName { get; set; } = "Joe";
 
     public List<MockGroup> MockGroups { get; set; } = new List<MockGroup>() { new MockGroup() };
     public IEnumerable<IGroup> Groups => MockGroups;
 
-    public string Id { get; set; } = "joe-doe-contoso-com";
+    public string Id { get; set; } = "joe-doe-contoso-example";
 
     public List<MockUserIdentity> MockUserIdentities { get; set; } = new List<MockUserIdentity>() { new MockUserIdentity() };
     public IEnumerable<IUserIdentity> Identities => MockUserIdentities;

@@ -4,7 +4,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
 public class MockUrl : IUrl
 {
-    public string Host { get; set; } = "example.com";
+    public string Host { get; set; } = "contoso.example";
     public string Path { get; set; } = "/v2/mock/op";
     public string Port { get; set; } = "443";
     public IReadOnlyDictionary<string, string[]> Query => MockQuery;

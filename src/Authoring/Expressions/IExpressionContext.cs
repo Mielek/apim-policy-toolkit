@@ -16,5 +16,5 @@ public interface IExpressionContext
     bool Tracing { get; }
     IUser User { get; }
     IReadOnlyDictionary<string, object> Variables { get; }
-    void Trace(string message);
+    Action<string> Trace { get; }
 }

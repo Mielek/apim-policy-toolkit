@@ -4,18 +4,13 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
 public class MockResponse : IResponse
 {
-    public MockResponse()
-    {
-        MockBody = new MockBody();
-    }
+    public MockBody Body { get; set; } = new MockBody();
+    IMessageBody IResponse.Body => Body;
 
+    public Dictionary<string, string[]> Headers { get; set; } = new Dictionary<string, string[]>();
+    IReadOnlyDictionary<string, string[]> IResponse.Headers => Headers;
 
-    public MockBody MockBody { get; init; }
-    public IMessageBody Body => MockBody;
+    public int StatusCode { get; set; } = 200;
 
-    public IReadOnlyDictionary<string, string[]> Headers => throw new NotImplementedException();
-
-    public int StatusCode => throw new NotImplementedException();
-
-    public string StatusReason => throw new NotImplementedException();
+    public string StatusReason { get; set; } = "OK";
 }

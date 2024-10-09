@@ -9,11 +9,11 @@ public class MockApi : IApi
 
     public string Path { get; set; } = "/mock";
 
-    public IEnumerable<string> Protocols { get; set; } = new[] { "https" };
+    public IEnumerable<string> Protocols { get; set; } = ["https"];
 
-    public IUrl ServiceUrl => MockServiceUrl;
-    public MockUrl MockServiceUrl { get; set; } = new MockUrl();
+    public MockUrl ServiceUrl { get; set; } = new MockUrl();
+    IUrl IApi.ServiceUrl => ServiceUrl;
 
-    public ISubscriptionKeyParameterNames SubscriptionKeyParameterNames => MockSubscriptionKeyParameterNames;
-    public MockSubscriptionKeyParameterNames MockSubscriptionKeyParameterNames { get; set; } = new MockSubscriptionKeyParameterNames();
+    public MockSubscriptionKeyParameterNames SubscriptionKeyParameterNames { get; set; } = new MockSubscriptionKeyParameterNames();
+    ISubscriptionKeyParameterNames IApi.SubscriptionKeyParameterNames => SubscriptionKeyParameterNames;
 }

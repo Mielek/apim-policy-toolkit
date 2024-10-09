@@ -9,35 +9,36 @@ public class MockExpressionContext : IExpressionContext
     public TimeSpan Elapsed { get; set; } = TimeSpan.Zero;
     public bool Tracing { get; set; } = false;
 
-    public Dictionary<string, object> MockVariables { get; set; } = new Dictionary<string, object>();
-    public IReadOnlyDictionary<string, object> Variables => MockVariables;
+    public Dictionary<string, object> Variables { get; set; } = new Dictionary<string, object>();
+    IReadOnlyDictionary<string, object> IExpressionContext.Variables => Variables;
 
-    public MockContextApi MockApi { get; set; } = new MockContextApi();
-    public IContextApi Api => MockApi;
+    public MockContextApi Api { get; set; } = new MockContextApi();
+    IContextApi IExpressionContext.Api => Api;
 
-    public MockRequest MockRequest { get; set; } = new MockRequest();
-    public IRequest Request => MockRequest;
+    public MockRequest Request { get; set; } = new MockRequest();
+    IRequest IExpressionContext.Request => Request;
 
-    public MockResponse MockResponse { get; set; } = new MockResponse();
-    public IResponse Response => MockResponse;
+    public MockResponse Response { get; set; } = new MockResponse();
+    IResponse IExpressionContext.Response => Response;
 
 
-    public MockSubscription MockSubscription { get; set; } = new MockSubscription();
-    public ISubscription Subscription => MockSubscription;
+    public MockSubscription Subscription { get; set; } = new MockSubscription();
+    ISubscription IExpressionContext.Subscription => Subscription;
 
-    public MockUser MockUser { get; set; } = new MockUser();
-    public IUser User => MockUser;
+    public MockUser User { get; set; } = new MockUser();
+    IUser IExpressionContext.User => User;
 
-    public IDeployment Deployment => throw new NotImplementedException();
+    public MockDeployment Deployment { get; set; } = new MockDeployment();
+    IDeployment IExpressionContext.Deployment => Deployment;
 
-    public ILastError LastError => throw new NotImplementedException();
+    public MockLastError LastError { get; set; } = new MockLastError();
+    ILastError IExpressionContext.LastError => LastError;
 
-    public IOperation Operation => throw new NotImplementedException();
+    public MockOperation Operation { get; set; } = new MockOperation();
+    IOperation IExpressionContext.Operation => Operation;
 
-    public IProduct Product => throw new NotImplementedException();
+    public MockProduct Product { get; set; } = new MockProduct();
+    IProduct IExpressionContext.Product => Product;
 
-    public void Trace(string message)
-    {
-        throw new NotImplementedException();
-    }
+    public Action<string> Trace { get; set; } = (message) => { };
 }
