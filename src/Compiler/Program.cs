@@ -19,6 +19,7 @@ var files = Directory.GetFiles(options.SourceFolder, "*.cs", SearchOption.AllDir
 foreach (var file in files)
 {
     var fileName = Path.GetFileNameWithoutExtension(file);
+    Console.Out.WriteLine($"File {fileName} Processing");
     var code = File.ReadAllText(file);
     var syntax = CSharpSyntaxTree.ParseText(code);
 
