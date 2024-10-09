@@ -5,5 +5,5 @@ public record HeaderConfig
 {
     public required string Name { get; init; }
     public string? ExistsAction { get; init; }
-    public required string[] Values { get; init; }
+    public string[]? Values { get; init; }
 }
