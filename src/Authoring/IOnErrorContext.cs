@@ -3,7 +3,7 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 public interface IOnErrorContext : IHaveExpressionContext
 {
     /// <summary>
-    /// TODO
+    /// The base policy used to specify when parent scope policy should be executed
     /// </summary>
     void Base();
 

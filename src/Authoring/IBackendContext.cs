@@ -3,6 +3,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 public interface IBackendContext : IHaveExpressionContext
 {
     /// <summary>
+    /// The base policy used to specify when parent scope policy should be executed
+    /// </summary>
+    void Base();
+
+    /// <summary>
     /// TODO
     /// </summary>
     /// <param name="config"></param>

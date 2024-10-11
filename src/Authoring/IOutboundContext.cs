@@ -5,6 +5,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 public interface IOutboundContext : IHaveExpressionContext
 {
     /// <summary>
+    /// The base policy used to specify when parent scope policy should be executed
+    /// </summary>
+    void Base();
+
+    /// <summary>
     /// Adds header of specified name with values or overrides values if header already exists.
     /// </summary>
     /// <param name="name">
@@ -44,11 +49,6 @@ public interface IOutboundContext : IHaveExpressionContext
     /// Specifies name of the header to be deleted. Policy expressions are allowed.
     /// </param>
     void RemoveHeader(string name);
-
-    /// <summary>
-    /// The base policy used to specify when parent scope policy should be executed
-    /// </summary>
-    void Base();
 
     /// <summary>
     /// TODO

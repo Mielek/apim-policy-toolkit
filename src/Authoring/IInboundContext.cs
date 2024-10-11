@@ -5,6 +5,11 @@ namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
 public interface IInboundContext : IHaveExpressionContext
 {
     /// <summary>
+    /// The base policy used to specify when parent scope policy should be executed
+    /// </summary>
+    void Base();
+
+    /// <summary>
     /// Adds header of specified name with values or overrides values if header already exists.<br />
     /// Compiled to <a href="https://learn.microsoft.com/en-us/azure/api-management/set-header-policy">set-header</a> policy.
     /// </summary>
@@ -48,11 +53,6 @@ public interface IInboundContext : IHaveExpressionContext
     /// Specifies name of the header to be deleted. Policy expressions are allowed.
     /// </param>
     void RemoveHeader(string name);
-
-    /// <summary>
-    /// The base policy used to specify when parent scope policy should be executed
-    /// </summary>
-    void Base();
 
     /// <summary>
     /// The cors policy adds cross-origin resource sharing (CORS) support to an operation or an API to allow cross-domain calls from browser-based clients.
