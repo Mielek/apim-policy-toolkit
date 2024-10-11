@@ -46,7 +46,7 @@ public class ValidateJwtCompiler : IMethodPolicyHandler
         }
 
         HandleKeys(context, element, values, nameof(ValidateJwtConfig.IssuerSigningKeys), "issuer-signing-keys");
-        HandleKeys(context, element, values, nameof(ValidateJwtConfig.DescriptionKeys), "description-keys");
+        HandleKeys(context, element, values, nameof(ValidateJwtConfig.DescriptionKeys), "decryption-keys");
         HandleList(element, values, nameof(ValidateJwtConfig.Audiences), "audiences", "audience");
         HandleList(element, values, nameof(ValidateJwtConfig.Issuers), "issuers", "issuer");
 
@@ -93,7 +93,7 @@ public class ValidateJwtCompiler : IMethodPolicyHandler
             }
 
             var claimElement = new XElement("claim");
-            if (!claimsElement.AddAttribute(claimValue, nameof(ClaimConfig.Name), "name"))
+            if (!claimElement.AddAttribute(claimValue, nameof(ClaimConfig.Name), "name"))
             {
                 context.ReportError($"{nameof(ClaimConfig.Name)}. {claim.Node.GetLocation()}");
                 continue;

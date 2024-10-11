@@ -467,6 +467,183 @@ public class ValidateJwtTests
         """,
         DisplayName = "Should compile validate jwt policy with output token variable name"
     )]
+    [DataRow(
+        """
+        [Document]
+        public class PolicyDocument : IDocument
+        {
+            public void Inbound(IInboundContext context) {
+                context.ValidateJwt(new ValidateJwtConfig
+                {
+                    HeaderName = "Authorization",
+                    OpenIdConfigs = [
+                        new OpenIdConfig { Url = "https://login.constoso.com/openid-configuration" },
+                        new OpenIdConfig { Url = "https://login.microsoftonline.com/organizations/v2.0/.well-known/openid-configuration" },
+                    ],
+                });
+            }
+        }
+        """,
+        """
+        <policies>
+            <inbound>
+                <validate-jwt header-name="Authorization">
+                    <openid-config url="https://login.constoso.com/openid-configuration" />
+                    <openid-config url="https://login.microsoftonline.com/organizations/v2.0/.well-known/openid-configuration" />
+                </validate-jwt>
+            </inbound>
+        </policies>
+        """,
+        DisplayName = "Should compile validate jwt policy with open id configuration"
+    )]
+    [DataRow(
+        """
+        [Document]
+        public class PolicyDocument : IDocument
+        {
+            public void Inbound(IInboundContext context) {
+                context.ValidateJwt(new ValidateJwtConfig
+                {
+                    HeaderName = "Authorization",
+                    IssuerSigningKeys = [
+                        new Base64KeyConfig { Id = "kid1", Value = "Base64Key" },
+                        new CertificateKeyConfig { Id = "kid2", CertificateId = "certificate-id" },
+                        new AsymmetricKeyConfig { Id = "kid3", Modulus = "modulus", Exponent = "exponent" },
+                    ],
+                });
+            }
+        }
+        """,
+        """
+        <policies>
+            <inbound>
+                <validate-jwt header-name="Authorization">
+                    <issuer-signing-keys>
+                        <key id="kid1">Base64Key</key>
+                        <key id="kid2" certificate-id="certificate-id" />
+                        <key id="kid3" n="modulus" e="exponent" />
+                    </issuer-signing-keys>
+                </validate-jwt>
+            </inbound>
+        </policies>
+        """,
+        DisplayName = "Should compile validate jwt policy with issuer signing keys"
+    )]
+    [DataRow(
+        """
+        [Document]
+        public class PolicyDocument : IDocument
+        {
+            public void Inbound(IInboundContext context) {
+                context.ValidateJwt(new ValidateJwtConfig
+                {
+                    HeaderName = "Authorization",
+                    DescriptionKeys = [
+                        new Base64KeyConfig { Id = "kid1", Value = "Base64Key" },
+                        new CertificateKeyConfig { Id = "kid2", CertificateId = "certificate-id" },
+                        new AsymmetricKeyConfig { Id = "kid3", Modulus = "modulus", Exponent = "exponent" },
+                    ],
+                });
+            }
+        }
+        """,
+        """
+        <policies>
+            <inbound>
+                <validate-jwt header-name="Authorization">
+                    <decryption-keys>
+                        <key id="kid1">Base64Key</key>
+                        <key id="kid2" certificate-id="certificate-id" />
+                        <key id="kid3" n="modulus" e="exponent" />
+                    </decryption-keys>
+                </validate-jwt>
+            </inbound>
+        </policies>
+        """,
+        DisplayName = "Should compile validate jwt policy with decryption keys"
+    )]
+    [DataRow(
+        """
+        [Document]
+        public class PolicyDocument : IDocument
+        {
+            public void Inbound(IInboundContext context) {
+                context.ValidateJwt(new ValidateJwtConfig
+                {
+                    HeaderName = "Authorization",
+                    Audiences = [
+                        "audience A",
+                        "audience B",
+                        "audience C",
+                    ],
+                });
+            }
+        }
+        """,
+        """
+        <policies>
+            <inbound>
+                <validate-jwt header-name="Authorization">
+                    <audiences>
+                        <audience>audience A</audience>
+                        <audience>audience B</audience>
+                        <audience>audience C</audience>
+                    </audiences>
+                </validate-jwt>
+            </inbound>
+        </policies>
+        """,
+        DisplayName = "Should compile validate jwt policy with audiences"
+    )]
+    [DataRow(
+        """
+        [Document]
+        public class PolicyDocument : IDocument
+        {
+            public void Inbound(IInboundContext context) {
+                context.ValidateJwt(new ValidateJwtConfig
+                {
+                    HeaderName = "Authorization",
+                    RequiredClaims = [
+                        new ClaimConfig { 
+                            Name = "claimA",
+                            Match = "all", 
+                            Separator = " ",
+                            Values = ["value A", "value B"]
+                        },
+                        new ClaimConfig {
+                            Name = "claimB",
+                            Match = Exp(context.ExpressionContext),
+                            Separator = " ",
+                            Values = ["value A", "value B"]
+                        },
+                    ],
+                });
+            }
+            
+            string Exp(IExpressionContext context) => context.User.Email.EndsWith("@contoso.example") ? "all" : "any";
+        }
+        """,
+        """
+        <policies>
+            <inbound>
+                <validate-jwt header-name="Authorization">
+                    <required-claims>
+                        <claim name="claimA" match="all" separator=" ">
+                            <value>value A</value>
+                            <value>value B</value>
+                        </claim>
+                        <claim name="claimB" match="@(context.User.Email.EndsWith("@contoso.example") ? "all" : "any")" separator=" ">
+                            <value>value A</value>
+                            <value>value B</value>
+                        </claim>
+                    </required-claims>
+                </validate-jwt>
+            </inbound>
+        </policies>
+        """,
+        DisplayName = "Should compile validate jwt policy with required claims"
+    )]
     public void ShouldCompileValidateJwtPolicy(string code, string expectedXml)
     {
         code.CompileDocument().Should().BeSuccessful().And.DocumentEquivalentTo(expectedXml);
