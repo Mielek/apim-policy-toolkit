@@ -55,8 +55,8 @@ public class CacheStoreTests
                 context.CacheStore(Duration(context.ExpressionContext), StoreResponse(context.ExpressionContext));
             }
             
-            string Duration(IExpressionContext context) => context.User.Email.EndsWith("@contoso.example") ? 10 : 60;
-            string StoreResponse(IExpressionContext context) => context.User.Email.EndsWith("@contoso.example");
+            uint Duration(IExpressionContext context) => context.User.Email.EndsWith("@contoso.example") ? 10 : 60;
+            bool StoreResponse(IExpressionContext context) => context.User.Email.EndsWith("@contoso.example");
         }
         """,
         """

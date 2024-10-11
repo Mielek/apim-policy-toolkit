@@ -163,7 +163,7 @@ public interface IInboundContext : IHaveExpressionContext
     void ReturnResponse(ReturnResponseConfig config);
 
     /// <summary>
-    /// 
+    /// TODO
     /// </summary>
     /// <param name="config"></param>
     void ValidateJwt(ValidateJwtConfig config);
@@ -177,6 +177,12 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="username"></param>
     /// <param name="password"></param>
     void AuthenticationBasic(string username, string password);
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="config"></param>
+    void CacheLookup(CacheLookupConfig config);
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.
