@@ -83,6 +83,13 @@ public interface IOutboundContext : IHaveExpressionContext
     void ReturnResponse(ReturnResponseConfig config);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <param name="cacheResponse"></param>
+    void CacheStore(uint duration, bool? cacheResponse);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">

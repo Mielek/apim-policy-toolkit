@@ -21,6 +21,7 @@ public class CSharpPolicyCompiler
             new AuthenticationBasicCompiler(),
             new AuthenticationManagedIdentityCompiler(),
             new BaseCompiler(),
+            new CacheStoreCompiler(),
             new CheckHeaderCompiler(),
             new CorsCompiler(),
             new ForwardRequestCompiler(),
