@@ -25,4 +25,9 @@ public class MockBody : IMessageBody
 
         throw new NotImplementedException();
     }
+
+    public IDictionary<string, IList<string>> AsFormUrlEncodedContent()
+    {
+        throw new NotImplementedException();
+    }
 }
