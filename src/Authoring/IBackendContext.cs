@@ -33,6 +33,12 @@ public interface IBackendContext : IHaveExpressionContext
     void ReturnResponse(ReturnResponseConfig config);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void SetBackendService(SetBackendServiceConfig config);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">

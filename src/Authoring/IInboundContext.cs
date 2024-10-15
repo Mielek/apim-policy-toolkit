@@ -168,6 +168,12 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="config"></param>
     void ValidateJwt(ValidateJwtConfig config);
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void SetBackendService(SetBackendServiceConfig config);
+
     string AuthenticationManagedIdentity(string resource);
     void AuthenticationManagedIdentity(ManagedIdentityAuthenticationConfig config);
 

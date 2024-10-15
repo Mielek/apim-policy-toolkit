@@ -35,6 +35,7 @@ public class CSharpPolicyCompiler
             new ReturnResponseCompiler(),
             new RewriteUriCompiler(),
             new SendRequestCompiler(),
+            new SetBackendServiceCompiler(),
             new SetBodyCompiler(),
             SetHeaderCompiler.AppendCompiler,
             SetHeaderCompiler.RemoveCompiler,
