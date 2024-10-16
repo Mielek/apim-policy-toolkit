@@ -1,13 +1,17 @@
-# Avaliable Policies
+# Available Policies
 
-Project is in development stage. That means that not all policies are implemented yet. In this document you can find
-list of implemented policies and their description.
+The Project is in the development stage.
+That means that not all policies are implemented yet.
+In this document, you can find a list of implemented policies and their description.
 
 #### :white_check_mark: Implemented policies
+
 
 * authentication-basic
 * authentication-managed-identity
 * base
+* cache-lookup
+* cache-store
 * check-header
 * choose
 * cors
@@ -20,6 +24,7 @@ list of implemented policies and their description.
 * return-response
 * rewrite-uri
 * send-request
+* set-backend-service
 * set-body
 * set-header
 * set-method
@@ -27,12 +32,12 @@ list of implemented policies and their description.
 * set-variable
 * validate-jwt
 
-#### :x: Not implemented policies
+Policies not listed here are not implemented yet.
 
 ## InlinePolicy
 
-Inline Policy is a workaround until all the policies are implemented. It allows you to include policy not implemented
-yet to the document.
+Inline Policy is a workaround until all the policies are implemented.
+It allows you to include policy not implemented yet to the document.
 
 ```csharp
 c.InlinePolicy("<set-backend-service base-url=\"https://internal.contoso.example\" />");

@@ -15,8 +15,13 @@ Creating policy documents in C# brings another advantage. Simple C# code can tes
 
 ## Documentation
 
+#### Azure API Management policy toolkit documentation for users.
 * [Quick start](docs/QuickStart.md)
-* [Contributor guide](docs/ContributorGuide.md)
+* [Available policies](docs/AvaliablePolicies.md)
 * [Solution structure recommendation](docs/SolutionStructureRecommendation.md)
 * [Steps for deploying policies created by the policy toolkit](docs/IntegratePolicySolution.md)
 * [Integrate policy solution with APIOps](docs/IntegratePolicySolutionWithApiOps.md)
+
+#### Azure API Management policy toolkit documentation for contributors.
+* [Contributor guide](docs/ContributorGuide.md)
+* [Development environment setup](docs/DevEnviromentSetup.md)
