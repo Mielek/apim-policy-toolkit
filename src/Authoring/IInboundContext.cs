@@ -174,22 +174,37 @@ public interface IInboundContext : IHaveExpressionContext
     /// <param name="config"></param>
     void SetBackendService(SetBackendServiceConfig config);
 
-    string AuthenticationManagedIdentity(string resource);
-    void AuthenticationManagedIdentity(ManagedIdentityAuthenticationConfig config);
-
     /// <summary>
     /// TODO
     /// </summary>
     /// <param name="username"></param>
     /// <param name="password"></param>
     void AuthenticationBasic(string username, string password);
-    
+
     /// <summary>
-    /// 
+    /// TODO
     /// </summary>
     /// <param name="config"></param>
     void CacheLookup(CacheLookupConfig config);
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void EmitMetric(EmitMetricConfig config);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void LlmEmitTokenMetric(EmitTokenMetricConfig config);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void AzureOpenAiEmitTokenMetric(EmitTokenMetricConfig config);
+    
     /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
@@ -197,4 +212,7 @@ public interface IInboundContext : IHaveExpressionContext
     /// Policy in xml format.
     /// </param>
     void InlinePolicy(string policy);
+
+    string AuthenticationManagedIdentity(string resource);
+    void AuthenticationManagedIdentity(ManagedIdentityAuthenticationConfig config);
 }

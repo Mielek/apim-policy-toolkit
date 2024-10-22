@@ -48,6 +48,9 @@ public class CSharpPolicyCompiler
             SetQueryParameterCompiler.SetIfNotExistCompiler,
             new SetVariableCompiler(),
             new ValidateJwtCompiler(),
+            new EmitMetricCompiler(),
+            EmitTokenMetricCompiler.Llm,
+            EmitTokenMetricCompiler.AzureOpenAi,
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityReturnValueCompiler()
