@@ -6,7 +6,6 @@ In this document, you can find a list of implemented policies and their descript
 
 #### :white_check_mark: Implemented policies
 
-
 * authentication-basic
 * authentication-managed-identity
 * base

@@ -1,12 +1,12 @@
 # Integrate policy solution with repository containing data for APIOps
 
-Azure API Management policy toolkit is very elastic and allow a developer to define how the structure of repository will
-look. In this guide we will touch how toolkit project can produce policies which can be easily published
+Azure API Management policy toolkit is very elastic and allows a developer to define how the structure of the repository
+will look. In this guide, we will touch how a toolkit project can produce policies which can be easily published
 by [APIOps tool](https://azure.github.io/apiops) to Azure API Management instance.
 
 ## APIOps repository structure
 
-Repository with Azure API Management data created by APIOps tool should have structure similar to below folder tree.
+Repository with Azure API Management data created by APIOps tool should have structure similar to below a folder tree.
 We included folders and files about policies in the repository, and we skipped folders and files not relevant in the
 example.
 
@@ -28,12 +28,12 @@ example.
 └── configuration.dev.yaml
 ```
 
-## Adding policy project to the repository
+## Adding a policy project to the repository
 
-Best way to add policy project to the repository is to add it as a subfolder. This way the policy project can separate
-from the APIOps data and can be easily updated and maintained. In the example below we added the policy project to the
-`policies` folder. We added a dotnet tool to be available from the root of the repository
-(`./.config/dotnet-tools.json`).
+The best way to add a policy project to the repository is to add it as a subfolder of repository root.
+This way, the policy project can separate from the APIOps data and can be easily updated and maintained.
+In the example below we added the policy project to the`policies` folder.
+We added a dotnet tool to be available from the root of the repository (`./.config/dotnet-tools.json`).
 
 ```
 .
@@ -75,19 +75,24 @@ from the APIOps data and can be easily updated and maintained. In the example be
 
 ## Setting name of the policy file
 
-APIOps accepts policies when they are named `policy.xml`. The toolkit compiler by default produces file names equal to
-the name of a class when name is not provided in `Document` attribute. To make sure that `policy.xml` file is produce
-for
-each C# policy class make sure to set `policy.xml` as Document name.
+APIOps accepts policies when they are named `policy.xml`.
+The toolkit compiler by default produces file names equal to the name of a class
+when name is not provided in `Document` attribute.
+To make sure that `policy.xml` file is produced for each C# policy class make sure to set `policy.xml` as Document name.
 
 ```csharp
 [Document("policy.xml")]
 ```
 
+In the above example, we used a hierarchical structure of the policy toolkit project.
+Please refer to the [hierarchical structure](../docs/SolutionStructureRecommendation.md) for more information on that
+structure and other recommended structures.
+
 ## Updating policy files in APIOps artifacts folder
 
-Now as we have all the pieces in place we can run the compiler. Compiler should target `artifacts` folder with APIOps
-data. Example of the command to run the compiler is below.
+Now, as we have all the pieces in place, we can run the compiler.
+Compiler should target `artifacts` folder with APIOps data.
+Example of the command to run the compiler is below.
 
 ```shell
 dotnet policy-compiler --s .\policies\src\ --o .\artifacts\
