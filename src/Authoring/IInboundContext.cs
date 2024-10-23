@@ -206,6 +206,18 @@ public interface IInboundContext : IHaveExpressionContext
     void AzureOpenAiEmitTokenMetric(EmitTokenMetricConfig config);
     
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void LlmSemanticCacheLookup(SemanticCacheLookupConfig config);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void AzureOpenAiSemanticCacheLookup(SemanticCacheLookupConfig config);
+    
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">

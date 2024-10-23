@@ -26,19 +26,19 @@ public class EmitTokenMetricCompiler : IMethodPolicyHandler
 
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
-        if (!node.TryExtractingConfigParameter<EmitTokenMetricConfig>(context, this._policyName, out var values))
+        if (!node.TryExtractingConfigParameter<EmitTokenMetricConfig>(context, _policyName, out var values))
         {
             return;
         }
 
-        var element = new XElement(this._policyName);
+        var element = new XElement(_policyName);
 
         element.AddAttribute(values, nameof(EmitTokenMetricConfig.Namespace), "namespace");
 
         if (!values.TryGetValue(nameof(EmitTokenMetricConfig.Dimensions), out var dimensionsInitializer))
         {
             context.ReportError(
-                $"{this._policyName} {nameof(EmitTokenMetricConfig.Dimensions)} must have been defined. {node.GetLocation()}");
+                $"{_policyName} {nameof(EmitTokenMetricConfig.Dimensions)} must have been defined. {node.GetLocation()}");
             return;
         }
 
@@ -46,7 +46,7 @@ public class EmitTokenMetricCompiler : IMethodPolicyHandler
         if (dimensions.Count == 0)
         {
             context.ReportError(
-                $"{this._policyName} {nameof(EmitTokenMetricConfig.Dimensions)} must have at least one value. {node.GetLocation()}");
+                $"{_policyName} {nameof(EmitTokenMetricConfig.Dimensions)} must have at least one value. {node.GetLocation()}");
             return;
         }
 
@@ -61,12 +61,14 @@ public class EmitTokenMetricCompiler : IMethodPolicyHandler
             if (!dimensionElement.AddAttribute(result, nameof(MetricDimensionConfig.Name), "name"))
             {
                 context.ReportError(
-                    $"{this._policyName}.dimension {nameof(MetricDimensionConfig.Name)}. {node.GetLocation()}");
+                    $"{_policyName}.dimension {nameof(MetricDimensionConfig.Name)}. {node.GetLocation()}");
                 continue;
             }
 
             dimensionElement.AddAttribute(result, nameof(MetricDimensionConfig.Value), "value");
             element.Add(dimensionElement);
         }
+        
+        context.AddPolicy(element);
     }
 }

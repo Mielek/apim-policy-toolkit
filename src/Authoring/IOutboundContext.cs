@@ -88,6 +88,24 @@ public interface IOutboundContext : IHaveExpressionContext
     /// <param name="duration"></param>
     /// <param name="cacheResponse"></param>
     void CacheStore(uint duration, bool? cacheResponse);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void EmitMetric(EmitMetricConfig config);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="duration"></param>
+    void LlmSemanticCacheStore(uint duration);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="duration"></param>
+    void AzureOpenAiSemanticCacheStore(uint duration);
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.

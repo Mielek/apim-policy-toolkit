@@ -60,5 +60,7 @@ public class EmitMetricCompiler : IMethodPolicyHandler
             dimensionElement.AddAttribute(result, nameof(MetricDimensionConfig.Value), "value");
             element.Add(dimensionElement);
         }
+        
+        context.AddPolicy(element);
     }
 }

@@ -51,6 +51,10 @@ public class CSharpPolicyCompiler
             new EmitMetricCompiler(),
             EmitTokenMetricCompiler.Llm,
             EmitTokenMetricCompiler.AzureOpenAi,
+            SemanticCacheStoreCompiler.Llm,
+            SemanticCacheStoreCompiler.AzureOpenAi,
+            SemanticCacheLookupCompiler.Llm,
+            SemanticCacheLookupCompiler.AzureOpenAi,
         ]);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityReturnValueCompiler()

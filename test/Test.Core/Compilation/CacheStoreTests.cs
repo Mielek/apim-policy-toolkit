@@ -3,7 +3,6 @@
 [TestClass]
 public class CacheStoreTests
 {
-    
     [TestMethod]
     [DataRow(
         """

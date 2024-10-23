@@ -51,7 +51,7 @@ public interface IOnErrorContext : IHaveExpressionContext
     /// Specifies name of the header to be deleted. Policy expressions are allowed.
     /// </param>
     void RemoveHeader(string name);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
@@ -82,6 +82,12 @@ public interface IOnErrorContext : IHaveExpressionContext
     /// </summary>
     /// <param name="config"></param>
     void ReturnResponse(ReturnResponseConfig config);
+
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void EmitMetric(EmitMetricConfig config);
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.
