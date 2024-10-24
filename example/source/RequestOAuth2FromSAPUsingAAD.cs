@@ -270,7 +270,7 @@ public class RequestOAuth2FromSAPUsingAAD : IDocument
         if(xsrftoken == null){
             xsrftoken = cookies.FirstOrDefault( ss => ss.Contains("SAP_SESSIONID"));
         }
-                                
+
         return xsrftoken.Split(',')[1];
     }
     bool IsGetNotToMetadataRequest(IExpressionContext context)
