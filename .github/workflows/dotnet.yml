@@ -5,7 +5,7 @@ name: .NET
 
 on:
   push:
-    branches: [ "main", "rm/next" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -25,20 +25,20 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --no-restore
     - name: Test with dotnet
-      run: dotnet test --no-build --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+      run: dotnet test --no-build --logger trx --results-directory "TestResults"
     - name: Upload dotnet test results
       if: ${{ always() }}
       uses: actions/upload-artifact@v4
       with:
-        name: dotnet-test-results-${{ matrix.dotnet-version }}
-        path: TestResults-${{ matrix.dotnet-version }}
+        name: dotnet-test-results
+        path: TestResults
     - name: Check format
       if: ${{ always() }}
-      run: dotnet format style --verify-no-changes --report "FormatReport-${{ matrix.dotnet-version }}"
+      run: dotnet format style --verify-no-changes --report "FormatReport"
     - name: Upload dotnet test results
       if: ${{ always() }}
       uses: actions/upload-artifact@v4
       with:
-        name: dotnet-format-report-${{ matrix.dotnet-version }}
-        path: FormatReport-${{ matrix.dotnet-version }}
+        name: dotnet-format-report
+        path: FormatReport
       
