@@ -26,4 +26,4 @@ Simple C# code can test the policy document in the unit test.
 
 #### Azure API Management policy toolkit documentation for contributors.
 * [Contributor guide](CONTRIBUTING.md)
-* [Development environment setup](docs/DevEnviromentSetup.md)
+* [Development environment setup](docs/DevEnvironmentSetup.md)

@@ -29,7 +29,7 @@ it is recommended to discuss the problem and solution in an issue first.
 This will greatly increase alignment of your PR with the project goals and reduce the chance of wasted effort.
 
 For more information on how to set up the development environment,
-see [Development environment setup](docs/DevEnviromentSetup.md).
+see [Development environment setup](docs/DevEnvironmentSetup.md).
 
 ## License
 

@@ -23,9 +23,8 @@ The repository which we will be talking about is looking like the one in the fol
 ├── .gitignore
 ├── .config
 │   └── dotnet-tools.json
-├── enviroments
-│   └── dev
-│       └── deployment.bicep
+├── infrastructure
+│   └── deployment.bicep
 ├── src
 │   ├── src.csproj
 │   └── apis
@@ -40,9 +39,9 @@ The repository which we will be talking about is looking like the one in the fol
 
 ### Azure API Management instance
 
-We assume that you have an Azure API Management instance created and that you have access to it. We assume that you have
-an API created in the Azure API Management instance. The API is named `echo-api`. We assume that you can test the policy
-by invoking some operations on the API.
+We assume that you have an Azure API Management instance created and that you have access to it.
+We assume that you have an API created in the Azure API Management instance.
+The API is named `echo-api`. We assume that you can test the policy by invoking some operations on the API.
 
 ### Azure CLI
 
@@ -75,11 +74,11 @@ these two commands should be split into separate steps, and if any of them fails
 ## Compiling the policy documents
 
 After standard C# compilation and testing is done, the policy documents can be compiled by the policy toolkit compiler.
-Because, the bicep file for deployment is in the `.\enviroments\dev\` folder, the compilation target folder should be
-`.\enviroments\dev\` as well. This will allow easy referencing of the policy documents in the bicep file.
+Because, the bicep file for deployment is in the `.\infrastructure\` folder, the compilation target folder should be
+`.\infrastructure\` as well. This will allow easy referencing of the policy documents in the bicep file.
 
 ```shell
-dotnet policy-compiler --s .\src\ --o .\enviroment\dev\
+dotnet policy-compiler --s .\src\ --o .\infrastructure\
 ```
 
 The command will produce the policy documents and the folder structure will look like this:
@@ -87,12 +86,11 @@ The command will produce the policy documents and the folder structure will look
 ```
 .
 ├── policies.sln
-├── enviroments
-│   └── dev
-│       ├── deployment.bicep
-│       └── apis
-│           └── echo-api
-│               └── ApiEchoApiPolicy.xml
+├── infrastructure
+│   ├── deployment.bicep
+│   └── apis
+│       └── echo-api
+│           └── ApiEchoApiPolicy.xml
 ├── src
 │   ├── src.csproj
 │   └── apis
@@ -105,7 +103,7 @@ Your CI/CD pipeline should as well fail if the compilation of the policy documen
 
 ## Deploying the policy documents
 
-The bicep file for the deployment is in the `.\enviroments\dev\` folder.
+The bicep file for the deployment is in the `.\infrastructure\` folder.
 The bicep file is referencing the service, the API and the policy document.
 The bicep file should look like this:
 
@@ -132,18 +130,170 @@ resource echoApiPolicy 'Microsoft.ApiManagement/service/apis/policies@2023-03-01
 }
 ```
 
-Please notice that the `loadTextContent` function is used to load the content of the policy document. The content is
-loaded from the file under following path `./apis/echo-api/ApiEchoApiPolicy.xml`.
+Please notice that the `loadTextContent` function is used to load the content of the policy document.
+The content is loaded from the file under following path `./apis/echo-api/ApiEchoApiPolicy.xml`.
 
 The Azure CLI can do the deployment. The following command will deploy the policy document to the Azure API:
 
 ```shell
-cd .\enviroments\dev\
+cd .\infrastructure\
 az deployment group create \
   --resource-group <<YOUR_RESOURCE_GROUP>> \
   --template-file .\deployment.bicep \
   --parameters servicename=<<YOUR_SERVICE_NAME>> \
   --name deploy-1
+```
+
+## Pipeline example
+
+With above knowledge, creating a pipeline should be straightforward.
+In this section, we will show you two examples of pipelines definitions:
+
+* The GitHub Actions pipeline
+* The Azure DevOps pipeline
+
+Both pipelines will look similar. The following steps will be present in both of them:
+
+1. Checkout the repository
+2. Setup build and test the .NET SDK
+3. Build the solution
+4. Test the solution
+5. Restore the policy document compiler
+6. Compile the policy documents
+7. Deploy the policy documents
+
+### GitHub Actions pipeline example
+
+```yaml
+on:
+  workflow_dispatch:
+    inputs:
+      resourceGroup:
+        description: 'The resource group of the Azure API Management instance'
+        required: true
+      apimServiceName:
+        description: 'The name of the Azure API Management instance'
+        required: true
+
+name: DeployPolicyDocuments 
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build with dotnet
+      run: dotnet build --no-restore
+
+    - name: Test with dotnet
+      run: dotnet test --no-build --logger trx --results-directory "TestResults"
+
+    - name: Upload dotnet test results
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-test-results
+        path: TestResults
+
+    - name: Restore policy document compiler
+      run: dotnet tool restore
+
+    - name: Compile policy documents
+      run: dotnet policy-compiler --s .\src\ --o .\infrastructure\
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy policy documents
+      uses: azure/cli@v2
+      env:
+        AZURE_RESOURCE_GROUP: ${{ inputs.resourceGroup }}
+        AZURE_API_MANAGEMENT_SERVICE_NAME: ${{ inputs.apimServiceName }}
+        RUN_NUMBER: ${{ github.run_number }}
+      with:
+        azcliversion: latest
+        inlineScript: |
+          cd .\infrastructure\
+          az deployment group create \
+            --resource-group $AZURE_RESOURCE_GROUP \
+            --template-file .\deployment.bicep \
+            --parameters servicename=$AZURE_API_MANAGEMENT_SERVICE_NAME \
+            --name deploy-$RUN_NUMBER
+```
+
+### Azure DevOps pipeline example
+
+```yaml
+parameters:
+  - name: 'subscription'
+    displayName: 'Subscription for Azure API Management'
+    type: string
+  - name: 'resourceGroup'
+    displayName: 'Azure API Management resource group'
+    type: string
+  - name: 'serviceName'
+    displayName: 'Azure API Management service name'
+    type: string
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+  - task: UseDotNet@2
+    displayName: 'Setup .NET'
+    inputs:
+      version: 8.x
+      performMultiLevelLookup: true
+      includePreviewVersions: true
+
+  - script: dotnet restore
+    displayName: 'Restore dependencies'
+
+  - script: dotnet build --no-restore
+    displayName: 'Build with dotnet'
+
+  - script: dotnet test --no-build --logger trx --results-directory "TestResults"
+    displayName: 'Test with dotnet'
+
+  - task: PublishTestResults@2
+    displayName: 'Collect tests results'
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: './TestResults/*.trx'
+
+  - script: dotnet tool restore
+    displayName: 'Restore tools'
+
+  - script: dotnet policy-compiler --s .\src\ --o .\infrastructure\
+    displayName: 'Compile policy documents'
+
+  - task: AzureCLI@2
+    displayName: Azure CLI
+    inputs:
+      azureSubscription: ${{ parameters.subscription }}
+      scriptType: cmd
+      scriptLocation: inlineScript
+      inlineScript: |
+        cd .\infrastructure\
+        az deployment group create \
+          --resource-group ${{ parameters.resourceGroup }} \
+          --template-file .\deployment.bicep \
+          --parameters servicename=${{ parameters.serviceName }} \
+          --name deploy-$(Build.BuildNumber)
 ```
 
 ## Conclusion
