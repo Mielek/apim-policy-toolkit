@@ -16,3 +16,4 @@ For more information see the [CONTRIBUTING](CONTRIBUTING.md) file.
 ## Microsoft Support Policy
 
 Support for this **PROJECT** is limited to the resources listed above.
+Support from Azure Support is not available.
