@@ -57,7 +57,7 @@ body:
       placeholder: ex. email@example.com
     validations:
       required: false
-  - type: input
+  - type: textarea
     attributes:
       label: Additional Information
       description: Is there any additional information you can provide?
