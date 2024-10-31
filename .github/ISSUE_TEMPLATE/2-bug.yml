@@ -1,0 +1,66 @@
+name: Report a bug
+description: Create a report to help us improve
+labels: "bug"
+assignees: mielek
+body:
+  - type: textarea
+    attributes:
+      label: Report
+      description: What bug have you encountered?
+      placeholder: A clear and concise description of what the bug is.
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: A description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual Behavior
+      description: Also tell us, what did you see is happen?
+      placeholder: A description of what actually happened.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce the Problem
+      description: "How can we reproduce this bug? Please walk us through it step by step."
+      value: |
+        1.
+        2.
+        3.
+        ...
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Component
+      description: Which part of the project is affected?
+      multiple: true
+      options:
+        - Authoring library
+        - Compiler
+        - Emulator library
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Version
+      description: What version are you running?
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Additional Information
+      description: Is there any additional information you can provide?
+      placeholder: your setup, logs, screenshots, etc.
+    validations:
+      required: false

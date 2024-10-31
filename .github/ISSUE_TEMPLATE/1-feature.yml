@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest an idea for this project
+labels: "feature-request"
+assignees: mielek
+body:
+  - type: textarea
+    attributes:
+      label: Proposal
+      description: "What would you like to have as a feature"
+      placeholder: "A clear and concise description of what you want to happen."
+  - type: dropdown
+    attributes:
+      label: Component
+      description: Which part of the project is affected?
+      multiple: true
+      options:
+        - Authoring library
+        - Compiler
+        - Emulator library
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
