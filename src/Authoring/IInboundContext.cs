@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
@@ -192,31 +194,43 @@ public interface IInboundContext : IHaveExpressionContext
     /// </summary>
     /// <param name="config"></param>
     void EmitMetric(EmitMetricConfig config);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
     /// <param name="config"></param>
     void LlmEmitTokenMetric(EmitTokenMetricConfig config);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
     /// <param name="config"></param>
     void AzureOpenAiEmitTokenMetric(EmitTokenMetricConfig config);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
     /// <param name="config"></param>
     void LlmSemanticCacheLookup(SemanticCacheLookupConfig config);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
     /// <param name="config"></param>
     void AzureOpenAiSemanticCacheLookup(SemanticCacheLookupConfig config);
-    
+
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void AuthenticationManagedIdentity(ManagedIdentityAuthenticationConfig config);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="config"></param>
+    void AuthenticationCertificate(CertificateAuthenticationConfig config);
+
     /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
@@ -224,7 +238,4 @@ public interface IInboundContext : IHaveExpressionContext
     /// Policy in xml format.
     /// </param>
     void InlinePolicy(string policy);
-
-    string AuthenticationManagedIdentity(string resource);
-    void AuthenticationManagedIdentity(ManagedIdentityAuthenticationConfig config);
 }

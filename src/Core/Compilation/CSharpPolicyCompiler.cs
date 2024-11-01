@@ -19,6 +19,7 @@ public class CSharpPolicyCompiler
         _document = document;
         var invStatement = new ExpressionStatementCompiler([
             new AuthenticationBasicCompiler(),
+            new AuthenticationCertificateCompiler(),
             new AuthenticationManagedIdentityCompiler(),
             new BaseCompiler(),
             new CacheLookupCompiler(),

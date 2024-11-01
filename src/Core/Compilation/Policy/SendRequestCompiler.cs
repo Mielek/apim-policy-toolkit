@@ -140,10 +140,18 @@ public class SendRequestCompiler : IMethodPolicyHandler
         SyntaxNode node)
     {
         var certElement = new XElement("authentication-certificate");
-        certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Thumbprint), "thumbprint");
-        certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.CertificateId), "certificate-id");
-        certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Body), "body");
+        var thumbprint = certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Thumbprint), "thumbprint");
+        var certId = certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.CertificateId), "certificate-id");
+        var body = certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Body), "body");
         certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Password), "password");
+
+        if (!(thumbprint ^ certId ^ body))
+        {
+            context.ReportError(
+                $"One of {nameof(CertificateAuthenticationConfig.Thumbprint)}, {nameof(CertificateAuthenticationConfig.CertificateId)}, {nameof(CertificateAuthenticationConfig.Body)} must be present. {node.GetLocation()}");
+            return;
+        }
+
         element.Add(certElement);
     }
 
