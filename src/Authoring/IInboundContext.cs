@@ -226,10 +226,16 @@ public interface IInboundContext : IHaveExpressionContext
     void AuthenticationManagedIdentity(ManagedIdentityAuthenticationConfig config);
 
     /// <summary>
-    /// 
+    /// TODO
     /// </summary>
     /// <param name="config"></param>
     void AuthenticationCertificate(CertificateAuthenticationConfig config);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void JsonToXml(JsonToXmlConfig config);
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.

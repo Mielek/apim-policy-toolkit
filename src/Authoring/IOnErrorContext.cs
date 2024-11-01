@@ -90,6 +90,12 @@ public interface IOnErrorContext : IHaveExpressionContext
     void EmitMetric(EmitMetricConfig config);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void JsonToXml(JsonToXmlConfig config);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">

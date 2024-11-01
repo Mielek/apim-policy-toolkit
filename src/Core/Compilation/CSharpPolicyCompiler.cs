@@ -29,6 +29,7 @@ public class CSharpPolicyCompiler
             new ForwardRequestCompiler(),
             new InlinePolicyCompiler(),
             new IpFilterCompiler(),
+            new JsonToXmlCompiler(),
             new MockResponseCompiler(),
             new QuotaCompiler(),
             new RateLimitByKeyCompiler(),
