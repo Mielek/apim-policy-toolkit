@@ -230,12 +230,30 @@ public interface IInboundContext : IHaveExpressionContext
     /// </summary>
     /// <param name="config"></param>
     void AuthenticationCertificate(CertificateAuthenticationConfig config);
-    
+
     /// <summary>
     /// TODO
     /// </summary>
     /// <param name="config"></param>
     void JsonToXml(JsonToXmlConfig config);
+
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void CacheLookupValue(CacheLookupValueConfig config);
+
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void CacheStoreValue(CacheStoreValueConfig config);
+
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void CacheRemoveValue(CacheRemoveValueConfig config);
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.

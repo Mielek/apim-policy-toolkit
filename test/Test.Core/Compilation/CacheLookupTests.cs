@@ -294,7 +294,4 @@ public class CacheLookupTests
     {
         code.CompileDocument().Should().BeSuccessful().And.DocumentEquivalentTo(expectedXml);
     }
-    
-            
-    
 }

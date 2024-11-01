@@ -96,6 +96,18 @@ public interface IOnErrorContext : IHaveExpressionContext
     void JsonToXml(JsonToXmlConfig config);
 
     /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void CacheLookupValue(CacheLookupValueConfig config);
+
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="config"></param>
+    void CacheStoreValue(CacheStoreValueConfig config);
+
+    /// <summary>
     /// Inlines the specified policy as is to policy document.
     /// </summary>
     /// <param name="policy">
