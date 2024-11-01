@@ -1,7 +1,8 @@
+using System.Xml.Linq;
+
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 
@@ -11,11 +12,11 @@ public class AuthenticationManageIdentityReturnValueCompiler : IReturnValueMetho
 
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node, string variableName)
     {
+        var policy = new XElement("authentication-managed-identity");
         var resource = node.ArgumentList.Arguments[0].Expression.ProcessParameter(context);
-        var policy = new AuthenticationManagedIdentityPolicyBuilder()
-            .Resource(resource)
-            .OutputTokenVariableName(variableName)
-            .Build();
+        policy.Add(new XAttribute("resource", resource));
+        policy.Add(new XAttribute("output-token-variable-name", variableName));
+
         context.AddPolicy(policy);
     }
 }

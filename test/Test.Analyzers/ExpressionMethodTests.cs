@@ -12,58 +12,6 @@ public class ExpressionDefinitionTests
     }
 
     [TestMethod]
-    public async Task ShouldReportWrongParameterNameForParenthesisLambda()
-    {
-        await VerifyAsync(
-"""
-class Test
-{
-    void Method()
-    {
-        Policy.Document()
-            .Inbound(policies => policies
-                .SetBody(policy => policy
-                    .Body((IExpressionContext c1) => "10")
-                )
-            )
-            .Create();
-    }
-}
-""",
-            DiagnosticResult
-                .CompilerError(Rules.Expression.WrongParameterName.Id)
-                .WithSpan(15, 47, 15, 49)
-                .WithArguments("c1", "context")
-        );
-    }
-
-    [TestMethod]
-    public async Task ShouldReportWrongParameterNameForSimpleLambda()
-    {
-        await VerifyAsync(
-"""
-class Test
-{
-    void Method()
-    {
-        Policy.Document()
-            .Inbound(policies => policies
-                .SetBody(policy => policy
-                    .Body(c1 => "10")
-                )
-            )
-            .Create();
-    }
-}
-""",
-            DiagnosticResult
-                .CompilerError(Rules.Expression.WrongParameterName.Id)
-                .WithSpan(15, 27, 15, 29)
-                .WithArguments("c1", "context")
-        );
-    }
-
-    [TestMethod]
     public async Task ShouldReportWrongReturnType()
     {
         await VerifyAsync(
@@ -79,7 +27,7 @@ class Test
             """,
             DiagnosticResult
                 .CompilerError(Rules.Expression.ReturnTypeNotAllowed.Id)
-                .WithSpan(11, 5, 11, 9)
+                .WithSpan(9, 5, 9, 9)
                 .WithArguments(typeof(void).FullName)
         );
     }
@@ -103,7 +51,7 @@ class Test
               """,
             DiagnosticResult
                 .CompilerError(Rules.Expression.WrongParameterCount.Id)
-                .WithSpan(11, 15, 11, 15 + parameters.Length + 2)
+                .WithSpan(9, 15, 9, 15 + parameters.Length + 2)
                 .WithArguments(count)
         );
     }

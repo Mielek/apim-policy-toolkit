@@ -1,7 +1,8 @@
+using System.Xml.Linq;
+
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 
@@ -18,10 +19,6 @@ public class AuthenticationBasicCompiler : IMethodPolicyHandler
 
         var username = node.ArgumentList.Arguments[0].Expression.ProcessParameter(context);
         var password = node.ArgumentList.Arguments[1].Expression.ProcessParameter(context);
-        var policy = new AuthenticationBasicPolicyBuilder()
-            .Username(username)
-            .Password(password)
-            .Build();
-        context.AddPolicy(policy);
+        context.AddPolicy(new XElement("authentication-basic", new XAttribute("username", username), new XAttribute("password", password)));
     }
 }

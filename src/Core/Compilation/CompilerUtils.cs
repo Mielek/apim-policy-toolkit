@@ -2,9 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
@@ -24,9 +23,10 @@ public static class CompilerUtils
                         $"{{context.Variables[\"{interpolation.Expression.ToString()}\"]}}",
                     _ => ""
                 });
-                return new LambdaExpression<string>($"context => $\"{string.Join("", interpolationParts)}\"").Source;
-            case AnonymousFunctionExpressionSyntax syntax:
-                return new LambdaExpression<string>(syntax.ToString()).Source;
+                var interpolationExpression = CSharpSyntaxTree.ParseText($"context => $\"{string.Join("", interpolationParts)}\"").GetRoot();
+                var lambda = interpolationExpression.DescendantNodesAndSelf().OfType<LambdaExpressionSyntax>().FirstOrDefault();
+                lambda = Normalize(lambda!);
+                return $"@({lambda.ExpressionBody})";
             case InvocationExpressionSyntax syntax:
                 return FindCode(syntax, context);
             default:
@@ -36,22 +36,32 @@ public static class CompilerUtils
 
     public static string FindCode(this InvocationExpressionSyntax syntax, ICompilationContext context)
     {
-        var methodIdentifier = (syntax.Expression as IdentifierNameSyntax).Identifier.ValueText;
+        if (syntax.Expression is not IdentifierNameSyntax identifierSyntax)
+        {
+            context.ReportError(
+                $"Invalid expression. It should be IdentifierNameSyntax but was {syntax.Expression.GetType()}. {syntax.GetLocation()}");
+            return "";
+        }
+
+        var methodIdentifier = identifierSyntax.Identifier.ValueText;
         var expressionMethod = context.SyntaxRoot.DescendantNodes()
             .OfType<MethodDeclarationSyntax>()
             .First(m => m.Identifier.ValueText == methodIdentifier);
 
+        expressionMethod = Normalize(expressionMethod);
+
         if (expressionMethod.Body != null)
         {
-            return new LambdaExpression<bool>($"context => {expressionMethod.Body}").Source;
+            return $"@{expressionMethod.Body.ToFullString().TrimEnd()}";
         }
-
-        if (expressionMethod.ExpressionBody != null)
+        else if (expressionMethod.ExpressionBody != null)
         {
-            return new LambdaExpression<bool>($"context => {expressionMethod.ExpressionBody.Expression}").Source;
+            return $"@({expressionMethod.ExpressionBody.Expression.ToFullString().TrimEnd()})";
         }
-
-        throw new InvalidOperationException("Invalid expression");
+        else
+        {
+            throw new InvalidOperationException("Invalid expression");
+        }
     }
 
     public static InitializerValue Process(
@@ -85,9 +95,9 @@ public static class CompilerUtils
     {
         var expressions = creationSyntax.Initializer?.Expressions ?? [];
         var result = expressions
-        .Select(expression => expression.ProcessExpression(context))
-        .ToList();
-        
+            .Select(expression => expression.ProcessExpression(context))
+            .ToList();
+
         return new InitializerValue
         {
             Type = (creationSyntax.Type.ElementType as IdentifierNameSyntax)?.Identifier.ValueText,
@@ -133,13 +143,15 @@ public static class CompilerUtils
         };
     }
 
-    public static bool AddAttribute(this XElement element, IReadOnlyDictionary<string, InitializerValue> parameters, string key, string attName)
+    public static bool AddAttribute(this XElement element, IReadOnlyDictionary<string, InitializerValue> parameters,
+        string key, string attName)
     {
-        if(parameters.TryGetValue(key, out var value))
+        if (parameters.TryGetValue(key, out var value))
         {
             element.Add(new XAttribute(attName, value.Value!));
             return true;
         }
+
         return false;
     }
 
@@ -168,9 +180,11 @@ public static class CompilerUtils
         values = null;
         if (syntax is not ObjectCreationExpressionSyntax config)
         {
-            context.ReportError($"{policy} policy argument must be an object creation expression. {syntax.GetLocation()}");
+            context.ReportError(
+                $"{policy} policy argument must be an object creation expression. {syntax.GetLocation()}");
             return false;
         }
+
         var initializer = config.Process(context);
         if (!initializer.TryGetValues<T>(out var result))
         {
@@ -189,7 +203,12 @@ public static class CompilerUtils
             attributeSyntax?.ArgumentList?.Arguments.FirstOrDefault()?.Expression as LiteralExpressionSyntax;
         return attributeArgumentExpression?.Token.ValueText ?? document.Identifier.ValueText;
     }
-    
+
+    public static T Normalize<T>(T node) where T : SyntaxNode
+    {
+        var unformatted = (T)new TriviaRemoverRewriter().Visit(node);
+        return unformatted.NormalizeWhitespace("", "");
+    }
 }
 
 public class InitializerValue
@@ -209,6 +228,7 @@ public class InitializerValue
             namedValues = NamedValues;
             return true;
         }
+
         namedValues = null;
         return false;
     }

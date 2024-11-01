@@ -3,9 +3,6 @@ using System.Xml.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies;
-
-using static Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Policies.SetHeaderPolicyBuilder;
 
 namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 

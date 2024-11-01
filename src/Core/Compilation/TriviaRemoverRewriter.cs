@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Builders.Expressions;
+namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
 
 public class TriviaRemoverRewriter : CSharpSyntaxRewriter
 {

@@ -15,10 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Authoring\Authoring.csproj" />
-    <ProjectReference Include="..\Generators\Attributes\Attributes.csproj" />
-    <ProjectReference Include="..\Generators\Builders\Builders.csproj"
-      OutputItemType="Analyzer"
-      ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>
