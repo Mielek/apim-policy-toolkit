@@ -36,7 +36,7 @@ public class JwtParserTests
     }
 
     [TestMethod]
-    public void JwtParser_ShouldReturn()
+    public void JwtParser_ShouldReturnJwtToken()
     {
         // Arrange
         using RandomNumberGenerator rng = RandomNumberGenerator.Create();
