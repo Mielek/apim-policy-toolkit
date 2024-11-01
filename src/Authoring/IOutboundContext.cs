@@ -112,6 +112,12 @@ public interface IOutboundContext : IHaveExpressionContext
     /// </summary>
     /// <param name="config"></param>
     void JsonToXml(JsonToXmlConfig config);
+    
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="callbackParameterName"></param>
+    void JsonP(string callbackParameterName);
 
     /// <summary>
     /// Inlines the specified policy as is to policy document.
