@@ -4,5 +4,5 @@ contact_links:
     url: https://stackoverflow.com/questions/tagged/azure-api-management
     about: Ask a question or request support for using Azure API Management policy toolkit.
   - name: Open a discussion 🗣
-    url: https://github.com/Mielek/apim-policy-toolkit/discussions
+    url: https://github.com/Azure/azure-api-management-policy-toolkit/discussions
     about: Start a discussion about the project or its policies.
