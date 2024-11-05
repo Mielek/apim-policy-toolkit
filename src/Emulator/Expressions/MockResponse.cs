@@ -1,6 +1,6 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
+namespace Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
 public class MockResponse : IResponse
 {

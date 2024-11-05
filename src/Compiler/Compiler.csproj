@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <PackageId>Mielek.Azure.ApiManagement.PolicyToolkit.Compiler</PackageId>
+        <PackageId>Azure.ApiManagement.PolicyToolkit.Compiler</PackageId>
         <PackageVersion>0.0.1</PackageVersion>
         <Authors>Mielek</Authors>
     </PropertyGroup>

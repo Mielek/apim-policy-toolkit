@@ -1,6 +1,6 @@
-﻿using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Implementations;
+﻿using Azure.ApiManagement.PolicyToolkit.Authoring.Implementations;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
+namespace Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
 public class MockExtensions
 {

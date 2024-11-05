@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
+namespace Azure.ApiManagement.PolicyToolkit.Analyzers;
 
 [Generator]
 public class TestGenerator : ISourceGenerator

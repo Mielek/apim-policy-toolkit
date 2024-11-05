@@ -1,4 +1,4 @@
-﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+﻿namespace Azure.ApiManagement.PolicyToolkit.Authoring;
 
 public record SemanticCacheLookupConfig
 {

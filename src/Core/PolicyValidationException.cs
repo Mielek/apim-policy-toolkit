@@ -1,4 +1,4 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Exceptions;
+namespace Azure.ApiManagement.PolicyToolkit.Exceptions;
 
 public class PolicyValidationException : Exception
 {

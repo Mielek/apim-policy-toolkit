@@ -1,4 +1,4 @@
-﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions.Extensions;
+﻿namespace Azure.ApiManagement.PolicyToolkit.Emulator.Expressions.Extensions;
 
 [TestClass]
 public class UrlContentEncoderTests

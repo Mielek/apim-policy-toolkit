@@ -3,7 +3,7 @@
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions.Extensions;
+namespace Azure.ApiManagement.PolicyToolkit.Emulator.Expressions.Extensions;
 
 [TestClass]
 public class JwtParserTests

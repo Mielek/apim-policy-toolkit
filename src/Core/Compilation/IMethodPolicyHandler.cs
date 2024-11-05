@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
+namespace Azure.ApiManagement.PolicyToolkit.Compilation;
 
 public interface IMethodPolicyHandler
 {

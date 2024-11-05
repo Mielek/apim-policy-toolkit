@@ -2,7 +2,7 @@ using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
+namespace Azure.ApiManagement.PolicyToolkit.Compilation;
 
 public class CompilationContext : ICompilationContext, ICompilationResult
 {

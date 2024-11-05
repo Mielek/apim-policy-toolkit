@@ -2,7 +2,7 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "mielek.azure.apimanagement.policytoolkit.compiler": {
+    "Azure.ApiManagement.policytoolkit.compiler": {
       "version": "0.0.1",
       "commands": [
         "policy-compiler"

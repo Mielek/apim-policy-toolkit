@@ -1,10 +1,9 @@
+using Azure.ApiManagement.PolicyToolkit.Compilation;
 
 using FluentAssertions.Execution;
 using FluentAssertions.Primitives;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
-
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Assertions;
+namespace Azure.ApiManagement.PolicyToolkit.Assertions;
 
 public class CompilationResultAssertion : ObjectAssertions<ICompilationResult, CompilationResultAssertion>
 {

@@ -1,9 +1,9 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 using Newtonsoft.Json.Linq;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.CodeContext;
+namespace Azure.ApiManagement.PolicyToolkit.CodeContext;
 
 [Document("echo-api.retrieve-resource")]
 public class TestingDocument : IDocument

@@ -1,4 +1,4 @@
-﻿namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Implementations;
+﻿namespace Azure.ApiManagement.PolicyToolkit.Authoring.Implementations;
 
 public class ImplementationContext
 {
