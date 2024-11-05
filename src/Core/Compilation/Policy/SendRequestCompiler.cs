@@ -1,9 +1,9 @@
 ﻿using System.Xml.Linq;
 
+using Azure.ApiManagement.PolicyToolkit.Authoring;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-using Azure.ApiManagement.PolicyToolkit.Authoring;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 

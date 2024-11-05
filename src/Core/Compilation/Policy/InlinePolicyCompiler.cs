@@ -1,10 +1,10 @@
 using System.Xml;
 using System.Xml.Linq;
 
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Serialization;
+
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 

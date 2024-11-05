@@ -1,10 +1,10 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Azure.ApiManagement.PolicyToolkit.Compilation;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-
-using Azure.ApiManagement.PolicyToolkit.Compilation;
 
 namespace Azure.ApiManagement.PolicyToolkit.Serialization;
 
