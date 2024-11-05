@@ -1,9 +1,9 @@
 ﻿using System.Net.Http.Headers;
 
-using Microsoft.IdentityModel.JsonWebTokens;
-
 using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 using Azure.ApiManagement.PolicyToolkit.Authoring.Implementations;
+
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
