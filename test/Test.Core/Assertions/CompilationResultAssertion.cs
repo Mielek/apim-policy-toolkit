@@ -1,8 +1,7 @@
+using Azure.ApiManagement.PolicyToolkit.Compilation;
 
 using FluentAssertions.Execution;
 using FluentAssertions.Primitives;
-
-using Azure.ApiManagement.PolicyToolkit.Compilation;
 
 namespace Azure.ApiManagement.PolicyToolkit.Assertions;
 

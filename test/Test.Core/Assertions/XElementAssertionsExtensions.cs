@@ -1,9 +1,9 @@
 using System.Text;
 using System.Xml;
 
-using FluentAssertions.Xml;
-
 using Azure.ApiManagement.PolicyToolkit.Serialization;
+
+using FluentAssertions.Xml;
 
 namespace Azure.ApiManagement.PolicyToolkit.Assertions;
 

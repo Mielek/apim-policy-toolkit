@@ -1,7 +1,7 @@
+using Azure.ApiManagement.PolicyToolkit.Compilation;
+
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-using Azure.ApiManagement.PolicyToolkit.Compilation;
 
 namespace Azure.ApiManagement.PolicyToolkit.Tests.Extensions;
 
