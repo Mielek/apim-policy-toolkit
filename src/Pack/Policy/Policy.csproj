@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Authoring\Authoring.csproj" />
-<!--    <ProjectReference Include="..\..\Core\Core.csproj" />-->
     <ProjectReference Include="..\..\Analyzers\Analyzers.csproj" />
   </ItemGroup>
 
@@ -52,10 +51,9 @@
       <Output TaskParameter="NuGetShortFolderName" PropertyName="_NuGetShortFolderName" />
     </GetNuGetShortFolderName>
     <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.dll"
-        PackagePath="lib/$(_NuGetShortFolderName)" />
-<!--      <TfmSpecificPackageFile Include="$(OutputPath)\Core.dll"-->
-<!--        PackagePath="lib/$(_NuGetShortFolderName)" />-->
+      <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.dll" PackagePath="lib/$(_NuGetShortFolderName)" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.xml" PackagePath="lib/$(_NuGetShortFolderName)" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.pdb" PackagePath="lib/$(_NuGetShortFolderName)" />
     </ItemGroup>
   </Target>
 
