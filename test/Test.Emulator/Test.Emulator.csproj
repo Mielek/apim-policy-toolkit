@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Emulator\Emulator.csproj" />
+        <ProjectReference Include="..\..\src\Emulator\Emulator.csproj"/>
     </ItemGroup>
 
 </Project>

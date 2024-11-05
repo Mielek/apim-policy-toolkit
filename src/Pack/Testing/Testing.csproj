@@ -1,57 +1,50 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <PackageId>Azure.ApiManagement.PolicyToolkit.Testing</PackageId>
-    <PackageVersion>0.0.1</PackageVersion>
-    <Authors>Mielek</Authors>
-<!--    <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>-->
-<!--    <PackageProjectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</PackageProjectUrl>-->
-<!--    <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>-->
-<!--    <RepositoryUrl>http://REPOSITORY_URL_HERE_OR_DELETE_THIS_LINE</RepositoryUrl>-->
-<!--    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>-->
-<!--    <Description>Azure.ApiManagement.PolicyToolkit.Testing</Description>-->
-<!--    <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>-->
-<!--    <Copyright>Copyright</Copyright>-->
-<!--    <PackageTags>Azure.ApiManagement.PolicyToolkit.Testing</PackageTags>-->
-    <NoPackageAnalysis>false</NoPackageAnalysis>
+    <PropertyGroup>
+        <PackageId>Azure.ApiManagement.PolicyToolkit.Testing</PackageId>
+        <PackageVersion>0.0.1</PackageVersion>
+        <Authors>Microsoft</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+        <RepositoryUrl>https://github.com/Azure/azure-api-management-policy-toolkit</RepositoryUrl>
+        <Description>Azure API Management Policy Toolkit Testing is a library which helps in testing expressions and policy documents created in code.</Description>
+        <PackageTags>azure api-gateway api-management policy policies policy-toolkit</PackageTags>
+    </PropertyGroup>
 
-    <TargetsForTfmSpecificContentInPackage>
-      $(TargetsForTfmSpecificContentInPackage);_IncludeReferencedProjectInPackage
-    </TargetsForTfmSpecificContentInPackage>
+    <PropertyGroup>
+        <TargetFramework>.net8</TargetFramework>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <NoPackageAnalysis>false</NoPackageAnalysis>
+        <PackageOutputPath>..\..\..\output</PackageOutputPath>
 
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <TargetFramework>.net8</TargetFramework>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageOutputPath>..\..\..\output</PackageOutputPath>
-  </PropertyGroup>
+        <TargetsForTfmSpecificContentInPackage>
+            $(TargetsForTfmSpecificContentInPackage);_IncludeReferencedProjectInPackage
+        </TargetsForTfmSpecificContentInPackage>
+    </PropertyGroup>
 
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Authoring\Authoring.csproj" />
-    <ProjectReference Include="..\..\Emulator\Emulator.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
-
-  <Target Name="_IncludeReferencedProjectInPackage">
-    <GetNuGetShortFolderName
-      TargetFrameworkMoniker="$(TargetFrameworkMoniker)"
-      TargetPlatformMoniker="$(TargetPlatformMoniker)">
-      <Output TaskParameter="NuGetShortFolderName" PropertyName="_NuGetShortFolderName" />
-    </GetNuGetShortFolderName>
     <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.dll"
-        PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Emulator.dll"
-        PackagePath="lib/$(_NuGetShortFolderName)" />
+        <ProjectReference Include="..\Policy\Policy.csproj"/>
+        <ProjectReference Include="..\..\Emulator\Emulator.csproj"/>
     </ItemGroup>
-  </Target>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+    </ItemGroup>
+
+    <Target Name="_IncludeReferencedProjectInPackage">
+        <GetNuGetShortFolderName
+                TargetFrameworkMoniker="$(TargetFrameworkMoniker)"
+                TargetPlatformMoniker="$(TargetPlatformMoniker)">
+            <Output TaskParameter="NuGetShortFolderName" PropertyName="_NuGetShortFolderName"/>
+        </GetNuGetShortFolderName>
+        <ItemGroup>
+            <TfmSpecificPackageFile Include="$(OutputPath)\Emulator.dll"
+                                    PackagePath="lib/$(_NuGetShortFolderName)"/>
+        </ItemGroup>
+    </Target>
 
 </Project>
