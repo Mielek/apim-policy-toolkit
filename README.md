@@ -1,6 +1,6 @@
-# Azure Api Management policy toolkit
+# Azure API Management policy toolkit
 
-**Azure api management policy toolkit** is a set of libraries and tools for **Azure Api Management** which target 
+**Azure API management policy toolkit** is a set of libraries and tools for **Azure API Management** which target 
 **policy document**. The toolkit was design to help **create** and **test** policy documents with complex expressions.
 
 Before the Policy toolkit, policy documents were written in Razor format.
