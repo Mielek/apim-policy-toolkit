@@ -1,4 +1,4 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+namespace Azure.ApiManagement.PolicyToolkit.Authoring;
 
 /// <summary>
 /// The cors policy adds cross-origin resource sharing (CORS) support to an operation or an API to allow cross-domain calls from browser-based clients.

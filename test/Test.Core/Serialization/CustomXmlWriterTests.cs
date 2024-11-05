@@ -3,7 +3,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
+namespace Azure.ApiManagement.PolicyToolkit.Serialization;
 
 [TestClass]
 public class CustomXmlWriterTests

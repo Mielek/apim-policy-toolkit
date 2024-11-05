@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
+namespace Azure.ApiManagement.PolicyToolkit.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class ExpressionDefinitionAnalyzer : DiagnosticAnalyzer
@@ -44,7 +44,7 @@ public class ExpressionDefinitionAnalyzer : DiagnosticAnalyzer
         "Newtonsoft.Json.Linq.JObject",
     };
 
-    private const string ContextParamType = "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IExpressionContext";
+    private const string ContextParamType = "Azure.ApiManagement.PolicyToolkit.Authoring.Expressions.IExpressionContext";
     private const string ContextParamName = "context";
 
     private static void AnalyzeMethod(SyntaxNodeAnalysisContext context)

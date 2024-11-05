@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+namespace Azure.ApiManagement.PolicyToolkit.Authoring;
 
 public interface IInboundContext : IHaveExpressionContext
 {

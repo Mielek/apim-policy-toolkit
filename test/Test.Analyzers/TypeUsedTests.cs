@@ -1,7 +1,7 @@
-using Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
+using Azure.ApiManagement.PolicyToolkit.Analyzers;
+using Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Test.Analyzers;
+namespace Azure.ApiManagement.PolicyToolkit.Test.Analyzers;
 
 [TestClass]
 public class TypeUsedTests

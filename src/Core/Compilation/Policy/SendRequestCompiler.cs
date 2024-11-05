@@ -3,9 +3,9 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Authoring;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
+namespace Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 
 public class SendRequestCompiler : IMethodPolicyHandler
 {

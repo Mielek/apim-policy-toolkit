@@ -25,7 +25,7 @@ We will cover the following topics:
     ```
 * Add Azure API Management policy toolkit library by running
     ```shell
-    dotnet add package Mielek.Azure.ApiManagement.PolicyToolkit.Authoring
+    dotnet add package Azure.ApiManagement.PolicyToolkit.Authoring
     ```
 
   | :exclamation: Azure API Management Policy toolkit is not yet published to nuget. For now, please follow the repository setup guide to obtain packages mentioned in the document. |
@@ -48,10 +48,10 @@ dotnet new class -n ApiOperationPolicy
 ```
 
 The class in the file should inherit from `IDocument` interface and have `Document` attribute
-from `Mielek.Azure.ApiManagement.PolicyToolkit.Authoring` namespace.
+from `Azure.ApiManagement.PolicyToolkit.Authoring` namespace.
 
 ```csharp
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Authoring;
 
 namespace Contoso.Apis.Policies;
 
@@ -104,7 +104,7 @@ solution folder.
 
 ```shell
 cd .. # Go to solution folder if not already there
-dotnet tool install Mielek.Azure.ApiManagement.PolicyToolkit.Compiler
+dotnet tool install Azure.ApiManagement.PolicyToolkit.Compiler
 ````
 
 After the installation, the compiler should be available in the project folder.
@@ -155,8 +155,8 @@ If request comes from other IP addresses it should use `Bearer` token received f
 For every request we want to add header with the user id.
 
 ```csharp
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 namespace Contoso.Apis.Policies;
 
@@ -195,7 +195,7 @@ Let's unpack the code above it:
   expression
 * Every method, other than section method are treated as expressions. They need to accept one parameter of type
   `IExpressionContext`
-  with name `context`. Type is available in `Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions` namespace.
+  with name `context`. Type is available in `Azure.ApiManagement.PolicyToolkit.Authoring.Expressions` namespace.
 * `IExpressionContext` type contains the same properties as `context` object in policy expressions.
 * `AuthenticationBasic` method is mapped to `authentication-basic` policy.
 * `AuthenticationManagedIdentity` method is mapped to `authentication-managed-identity` policy.
@@ -254,7 +254,7 @@ the following commands.
 ```shell
 dotnet new mstest --output Contoso.Apis.Policies.Tests
 cd Contoso.Apis.Policies.Tests
-dotnet add package Mielek.Azure.ApiManagement.PolicyToolkit.Testing
+dotnet add package Azure.ApiManagement.PolicyToolkit.Testing
 dotnet add reference ..\Contoso.Apis.Policies
 dotnet new class -n ApiOperationPolicyTest
 ```
@@ -264,7 +264,7 @@ Perfect! Now we can write a test for `IsCompanyIP` method in the class.
 ```csharp
 using Contoso.Apis.Policies;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -293,7 +293,7 @@ Let's unpack the code above:
 * Test class is a standard MSTest class with one test method. You can use your favorite testing framework in place of MS
   test. Policy framework is not dependent on any testing framework.
 * `MockExpressionContext` is a class which is used to mock request context. It is available in
-  `Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions` namespace. It implements `IExpressionContext`
+  `Azure.ApiManagement.PolicyToolkit.Emulator.Expressions` namespace. It implements `IExpressionContext`
   interface and expose a helper properties to set up request context.
 * `context.MockRequest.IpAddress = "10.0.0.12"` is setting a IpAddress for request.
 

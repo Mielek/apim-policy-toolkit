@@ -1,4 +1,4 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
+namespace Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 public interface IApi
 {
     string Id { get; }

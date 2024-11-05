@@ -3,10 +3,10 @@ using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
+using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Serialization;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
+namespace Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
 
 public class InlinePolicyCompiler : IMethodPolicyHandler
 {

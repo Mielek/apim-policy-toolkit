@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers;
+namespace Azure.ApiManagement.PolicyToolkit.Analyzers;
 
 public static class SyntaxExtensions
 {
@@ -20,7 +20,7 @@ public static class SyntaxExtensions
     }
 
     private const string ExpressionAttribute =
-        "Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.ExpressionAttribute";
+        "Azure.ApiManagement.PolicyToolkit.Authoring.ExpressionAttribute";
 
     public static bool ContainsExpressionAttribute(this SyntaxList<AttributeListSyntax> syntax, SemanticModel model)
     {

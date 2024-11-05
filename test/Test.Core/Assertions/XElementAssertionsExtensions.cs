@@ -3,9 +3,9 @@ using System.Xml;
 
 using FluentAssertions.Xml;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
+using Azure.ApiManagement.PolicyToolkit.Serialization;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Assertions;
+namespace Azure.ApiManagement.PolicyToolkit.Assertions;
 
 public static class XElementAssertionsExtensions
 {

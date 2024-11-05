@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
+using Azure.ApiManagement.PolicyToolkit.Compilation;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
+namespace Azure.ApiManagement.PolicyToolkit.Serialization;
 
 public static class RazorCodeFormatter
 {

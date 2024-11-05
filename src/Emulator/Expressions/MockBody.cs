@@ -2,11 +2,11 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 using Newtonsoft.Json.Linq;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
+namespace Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
 public class MockBody : IMessageBody
 {

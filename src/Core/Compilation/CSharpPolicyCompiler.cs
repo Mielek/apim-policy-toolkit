@@ -2,11 +2,11 @@ using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Syntax;
+using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compilation.Policy;
+using Azure.ApiManagement.PolicyToolkit.Compilation.Syntax;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
+namespace Azure.ApiManagement.PolicyToolkit.Compilation;
 
 public class CSharpPolicyCompiler
 {

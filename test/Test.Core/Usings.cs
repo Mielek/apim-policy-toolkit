@@ -2,5 +2,5 @@ global using FluentAssertions;
 
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-global using Mielek.Azure.ApiManagement.PolicyToolkit.Assertions;
-global using Mielek.Azure.ApiManagement.PolicyToolkit.Tests.Extensions;
+global using Azure.ApiManagement.PolicyToolkit.Assertions;
+global using Azure.ApiManagement.PolicyToolkit.Tests.Extensions;

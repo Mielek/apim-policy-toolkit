@@ -7,8 +7,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Configuration;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Serialization;
+using Azure.ApiManagement.PolicyToolkit.Compilation;
+using Azure.ApiManagement.PolicyToolkit.Serialization;
 
 var config = new ConfigurationBuilder()
     .AddCommandLine(args)

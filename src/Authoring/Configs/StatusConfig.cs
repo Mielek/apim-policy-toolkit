@@ -1,4 +1,4 @@
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+namespace Azure.ApiManagement.PolicyToolkit.Authoring;
 
 /// <summary>
 /// Configuration to set the HTTP status code and reason to the specified value

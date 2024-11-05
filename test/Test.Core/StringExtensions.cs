@@ -1,9 +1,9 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Compilation;
+using Azure.ApiManagement.PolicyToolkit.Compilation;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Tests.Extensions;
+namespace Azure.ApiManagement.PolicyToolkit.Tests.Extensions;
 
 public static class StringExtensions
 {

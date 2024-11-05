@@ -1,6 +1,6 @@
 using Contoso.Apis;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
 using Newtonsoft.Json.Linq;
 

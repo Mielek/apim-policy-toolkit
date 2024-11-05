@@ -1,6 +1,6 @@
-﻿using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
+﻿using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Implementations;
+namespace Azure.ApiManagement.PolicyToolkit.Authoring.Implementations;
 
 public interface IJwtParser
 {

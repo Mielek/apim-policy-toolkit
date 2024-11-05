@@ -38,10 +38,10 @@ One policy document is one C# class in one `cs` file. Lets create a new `ApiOper
 which will be our policy document.
 
 The class in the file should inherit from `IDocument` interface and have `Document` attribute
-from `Mielek.Azure.ApiManagement.PolicyToolkit.Authoring`.
+from `Azure.ApiManagement.PolicyToolkit.Authoring`.
 
 ```csharp
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Authoring;
 
 namespace Contoso.Apis;
 
@@ -131,8 +131,8 @@ and `password` from named values.
 If request comes from other IP addresses it should use `Bearer` token received from https://graph.microsoft.com.
 
 ```csharp
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 namespace Contoso.Apis;
 
@@ -162,7 +162,7 @@ Lets unpack the code above it:
 * `IsCompanyIP` is a method which checks if request comes from company IP addresses and it is mapped to a policy
   expression
 * Every method other then section method are treated as expressions. They need to accept one parameter of name context
-  with `IExpressionContext` type from `Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions` namespace.
+  with `IExpressionContext` type from `Azure.ApiManagement.PolicyToolkit.Authoring.Expressions` namespace.
 * `IExpressionContext` type contains the same properties as `context` object in policy expressions.
 * `AuthenticationBasic` method is mapped to `authentication-basic` policy.
 * `AuthenticationManagedIdentity` method is mapped to `authentication-managed-identity` policy.
@@ -251,7 +251,7 @@ In this section we will write a simple test for the expression from the previous
 ### Writing the test
 
 Lets create a new `ApiOperationPolicyTests.cs` file in the test project which will be our test class.
-In the test class we need to add reference to the `Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions`
+In the test class we need to add reference to the `Azure.ApiManagement.PolicyToolkit.Emulator.Expressions`
 namespace.
 In this namespace the `MockExpressionContext` class is available which is a mock of the `IExpressionContext` interface.
 
@@ -259,7 +259,7 @@ Lets write a test for the `IsCompanyIP` method.
 
 ```csharp
 using Contoso.Apis;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
 
 namespace Contoso.Test.Apis;
 
@@ -308,7 +308,7 @@ Before we start to look into the libraries and tools we need to setup the soluti
     ```
 * Run command to install policy compiler tool for the solution.
     ```shell
-    dotnet tool install Mielek.Azure.ApiManagement.PolicyToolkit.Compiler
+    dotnet tool install Azure.ApiManagement.PolicyToolkit.Compiler
     ```
 
 ### Setting up the policy authoring project
@@ -321,7 +321,7 @@ Before we start to look into the libraries and tools we need to setup the soluti
     ```
 * Run command to add policy authoring library to the project.
     ```shell
-    dotnet add package Mielek.Azure.ApiManagement.PolicyToolkit
+    dotnet add package Azure.ApiManagement.PolicyToolkit
     ```
 
 ### Setting up the test project
@@ -334,7 +334,7 @@ Before we start to look into the libraries and tools we need to setup the soluti
     ```
 * Run command to add policy testing library to the project.
     ```shell
-    dotnet add package Mielek.Azure.ApiManagement.PolicyToolkit.Testing
+    dotnet add package Azure.ApiManagement.PolicyToolkit.Testing
     ```
 * Run command to add reference to the project with policy document.
     ```shell

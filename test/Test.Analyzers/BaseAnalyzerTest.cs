@@ -3,10 +3,10 @@ using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
+namespace Azure.ApiManagement.PolicyToolkit.Analyzers.Test;
 
 public class BaseAnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, MSTestVerifier> where TAnalyzer : DiagnosticAnalyzer, new()
 {
@@ -18,8 +18,8 @@ public class BaseAnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, MSTestV
         TestState.AdditionalReferences.Add(MetadataReference.CreateFromFile(typeof(IExpressionContext).Assembly.Location));
         TestState.Sources.Add(
             $"""
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring;
-            using Mielek.Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
+            using Azure.ApiManagement.PolicyToolkit.Authoring;
+            using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
             namespace Mielek.Test;
 

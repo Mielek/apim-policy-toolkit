@@ -2,7 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Mielek.Azure.ApiManagement.PolicyToolkit.Compilation.Syntax;
+namespace Azure.ApiManagement.PolicyToolkit.Compilation.Syntax;
 
 public class LocalDeclarationStatementCompiler : ISyntaxCompiler
 {
