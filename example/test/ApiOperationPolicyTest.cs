@@ -13,7 +13,7 @@ public class ApiOperationPolicyTest
     public void FilterSecrets()
     {
         var context = new MockExpressionContext();
-        context.MockResponse.MockBody.Content =
+        context.Response.Body.Content =
             """
             {
                 "title": "Software Engineer",
