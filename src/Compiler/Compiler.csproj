@@ -7,8 +7,12 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+        <PackageProjectUrl>https://github.com/Azure/azure-api-management-policy-toolkit</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Azure/azure-api-management-policy-toolkit</RepositoryUrl>
-        <Description>Azure API Management Policy Toolkit compiler is a dotnet tool allowing you to transform policy document(s) from C# code to XML.</Description>
+        <Description>
+            Azure API Management Policy Toolkit compiler is a dotnet tool allowing you to transform policy document(s) from C# code to XML.
+            Read more about it at https://github.com/Azure/azure-api-management-policy-toolkit
+        </Description>
         <PackageTags>Azure;Azure API Management;API Gateway;API Management;Policy;Policies;Policy Toolkit;Compiler;Policy Toolkit Compiler</PackageTags>
     </PropertyGroup>
 
