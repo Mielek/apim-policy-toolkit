@@ -9,7 +9,7 @@
         <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
         <RepositoryUrl>https://github.com/Azure/azure-api-management-policy-toolkit</RepositoryUrl>
         <Description>Azure API Management Policy Toolkit Testing is a library which helps in testing expressions and policy documents created in code.</Description>
-        <PackageTags>azure api-gateway api-management policy policies policy-toolkit</PackageTags>
+        <PackageTags>Azure;Azure API Management;API Gateway;API Management;Policy;Policies;Policy Toolkit;Policy Testing;Policy Expression Testing</PackageTags>
     </PropertyGroup>
 
     <PropertyGroup>
