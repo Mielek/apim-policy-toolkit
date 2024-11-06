@@ -33,7 +33,7 @@ We will cover the following topics:
 
 * Open the solution in your IDE of choice. We
   tested [Visual Studio ](https://visualstudio.microsoft.com), [Raider](https://www.jetbrains.com/rider/), [Visual Studio Code](https://code.visualstudio.com/)
-  with [C# Dev Dit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit),
+  with [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit),
   but any IDE with C# support should work.
 
 ## Writing a simple policy document

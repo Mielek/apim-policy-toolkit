@@ -50,7 +50,7 @@ You can download the Azure CLI from the [official site](https://docs.microsoft.c
 
 ## Building and testing
 
-The policy document's solution is astandard .NET project.
+The policy document's solution is a standard .NET project.
 Because of that, building and testing the solution is straightforward.
 You need to execute standard .NET commands to build and test the solution in the root of the solution folder.
 These steps are essential to know that the policy documents are correct and that they are not breaking the build.
@@ -103,7 +103,7 @@ Your CI/CD pipeline should also fail if the compilation of the policy documents 
 ## Deploying the policy documents
 
 The Bicep file for the deployment is in the `.\infrastructure\` folder.
-The bicep file is referencing the service, the API and the policy document.
+The Bicep file is referencing the service, the API and the policy document.
 The Bicep file should look like this:
 
 ```bicep
@@ -154,7 +154,7 @@ In this section, we will show you two examples of pipelines definitions:
 Both pipelines will look similar. The following steps will be present in both of them:
 
 1. Check out the repository
-2. Setup build and test the .NET SDK
+2. Set up build and test using the .NET SDK
 3. Build the solution
 4. Test the solution
 5. Restore the policy document compiler

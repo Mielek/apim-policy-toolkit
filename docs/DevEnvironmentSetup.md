@@ -2,7 +2,7 @@
 
 ## Dev container
 
-THis repository contains a dev container which contains all the required SDKs to develop toolkit.
+This repository contains a dev container which contains all the required SDKs to develop toolkit.
 See dev container [website](https://containers.dev/supporting) for more information how to run it.
 
 ## Setting up the development environment
@@ -37,7 +37,7 @@ From the repository root directory:
     ```shell
     dotnet build
     ```
-* Run command to create Nuget package. Package will be created in `output` folder.
+* Run command to create NuGet package. Package will be created in `output` folder.
     ```shell
     dotnet pack
     ```
