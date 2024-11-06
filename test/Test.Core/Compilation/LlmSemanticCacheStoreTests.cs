@@ -1,4 +1,7 @@
-﻿namespace Azure.ApiManagement.PolicyToolkit.Compilation;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+namespace Azure.ApiManagement.PolicyToolkit.Compilation;
 
 [TestClass]
 public class LlmSemanticCacheStoreTests

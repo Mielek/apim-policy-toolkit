@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using System.Text;
 using System.Text.Encodings.Web;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring.Implementations;

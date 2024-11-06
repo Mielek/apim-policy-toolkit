@@ -1,4 +1,7 @@
-﻿using System.Net.Http.Headers;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using System.Net.Http.Headers;
 using System.Text;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;

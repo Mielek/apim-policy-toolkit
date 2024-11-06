@@ -1,4 +1,6 @@
-using System.Net;
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using System.Xml.Linq;
 
 using Microsoft.CodeAnalysis;
