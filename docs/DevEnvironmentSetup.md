@@ -2,7 +2,7 @@
 
 ## Dev container
 
-Repository contains a dev container which contains all the required SDKs to develop toolkit.
+THis repository contains a dev container which contains all the required SDKs to develop toolkit.
 See dev container [website](https://containers.dev/supporting) for more information how to run it.
 
 ## Setting up the development environment
@@ -25,11 +25,11 @@ From the repository root directory:
 ### Set up the example solution
 
 * Open repository folder in terminal.
-* Run script to set up example solution or check [manual](#manual-example-project-build) project build.
+* Run the script to set up example solution or check [manual](#manual-example-project-build) project build.
     ```shell
     setup-example.cmd
     ```
-* Open `examples` folder in your IDE of choice (tested: VS, VS code, Raider).
+* Open `examples` folder in your IDE of choice (tested: Visual Studio, Visual Studio Code, Raider).
 
 ### Manual example project build
 
@@ -37,7 +37,7 @@ From the repository root directory:
     ```shell
     dotnet build
     ```
-* Run command to create nuget package. Package will be created in `output` folder.
+* Run command to create Nuget package. Package will be created in `output` folder.
     ```shell
     dotnet pack
     ```
@@ -50,7 +50,7 @@ From the repository root directory:
    ```shell
    dotnet test
    ```
-* Run command restore compiler tool in the example project.
+* Run command to restore compiler tool in the example project.
    ```shell
    dotnet tool restore
   ```

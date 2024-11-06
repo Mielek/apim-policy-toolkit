@@ -10,7 +10,7 @@ We will cover the following topics:
 4. Writing complex policy document
 5. Testing expressions in policy document
 
-## Setup project for authoring policies
+## Set up project for authoring policies
 
 * Check that you have latest [.NET SDK 8 sdk](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) version installed.
 * Open terminal and create a new solution by executing
@@ -28,19 +28,19 @@ We will cover the following topics:
     dotnet add package Azure.ApiManagement.PolicyToolkit.Authoring
     ```
 
-  | :exclamation: Azure API Management Policy toolkit is not yet published to nuget. For now, please follow the repository setup guide to obtain packages mentioned in the document. |
+  | :exclamation: Azure API Management Policy toolkit is not yet published to NuGet. For now, please follow the repository setup guide to obtain packages mentioned in the document. |
               |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 * Open the solution in your IDE of choice. We
-  tested [VS](https://visualstudio.microsoft.com), [Raider](https://www.jetbrains.com/rider/), [VS code](https://code.visualstudio.com/)
-  with [C# devkit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit),
+  tested [Visual Studio ](https://visualstudio.microsoft.com), [Raider](https://www.jetbrains.com/rider/), [Visual Studio Code](https://code.visualstudio.com/)
+  with [C# Dev Dit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit),
   but any IDE with C# support should work.
 
 ## Writing a simple policy document
 
-Azure API Management policy toolkit define new way of writing policy documents. One policy document is one C# class in
+Azure API Management policy toolkit defines a new way of writing policy documents: One policy document is one C# class in
 one `cs` file.
-Let's create a new `ApiOperationPolicy.cs` file in the project which will be our policy document by executing following
+Let's create a new `ApiOperationPolicy.cs` file in the project which will be our policy document by executing the following
 command.
 
 ```shell
@@ -65,7 +65,7 @@ public class ApiOperationPolicy : IDocument
 The `IDocument` type contains methods `Inbound`, `Outbound`, `Backend` and `OnError` which are used to define policy
 sections.
 
-Let's implement `Inbound` method. In the method lets add the policy to set header `X-Hello` to value `World`.
+Let's implement `Inbound` method. In the method let's add the policy to set header `X-Hello` to value `World`.
 
 ```csharp
 [Document]
@@ -99,7 +99,7 @@ Azure API Management supports policy documents in Razor format. The Azure API Ma
 dotnet tool called a compiler which can generate
 Razor policy documents from C# classes.
 
-To use the compiler, we firstly need to add it to our solution folder. To do that execute the following command in the
+To use the compiler, we first need to add it to our solution folder. To do that execute the following command in the
 solution folder.
 
 ```shell
@@ -118,7 +118,7 @@ The compiler is a dotnet tool named `policy-compiler`. The `--s` parameter is a 
 The `--o` parameter is an output folder for generated policy documents. The `--format` parameter is a flag which tells
 the compiler to format the generated document.
 
-The compiler will generate `ApiOperationPolicy.xml` file in the solution folder. Generated file should have the
+The compiler will generate `ApiOperationPolicy.xml` file in the solution folder. The generated file should have the
 following
 content:
 
@@ -149,9 +149,9 @@ The Azure API Management policy toolkit allows you to naturally create expressio
 policy document.
 
 Let's assume that we want to add authorization header to the request.
-If requests comes from Company IP addresses `10.0.0.0/24` it should use basic authorization with `username`
+If a request comes from Company IP addresses `10.0.0.0/24` it should use basic authorization with `username`
 and `password` from named values.
-If request comes from other IP addresses it should use `Bearer` token received from https://graph.microsoft.com.
+If a request comes from other IP addresses it should use `Bearer` token received from https://graph.microsoft.com.
 For every request we want to add header with the user id.
 
 ```csharp
@@ -201,10 +201,10 @@ Let's unpack the code above it:
 * `AuthenticationManagedIdentity` method is mapped to `authentication-managed-identity` policy.
 * `SetHeader` method is mapped to `set-header` policy with override.
 
-Expressions are a methods in the class. They may be static or instance methods, and they can be private or public.
+Expressions are methods in the class. They may be static or instance methods, and they can be private or public.
 They need to accept one parameter of type `IExpressionContext` with name `context`.
 
-To use expression you just need to call that method in the place were you want to use it. Like in our example, we call
+To use an expression you just need to call that method in the place were you want to use it. In our example, we call
 `IsCompanyIP` method in the `if` statement, and we call `GetUserId` method in the `SetHeader` method in value parameter.
 In other more complex policies, which accept a configuration object, you will invoke method in the field initialization
 assignment like in example below.
@@ -248,7 +248,7 @@ Isn't it great, right? I hope it is. But we can now test the expressions in the 
 
 The Azure API Management policy toolkit provides a way to test expressions in policy documents. To do that we need to
 create a test project from a solution folder. Then we will need to add a reference to the policy project and the testing
-library. Lastly we need to create a test class and write a test for the expression. All of that you can do by executing
+library. Last, we need to create a test class and write a test for the expression. All of that you can do by executing
 the following commands.
 
 ```shell
@@ -290,11 +290,10 @@ public class ApiOperationPolicyTest
 
 Let's unpack the code above:
 
-* Test class is a standard MSTest class with one test method. You can use your favorite testing framework in place of MS
-  test. Policy framework is not dependent on any testing framework.
+* Test class is a standard MSTest class with one test method. You can use your favorite testing framework in place of MSTest. Policy framework is not dependent on any testing framework.
 * `MockExpressionContext` is a class which is used to mock request context. It is available in
   `Azure.ApiManagement.PolicyToolkit.Emulator.Expressions` namespace. It implements `IExpressionContext`
-  interface and expose a helper properties to set up request context.
+  interface and exposes helper properties to set up request context.
 * `context.MockRequest.IpAddress = "10.0.0.12"` is setting a IpAddress for request.
 
 To check that the expression works as expected, run the test by executing the following command.

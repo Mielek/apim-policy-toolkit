@@ -2,7 +2,7 @@
 
 The Project is in the development stage.
 That means that not all policies are implemented yet.
-In this document, you can find a list of implemented policies and their description.
+In this document, you can find a list of implemented policies. For policy details, see the Azure API Management [policy reference](https://learn.microsoft.com/azure/api-management/api-management-policies).
 
 #### :white_check_mark: Implemented policies
 
@@ -35,7 +35,7 @@ Policies not listed here are not implemented yet.
 
 ## InlinePolicy
 
-Inline Policy is a workaround until all the policies are implemented.
+InlinePolicy is a workaround until all the policies are implemented.
 It allows you to include policy not implemented yet to the document.
 
 ```csharp
