@@ -254,7 +254,7 @@ the following commands.
 ```shell
 dotnet new mstest --output Contoso.Apis.Policies.Tests
 cd Contoso.Apis.Policies.Tests
-dotnet add package Azure.ApiManagement.PolicyToolkit.Testing
+dotnet add package Azure.ApiManagement.PolicyToolkit.Emulator
 dotnet add reference ..\Contoso.Apis.Policies
 dotnet new class -n ApiOperationPolicyTest
 ```
