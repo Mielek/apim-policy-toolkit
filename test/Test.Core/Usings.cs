@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 global using Azure.ApiManagement.PolicyToolkit.Assertions;
 global using Azure.ApiManagement.PolicyToolkit.Tests.Extensions;
 

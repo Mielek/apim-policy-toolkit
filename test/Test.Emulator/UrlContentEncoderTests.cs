@@ -1,4 +1,7 @@
-﻿namespace Azure.ApiManagement.PolicyToolkit.Emulator.Expressions.Extensions;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+namespace Azure.ApiManagement.PolicyToolkit.Emulator.Expressions.Extensions;
 
 [TestClass]
 public class UrlContentEncoderTests
