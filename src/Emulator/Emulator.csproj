@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.2.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+        <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.2.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Authoring\Authoring.csproj" />
+        <ProjectReference Include="..\Authoring\Authoring.csproj"/>
     </ItemGroup>
 
 </Project>

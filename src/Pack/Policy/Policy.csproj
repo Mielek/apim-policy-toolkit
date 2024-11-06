@@ -1,60 +1,56 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <PackageId>Azure.ApiManagement.PolicyToolkit</PackageId>
-    <PackageVersion>0.0.1</PackageVersion>
-    <Authors>Mielek</Authors>
-<!--    <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>-->
-<!--    <PackageProjectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</PackageProjectUrl>-->
-<!--    <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>-->
-<!--    <RepositoryUrl>http://REPOSITORY_URL_HERE_OR_DELETE_THIS_LINE</RepositoryUrl>-->
-<!--    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>-->
-<!--    <Description>Azure.ApiManagement.PolicyToolkit</Description>-->
-<!--    <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>-->
-<!--    <Copyright>Copyright</Copyright>-->
-<!--    <PackageTags>Azure.ApiManagement.PolicyToolkit</PackageTags>-->
-    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <PropertyGroup>
+        <PackageId>Azure.ApiManagement.PolicyToolkit</PackageId>
+        <PackageVersion>0.0.1</PackageVersion>
+        <Authors>Microsoft</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+        <RepositoryUrl>https://github.com/Azure/azure-api-management-policy-toolkit</RepositoryUrl>
+        <Description>Azure API Management Policy Toolkit is a library allowing creation of policy documents in code.</Description>
+        <PackageTags>Azure;Azure API Management;API Gateway;API Management;Policy;Policies;Policy Toolkit;Authoring policies</PackageTags>
+    </PropertyGroup>
 
-    <TargetsForTfmSpecificContentInPackage>
-      $(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput;_IncludeReferencedProjectInPackage
-    </TargetsForTfmSpecificContentInPackage>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>.net8</TargetFramework>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <PackageOutputPath>..\..\..\output</PackageOutputPath>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+        <TargetsForTfmSpecificContentInPackage>
+            $(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput;_IncludeReferencedProjectInPackage
+        </TargetsForTfmSpecificContentInPackage>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>.net8</TargetFramework>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageOutputPath>..\..\..\output</PackageOutputPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Authoring\Authoring.csproj" />
-    <ProjectReference Include="..\..\Analyzers\Analyzers.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
-  </ItemGroup>
-
-  <Target Name="_AddAnalyzersToOutput">
     <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)\Analyzers.dll"
-        PackagePath="analyzers/dotnet/cs" />
+        <ProjectReference Include="..\..\Authoring\Authoring.csproj"/>
+        <ProjectReference Include="..\..\Analyzers\Analyzers.csproj"/>
     </ItemGroup>
-  </Target>
 
-  <Target Name="_IncludeReferencedProjectInPackage">
-    <GetNuGetShortFolderName
-      TargetFrameworkMoniker="$(TargetFrameworkMoniker)"
-      TargetPlatformMoniker="$(TargetPlatformMoniker)">
-      <Output TaskParameter="NuGetShortFolderName" PropertyName="_NuGetShortFolderName" />
-    </GetNuGetShortFolderName>
     <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.dll" PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.xml" PackagePath="lib/$(_NuGetShortFolderName)" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.pdb" PackagePath="lib/$(_NuGetShortFolderName)" />
+        <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath=""/>
     </ItemGroup>
-  </Target>
+
+    <Target Name="_AddAnalyzersToOutput">
+        <ItemGroup>
+            <TfmSpecificPackageFile Include="$(OutputPath)\Analyzers.dll"
+                                    PackagePath="analyzers/dotnet/cs"/>
+        </ItemGroup>
+    </Target>
+
+    <Target Name="_IncludeReferencedProjectInPackage">
+        <GetNuGetShortFolderName
+                TargetFrameworkMoniker="$(TargetFrameworkMoniker)"
+                TargetPlatformMoniker="$(TargetPlatformMoniker)">
+            <Output TaskParameter="NuGetShortFolderName" PropertyName="_NuGetShortFolderName"/>
+        </GetNuGetShortFolderName>
+        <ItemGroup>
+            <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.dll" PackagePath="lib/$(_NuGetShortFolderName)"/>
+            <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.xml" PackagePath="lib/$(_NuGetShortFolderName)"/>
+            <TfmSpecificPackageFile Include="$(OutputPath)\Authoring.pdb" PackagePath="lib/$(_NuGetShortFolderName)"/>
+        </ItemGroup>
+    </Target>
 
 </Project>
