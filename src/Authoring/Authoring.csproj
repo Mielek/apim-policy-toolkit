@@ -1,15 +1,51 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <PackageId>Azure.ApiManagement.PolicyToolkit.Authoring</PackageId>
+        <PackageVersion>0.0.1</PackageVersion>
+        <Authors>Microsoft</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+        <PackageProjectUrl>https://github.com/Azure/azure-api-management-policy-toolkit</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Azure/azure-api-management-policy-toolkit</RepositoryUrl>
+        <Description>
+            Azure API Management Policy Toolkit is a library allowing creation of policy documents in code.
+            Read more about it at https://github.com/Azure/azure-api-management-policy-toolkit
+        </Description>
+        <PackageTags>Azure;Azure API Management;API Gateway;API Management;Policy;Policies;Policy Toolkit;Authoring policies</PackageTags>
+    </PropertyGroup>
+    
+    <PropertyGroup>
         <TargetFramework>.net8</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <IsPackable>false</IsPackable>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IsPackable>true</IsPackable>
+        <PackageOutputPath>..\..\output</PackageOutputPath>
+        <IncludeBuildOutput>true</IncludeBuildOutput>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+        
+        <TargetsForTfmSpecificContentInPackage>
+            $(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput
+        </TargetsForTfmSpecificContentInPackage>
     </PropertyGroup>
 
     <PropertyGroup>
         <NoWarn>1591</NoWarn> <!-- Disable warning CS1591: Missing XML comment for publicly visible type or member, should be removed in the future -->
     </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Analyzers\Analyzers.csproj"/>
+    </ItemGroup>
+
+    <Target Name="_AddAnalyzersToOutput">
+        <ItemGroup>
+            <TfmSpecificPackageFile Include="$(OutputPath)\Analyzers.dll"
+                                    PackagePath="analyzers/dotnet/cs"/>
+            <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath=""/>
+        </ItemGroup>
+    </Target>
 
 </Project>
