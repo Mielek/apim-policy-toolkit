@@ -1,19 +1,10 @@
 # Azure API Management policy toolkit
 
-**Azure API management policy toolkit** is a set of libraries and tools for **Azure API Management** which target 
-**policy document**. The toolkit was design to help **create** and **test** policy documents with complex expressions.
+**Azure API management policy toolkit** is a set of libraries and tools for authoring [**policy documents**](https://learn.microsoft.com/azure/api-management/api-management-howto-policies) for [**Azure API Management**](https://learn.microsoft.com/azure/api-management/). The toolkit was designed to help **create** and **test** policy documents with complex expressions.
 
-Before the Policy toolkit, policy documents were written in Razor format.
-The Razor format is hard to read and understand, especially when there are a lot of expressions.
-The feedback loop on new documents or event the smallest changes was very long.
-It required live Azure API Management instance,
-a policy document deployment and manual testing through the API request.
+Before the Policy toolkit, policy documents were written in Razor format, which is hard to read and understand, especially when there are multiple expressions. The feedback loop on new documents or even the smallest changes was very long, requiring a live Azure API Management instance, a policy document deployment, and manual testing through the API request.
 
-The policy toolkit changes that. It allows you to write policy documents in C# language.
-The C# language is more natural and shows a process nature of policy.
-There is as well, no need to jump between C# and XML for expression creation.
-Creating policy documents in C# brings another advantage.
-Simple C# code can test the policy document in the unit test.
+The policy toolkit changes that. It allows you to write policy documents in C# language, which is more natural and doesn't require you to jump between C# and XML for expression creation. Creating policy documents in C# also brings the advantage of using simple C# code for unit testing of policy documents.
 
 ## Documentation
 
