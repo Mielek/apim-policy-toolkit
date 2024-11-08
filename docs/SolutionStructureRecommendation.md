@@ -1,7 +1,7 @@
 # Policy documents repository and solution structure
 
 The Azure API Management policy toolkit is an elastic solution which can accomodate almost any repository, solution or
-project structure. It is on the developer to decide how the structure of the repository will look like and how it will
+project structure. It is up to the developer to decide how the structure of the repository will look like and how it will
 be incorporated with CI/CD pipelines. In this guide we will cover two structures which are recommended by the toolkit
 team.
 
@@ -41,7 +41,7 @@ Flat structure is a simple and easy to understand solution structure. In this st
 file for `src` and `test`projects. All policies are placed in the `src` folder for the `src` project and all tests are
 placed in the `test` folder for the `test` project.
 
-For this structure, executing the build, test and compilation command is easy and compilation will produce the policy
+For this structure, executing the build, test and compilation commands is easy and compilation will produce the policy
 documents as a flat structure. For example, the following command will compile the policies and place them in
 the `target` folder:
 
@@ -67,8 +67,8 @@ Target folder after the compilation will look like this:
 
 ### Produce hierarchical target structure
 
-The `Document` attribute allows naming the document. It as well allows to specify a directory tree in which document
-need to be placed. Because of that, compiler can produce a hierarchical structure.
+The `Document` attribute allows naming the document. It as well allows to specify a directory tree in which documents
+need to be placed. Because of that, the compiler can produce a hierarchical structure.
 
 For example, to reproduce the hierarchical structure from the hierarchical example, the following `Document` attributes
 can be used:
@@ -138,7 +138,7 @@ Hierarchical structure leverages folders to represents the entities which contai
 to ARM structure of resources in Azure API Management. In this structure, policies are placed in the folders which
 represent the entities in the API Management instance.
 
-For this structure, executing the build, test and compilation command is easy. Compilation will produce the policy
+For this structure, executing the build, test and compilation commands is easy. Compilation will produce the policy
 documents in the same structure as is present under `src` folder. For example, the following command will compile the
 policies and place them in the `target` folder:
 
@@ -171,7 +171,7 @@ name the files the same in every folder. For example the `Document` attribute sh
 [Document("policy.xml")]
 ```
 
-then the compiler will produce the files with the same name in every folder, like in below example.
+Then the compiler will produce the files with the same name in every folder, like in below example.
 
 ```
 .
