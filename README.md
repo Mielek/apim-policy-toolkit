@@ -10,7 +10,7 @@ The policy toolkit changes that. It allows you to write policy documents in C# l
 
 #### Azure API Management policy toolkit documentation for users.
 * [Quick start](docs/QuickStart.md)
-* [Available policies](docs/AvaliablePolicies.md)
+* [Available policies](docs/AvailablePolicies.md)
 * [Solution structure recommendation](docs/SolutionStructureRecommendation.md)
 * [Steps for deploying policies created by the policy toolkit](docs/IntegratePolicySolution.md)
 * [Integrate policy solution with APIOps](docs/IntegratePolicySolutionWithApiOps.md)

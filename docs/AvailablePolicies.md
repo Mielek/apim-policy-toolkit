@@ -7,19 +7,32 @@ In this document, you can find a list of implemented policies. For policy detail
 #### :white_check_mark: Implemented policies
 
 * authentication-basic
+* authentication-certificate
 * authentication-managed-identity
+* azure-openai-emit-token-metric
+* azure-openai-semantic-cache-lookup
+* azure-openai-semantic-cache-store
 * base
 * cache-lookup
+* cache-lookup-value
+* cache-remove-value
 * cache-store
+* cache-store-value
 * check-header
 * choose
 * cors
+* emit-metric
 * forward-request
 * ip-filter
+* json-to-xml
+* jsonp
+* llm-emit-token-metric
+* llm-semantic-cache-lookup
+* llm-semantic-cache-store
 * mock-response
 * quota
-* rate-limit-by-key
 * rate-limit
+* rate-limit-by-key
 * return-response
 * rewrite-uri
 * send-request
