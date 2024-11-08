@@ -44,7 +44,7 @@ In this document, you can find a list of implemented policies. For policy detail
 * set-variable
 * validate-jwt
 
-Policies not listed here are not implemented yet.
+Policies not listed here are not implemented yet, we are curious to know which [ones you'd like to use and are happy to review contributions](./../CONTRIBUTING.md).
 
 ## InlinePolicy
 
