@@ -3,7 +3,7 @@
 
 using System.Diagnostics.Contracts;
 
-using Azure.ApiManagement.PolicyToolkit.Compilation;
+using Azure.ApiManagement.PolicyToolkit.Compiling;
 
 namespace Azure.ApiManagement.PolicyToolkit.Assertions;
 

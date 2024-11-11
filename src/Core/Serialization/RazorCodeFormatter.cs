@@ -4,7 +4,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-using Azure.ApiManagement.PolicyToolkit.Compilation;
+using Azure.ApiManagement.PolicyToolkit.Compiling;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
