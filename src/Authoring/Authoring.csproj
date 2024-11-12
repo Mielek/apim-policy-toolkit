@@ -10,7 +10,7 @@
         <PackageProjectUrl>https://github.com/Azure/azure-api-management-policy-toolkit</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Azure/azure-api-management-policy-toolkit</RepositoryUrl>
         <Description>
-            Azure API Management Policy Toolkit is a library allowing creation of policy documents in code.
+            Azure API Management Policy Toolkit Authoring is a library allowing creation of policy documents in code.
             Read more about it at https://github.com/Azure/azure-api-management-policy-toolkit
         </Description>
         <PackageTags>Azure;Azure API Management;API Gateway;API Management;Policy;Policies;Policy Toolkit;Authoring policies</PackageTags>

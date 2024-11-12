@@ -1,6 +1,6 @@
 using Contoso.Apis;
 
-using Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
 using Newtonsoft.Json.Linq;
 

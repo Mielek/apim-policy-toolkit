@@ -104,17 +104,17 @@ solution folder.
 
 ```shell
 cd .. # Go to solution folder if not already there
-dotnet tool install Azure.ApiManagement.PolicyToolkit.Compiler
+dotnet tool install Azure.ApiManagement.PolicyToolkit.Compiling
 ````
 
 After the installation, the compiler should be available in the project folder.
 Now lets run the compiler to generate policy document. Execute compiler command in the solution folder.
 
 ```shell
-dotnet policy-compiler --s .\Contoso.Apis.Policies --o . --format true
+dotnet azure-apim-policy-compiler --s .\Contoso.Apis.Policies --o . --format true
 ``` 
 
-The compiler is a dotnet tool named `policy-compiler`. The `--s` parameter is a source folder with policy documents.
+The compiler is a dotnet tool named `azure-apim-policy-compiler`. The `--s` parameter is a source folder with policy documents.
 The `--o` parameter is an output folder for generated policy documents. The `--format` parameter is a flag which tells
 the compiler to format the generated document.
 
@@ -219,7 +219,7 @@ context.SomePolicy(new Config()
 Cool! We have a more complex policy document. Now let's compile it to a policy document.
 
 ```shell
-dotnet policy-compiler --s .\source --o . --format true
+dotnet azure-apim-policy-compiler --s .\source --o . --format true
 ```
 
 Content of the generated file should be:
@@ -254,7 +254,7 @@ the following commands.
 ```shell
 dotnet new mstest --output Contoso.Apis.Policies.Tests
 cd Contoso.Apis.Policies.Tests
-dotnet add package Azure.ApiManagement.PolicyToolkit.Emulator
+dotnet add package Azure.ApiManagement.PolicyToolkit.Testing
 dotnet add reference ..\Contoso.Apis.Policies
 dotnet new class -n ApiOperationPolicyTest
 ```
@@ -264,7 +264,7 @@ Perfect! Now we can write a test for `IsCompanyIP` method in the class.
 ```csharp
 using Contoso.Apis.Policies;
 
-using Azure.ApiManagement.PolicyToolkit.Emulator.Expressions;
+using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -292,7 +292,7 @@ Let's unpack the code above:
 
 * Test class is a standard MSTest class with one test method. You can use your favorite testing framework in place of MSTest. Policy framework is not dependent on any testing framework.
 * `MockExpressionContext` is a class which is used to mock request context. It is available in
-  `Azure.ApiManagement.PolicyToolkit.Emulator.Expressions` namespace. It implements `IExpressionContext`
+  `Azure.ApiManagement.PolicyToolkit.Testing.Expressions` namespace. It implements `IExpressionContext`
   interface and exposes helper properties to set up request context.
 * `context.MockRequest.IpAddress = "10.0.0.12"` is setting a IpAddress for request.
 
