@@ -56,5 +56,5 @@ From the repository root directory:
   ```
 * Run command to compile policies in the example project.
    ```shell
-   dotnet policy-compiler --s .\source\ --o .\target\ --format true
+   dotnet azure-apim-policy-compiler --s .\source\ --o .\target\ --format true
    ```
