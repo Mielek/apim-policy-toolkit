@@ -12,26 +12,40 @@ We will cover the following topics:
 
 ## Set up project for authoring policies
 
-* Check that you have latest [.NET SDK 8 sdk](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) version installed.
-* Open terminal and create a new solution by executing
+1. Check that you have latest [.NET SDK 8 sdk](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) version installed.
+2. Open terminal and create a new solution by executing
     ```shell
     dotnet new sln --output PolicySolution
     cd PolicySolution
     ```
-* Create a new class library project by executing
+3. Create a new class library project by executing
     ```shell
     dotnet new classlib --output Contoso.Apis.Policies
-    cd Contoso.Apis.Policies
+    dotnet sln add ./Contoso.Apis.Policies
     ```
-* Add Azure API Management policy toolkit library by running
+4. :exclamation: Azure API Management Policy toolkit is not yet published to NuGet.
+    Because of that, we need to create a local nuget repository for the packages and put the libraries there.
+   1. Create a local nuget repository for the packages by executing
+       ```shell
+       mkdir packages
+       ```
+   2. Download the Azure API Management policy toolkit libraries from GitHub release and put them in the `packages` folder.
+   3. Create a file named `nuget.config` in the solution folder with the content:
+       ```xml
+       <configuration>
+         <packageSources>
+           <!-- local feed for the project -->
+           <add key="local" value="./packages" />
+         </packageSources>
+       </configuration>
+       ```
+5. Add Azure API Management policy toolkit library by running
     ```shell
+    cd ./Contoso.Apis.Policies
     dotnet add package Azure.ApiManagement.PolicyToolkit.Authoring
     ```
 
-  | :exclamation: Azure API Management Policy toolkit is not yet published to NuGet. For now, please follow the repository setup guide to obtain packages mentioned in the document. |
-              |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-
-* Open the solution in your IDE of choice. We
+6. Open the solution in your IDE of choice. We
   tested [Visual Studio ](https://visualstudio.microsoft.com), [Raider](https://www.jetbrains.com/rider/), [Visual Studio Code](https://code.visualstudio.com/)
   with [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit),
   but any IDE with C# support should work.
@@ -253,6 +267,7 @@ the following commands.
 
 ```shell
 dotnet new mstest --output Contoso.Apis.Policies.Tests
+dotnet sln add ./Contoso.Apis.Policies.Tests
 cd Contoso.Apis.Policies.Tests
 dotnet add package Azure.ApiManagement.PolicyToolkit.Testing
 dotnet add reference ..\Contoso.Apis.Policies
@@ -279,10 +294,10 @@ public class ApiOperationPolicyTest
     {
         var context = new MockExpressionContext();
         
-        context.MockRequest.IpAddress = "10.0.0.12";
+        context.Request.IpAddress = "10.0.0.12";
         Assert.IsTrue(ApiOperationPolicy.IsCompanyIP(context));
 
-        context.MockRequest.IpAddress = "11.0.0.1";
+        context.Request.IpAddress = "11.0.0.1";
         Assert.IsFalse(ApiOperationPolicy.IsCompanyIP(context));
     }
 }
