@@ -46,7 +46,7 @@ documents as a flat structure. For example, the following command will compile t
 the `target` folder:
 
 ```shell
-dotnet policy-compiler --s .\src\ --o .\target\
+dotnet azure-apim-policy-compiler --s .\src\ --o .\target\
 ```
 
 Target folder after the compilation will look like this:
@@ -143,7 +143,7 @@ documents in the same structure as is present under `src` folder. For example, t
 policies and place them in the `target` folder:
 
 ```shell
-dotnet policy-compiler --s .\src\ --o .\target\
+dotnet azure-apim-policy-compiler --s .\src\ --o .\target\
 ```
 
 ```

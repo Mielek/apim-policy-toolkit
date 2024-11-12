@@ -2,10 +2,10 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "Azure.ApiManagement.policytoolkit.compiler": {
+    "Azure.ApiManagement.PolicyToolkit.Compiling": {
       "version": "0.0.1",
       "commands": [
-        "policy-compiler"
+        "azure-apim-policy-compiler"
       ]
     }
   }

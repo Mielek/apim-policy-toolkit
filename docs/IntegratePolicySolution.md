@@ -77,7 +77,7 @@ Because the Bicep file for deployment is in the `.\infrastructure\` folder, the 
 `.\infrastructure\` as well. This will allow easy referencing of the policy documents in the bicep file.
 
 ```shell
-dotnet policy-compiler --s .\src\ --o .\infrastructure\
+dotnet azure-apim-policy-compiler --s .\src\ --o .\infrastructure\
 ```
 
 The command will produce the policy documents and the folder structure will look like this:
@@ -209,7 +209,7 @@ jobs:
       run: dotnet tool restore
 
     - name: Compile policy documents
-      run: dotnet policy-compiler --s .\src\ --o .\infrastructure\
+      run: dotnet azure-apim-policy-compiler --s .\src\ --o .\infrastructure\
 
     - name: Azure Login
       uses: azure/login@v2
@@ -277,7 +277,7 @@ steps:
   - script: dotnet tool restore
     displayName: 'Restore tools'
 
-  - script: dotnet policy-compiler --s .\src\ --o .\infrastructure\
+  - script: dotnet azure-apim-policy-compiler --s .\src\ --o .\infrastructure\
     displayName: 'Compile policy documents'
 
   - task: AzureCLI@2

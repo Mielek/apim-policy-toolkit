@@ -95,7 +95,7 @@ The compiler should target `artifacts` folder with APIOps data.
 An example of the command to run the compiler is below.
 
 ```shell
-dotnet policy-compiler --s .\policies\src\ --o .\artifacts\
+dotnet azure-apim-policy-compiler --s .\policies\src\ --o .\artifacts\
 ```
 
 After the command is executed the `artifacts` folder should contain all the policy files which can be easily published
