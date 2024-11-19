@@ -23,6 +23,8 @@ public sealed class CustomXmlWriter : IDisposable
 
     public void Dispose() => _xmlWriter.Dispose();
 
+    public void Write(XComment comment) => comment.WriteTo(_xmlWriter);
+    
     public void Write(XElement element)
     {
         _xmlWriter.WriteStartElement(element.Name.LocalName);
