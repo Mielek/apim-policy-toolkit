@@ -19,7 +19,7 @@ public class CompilationResultAssertion : ObjectAssertions<ICompilationResult, C
         using var scope = new AssertionScope();
         scope.BecauseOf(because, becauseArgs);
         this.NotBeNull();
-        Subject.Errors.Should().BeEmpty();
+        Subject.Diagnostics.Should().BeEmpty();
         Subject.Document.Should().NotBeNull();
         return new AndConstraint<CompilationResultAssertion>(this);
     }
