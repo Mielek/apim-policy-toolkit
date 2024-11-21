@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -37,24 +39,36 @@ public class SemanticCacheLookupCompiler : IMethodPolicyHandler
 
         if (!element.AddAttribute(values, nameof(SemanticCacheLookupConfig.ScoreThreshold), "score-threshold"))
         {
-            context.ReportError(
-                $"{_policyName} {nameof(SemanticCacheLookupConfig.ScoreThreshold)} score-threshold. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                _policyName,
+                nameof(SemanticCacheLookupConfig.ScoreThreshold)
+            ));
             return;
         }
 
         if (!element.AddAttribute(values, nameof(SemanticCacheLookupConfig.EmbeddingsBackendId),
                 "embeddings-backend-id"))
         {
-            context.ReportError(
-                $"{_policyName} {nameof(SemanticCacheLookupConfig.EmbeddingsBackendId)} embeddings-backend-id. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                _policyName,
+                nameof(SemanticCacheLookupConfig.EmbeddingsBackendId)
+            ));
             return;
         }
 
         if (!element.AddAttribute(values, nameof(SemanticCacheLookupConfig.EmbeddingsBackendAuth),
                 "embeddings-backend-auth"))
         {
-            context.ReportError(
-                $"{_policyName} {nameof(SemanticCacheLookupConfig.EmbeddingsBackendAuth)} embeddings-backend-auth. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                _policyName,
+                nameof(SemanticCacheLookupConfig.EmbeddingsBackendAuth)
+            ));
             return;
         }
 
@@ -65,15 +79,7 @@ public class SemanticCacheLookupCompiler : IMethodPolicyHandler
         {
             foreach (var varyBy in varyByInitializer.UnnamedValues ?? [])
             {
-                if (varyBy.Value is not null)
-                {
-                    element.Add(new XElement("vary-by", varyBy.Value));
-                }
-                else
-                {
-                    context.ReportError(
-                        $"{_policyName} {nameof(SemanticCacheLookupConfig.VaryBy)} vary-by. {varyBy.Node.GetLocation()}");
-                }
+                element.Add(new XElement("vary-by", varyBy.Value));
             }
         }
 

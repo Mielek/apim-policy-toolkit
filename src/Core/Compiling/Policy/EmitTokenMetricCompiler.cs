@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -40,16 +42,24 @@ public class EmitTokenMetricCompiler : IMethodPolicyHandler
 
         if (!values.TryGetValue(nameof(EmitTokenMetricConfig.Dimensions), out var dimensionsInitializer))
         {
-            context.ReportError(
-                $"{_policyName} {nameof(EmitTokenMetricConfig.Dimensions)} must have been defined. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                _policyName,
+                nameof(EmitTokenMetricConfig.Dimensions)
+            ));
             return;
         }
 
         var dimensions = dimensionsInitializer.UnnamedValues ?? Array.Empty<InitializerValue>();
         if (dimensions.Count == 0)
         {
-            context.ReportError(
-                $"{_policyName} {nameof(EmitTokenMetricConfig.Dimensions)} must have at least one value. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterIsEmpty,
+                dimensionsInitializer.Node.GetLocation(),
+                _policyName,
+                nameof(EmitTokenMetricConfig.Dimensions)
+            ));
             return;
         }
 
@@ -63,8 +73,12 @@ public class EmitTokenMetricCompiler : IMethodPolicyHandler
             var dimensionElement = new XElement("dimension");
             if (!dimensionElement.AddAttribute(result, nameof(MetricDimensionConfig.Name), "name"))
             {
-                context.ReportError(
-                    $"{_policyName}.dimension {nameof(MetricDimensionConfig.Name)}. {node.GetLocation()}");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.RequiredParameterNotDefined,
+                    dimension.Node.GetLocation(),
+                    $"{_policyName}.dimension",
+                    nameof(MetricDimensionConfig.Name)
+                ));
                 continue;
             }
 

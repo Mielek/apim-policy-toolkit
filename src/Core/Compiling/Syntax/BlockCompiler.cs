@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -35,7 +37,11 @@ public class BlockCompiler : ISyntaxCompiler
             }
             else
             {
-                context.ReportError("");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.NotSupportedStatement,
+                    statement.GetLocation(),
+                    statement.Kind().ToString()
+                ));
             }
         }
     }

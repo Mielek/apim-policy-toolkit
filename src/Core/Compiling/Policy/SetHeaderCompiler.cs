@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -39,8 +41,10 @@ public class SetHeaderCompiler : IMethodPolicyHandler
         if (_type != "delete" && arguments.Count < 2 ||
             _type == "delete" && arguments.Count != 1)
         {
-            context.ReportError($"Wrong argument count for set-header policy. {node.GetLocation()}");
-            context.AddPolicy(new XComment("Issue: set-header"));
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ArgumentCountMissMatchForPolicy,
+                node.ArgumentList.GetLocation(),
+                "set-header"));
             return;
         }
 
@@ -64,13 +68,24 @@ public class SetHeaderCompiler : IMethodPolicyHandler
         {
             if (!header.TryGetValues<HeaderConfig>(out var headerValues))
             {
-                context.ReportError($"{nameof(HeaderConfig)}. {header.Node.GetLocation()}");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                    header.Node.GetLocation(),
+                    $"{root.Name}.set-header",
+                    nameof(HeaderConfig)
+                ));
                 continue;
             }
 
             var headerElement = new XElement("set-header");
             if (!headerElement.AddAttribute(headerValues, nameof(HeaderConfig.Name), "name"))
             {
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.RequiredParameterNotDefined,
+                    header.Node.GetLocation(),
+                    $"{root.Name}.set-header",
+                    nameof(HeaderConfig.Name)
+                ));
                 continue;
             }
 

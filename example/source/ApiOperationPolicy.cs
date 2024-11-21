@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Contoso.Apis;
 
-[Document("echo-api.retrieve-resource")]
+[Document("echo-api_retrieve-resource")]
 public class ApiOperationPolicy : IDocument
 {
     public void Inbound(IInboundContext c)

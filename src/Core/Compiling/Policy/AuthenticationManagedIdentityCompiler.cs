@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -27,7 +29,12 @@ public class AuthenticationManagedIdentityCompiler : IMethodPolicyHandler
 
         if (!element.AddAttribute(values, nameof(ManagedIdentityAuthenticationConfig.Resource), "resource"))
         {
-            context.ReportError($"{nameof(ManagedIdentityAuthenticationConfig.Resource)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "authentication-managed-identity",
+                nameof(ManagedIdentityAuthenticationConfig.Resource)
+                ));
             return;
         }
 

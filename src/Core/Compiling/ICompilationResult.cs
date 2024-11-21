@@ -3,10 +3,12 @@
 
 using System.Xml.Linq;
 
+using Microsoft.CodeAnalysis;
+
 namespace Azure.ApiManagement.PolicyToolkit.Compiling;
 
 public interface ICompilationResult
 {
     XElement Document { get; }
-    IReadOnlyList<string> Errors { get; }
+    IReadOnlyList<Diagnostic> Diagnostics { get; }
 }

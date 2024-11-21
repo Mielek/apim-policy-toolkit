@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -39,7 +41,10 @@ public class SetQueryParameterCompiler : IMethodPolicyHandler
         if (_type != "delete" && arguments.Count < 2 ||
             _type == "delete" && arguments.Count != 1)
         {
-            context.ReportError($"Wrong argument count for set-query-parameter policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ArgumentCountMissMatchForPolicy,
+                node.ArgumentList.GetLocation(),
+                "set-query-parameter"));
             return;
         }
 

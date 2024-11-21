@@ -24,7 +24,7 @@ public class LocalDeclarationStatementCompiler : ISyntaxCompiler
         var variables = syntax.Declaration.Variables;
         if (variables.Count > 1)
         {
-            context.ReportError("");
+            // TODO
             return;
         }
 
@@ -38,7 +38,7 @@ public class LocalDeclarationStatementCompiler : ISyntaxCompiler
         }
         else
         {
-            context.ReportError("");
+            // TODO
         }
     }
 }

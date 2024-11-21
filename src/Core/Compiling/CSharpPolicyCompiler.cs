@@ -4,9 +4,11 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 using Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
 using Azure.ApiManagement.PolicyToolkit.Compiling.Syntax;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling;
@@ -109,7 +111,11 @@ public class CSharpPolicyCompiler
     {
         if (method.Body is null)
         {
-            context.ReportError($"Method {section} is not allowed as expression. ({method.GetLocation()})");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.PolicySectionCannotBeExpression,
+                method.GetLocation(),
+                method.Identifier.ValueText
+            ));
             return;
         }
 

@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -26,8 +28,13 @@ public class SetBackendServiceCompiler : IMethodPolicyHandler
         var backendIdDefined = element.AddAttribute(values, nameof(SetBackendServiceConfig.BackendId), "backend-id");
         if (!(baseUrlDefined ^ backendIdDefined))
         {
-            context.ReportError(
-                $"You need to specify either base-url or backend-id but not both. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.OnlyOneOfTwoShouldBeDefined,
+                node.GetLocation(),
+                "set-backend-service",
+                nameof(SetBackendServiceConfig.BaseUrl),
+                nameof(SetBackendServiceConfig.BackendId)
+            ));
             return;
         }
 

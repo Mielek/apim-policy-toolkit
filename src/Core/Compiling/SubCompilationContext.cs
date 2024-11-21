@@ -20,7 +20,7 @@ public class SubCompilationContext : ICompilationContext
 
     public void AddPolicy(XNode element) => _element.Add(element);
 
-    public void ReportError(string message) => _parent.ReportError(message);
+    public void Report(Diagnostic diagnostic) => _parent.Report(diagnostic);
 
     public SyntaxNode SyntaxRoot => _parent.SyntaxRoot;
 }

@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -24,14 +26,24 @@ public class ExpressionStatementCompiler : ISyntaxCompiler
         var invocation = statement.Expression as InvocationExpressionSyntax;
         if (invocation == null)
         {
-            context.ReportError($"{statement.Expression.GetType().Name} is not supported. {statement.Expression.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ExpressionNotSupported,
+                statement.Expression.GetLocation(),
+                statement.Expression.GetType().Name,
+                nameof(InvocationExpressionSyntax)
+            ));
             return;
         }
 
         var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
         if (memberAccess == null)
         {
-            context.ReportError($"{invocation.Expression.GetType().Name} is not supported. {invocation.Expression.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ExpressionNotSupported,
+                invocation.Expression.GetLocation(),
+                invocation.Expression.GetType().Name,
+                nameof(MemberAccessExpressionSyntax)
+            ));
             return;
         }
 
@@ -42,7 +54,11 @@ public class ExpressionStatementCompiler : ISyntaxCompiler
         }
         else
         {
-            context.ReportError($"{name}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.MethodNotSupported,
+                memberAccess.GetLocation(),
+                name
+            ));
         }
     }
 }

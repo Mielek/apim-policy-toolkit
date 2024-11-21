@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -24,13 +26,21 @@ public class AuthenticationCertificateCompiler : IMethodPolicyHandler
         }
 
         var certElement = new XElement("authentication-certificate");
-        var thumbprint = certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Thumbprint), "thumbprint");
-        var certId = certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.CertificateId), "certificate-id");
-        var body = certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Body), "body");
-        if (!(thumbprint ^ certId ^ body))
+        if (new[]
+            {
+                certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Thumbprint), "thumbprint"),
+                certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.CertificateId), "certificate-id"),
+                certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Body), "body")
+            }.Count(x => x) != 1)
         {
-            context.ReportError(
-                $"One of {nameof(CertificateAuthenticationConfig.Thumbprint)}, {nameof(CertificateAuthenticationConfig.CertificateId)}, {nameof(CertificateAuthenticationConfig.Body)} must be present. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.OnlyOneOfTreeShouldBeDefined,
+                node.ArgumentList.GetLocation(),
+                "authentication-certificate",
+                nameof(CertificateAuthenticationConfig.Thumbprint),
+                nameof(CertificateAuthenticationConfig.CertificateId),
+                nameof(CertificateAuthenticationConfig.Body)
+            ));
             return;
         }
 

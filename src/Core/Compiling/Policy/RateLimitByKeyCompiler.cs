@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -23,19 +25,34 @@ public class RateLimitByKeyCompiler : IMethodPolicyHandler
 
         if (!element.AddAttribute(values, nameof(RateLimitByKeyConfig.Calls), "calls"))
         {
-            context.ReportError($"{nameof(RateLimitByKeyConfig.Calls)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "rate-limit-by-key",
+                nameof(RateLimitByKeyConfig.Calls)
+            ));
             return;
         }
 
         if (!element.AddAttribute(values, nameof(RateLimitByKeyConfig.RenewalPeriod), "renewal-period"))
         {
-            context.ReportError($"{nameof(RateLimitConfig.RenewalPeriod)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "rate-limit-by-key",
+                nameof(RateLimitByKeyConfig.RenewalPeriod)
+            ));
             return;
         }
 
         if (!element.AddAttribute(values, nameof(RateLimitByKeyConfig.CounterKey), "counter-key"))
         {
-            context.ReportError($"{nameof(RateLimitByKeyConfig.CounterKey)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "rate-limit-by-key",
+                nameof(RateLimitByKeyConfig.CounterKey)
+            ));
             return;
         }
         

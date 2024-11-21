@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -18,7 +20,10 @@ public class MockResponseCompiler : IMethodPolicyHandler
         var arguments = node.ArgumentList.Arguments;
         if (arguments.Count > 1)
         {
-            context.ReportError($"Wrong argument count for mock response policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ArgumentCountMissMatchForPolicy,
+                node.ArgumentList.GetLocation(),
+                "mock-response"));
             return;
         }
 
@@ -35,15 +40,18 @@ public class MockResponseCompiler : IMethodPolicyHandler
     {
         if (value.Type != nameof(MockResponseConfig))
         {
-            context.ReportError(
-                $"Mock response policy argument must be of type {nameof(MockResponseConfig)}. {value.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                value.Node.GetLocation(),
+                "mock-response",
+                nameof(AddressRange)
+            ));
             return;
         }
 
         var values = value.NamedValues;
         if (values is null)
         {
-            context.ReportError($"TODO. {value.Node.GetLocation()}");
             return;
         }
 

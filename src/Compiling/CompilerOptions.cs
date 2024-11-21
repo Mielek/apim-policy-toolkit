@@ -12,6 +12,7 @@ public class CompilerOptions
     public string SourceFolder { get; }
     public string OutputFolder { get; }
     public bool Format { get; }
+    public string FileExtension { get; }
 
     public XmlWriterSettings XmlWriterSettings => new XmlWriterSettings()
     {
@@ -27,6 +28,7 @@ public class CompilerOptions
                        configuration["out"] ??
                        throw new NullReferenceException("Output folder not provided");
 
+        FileExtension = configuration["ext"] ?? "xml";
         Format = bool.TryParse(configuration["format"] ?? "false", out var fmt) && fmt;
     }
 }
