@@ -11,19 +11,19 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
 
-public class SemanticCacheStoreCompiler : IMethodPolicyHandler
+public class LlmSemanticCacheStoreCompiler()
+    : BaseSemanticCacheStoreCompiler(nameof(IOutboundContext.LlmSemanticCacheStore), "llm-semantic-cache-store");
+
+public class AzureOpenAiSemanticCacheStoreCompiler()
+    : BaseSemanticCacheStoreCompiler(nameof(IOutboundContext.AzureOpenAiSemanticCacheStore),
+        "azure-openai-semantic-cache-store");
+
+public abstract class BaseSemanticCacheStoreCompiler : IMethodPolicyHandler
 {
-    public static IMethodPolicyHandler Llm =>
-        new SemanticCacheStoreCompiler(nameof(IOutboundContext.LlmSemanticCacheStore), "llm-semantic-cache-store");
-
-    public static IMethodPolicyHandler AzureOpenAi =>
-        new SemanticCacheStoreCompiler(nameof(IOutboundContext.AzureOpenAiSemanticCacheStore),
-            "azure-openai-semantic-cache-store");
-
     private readonly string _policyName;
     public string MethodName { get; }
 
-    private SemanticCacheStoreCompiler(string methodName, string policyName)
+    protected BaseSemanticCacheStoreCompiler(string methodName, string policyName)
     {
         MethodName = methodName;
         _policyName = policyName;
