@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -24,13 +26,23 @@ public class RateLimitCompiler : IMethodPolicyHandler
 
         if (!element.AddAttribute(values, nameof(RateLimitConfig.Calls), "calls"))
         {
-            context.ReportError($"{nameof(RateLimitConfig.Calls)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "rate-limit-by-key",
+                nameof(RateLimitConfig.Calls)
+            ));
             return;
         }
 
         if (!element.AddAttribute(values, nameof(RateLimitConfig.RenewalPeriod), "renewal-period"))
         {
-            context.ReportError($"{nameof(RateLimitConfig.RenewalPeriod)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "rate-limit-by-key",
+                nameof(RateLimitConfig.RenewalPeriod)
+            ));
             return;
         }
 
@@ -76,19 +88,35 @@ public class RateLimitCompiler : IMethodPolicyHandler
 
         if (!isNameAdded && !isIdAdded)
         {
-            context.ReportError($"{nameof(EntityLimitConfig.Name)} && {nameof(EntityLimitConfig.Id)}. {value.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.AtLeastOneOfTwoShouldBeDefined,
+                value.Node.GetLocation(),
+                name,
+                nameof(EntityLimitConfig.Name),
+                nameof(EntityLimitConfig.Id)
+            ));
             return false;
         }
 
         if (!element.AddAttribute(values, nameof(EntityLimitConfig.Calls), "calls"))
         {
-            context.ReportError($"{nameof(EntityLimitConfig.Calls)}. {value.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                value.Node.GetLocation(),
+                name,
+                nameof(EntityLimitConfig.Calls)
+            ));
             return false;
         }
 
         if (!element.AddAttribute(values, nameof(EntityLimitConfig.RenewalPeriod), "renewal-period"))
         {
-            context.ReportError($"{nameof(EntityLimitConfig.RenewalPeriod)}. {value.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                value.Node.GetLocation(),
+                name,
+                nameof(EntityLimitConfig.RenewalPeriod)
+            ));
             return false;
         }
 

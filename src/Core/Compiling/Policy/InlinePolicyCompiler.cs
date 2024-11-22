@@ -4,8 +4,10 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 using Azure.ApiManagement.PolicyToolkit.Serialization;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -18,7 +20,11 @@ public class InlinePolicyCompiler : IMethodPolicyHandler
     {
         if (node.ArgumentList.Arguments.Count != 1)
         {
-            context.ReportError($"Wrong argument count for inline policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ArgumentCountMissMatchForPolicy,
+                node.ArgumentList.GetLocation(),
+                MethodName
+            ));
             return;
         }
 
@@ -26,7 +32,12 @@ public class InlinePolicyCompiler : IMethodPolicyHandler
 
         if (expression is not LiteralExpressionSyntax literal)
         {
-            context.ReportError($"Inline policy must be a string literal. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                expression.GetLocation(),
+                MethodName,
+                "string literal"
+            ));
             return;
         }
 

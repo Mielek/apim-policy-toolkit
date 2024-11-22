@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -18,7 +20,10 @@ public class SetBodyCompiler : IMethodPolicyHandler
         var arguments = node.ArgumentList.Arguments;
         if (arguments.Count is > 2 or 0)
         {
-            context.ReportError($"Wrong argument count for set-body policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ArgumentCountMissMatchForPolicy,
+                node.ArgumentList.GetLocation(),
+                "set-body"));
             return;
         }
 
@@ -33,7 +38,12 @@ public class SetBodyCompiler : IMethodPolicyHandler
                 {
                     if (template.Value != "liquid")
                     {
-                        context.ReportError($"Not liquid. {node.GetLocation()}");
+                        context.Report(Diagnostic.Create(
+                            CompilationErrors.OnlyOneOfTwoShouldBeDefined,
+                            template.Node.GetLocation(),
+                            "forward-request.template",
+                            "liquid"
+                        ));
                     }
                     else
                     {
@@ -45,7 +55,13 @@ public class SetBodyCompiler : IMethodPolicyHandler
                 {
                     if (xsiNil.Value != "blank" && xsiNil.Value != "null")
                     {
-                        context.ReportError($"Not bank or null. {node.GetLocation()}");
+                        context.Report(Diagnostic.Create(
+                            CompilationErrors.OnlyOneOfTwoShouldBeDefined,
+                            xsiNil.Node.GetLocation(),
+                            "forward-request.xsi-nil",
+                            "blank",
+                            "null"
+                        ));
                     }
                     else
                     {
@@ -67,13 +83,23 @@ public class SetBodyCompiler : IMethodPolicyHandler
     {
         if (!body.TryGetValues<BodyConfig>(out var config))
         {
-            context.ReportError($"{nameof(BodyConfig)}. {body.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                body.Node.GetLocation(),
+                $"{element.Name}.set-body",
+                nameof(BodyConfig)
+            ));
             return;
         }
 
         if (!config.TryGetValue(nameof(BodyConfig.Content), out var content))
         {
-            context.ReportError($"{nameof(BodyConfig.Content)}. {body.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                body.Node.GetLocation(),
+                $"{element.Name}.set-body",
+                nameof(BodyConfig.Content)
+            ));
             return;
         }
 

@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -23,7 +25,12 @@ public class EmitMetricCompiler : IMethodPolicyHandler
         var element = new XElement("emit-metric");
         if (!element.AddAttribute(values, nameof(EmitMetricConfig.Name), "name"))
         {
-            context.ReportError($"emit-metric {nameof(EmitMetricConfig.Name)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "emit-metric",
+                nameof(EmitMetricConfig.Name)
+            ));
             return;
         }
 
@@ -32,16 +39,24 @@ public class EmitMetricCompiler : IMethodPolicyHandler
 
         if (!values.TryGetValue(nameof(EmitMetricConfig.Dimensions), out var dimensionsInitializer))
         {
-            context.ReportError(
-                $"emit-metric {nameof(EmitMetricConfig.Dimensions)} must have been defined. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "emit-metric",
+                nameof(EmitMetricConfig.Dimensions)
+            ));
             return;
         }
 
         var dimensions = dimensionsInitializer.UnnamedValues ?? Array.Empty<InitializerValue>();
         if (dimensions.Count == 0)
         {
-            context.ReportError(
-                $"emit-metric {nameof(EmitMetricConfig.Dimensions)} must have at least one value. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterIsEmpty,
+                dimensionsInitializer.Node.GetLocation(),
+                "emit-metric",
+                nameof(EmitMetricConfig.Dimensions)
+            ));
             return;
         }
 
@@ -49,14 +64,24 @@ public class EmitMetricCompiler : IMethodPolicyHandler
         {
             if (!dimension.TryGetValues<MetricDimensionConfig>(out var result))
             {
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                    dimension.Node.GetLocation(),
+                    "emit-metric.dimension",
+                    nameof(MetricDimensionConfig)
+                ));
                 continue;
             }
 
             var dimensionElement = new XElement("dimension");
             if (!dimensionElement.AddAttribute(result, nameof(MetricDimensionConfig.Name), "name"))
             {
-                context.ReportError(
-                    $"emit-metric.dimension {nameof(MetricDimensionConfig.Name)}. {node.GetLocation()}");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.RequiredParameterNotDefined,
+                    node.GetLocation(),
+                    "emit-metric.dimension",
+                    nameof(MetricDimensionConfig.Name)
+                ));
                 continue;
             }
 

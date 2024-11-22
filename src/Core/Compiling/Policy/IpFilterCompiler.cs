@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -24,7 +26,12 @@ public class IpFilterCompiler : IMethodPolicyHandler
 
         if (!element.AddAttribute(values, nameof(IpFilterConfig.Action), "action"))
         {
-            context.ReportError($"{nameof(IpFilterConfig.Action)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "ip-filter",
+                nameof(IpFilterConfig.Action)
+            ));
             return;
         }
 
@@ -45,28 +52,41 @@ public class IpFilterCompiler : IMethodPolicyHandler
             {
                 if (range.Type != nameof(AddressRange))
                 {
-                    context.ReportError(
-                        $"Address range argument must be of type {nameof(AddressRange)}. {range.Node.GetLocation()}");
+                    context.Report(Diagnostic.Create(
+                        CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                        range.Node.GetLocation(),
+                        "ip-filter.address-range",
+                        nameof(AddressRange)
+                    ));
                     continue;
                 }
 
                 var rangeValues = range.NamedValues;
                 if (rangeValues is null)
                 {
-                    context.ReportError($"No initializer. {node.GetLocation()}");
                     return;
                 }
 
                 var rangeElement = new XElement("address-range");
                 if (!rangeElement.AddAttribute(rangeValues, nameof(AddressRange.From), "from"))
                 {
-                    context.ReportError($"{nameof(AddressRange.From)}. {range.Node.GetLocation()}");
+                    context.Report(Diagnostic.Create(
+                        CompilationErrors.RequiredParameterNotDefined,
+                        range.Node.GetLocation(),
+                        "ip-filter.address-range",
+                        nameof(AddressRange.From)
+                    ));
                     continue;
                 }
 
                 if (!rangeElement.AddAttribute(rangeValues, nameof(AddressRange.To), "to"))
                 {
-                    context.ReportError($"{nameof(AddressRange.To)}. {range.Node.GetLocation()}");
+                    context.Report(Diagnostic.Create(
+                        CompilationErrors.RequiredParameterNotDefined,
+                        range.Node.GetLocation(),
+                        "ip-filter.address-range",
+                        nameof(AddressRange.To)
+                    ));
                     continue;
                 }
 
@@ -78,7 +98,13 @@ public class IpFilterCompiler : IMethodPolicyHandler
 
         if (!atLeastOneAddress && !atLeastOneRange)
         {
-            context.ReportError($"Ip filter elements. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.AtLeastOneOfTwoShouldBeDefined,
+                node.GetLocation(),
+                "ip-filter",
+                nameof(IpFilterConfig.Addresses),
+                nameof(IpFilterConfig.AddressRanges)
+            ));
             return;
         }
 

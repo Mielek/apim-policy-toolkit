@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -27,14 +29,24 @@ public class QuotaCompiler : IMethodPolicyHandler
 
         if (!isCallsAdded && !isBandwidthAdded)
         {
-            context.ReportError(
-                $"{nameof(QuotaConfig.Calls)} or {nameof(QuotaConfig.Bandwidth)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.OnlyOneOfTwoShouldBeDefined,
+                node.GetLocation(),
+                "quota",
+                nameof(QuotaConfig.Calls),
+                nameof(QuotaConfig.Bandwidth)
+            ));
             return;
         }
 
         if (!element.AddAttribute(values, nameof(QuotaConfig.RenewalPeriod), "renewal-period"))
         {
-            context.ReportError($"{nameof(QuotaConfig.RenewalPeriod)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "quota",
+                nameof(QuotaConfig.RenewalPeriod)
+            ));
             return;
         }
 
@@ -44,7 +56,12 @@ public class QuotaCompiler : IMethodPolicyHandler
             {
                 if (api.Type != nameof(ApiQuota))
                 {
-                    context.ReportError($"Api must be of type {nameof(ApiQuota)}. {api.Node.GetLocation()}");
+                    context.Report(Diagnostic.Create(
+                        CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                        api.Node.GetLocation(),
+                        "quota.api",
+                        nameof(ApiQuota)
+                    ));
                     continue;
                 }
 
@@ -61,8 +78,12 @@ public class QuotaCompiler : IMethodPolicyHandler
                     {
                         if (operation.Type != nameof(OperationQuota))
                         {
-                            context.ReportError(
-                                $"Operation must be of type {nameof(OperationQuota)}. {operation.Node.GetLocation()}");
+                            context.Report(Diagnostic.Create(
+                                CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                                operation.Node.GetLocation(),
+                                "quota.api.operation",
+                                nameof(OperationQuota)
+                            ));
                             continue;
                         }
 
@@ -88,18 +109,28 @@ public class QuotaCompiler : IMethodPolicyHandler
 
         if (!isNameAdded && !isIdAdded)
         {
-            context.ReportError(
-                $"{nameof(EntityQuotaConfig.Name)} && {nameof(EntityQuotaConfig.Id)}. {value.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.AtLeastOneOfTwoShouldBeDefined,
+                value.Node.GetLocation(),
+                name,
+                nameof(EntityQuotaConfig.Name),
+                nameof(EntityQuotaConfig.Id)
+            ));
             return false;
         }
 
-        var isCallsAdded = element.AddAttribute(values, nameof(QuotaConfig.Calls), "calls");
-        var isBandwidthAdded = element.AddAttribute(values, nameof(QuotaConfig.Bandwidth), "bandwidth");
+        var isCallsAdded = element.AddAttribute(values, nameof(EntityQuotaConfig.Calls), "calls");
+        var isBandwidthAdded = element.AddAttribute(values, nameof(EntityQuotaConfig.Bandwidth), "bandwidth");
 
         if (!isCallsAdded && !isBandwidthAdded)
         {
-            context.ReportError(
-                $"{nameof(QuotaConfig.Calls)} or {nameof(QuotaConfig.Bandwidth)}. {value.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.AtLeastOneOfTwoShouldBeDefined,
+                value.Node.GetLocation(),
+                name,
+                nameof(EntityQuotaConfig.Calls),
+                nameof(EntityQuotaConfig.Bandwidth)
+            ));
             return false;
         }
 

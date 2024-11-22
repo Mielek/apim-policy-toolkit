@@ -4,6 +4,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -26,13 +28,19 @@ public static class CompilerUtils
                         $"{{context.Variables[\"{interpolation.Expression.ToString()}\"]}}",
                     _ => ""
                 });
-                var interpolationExpression = CSharpSyntaxTree.ParseText($"context => $\"{string.Join("", interpolationParts)}\"").GetRoot();
-                var lambda = interpolationExpression.DescendantNodesAndSelf().OfType<LambdaExpressionSyntax>().FirstOrDefault();
+                var interpolationExpression = CSharpSyntaxTree
+                    .ParseText($"context => $\"{string.Join("", interpolationParts)}\"").GetRoot();
+                var lambda = interpolationExpression.DescendantNodesAndSelf().OfType<LambdaExpressionSyntax>()
+                    .FirstOrDefault();
                 lambda = Normalize(lambda!);
                 return $"@({lambda.ExpressionBody})";
             case InvocationExpressionSyntax syntax:
                 return FindCode(syntax, context);
             default:
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.NotSupportedParameter,
+                    expression.GetLocation()
+                    ));
                 return "";
         }
     }
@@ -41,8 +49,10 @@ public static class CompilerUtils
     {
         if (syntax.Expression is not IdentifierNameSyntax identifierSyntax)
         {
-            context.ReportError(
-                $"Invalid expression. It should be IdentifierNameSyntax but was {syntax.Expression.GetType()}. {syntax.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.InvalidExpression,
+                syntax.GetLocation()
+                ));
             return "";
         }
 
@@ -72,11 +82,22 @@ public static class CompilerUtils
         ICompilationContext context)
     {
         var result = new Dictionary<string, InitializerValue>();
+        if (creationSyntax.Initializer is null)
+        {
+            context.Report(Diagnostic.Create(
+                CompilationErrors.PolicyObjectCreationDoesNotContainInitializerSection,
+                creationSyntax.GetLocation()
+            ));
+        }
+
         foreach (var expression in creationSyntax.Initializer?.Expressions ?? [])
         {
             if (expression is not AssignmentExpressionSyntax assignment)
             {
-                context.ReportError($"Is not AssignmentExpressionSyntax. {expression.GetLocation()}");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.ObjectInitializerContainsNotAnAssigmentExpression,
+                    expression.GetLocation()
+                    ));
                 continue;
             }
 
@@ -168,7 +189,10 @@ public static class CompilerUtils
 
         if (node.ArgumentList.Arguments.Count != 1)
         {
-            context.ReportError($"Wrong argument count for {policy} policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ArgumentCountMissMatchForPolicy,
+                node.ArgumentList.GetLocation(),
+                policy));
             return false;
         }
 
@@ -183,15 +207,24 @@ public static class CompilerUtils
         values = null;
         if (syntax is not ObjectCreationExpressionSyntax config)
         {
-            context.ReportError(
-                $"{policy} policy argument must be an object creation expression. {syntax.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.PolicyArgumentIsNotAnObjectCreation,
+                syntax.GetLocation(),
+                policy,
+                typeof(T).Name
+            ));
             return false;
         }
 
         var initializer = config.Process(context);
         if (!initializer.TryGetValues<T>(out var result))
         {
-            context.ReportError($"{policy} policy argument must be of type {typeof(T).Name}. {syntax.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                syntax.GetLocation(),
+                policy,
+                typeof(T).Name
+            ));
             return false;
         }
 

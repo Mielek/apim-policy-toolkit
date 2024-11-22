@@ -30,7 +30,7 @@ public class ForwardRequestTests
         public class PolicyDocument : IDocument
         {
             public void Backend(IBackendContext context) {
-                context.ForwardRequest(new ForwardRequestConfig());
+                context.ForwardRequest(new ForwardRequestConfig() { });
             }
         }
         """,

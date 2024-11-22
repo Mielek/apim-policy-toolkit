@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -23,8 +25,12 @@ public class CacheRemoveValueCompiler : IMethodPolicyHandler
         
         if (!element.AddAttribute(values, nameof(CacheRemoveValueConfig.Key), "key"))
         {
-            context.ReportError(
-                $"{nameof(CacheRemoveValueConfig.Key)} is required for cache-remove-value policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "cache-remove-value",
+                nameof(CacheRemoveValueConfig.Key)
+            ));
             return;
         }
         

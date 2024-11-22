@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -46,7 +48,12 @@ public class ReturnResponseCompiler : IMethodPolicyHandler
     {
         if (!status.TryGetValues<StatusConfig>(out var config))
         {
-            context.ReportError($"{nameof(StatusConfig)}. {status.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                status.Node.GetLocation(),
+                $"{element.Name}.set-status",
+                nameof(StatusConfig)
+                ));
             return;
         }
 
@@ -54,7 +61,12 @@ public class ReturnResponseCompiler : IMethodPolicyHandler
 
         if (!statusElement.AddAttribute(config, nameof(StatusConfig.Code), "code"))
         {
-            context.ReportError($"{nameof(BodyConfig.Content)}. {status.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                status.Node.GetLocation(),
+                $"{element.Name}.set-status",
+                nameof(StatusConfig.Code)
+            ));
             return;
         }
 

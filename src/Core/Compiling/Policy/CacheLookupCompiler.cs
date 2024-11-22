@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -24,15 +26,23 @@ public class CacheLookupCompiler : IMethodPolicyHandler
 
         if (!element.AddAttribute(values, nameof(CacheLookupConfig.VaryByDeveloper), "vary-by-developer"))
         {
-            context.ReportError(
-                $"{nameof(CacheLookupConfig.VaryByDeveloper)} is required for cache-lookup policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "cache-lookup",
+                nameof(CacheLookupConfig.VaryByDeveloper)
+            ));
             return;
         }
 
         if (!element.AddAttribute(values, nameof(CacheLookupConfig.VaryByDeveloperGroups), "vary-by-developer-groups"))
         {
-            context.ReportError(
-                $"{nameof(CacheLookupConfig.VaryByDeveloperGroups)} is required for cache-lookup policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "cache-lookup",
+                nameof(CacheLookupConfig.VaryByDeveloperGroups)
+            ));
             return;
         }
 

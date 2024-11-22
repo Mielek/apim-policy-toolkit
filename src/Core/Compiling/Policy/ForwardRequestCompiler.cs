@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -29,7 +31,11 @@ public class ForwardRequestCompiler : IMethodPolicyHandler
     {
         if (node.ArgumentList.Arguments.Count > 1)
         {
-            context.ReportError($"Wrong argument count for forward request policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ArgumentCountMissMatchForPolicy,
+                node.ArgumentList.GetLocation(),
+                "forward-request"
+                ));
             return;
         }
 
@@ -38,16 +44,22 @@ public class ForwardRequestCompiler : IMethodPolicyHandler
         {
             if (node.ArgumentList.Arguments[0].Expression is not ObjectCreationExpressionSyntax config)
             {
-                context.ReportError(
-                    $"Forward request policy argument must be an object creation expression. {node.GetLocation()}");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.PolicyArgumentIsNotAnObjectCreation,
+                    node.ArgumentList.Arguments[0].Expression.GetLocation(),
+                    "forward-request"));
                 return;
             }
 
             var initializer = config.Process(context);
             if (initializer.Type != nameof(ForwardRequestConfig))
             {
-                context.ReportError(
-                    $"Forward request policy argument must be of type ForwardRequestConfig. {node.GetLocation()}");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                    config.GetLocation(),
+                    "forward-request",
+                    nameof(ForwardRequestConfig)
+                ));
                 return;
             }
 
@@ -56,8 +68,13 @@ public class ForwardRequestCompiler : IMethodPolicyHandler
                 if (initializer.NamedValues.ContainsKey(nameof(ForwardRequestConfig.Timeout))
                     && initializer.NamedValues.ContainsKey(nameof(ForwardRequestConfig.TimeoutMs)))
                 {
-                    context.ReportError(
-                        $"Forward request policy cannot have both timeout and timeout-ms. {node.GetLocation()}");
+                    context.Report(Diagnostic.Create(
+                        CompilationErrors.OnlyOneOfTwoShouldBeDefined,
+                        config.GetLocation(),
+                        "forward-request",
+                        nameof(ForwardRequestConfig.Timeout),
+                        nameof(ForwardRequestConfig.TimeoutMs)
+                    ));
                 }
 
                 foreach ((string key, InitializerValue value) in initializer.NamedValues)

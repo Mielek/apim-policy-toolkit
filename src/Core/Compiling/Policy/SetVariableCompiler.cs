@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -17,7 +19,10 @@ public class SetVariableCompiler : IMethodPolicyHandler
     {
         if (node.ArgumentList.Arguments.Count != 2)
         {
-            context.ReportError($"Wrong argument count for set-variable policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ArgumentCountMissMatchForPolicy,
+                node.ArgumentList.GetLocation(),
+                "set-variable"));
             return;
         }
         var name = node.ArgumentList.Arguments[0].Expression.ProcessParameter(context);

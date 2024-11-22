@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -23,7 +25,12 @@ public class JsonToXmlCompiler : IMethodPolicyHandler
         var element = new XElement("json-to-xml");
         if (!element.AddAttribute(values, nameof(JsonToXmlConfig.Apply), "apply"))
         {
-            context.ReportError($"{nameof(JsonToXmlConfig.Apply)} must be present. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "json-to-xml",
+                nameof(JsonToXmlConfig.Apply)
+            ));
             return;
         }
 

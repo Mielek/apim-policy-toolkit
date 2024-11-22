@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -29,7 +31,14 @@ public class ValidateJwtCompiler : IMethodPolicyHandler
                 element.AddAttribute(values, nameof(ValidateJwtConfig.TokenValue), "token-value"),
             }.Count(b => b) != 1)
         {
-            context.ReportError("Only one of HeaderName, QueryParameterName and TokenValue must be set");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.OnlyOneOfTreeShouldBeDefined,
+                node.ArgumentList.GetLocation(),
+                "validate-jwt",
+                nameof(ValidateJwtConfig.HeaderName),
+                nameof(ValidateJwtConfig.QueryParameterName),
+                nameof(ValidateJwtConfig.TokenValue)
+            ));
             return;
         }
 
@@ -69,13 +78,24 @@ public class ValidateJwtCompiler : IMethodPolicyHandler
         {
             if (!openIdConfig.TryGetValues<OpenIdConfig>(out var openIdConfigValues))
             {
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                    openIdConfig.Node.GetLocation(),
+                    "openid-config",
+                    nameof(OpenIdConfig)
+                ));
                 continue;
             }
 
             var openIdElement = new XElement("openid-config");
             if (!openIdElement.AddAttribute(openIdConfigValues, nameof(OpenIdConfig.Url), "url"))
             {
-                context.ReportError($"{nameof(OpenIdConfig.Url)}. {openIdConfig.Node.GetLocation()}");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.RequiredParameterNotDefined,
+                    openIdConfig.Node.GetLocation(),
+                    "openid-config",
+                    nameof(OpenIdConfig.Url)
+                ));
                 continue;
             }
 
@@ -92,13 +112,24 @@ public class ValidateJwtCompiler : IMethodPolicyHandler
         {
             if (!claim.TryGetValues<ClaimConfig>(out var claimValue))
             {
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                    claim.Node.GetLocation(),
+                    "required-claims",
+                    nameof(ClaimConfig)
+                ));
                 continue;
             }
 
             var claimElement = new XElement("claim");
             if (!claimElement.AddAttribute(claimValue, nameof(ClaimConfig.Name), "name"))
             {
-                context.ReportError($"{nameof(ClaimConfig.Name)}. {claim.Node.GetLocation()}");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.RequiredParameterNotDefined,
+                    claim.Node.GetLocation(),
+                    "claim",
+                    nameof(ClaimConfig.Name)
+                ));
                 continue;
             }
 
@@ -147,37 +178,65 @@ public class ValidateJwtCompiler : IMethodPolicyHandler
                 case nameof(Base64KeyConfig):
                     if (!keyValues.TryGetValue(nameof(Base64KeyConfig.Value), out var value))
                     {
-                        context.ReportError(
-                            $"{nameof(Base64KeyConfig.Value)} is required. {initializer.Node.GetLocation()}");
+                        context.Report(Diagnostic.Create(
+                            CompilationErrors.RequiredParameterNotDefined,
+                            initializer.Node.GetLocation(),
+                            "key",
+                            nameof(Base64KeyConfig.Value)
+                        ));
                         continue;
                     }
+
                     keyElement.Value = value.Value!;
                     break;
                 case nameof(CertificateKeyConfig):
                     if (!keyElement.AddAttribute(keyValues, nameof(CertificateKeyConfig.CertificateId),
                             "certificate-id"))
                     {
-                        context.ReportError(
-                            $"{nameof(CertificateKeyConfig.CertificateId)} is required. {initializer.Node.GetLocation()}");
+                        context.Report(Diagnostic.Create(
+                            CompilationErrors.RequiredParameterNotDefined,
+                            initializer.Node.GetLocation(),
+                            "key",
+                            nameof(CertificateKeyConfig.CertificateId)
+                        ));
                         continue;
                     }
+
                     break;
                 case nameof(AsymmetricKeyConfig):
-                    var containsModulus =
-                        keyElement.AddAttribute(keyValues, nameof(AsymmetricKeyConfig.Modulus), "n");
-                    var containsExponent =
-                        keyElement.AddAttribute(keyValues, nameof(AsymmetricKeyConfig.Exponent), "e");
-                    if (!(containsModulus && containsExponent))
+                    if (!keyElement.AddAttribute(keyValues, nameof(AsymmetricKeyConfig.Modulus), "n"))
                     {
-                        context.ReportError(
-                            $"Modulus and Exponent are required. {initializer.Node.GetLocation()}");
+                        context.Report(Diagnostic.Create(
+                            CompilationErrors.RequiredParameterNotDefined,
+                            initializer.Node.GetLocation(),
+                            "key",
+                            nameof(AsymmetricKeyConfig.Modulus)
+                        ));
                         continue;
                     }
+
+                    if (!keyElement.AddAttribute(keyValues, nameof(AsymmetricKeyConfig.Exponent), "e"))
+                    {
+                        context.Report(Diagnostic.Create(
+                            CompilationErrors.RequiredParameterNotDefined,
+                            initializer.Node.GetLocation(),
+                            "key",
+                            nameof(AsymmetricKeyConfig.Exponent)
+                        ));
+                        continue;
+                    }
+
                     break;
                 default:
-                    context.ReportError($"Unknown key type {initializer.Type}. {initializer.Node.GetLocation()}");
+                    context.Report(Diagnostic.Create(
+                        CompilationErrors.NotSupportedType,
+                        initializer.Node.GetLocation(),
+                        "key",
+                        initializer.Type
+                    ));
                     continue;
             }
+
             listElement.Add(keyElement);
         }
 

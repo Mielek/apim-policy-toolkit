@@ -9,7 +9,7 @@ namespace Azure.ApiManagement.PolicyToolkit.Compiling;
 
 public class CompilationContext : ICompilationContext, ICompilationResult
 {
-    private readonly IList<string> _errors = new List<string>();
+    private readonly IList<Diagnostic> _diagnostics = new List<Diagnostic>();
     private readonly XElement _rootElement;
 
     public CompilationContext(SyntaxNode syntaxRoot, XElement rootElement)
@@ -19,12 +19,11 @@ public class CompilationContext : ICompilationContext, ICompilationResult
     }
 
     public void AddPolicy(XNode element) => _rootElement.Add(element);
-
-    public void ReportError(string message) => _errors.Add(message);
+    public void Report(Diagnostic diagnostic) => _diagnostics.Add(diagnostic);
 
     public SyntaxNode SyntaxRoot { get; }
 
     public XElement Document => _rootElement;
 
-    public IReadOnlyList<string> Errors => _errors.AsReadOnly();
+    public IReadOnlyList<Diagnostic> Diagnostics => _diagnostics.AsReadOnly();
 }

@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -17,7 +19,10 @@ public class RewriteUriCompiler : IMethodPolicyHandler
         var arguments = node.ArgumentList.Arguments;
         if (arguments.Count is > 2 or 0)
         {
-            context.ReportError($"Wrong argument count for rewrite-uri policy. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.ArgumentCountMissMatchForPolicy,
+                node.ArgumentList.GetLocation(),
+                "rewrite-uri"));
             return;
         }
 

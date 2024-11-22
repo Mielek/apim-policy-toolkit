@@ -4,6 +4,7 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,7 +26,12 @@ public class SendRequestCompiler : IMethodPolicyHandler
 
         if (!element.AddAttribute(values, nameof(SendRequestConfig.ResponseVariableName), "response-variable-name"))
         {
-            context.ReportError($"{nameof(SendRequestConfig.ResponseVariableName)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "send-request",
+                nameof(SendRequestConfig.ResponseVariableName)
+            ));
             return;
         }
 
@@ -70,14 +76,24 @@ public class SendRequestCompiler : IMethodPolicyHandler
     {
         if (!value.TryGetValues<ProxyConfig>(out var values))
         {
-            context.ReportError($"{nameof(ProxyConfig)} initializer. {value.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.PolicyArgumentIsNotOfRequiredType,
+                value.Node.GetLocation(),
+                $"{element.Name}.proxy",
+                nameof(ProxyConfig)
+            ));
             return;
         }
 
         var certificateElement = new XElement("proxy");
         if (!certificateElement.AddAttribute(values, nameof(ProxyConfig.Url), "url"))
         {
-            context.ReportError($"{nameof(ProxyConfig.Url)}. {value.Node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                value.Node.GetLocation(),
+                $"{element.Name}.proxy",
+                nameof(ProxyConfig.Url)
+            ));
             return;
         }
 
@@ -91,8 +107,6 @@ public class SendRequestCompiler : IMethodPolicyHandler
         var values = authentication.NamedValues;
         if (values is null)
         {
-            context.ReportError(
-                $"{nameof(SendRequestConfig.Authentication)} initializer. {authentication.Node.GetLocation()}");
             return;
         }
 
@@ -108,8 +122,12 @@ public class SendRequestCompiler : IMethodPolicyHandler
                 HandleManagedIdentityAuthentication(context, element, values, authentication.Node);
                 break;
             default:
-                context.ReportError(
-                    $"{nameof(SendRequestConfig.Authentication)} {authentication.Type}. {authentication.Node.GetLocation()}");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.NotSupportedType,
+                    authentication.Node.GetLocation(),
+                    $"{element.Name}",
+                    authentication.Type
+                ));
                 break;
         }
     }
@@ -123,13 +141,23 @@ public class SendRequestCompiler : IMethodPolicyHandler
         var basicElement = new XElement("authentication-basic");
         if (!basicElement.AddAttribute(values, nameof(BasicAuthenticationConfig.Username), "username"))
         {
-            context.ReportError($"{nameof(BasicAuthenticationConfig.Username)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                $"{element.Name}.authentication-basic",
+                nameof(BasicAuthenticationConfig.Username)
+            ));
             return;
         }
 
         if (!basicElement.AddAttribute(values, nameof(BasicAuthenticationConfig.Password), "password"))
         {
-            context.ReportError($"{nameof(BasicAuthenticationConfig.Password)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                $"{element.Name}.authentication-basic",
+                nameof(BasicAuthenticationConfig.Password)
+            ));
             return;
         }
 
@@ -143,15 +171,23 @@ public class SendRequestCompiler : IMethodPolicyHandler
         SyntaxNode node)
     {
         var certElement = new XElement("authentication-certificate");
-        var thumbprint = certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Thumbprint), "thumbprint");
-        var certId = certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.CertificateId), "certificate-id");
-        var body = certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Body), "body");
         certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Password), "password");
 
-        if (!(thumbprint ^ certId ^ body))
+        if (new[] 
+            {
+                certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Thumbprint), "thumbprint"),
+                certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.CertificateId), "certificate-id"),
+                certElement.AddAttribute(values, nameof(CertificateAuthenticationConfig.Body), "body")
+            }.Count(b => b) != 1)
         {
-            context.ReportError(
-                $"One of {nameof(CertificateAuthenticationConfig.Thumbprint)}, {nameof(CertificateAuthenticationConfig.CertificateId)}, {nameof(CertificateAuthenticationConfig.Body)} must be present. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.OnlyOneOfTreeShouldBeDefined,
+                node.GetLocation(),
+                $"{element.Name}.authentication-certificate",
+                nameof(CertificateAuthenticationConfig.Thumbprint),
+                nameof(CertificateAuthenticationConfig.CertificateId),
+                nameof(CertificateAuthenticationConfig.Body)
+            ));
             return;
         }
 
@@ -165,7 +201,15 @@ public class SendRequestCompiler : IMethodPolicyHandler
         SyntaxNode node)
     {
         var certElement = new XElement("authentication-managed-identity");
-        certElement.AddAttribute(values, nameof(ManagedIdentityAuthenticationConfig.Resource), "resource");
+        if (!certElement.AddAttribute(values, nameof(ManagedIdentityAuthenticationConfig.Resource), "resource"))
+        {
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                $"{element.Name}.authentication-managed-identity",
+                nameof(ManagedIdentityAuthenticationConfig.Resource)
+            ));
+        }
         certElement.AddAttribute(values, nameof(ManagedIdentityAuthenticationConfig.ClientId), "client-id");
         certElement.AddAttribute(values, nameof(ManagedIdentityAuthenticationConfig.OutputTokenVariableName),
             "output-token-variable-name");

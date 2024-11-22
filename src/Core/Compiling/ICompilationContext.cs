@@ -10,7 +10,7 @@ namespace Azure.ApiManagement.PolicyToolkit.Compiling;
 public interface ICompilationContext
 {
     void AddPolicy(XNode element);
-    void ReportError(string message);
+    void Report(Diagnostic diagnostic);
 
     SyntaxNode SyntaxRoot { get; }
 }

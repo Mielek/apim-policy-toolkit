@@ -4,7 +4,9 @@
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
@@ -24,32 +26,57 @@ public class CheckHeaderCompiler : IMethodPolicyHandler
 
         if (!element.AddAttribute(values, nameof(CheckHeaderConfig.Name), "name"))
         {
-            context.ReportError($"{nameof(CheckHeaderConfig.Name)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "check-header",
+                nameof(CheckHeaderConfig.Name)
+            ));
             return;
         }
 
         if (!element.AddAttribute(values, nameof(CheckHeaderConfig.FailCheckHttpCode), "failed-check-httpcode"))
         {
-            context.ReportError($"{nameof(CheckHeaderConfig.FailCheckHttpCode)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "check-header",
+                nameof(CheckHeaderConfig.FailCheckHttpCode)
+            ));
             return;
         }
 
         if (!element.AddAttribute(values, nameof(CheckHeaderConfig.FailCheckErrorMessage),
                 "failed-check-error-message"))
         {
-            context.ReportError($"{nameof(CheckHeaderConfig.FailCheckErrorMessage)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "check-header",
+                nameof(CheckHeaderConfig.FailCheckErrorMessage)
+            ));
             return;
         }
 
         if (!element.AddAttribute(values, nameof(CheckHeaderConfig.IgnoreCase), "ignore-case"))
         {
-            context.ReportError($"{nameof(CheckHeaderConfig.IgnoreCase)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "check-header",
+                nameof(CheckHeaderConfig.IgnoreCase)
+            ));
             return;
         }
 
         if (!values.TryGetValue(nameof(CheckHeaderConfig.Values), out var headerValues))
         {
-            context.ReportError($"{nameof(CheckHeaderConfig.Values)}. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterNotDefined,
+                node.GetLocation(),
+                "check-header",
+                nameof(CheckHeaderConfig.Values)
+            ));
             return;
         }
 
@@ -58,8 +85,12 @@ public class CheckHeaderCompiler : IMethodPolicyHandler
             .ToArray<object>();
         if (elements.Length == 0)
         {
-            context.ReportError(
-                $"{nameof(CheckHeaderConfig.Values)} must have at least one value. {node.GetLocation()}");
+            context.Report(Diagnostic.Create(
+                CompilationErrors.RequiredParameterIsEmpty,
+                headerValues.Node.GetLocation(),
+                "check-header",
+                nameof(CheckHeaderConfig.Values)
+            ));
             return;
         }
 

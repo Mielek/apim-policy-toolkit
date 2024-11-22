@@ -3,6 +3,8 @@
 
 using System.Xml.Linq;
 
+using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -35,15 +37,24 @@ public class IfStatementCompiler : ISyntaxCompiler
 
             if (currentIf.Statement is not BlockSyntax block)
             {
-                context.ReportError(
-                    $"{currentIf.Statement.GetType().Name} is not supported. ({currentIf.Statement.GetLocation()})");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.NotSupportedStatement,
+                    currentIf.Statement.GetLocation(),
+                    currentIf.Statement.GetType().Name
+                ));
+                nextIf = currentIf.Else?.Statement as IfStatementSyntax;
                 continue;
             }
 
             if (currentIf.Condition is not InvocationExpressionSyntax condition)
             {
-                context.ReportError(
-                    $"{currentIf.Condition.GetType().Name} is not supported. ({currentIf.Condition.GetLocation()})");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.ExpressionNotSupported,
+                    currentIf.Condition.GetLocation(),
+                    currentIf.Condition.GetType().Name,
+                    nameof(InvocationExpressionSyntax)
+                ));
+                nextIf = currentIf.Else?.Statement as IfStatementSyntax;
                 continue;
             }
 
@@ -67,8 +78,11 @@ public class IfStatementCompiler : ISyntaxCompiler
             }
             else
             {
-                context.ReportError(
-                    $"{currentIf.Else.Statement.GetType().Name} is not supported. ({currentIf.Else.Statement.GetLocation()})");
+                context.Report(Diagnostic.Create(
+                    CompilationErrors.NotSupportedStatement,
+                    currentIf.Else.Statement.GetLocation(),
+                    currentIf.Else.Statement.GetType().Name
+                ));
             }
         }
     }
