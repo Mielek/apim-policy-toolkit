@@ -11,19 +11,18 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
 
-public class EmitTokenMetricCompiler : IMethodPolicyHandler
+public class LlmEmitTokenMetricCompiler()
+    : BaseEmitTokenMetricCompiler("llm-emit-token-metric", nameof(IInboundContext.LlmEmitTokenMetric));
+
+public class AzureOpenAiEmitTokenMetricCompiler()
+    : BaseEmitTokenMetricCompiler("azure-openai-emit-token-metric", nameof(IInboundContext.AzureOpenAiEmitTokenMetric));
+
+public abstract class BaseEmitTokenMetricCompiler : IMethodPolicyHandler
 {
-    public static IMethodPolicyHandler Llm =>
-        new EmitTokenMetricCompiler("llm-emit-token-metric", nameof(IInboundContext.LlmEmitTokenMetric));
-
-    public static IMethodPolicyHandler AzureOpenAi =>
-        new EmitTokenMetricCompiler("azure-openai-emit-token-metric",
-            nameof(IInboundContext.AzureOpenAiEmitTokenMetric));
-
     private readonly string _policyName;
     public string MethodName { get; }
 
-    private EmitTokenMetricCompiler(string policyName, string methodName)
+    protected BaseEmitTokenMetricCompiler(string policyName, string methodName)
     {
         this._policyName = policyName;
         MethodName = methodName;
@@ -85,7 +84,7 @@ public class EmitTokenMetricCompiler : IMethodPolicyHandler
             dimensionElement.AddAttribute(result, nameof(MetricDimensionConfig.Value), "value");
             element.Add(dimensionElement);
         }
-        
+
         context.AddPolicy(element);
     }
 }
