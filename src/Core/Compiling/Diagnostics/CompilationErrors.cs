@@ -1,4 +1,7 @@
-﻿using Microsoft.CodeAnalysis;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Microsoft.CodeAnalysis;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
