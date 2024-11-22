@@ -26,6 +26,7 @@
         <IncludeBuildOutput>true</IncludeBuildOutput>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+        <RootNamespace>Azure.ApiManagement.PolicyToolkit.Authoring</RootNamespace>
         
         <TargetsForTfmSpecificContentInPackage>
             $(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput
