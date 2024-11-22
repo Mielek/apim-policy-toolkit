@@ -25,6 +25,7 @@
         <IncludeBuildOutput>true</IncludeBuildOutput>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <SuppressDependenciesWhenPacking>false</SuppressDependenciesWhenPacking>
+        <RootNamespace>Azure.ApiManagement.PolicyToolkit.Testing</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
