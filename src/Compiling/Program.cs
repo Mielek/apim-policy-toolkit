@@ -18,7 +18,9 @@ var config = new ConfigurationBuilder()
     .AddCommandLine(args)
     .Build();
 var options = new CompilerOptions(config);
-var files = Directory.GetFiles(options.SourceFolder, "*.cs", SearchOption.AllDirectories).Where(p => !Regex.IsMatch(p, @".*[\\/](obj|bin)[\\/].*"));
+
+var files = Directory.GetFiles(options.SourceFolder, "*.cs", SearchOption.AllDirectories)
+    .Where(p => !Regex.IsMatch(p, @".*[\\/](obj|bin)[\\/].*"));
 
 int numberOfErrors = 0;
 
@@ -41,7 +43,7 @@ foreach (var file in files)
         numberOfErrors += result.Diagnostics.Count;
         foreach (var error in result.Diagnostics)
         {
-            Console.Out.WriteLine(formatter.Format(error));
+            Console.Error.WriteLine(formatter.Format(error));
         }
 
         var codeBuilder = new StringBuilder();
@@ -65,7 +67,8 @@ foreach (var file in files)
             policyFileName = $"{policyFileName}.{options.FileExtension}";
         }
 
-        string targetFolder = Path.GetFullPath(Path.Combine(options.OutputFolder, Path.GetFullPath(file).Split(Path.GetFullPath(options.SourceFolder))[1].Replace(Path.GetFileName(file), "")));
+        var fileRelativePath = Path.GetDirectoryName(Path.GetRelativePath(options.SourceFolder, file))!;
+        var targetFolder = Path.Combine(options.OutputFolder, fileRelativePath);
         var targetFile = Path.Combine(targetFolder, policyFileName);
         var directoryPath = Path.GetDirectoryName(targetFile);
         
