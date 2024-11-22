@@ -9,17 +9,10 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
 public class MockRequest : IRequest
 {
-
     public MockBody Body { get; set; } = new MockBody();
     IMessageBody IRequest.Body => Body;
 
-
     public X509Certificate2? Certificate { get; set; } = null;
-
-    public Dictionary<string, string[]> MockHeaders { get; set; } = new Dictionary<string, string[]>()
-    {
-        {"Accept", ["application/json"] }
-    };
 
     public Dictionary<string, string[]> Headers { get; set; } = new Dictionary<string, string[]>();
     IReadOnlyDictionary<string, string[]> IRequest.Headers => Headers;

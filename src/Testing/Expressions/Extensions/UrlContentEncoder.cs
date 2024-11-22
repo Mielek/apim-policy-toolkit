@@ -11,6 +11,9 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 public class UrlContentEncoder : IUrlContentEncoder
 {
     public string? Encode(IDictionary<string, IList<string>>? dictionary)
+        => UrlContentEncoder.Encode(dictionary);
+
+    public static string? Encode<T>(IDictionary<string, T>? dictionary) where T : IEnumerable<string>
     {
         if (dictionary == null || dictionary.Count == 0)
         {
