@@ -19,9 +19,14 @@ public class Example
     {
         var document = new OperationDocument();
         var test = new TestDocument(document) { Context = { Request = { IpAddress = "10.0.0.1" } } };
-
+        
         test.RunInbound();
 
+        // test.InInbound().Base().Verify().NotCalled();
+        // test.InInbound().Base().Verify().Called();
+        // test.InInbound().Base().Verify().Called(1);
+        // test.InInbound().AuthenticationBasic((_, username, _) => username == "{{username}}").Ve
+        
         var authValue = test.Context.Request
             .Headers.Should().ContainKey("Authorization")
             .WhoseValue.Should().HaveCount(1).And.Subject.First()!;
@@ -36,7 +41,7 @@ public class Example
     {
         var document = new OperationDocument();
         var test = new TestDocument(document) { Context = { Request = { IpAddress = "11.0.0.1" } } };
-        test.InboundPolicies().AuthenticationManagedIdentity().ReturnsToken("testTokenValue");
+        test.InInbound().AuthenticationManagedIdentity().ReturnsToken("testTokenValue");
 
         test.RunInbound();
 
@@ -49,6 +54,19 @@ public class Example
             .Variables.Should().ContainKey("testToken")
             .WhoseValue.Should().BeOfType<string>().Subject;
         token.Should().Be(variableToken).And.Be("testTokenValue");
+    }
+
+    [TestMethod]
+    public void ShouldForwardReqest()
+    {
+        var document = new OperationDocument();
+        var test = new TestDocument(document);
+        int called = 0;
+        test.InBackend().ForwardRequest().WithCallback((_, _) => called++);
+        
+        test.RunBackend();
+
+        called.Should().Be(1);
     }
 
     [TestMethod]
@@ -111,7 +129,7 @@ public class Example
 
         public void Backend(IBackendContext context)
         {
-            context.Base();
+            context.ForwardRequest();
         }
 
         public void Outbound(IOutboundContext context)
@@ -135,7 +153,7 @@ public class Example
             context.Base();
             if (IsFromCompanyIp(context.ExpressionContext))
             {
-                context.AuthenticationBasic("{{username}}", "{{password}}");
+                context.AuthenticationBasic("{{username}}", null);
             }
             else
             {
@@ -149,7 +167,7 @@ public class Example
 
         public void Backend(IBackendContext context)
         {
-            context.Base();
+            context.ForwardRequest();
         }
 
         public void Outbound(IOutboundContext context)

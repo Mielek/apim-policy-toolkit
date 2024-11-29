@@ -11,29 +11,12 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
     Section(nameof(IOutboundContext)),
     Section(nameof(IOnErrorContext))
 ]
-public class SetVariableHandler : IPolicyHandler
+internal class SetVariableHandler : PolicyHandler<string, object>
 {
-    public List<Tuple<
-        Func<GatewayContext, string, object, bool>,
-        Action<GatewayContext, string, object>
-    >> CallbackHooks { get; } = new();
+    public override string PolicyName => nameof(IInboundContext.SetVariable);
 
-    public string PolicyName => nameof(IInboundContext.SetVariable);
-
-    public object? Handle(GatewayContext context, object?[]? args)
+    protected override void Handle(GatewayContext context, string name, object value)
     {
-        (string name, object value) = args.ExtractArguments<string, object>();
-
-        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, name, value));
-        if (callbackHook is not null)
-        {
-            callbackHook.Item2(context, name, value);
-        }
-        else
-        {
-            context.Variables[name] = value;
-        }
-
-        return null;
+        context.Variables[name] = value;
     }
 }

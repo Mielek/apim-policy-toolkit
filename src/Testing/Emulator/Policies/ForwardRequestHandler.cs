@@ -37,7 +37,6 @@ internal class ForwardRequestHandler : IPolicyHandler
         callbackHook?.Item2(context, config);
 
         // TODO
-
         return null;
     }
 }

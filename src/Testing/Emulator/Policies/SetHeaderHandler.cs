@@ -19,30 +19,13 @@ internal class SetHeaderResponseHandler : SetHeaderHandler
         => context.Response.Headers;
 }
 
-internal abstract class SetHeaderHandler : IPolicyHandler
+internal abstract class SetHeaderHandler : PolicyHandler<string, string[]>
 {
-    public List<Tuple<
-        Func<GatewayContext, string, string[], bool>,
-        Action<GatewayContext, string, string[]>
-    >> CallbackHooks { get; } = new();
+    public override string PolicyName => nameof(IInboundContext.SetHeader);
 
-    public string PolicyName => nameof(IInboundContext.SetHeader);
-
-    public object? Handle(GatewayContext context, object?[]? args)
+    protected override void Handle(GatewayContext context, string name, string[] values)
     {
-        (string name, string[] values) = args.ExtractArguments<string, string[]>();
-
-        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, name, values));
-        if (callbackHook is not null)
-        {
-            callbackHook.Item2(context, name, values);
-        }
-        else
-        {
-            GetHeaders(context)[name] = values;
-        }
-
-        return null;
+        GetHeaders(context)[name] = values;
     }
 
     protected abstract Dictionary<string, string[]> GetHeaders(GatewayContext context);

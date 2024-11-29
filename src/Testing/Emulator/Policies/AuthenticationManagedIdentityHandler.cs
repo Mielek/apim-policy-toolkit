@@ -6,33 +6,18 @@ using Azure.ApiManagement.PolicyToolkit.Authoring;
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [Section(nameof(IInboundContext))]
-internal class AuthenticationManagedIdentityHandler : IPolicyHandler
+internal class AuthenticationManagedIdentityHandler : PolicyHandler<ManagedIdentityAuthenticationConfig>
 {
-    public List<Tuple<
-        Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool>,
-        Action<GatewayContext, ManagedIdentityAuthenticationConfig>
-        >> CallbackHooks { get; } = new();
-
     public List<Tuple<
             Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool>,
             Func<string, string?, string>
     >> ProvideTokenHooks { get; } = new();
 
-    public string PolicyName => nameof(IInboundContext.AuthenticationManagedIdentity);
+    public override string PolicyName => nameof(IInboundContext.AuthenticationManagedIdentity);
 
-    public object? Handle(GatewayContext context, object?[]? args)
+    protected override void Handle(GatewayContext context, ManagedIdentityAuthenticationConfig config)
     {
-        var config = args.ExtractArgument<ManagedIdentityAuthenticationConfig>();
-
-        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, config));
-        if (callbackHook is not null)
-        {
-            callbackHook.Item2(context, config);
-            return null;
-        }
-
         var provideTokenHook = ProvideTokenHooks.FirstOrDefault(hook => hook.Item1(context, config));
-
         var token = provideTokenHook is not null
             ? CreateTokenByHook(provideTokenHook.Item2, config)
             : DefaultTokenProvider(context, config);
@@ -45,8 +30,6 @@ internal class AuthenticationManagedIdentityHandler : IPolicyHandler
         {
             context.Request.Headers["Authorization"] = [$"Bearer {token}"];
         }
-
-        return null;
     }
 
     private string DefaultTokenProvider(GatewayContext context, ManagedIdentityAuthenticationConfig config)
