@@ -1,4 +1,7 @@
-﻿using Azure.ApiManagement.PolicyToolkit.Authoring;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
@@ -13,12 +16,14 @@ public static class MockAuthenticationBasicProvider
         this MockPoliciesProvider<IInboundContext> mock,
         Func<string, string, bool> predicate) =>
         AuthenticationBasic(mock, (_, username, password) => predicate(username, password));
-    
+
     public static Setup AuthenticationBasic(
         this MockPoliciesProvider<IInboundContext> mock,
         string username,
-        string password) => 
-        AuthenticationBasic(mock, (_, actualUser, actualName) => actualUser == username && actualName == password);
+        string password) =>
+        AuthenticationBasic(mock,
+            (_, actualUser, actualPassword) =>
+                string.Equals(actualUser, username) && string.Equals(actualPassword, password));
 
     public static Setup AuthenticationBasic(
         this MockPoliciesProvider<IInboundContext> mock,

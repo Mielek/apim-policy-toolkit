@@ -19,14 +19,9 @@ public class Example
     {
         var document = new OperationDocument();
         var test = new TestDocument(document) { Context = { Request = { IpAddress = "10.0.0.1" } } };
-        
+
         test.RunInbound();
 
-        // test.InInbound().Base().Verify().NotCalled();
-        // test.InInbound().Base().Verify().Called();
-        // test.InInbound().Base().Verify().Called(1);
-        // test.InInbound().AuthenticationBasic((_, username, _) => username == "{{username}}").Ve
-        
         var authValue = test.Context.Request
             .Headers.Should().ContainKey("Authorization")
             .WhoseValue.Should().HaveCount(1).And.Subject.First()!;
@@ -57,7 +52,7 @@ public class Example
     }
 
     [TestMethod]
-    public void ShouldForwardReqest()
+    public void ShouldForwardRequest()
     {
         var document = new OperationDocument();
         var test = new TestDocument(document);
@@ -98,52 +93,6 @@ public class Example
             JObject.Parse(body),
             expected
         ));
-    }
-    //
-    // [TestMethod]
-    // public void Emulator()
-    // {
-    //     var emulator = new GatewayEmulator()
-    //     {
-    //         Documents =
-    //         {
-    //             { DocumentScope.Global, new GlobalDocument() },
-    //             { DocumentScope.Api, new BlankDocument() },
-    //             { DocumentScope.Operation, new OperationDocument() }
-    //         }
-    //     };
-    //     emulator.Context.SetHandler<IBackendContext>(new ForwardRequestHandler() { Interceptor = (_, cfg) => Assert.IsNull(cfg)});
-    //
-    //     emulator.Run();
-    //     
-    //     // Asserts
-    // }
-
-
-    class BlankDocument : IDocument
-    {
-        public void Inbound(IInboundContext context)
-        {
-            context.Base();
-        }
-
-        public void Backend(IBackendContext context)
-        {
-            context.ForwardRequest();
-        }
-
-        public void Outbound(IOutboundContext context)
-        {
-            context.Base();
-        }
-    }
-
-    class GlobalDocument : IDocument
-    {
-        public void Backend(IBackendContext context)
-        {
-            context.ForwardRequest();
-        }
     }
 
     class OperationDocument : IDocument
