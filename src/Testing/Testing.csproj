@@ -37,8 +37,4 @@
         <ProjectReference Include="..\Authoring\Authoring.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Assertions\" />
-    </ItemGroup>
-
 </Project>
