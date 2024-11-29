@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Reflection;
 using System.Xml.Linq;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
@@ -22,51 +23,21 @@ public class CSharpPolicyCompiler
     public CSharpPolicyCompiler(ClassDeclarationSyntax document)
     {
         _document = document;
-        var invStatement = new ExpressionStatementCompiler([
-            new AuthenticationBasicCompiler(),
-            new AuthenticationCertificateCompiler(),
-            new AuthenticationManagedIdentityCompiler(),
-            new BaseCompiler(),
-            new CacheLookupCompiler(),
-            new CacheLookupValueCompiler(),
-            new CacheStoreCompiler(),
-            new CacheStoreValueCompiler(),
-            new CacheRemoveValueCompiler(),
-            new CheckHeaderCompiler(),
-            new CorsCompiler(),
-            new ForwardRequestCompiler(),
-            new InlinePolicyCompiler(),
-            new IpFilterCompiler(),
-            new JsonToXmlCompiler(),
-            new JsonPCompiler(),
-            new MockResponseCompiler(),
-            new QuotaCompiler(),
-            new RateLimitByKeyCompiler(),
-            new RateLimitCompiler(),
-            new ReturnResponseCompiler(),
-            new RewriteUriCompiler(),
-            new SendRequestCompiler(),
-            new SetBackendServiceCompiler(),
-            new SetBodyCompiler(),
-            SetHeaderCompiler.AppendCompiler,
-            SetHeaderCompiler.RemoveCompiler,
-            SetHeaderCompiler.SetCompiler,
-            SetHeaderCompiler.SetIfNotExistCompiler,
-            new SetMethodCompiler(),
-            SetQueryParameterCompiler.AppendCompiler,
-            SetQueryParameterCompiler.RemoveCompiler,
-            SetQueryParameterCompiler.SetCompiler,
-            SetQueryParameterCompiler.SetIfNotExistCompiler,
-            new SetVariableCompiler(),
-            new ValidateJwtCompiler(),
-            new EmitMetricCompiler(),
-            EmitTokenMetricCompiler.Llm,
-            EmitTokenMetricCompiler.AzureOpenAi,
-            SemanticCacheStoreCompiler.Llm,
-            SemanticCacheStoreCompiler.AzureOpenAi,
-            SemanticCacheLookupCompiler.Llm,
-            SemanticCacheLookupCompiler.AzureOpenAi,
-        ]);
+        var handlers = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(type =>
+                type is
+                {
+                    IsClass: true,
+                    IsAbstract: false,
+                    IsPublic: true,
+                    Namespace: "Azure.ApiManagement.PolicyToolkit.Compiling.Policy"
+                }
+                && typeof(IMethodPolicyHandler).IsAssignableFrom(type))
+            .Select(t => Activator.CreateInstance(t) as IMethodPolicyHandler)
+            .Where(h => h is not null)!
+            .ToArray<IMethodPolicyHandler>();
+        var invStatement = new ExpressionStatementCompiler(handlers);
         var loc = new LocalDeclarationStatementCompiler([
             new AuthenticationManageIdentityReturnValueCompiler()
         ]);

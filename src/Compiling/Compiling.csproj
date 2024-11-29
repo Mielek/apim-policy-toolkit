@@ -24,6 +24,7 @@
         <TargetFramework>.net8</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>Azure.ApiManagement.PolicyToolkit.Compiling</RootNamespace>
 
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <PackAsTool>true</PackAsTool>

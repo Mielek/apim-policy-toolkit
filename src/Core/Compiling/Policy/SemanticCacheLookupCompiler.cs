@@ -11,18 +11,19 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
 
-public class SemanticCacheLookupCompiler : IMethodPolicyHandler
+public class LlmSemanticCacheLookupCompiler()
+    : BaseSemanticCacheLookupCompiler(nameof(IInboundContext.LlmSemanticCacheLookup), "llm-semantic-cache-lookup");
+
+public class AzureOpenAiSemanticCacheLookupCompiler()
+    : BaseSemanticCacheLookupCompiler(nameof(IInboundContext.AzureOpenAiSemanticCacheLookup),
+        "azure-openai-semantic-cache-lookup");
+
+public abstract class BaseSemanticCacheLookupCompiler : IMethodPolicyHandler
 {
-    public static IMethodPolicyHandler Llm => new SemanticCacheLookupCompiler(
-        nameof(IInboundContext.LlmSemanticCacheLookup), "llm-semantic-cache-lookup");
-
-    public static IMethodPolicyHandler AzureOpenAi => new SemanticCacheLookupCompiler(
-        nameof(IInboundContext.AzureOpenAiSemanticCacheLookup), "azure-openai-semantic-cache-lookup");
-
     private readonly string _policyName;
     public string MethodName { get; }
 
-    SemanticCacheLookupCompiler(string methodName, string policyName)
+    protected BaseSemanticCacheLookupCompiler(string methodName, string policyName)
     {
         MethodName = methodName;
         _policyName = policyName;

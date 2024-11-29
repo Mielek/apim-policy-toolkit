@@ -24,9 +24,11 @@ public class CompilerOptions
         SourceFolder = configuration["s"] ??
                        configuration["source"] ??
                        throw new NullReferenceException("Source folder not provided");
+        SourceFolder = Path.GetFullPath(SourceFolder);
         OutputFolder = configuration["o"] ??
                        configuration["out"] ??
                        throw new NullReferenceException("Output folder not provided");
+        OutputFolder = Path.GetFullPath(OutputFolder);
 
         FileExtension = configuration["ext"] ?? "xml";
         Format = bool.TryParse(configuration["format"] ?? "false", out var fmt) && fmt;

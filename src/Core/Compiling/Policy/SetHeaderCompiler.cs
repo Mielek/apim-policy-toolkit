@@ -11,23 +11,19 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
 
-public class SetHeaderCompiler : IMethodPolicyHandler
+public class AppendHeaderCompiler() : BaseSetHeaderCompiler(nameof(IInboundContext.AppendHeader), "append");
+
+public class SetHeaderCompiler() : BaseSetHeaderCompiler(nameof(IInboundContext.SetHeader), "override");
+
+public class SetHeaderIfNotExistCompiler() : BaseSetHeaderCompiler(nameof(IInboundContext.SetHeaderIfNotExist), "skip");
+
+public class RemoveHeaderCompiler() : BaseSetHeaderCompiler(nameof(IInboundContext.RemoveHeader), "delete");
+
+public abstract class BaseSetHeaderCompiler : IMethodPolicyHandler
 {
-    public static SetHeaderCompiler AppendCompiler =>
-        new SetHeaderCompiler(nameof(IInboundContext.AppendHeader), "append");
+    private readonly string _type;
 
-    public static SetHeaderCompiler SetCompiler =>
-        new SetHeaderCompiler(nameof(IInboundContext.SetHeader), "override");
-
-    public static SetHeaderCompiler SetIfNotExistCompiler =>
-        new SetHeaderCompiler(nameof(IInboundContext.SetHeaderIfNotExist), "skip");
-
-    public static SetHeaderCompiler RemoveCompiler =>
-        new SetHeaderCompiler(nameof(IInboundContext.RemoveHeader), "delete");
-
-    readonly string _type;
-
-    private SetHeaderCompiler(string methodName, string type)
+    protected BaseSetHeaderCompiler(string methodName, string type)
     {
         MethodName = methodName;
         _type = type;

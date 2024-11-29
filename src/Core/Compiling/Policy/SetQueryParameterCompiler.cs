@@ -11,23 +11,23 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
 
-public class SetQueryParameterCompiler : IMethodPolicyHandler
+public class AppendQueryParameterCompiler()
+    : BaseSetQueryParameterCompiler(nameof(IInboundContext.AppendQueryParameter), "append");
+
+public class SetQueryParameterCompiler()
+    : BaseSetQueryParameterCompiler(nameof(IInboundContext.SetQueryParameter), "override");
+
+public class SetIfNotExistQueryParameterCompiler()
+    : BaseSetQueryParameterCompiler(nameof(IInboundContext.SetQueryParameterIfNotExist), "skip");
+
+public class RemoveQueryParameterCompiler()
+    : BaseSetQueryParameterCompiler(nameof(IInboundContext.RemoveQueryParameter), "delete");
+
+public abstract class BaseSetQueryParameterCompiler : IMethodPolicyHandler
 {
-    public static SetQueryParameterCompiler AppendCompiler =>
-        new SetQueryParameterCompiler(nameof(IInboundContext.AppendQueryParameter), "append");
-
-    public static SetQueryParameterCompiler SetCompiler =>
-        new SetQueryParameterCompiler(nameof(IInboundContext.SetQueryParameter), "override");
-
-    public static SetQueryParameterCompiler SetIfNotExistCompiler =>
-        new SetQueryParameterCompiler(nameof(IInboundContext.SetQueryParameterIfNotExist), "skip");
-
-    public static SetQueryParameterCompiler RemoveCompiler =>
-        new SetQueryParameterCompiler(nameof(IInboundContext.RemoveQueryParameter), "delete");
-
     readonly string _type;
 
-    private SetQueryParameterCompiler(string methodName, string type)
+    protected BaseSetQueryParameterCompiler(string methodName, string type)
     {
         MethodName = methodName;
         _type = type;
