@@ -102,7 +102,7 @@ public class Example
             context.Base();
             if (IsFromCompanyIp(context.ExpressionContext))
             {
-                context.AuthenticationBasic("{{username}}", null);
+                context.AuthenticationBasic("{{username}}", "{{password}}");
             }
             else
             {
