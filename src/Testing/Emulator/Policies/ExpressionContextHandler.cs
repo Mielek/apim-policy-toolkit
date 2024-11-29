@@ -3,7 +3,7 @@
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
 
-namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Handlers;
+namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [
     Section(nameof(IInboundContext)),
@@ -11,8 +11,8 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Handlers;
     Section(nameof(IOutboundContext)),
     Section(nameof(IOnErrorContext))
 ]
-public class ExpressionContextHandler : IInvokeHandler
+public class ExpressionContextHandler : IPolicyHandler
 {
-    public string MethodName => "get_ExpressionContext";
-    public object? Invoke(GatewayContext context, object?[]? args) => context.RuntimeContext;
+    public string PolicyName => "get_ExpressionContext";
+    public object? Handle(GatewayContext context, object?[]? args) => context;
 }

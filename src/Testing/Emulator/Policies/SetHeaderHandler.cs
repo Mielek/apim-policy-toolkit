@@ -4,28 +4,28 @@
 using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
-namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Handlers;
+namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [Section(nameof(IInboundContext))]
 public class SetHeaderRequestHandler : SetHeaderHandler
 {
     protected override Dictionary<string, string[]> GetHeaders(GatewayContext context)
-        => context.RuntimeContext.Request.Headers;
+        => context.Request.Headers;
 }
 
 [Section(nameof(IOutboundContext)), Section(nameof(IOnErrorContext))]
 public class SetHeaderResponseHandler : SetHeaderHandler
 {
     protected override Dictionary<string, string[]> GetHeaders(GatewayContext context)
-        => context.RuntimeContext.Response.Headers;
+        => context.Response.Headers;
 }
 
-public abstract class SetHeaderHandler : IInvokeHandler
+public abstract class SetHeaderHandler : IPolicyHandler
 {
     public Action<MockExpressionContext, string, string[]>? Interceptor { private get; init; }
-    public string MethodName => nameof(IInboundContext.SetHeader);
+    public string PolicyName => nameof(IInboundContext.SetHeader);
 
-    public object? Invoke(GatewayContext context, object?[]? args)
+    public object? Handle(GatewayContext context, object?[]? args)
     {
         if (args?.Length != 2)
         {
@@ -44,7 +44,7 @@ public abstract class SetHeaderHandler : IInvokeHandler
 
         if (Interceptor is not null)
         {
-            Interceptor(context.RuntimeContext, name, values);
+            Interceptor(context, name, values);
         }
         else
         {

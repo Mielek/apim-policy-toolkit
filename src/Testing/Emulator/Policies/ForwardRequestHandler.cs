@@ -3,14 +3,14 @@
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
 
-namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Handlers;
+namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [Section(nameof(IBackendContext))]
-public class ForwardRequestHandler: IInvokeHandler
+public class ForwardRequestHandler: IPolicyHandler
 {
     public Action<GatewayContext, ForwardRequestConfig?>? Interceptor { private get; init; }
-    public string MethodName => nameof(IBackendContext.ForwardRequest);
-    public object? Invoke(GatewayContext context, object?[]? args)
+    public string PolicyName => nameof(IBackendContext.ForwardRequest);
+    public object? Handle(GatewayContext context, object?[]? args)
     {
         if (args == null || args.Length != 1)
         {

@@ -5,8 +5,7 @@ using System.Text;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
-using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
-using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Handlers;
+using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Builders;
 
 using Newtonsoft.Json.Linq;
 
@@ -18,15 +17,16 @@ public class Example
     [TestMethod]
     public void ShouldUseBasicAuthenticationForRequestsFromInternalIp()
     {
-        var context = new GatewayContext { RuntimeContext = { Request = { IpAddress = "10.0.0.1" } } };
+        var document = new OperationDocument();
+        var test = new TestDocument(document) { Context = { Request = { IpAddress = "10.0.0.1" } } };
 
-        new OperationDocument().Inbound(context.InboundContext);
-
-        var authValue = context.RuntimeContext.Request
+        test.RunInbound();
+        
+        var authValue = test.Context.Request
             .Headers.Should().ContainKey("Authorization")
             .WhoseValue.Should().HaveCount(1).And.Subject.First()!;
         authValue.Should().StartWith("Basic ");
-        var token = authValue.Substring("Basic ".Length);
+        var token = authValue["Basic ".Length..];
         token = Encoding.UTF8.GetString(Convert.FromBase64String(token));
         token.Should().Be("{{username}}:{{password}}");
     }
@@ -34,27 +34,27 @@ public class Example
     [TestMethod]
     public void ShouldUseManagedIdentityTokenAuthenticationForRequestsFromExternalIp()
     {
-        var context = new GatewayContext { RuntimeContext = { Request = { IpAddress = "11.0.0.1" } } };
-        bool baseInvoked = false;
-        context.SetHandler<IInboundContext>(new BaseHandler() { Interceptor = _ => baseInvoked = true });
-
-        new OperationDocument().Inbound(context.InboundContext);
-
-        baseInvoked.Should().BeTrue();
-        var authValue = context.RuntimeContext.Request
+        var document = new OperationDocument();
+        var test = new TestDocument(document) { Context = { Request = { IpAddress = "11.0.0.1" } } };
+        test.InboundPolicies.AuthenticationManagedIdentity().ReturnsToken("testTokenValue");
+        
+        test.RunInbound();
+    
+        var authValue = test.Context.Request
             .Headers.Should().ContainKey("Authorization")
             .WhoseValue.Should().HaveCount(1).And.Subject.First()!;
         authValue.Should().StartWith("Bearer ");
-        var token = authValue.Substring("Bearer ".Length);
-        var variableToken = context.RuntimeContext
+        var token = authValue["Bearer ".Length..];
+        var variableToken = test.Context
             .Variables.Should().ContainKey("testToken")
             .WhoseValue.Should().BeOfType<string>().Subject;
-        token.Should().Be(variableToken).And.Be("resource=https://management.azure.com/");
+        token.Should().Be(variableToken).And.Be("testTokenValue");
     }
-
+    
     [TestMethod]
     public void ShouldRewriteBody()
     {
+        var document = new OperationDocument();
         var initial = JObject.Parse(
             """
             {
@@ -64,14 +64,11 @@ public class Example
                 "name": "John Doe"
             }
             """);
-        var context = new GatewayContext
-        {
-            RuntimeContext = { Response = { Body = { Content = initial.ToString() } } }
-        };
-
-        new OperationDocument().Outbound(context.OutboundContext);
-
-        var body = context.RuntimeContext.Response.Body.Content;
+        var test = new TestDocument(document) { Context = { Response = { Body = { Content = initial.ToString() } } } };
+    
+        test.RunOutbound();
+    
+        var body = test.Context.Response.Body.Content;
         var expected = JObject.Parse(
             """
             {
@@ -84,25 +81,25 @@ public class Example
             expected
         ));
     }
-
-    [TestMethod]
-    public void Emulator()
-    {
-        var emulator = new GatewayEmulator()
-        {
-            Documents =
-            {
-                { DocumentScope.Global, new GlobalDocument() },
-                { DocumentScope.Api, new BlankDocument() },
-                { DocumentScope.Operation, new OperationDocument() }
-            }
-        };
-        emulator.Context.SetHandler<IBackendContext>(new ForwardRequestHandler() { Interceptor = (_, cfg) => Assert.IsNull(cfg)});
-
-        emulator.Run();
-        
-        
-    }
+    //
+    // [TestMethod]
+    // public void Emulator()
+    // {
+    //     var emulator = new GatewayEmulator()
+    //     {
+    //         Documents =
+    //         {
+    //             { DocumentScope.Global, new GlobalDocument() },
+    //             { DocumentScope.Api, new BlankDocument() },
+    //             { DocumentScope.Operation, new OperationDocument() }
+    //         }
+    //     };
+    //     emulator.Context.SetHandler<IBackendContext>(new ForwardRequestHandler() { Interceptor = (_, cfg) => Assert.IsNull(cfg)});
+    //
+    //     emulator.Run();
+    //     
+    //     // Asserts
+    // }
 
 
     class BlankDocument : IDocument

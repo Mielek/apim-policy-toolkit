@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
-using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Handlers;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 
@@ -16,60 +15,60 @@ public class GatewayEmulator
     public void Run()
     {
         SetupBase();
-        try
-        {
-            Documents[_documentScope].Inbound(Context.InboundContext);
-            Documents[_documentScope].Backend(Context.BackendContext);
-            Documents[_documentScope].Outbound(Context.OutboundContext);
-        }
-        catch (PolicyException e)
-        {
-            _documentScope = DocumentScope.Operation;
-            Context.RuntimeContext.LastError.Message = e.Message;
-            Context.RuntimeContext.LastError.Section = e.Section;
-            Context.RuntimeContext.LastError.PolicyId = e.Policy;
-            Documents[_documentScope].OnError(Context.OnErrorContext);
-        }
+        // try
+        // {
+        //     Documents[_documentScope].Inbound(Context.InboundContext);
+        //     Documents[_documentScope].Backend(Context.BackendContext);
+        //     Documents[_documentScope].Outbound(Context.OutboundContext);
+        // }
+        // catch (PolicyException e)
+        // {
+        //     _documentScope = DocumentScope.Operation;
+        //     Context.LastError.Message = e.Message;
+        //     Context.LastError.Section = e.Section;
+        //     Context.LastError.PolicyId = e.Policy;
+        //     Documents[_documentScope].OnError(Context.OnErrorContext);
+        // }
     }
 
     private void SetupBase()
     {
-        Context.SetHandler<IInboundContext>(new BaseHandler()
-        {
-            Interceptor = ctx =>
-            {
-                SetNextDocument();
-                Documents[_documentScope].Inbound(ctx.InboundContext);
-                SetPreviousDocument();
-            }
-        });
-        Context.SetHandler<IBackendContext>(new BaseHandler()
-        {
-            Interceptor = ctx =>
-            {
-                SetNextDocument();
-                Documents[_documentScope].Backend(ctx.BackendContext);
-                SetPreviousDocument();
-            }
-        });
-        Context.SetHandler<IOutboundContext>(new BaseHandler()
-        {
-            Interceptor = ctx =>
-            {
-                SetNextDocument();
-                Documents[_documentScope].Outbound(ctx.OutboundContext);
-                SetPreviousDocument();
-            }
-        });
-        Context.SetHandler<IOnErrorContext>(new BaseHandler()
-        {
-            Interceptor = ctx =>
-            {
-                SetNextDocument();
-                Documents[_documentScope].OnError(ctx.OnErrorContext);
-                SetPreviousDocument();
-            }
-        });
+        // Context.SetHandler<IInboundContext>(new BaseHandler()
+        // {
+        //     Interceptor = ctx =>
+        //     {
+        //         SetNextDocument();
+        //         Documents[_documentScope].Inbound(ctx.InboundContext);
+        //         SetPreviousDocument();
+        //     }
+        // });
+        // Context.SetHandler<IBackendContext>(new BaseHandler()
+        // {
+        //     Interceptor = ctx =>
+        //     {
+        //         SetNextDocument();
+        //         Documents[_documentScope].Backend(ctx.BackendContext);
+        //         SetPreviousDocument();
+        //     }
+        // });
+        // Context.SetHandler<IOutboundContext>(new BaseHandler()
+        // {
+        //     Interceptor = ctx =>
+        //     {
+        //         SetNextDocument();
+        //         Documents[_documentScope].Outbound(ctx.OutboundContext);
+        //         SetPreviousDocument();
+        //     }
+        // });
+        // Context.SetHandler<IOnErrorContext>(new BaseHandler()
+        // {
+        //     Interceptor = ctx =>
+        //     {
+        //         SetNextDocument();
+        //         Documents[_documentScope].OnError(ctx.OnErrorContext);
+        //         SetPreviousDocument();
+        //     }
+        // });
     }
 
     void SetNextDocument()

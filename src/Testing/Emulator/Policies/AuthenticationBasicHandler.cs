@@ -6,16 +6,16 @@ using System.Text;
 using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
-namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Handlers;
+namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [Section(nameof(IInboundContext))]
-public class AuthenticationBasicHandler : IInvokeHandler
+public class AuthenticationBasicHandler : IPolicyHandler
 {
     public Action<MockExpressionContext, string, string>? Interceptor { private get; init; }
 
-    public string MethodName => nameof(IInboundContext.AuthenticationBasic);
+    public string PolicyName => nameof(IInboundContext.AuthenticationBasic);
 
-    public object? Invoke(GatewayContext context, object?[]? args)
+    public object? Handle(GatewayContext context, object?[]? args)
     {
         if (args is not { Length: 2 })
         {
@@ -29,12 +29,12 @@ public class AuthenticationBasicHandler : IInvokeHandler
 
         if (Interceptor is not null)
         {
-            Interceptor(context.RuntimeContext, username, password);
+            Interceptor(context, username, password);
         }
         else
         {
             var authHeader = $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"))}";
-            context.RuntimeContext.Request.Headers["Authorization"] = [authHeader];
+            context.Request.Headers["Authorization"] = [authHeader];
         }
 
         return null;

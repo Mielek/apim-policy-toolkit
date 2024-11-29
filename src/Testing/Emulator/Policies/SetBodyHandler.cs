@@ -4,28 +4,28 @@
 using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
-namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Handlers;
+namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [Section(nameof(IInboundContext))]
 public class SetBodyRequestHandler : SetBodyHandler
 {
     protected override MockBody GetBody(GatewayContext context)
-        => context.RuntimeContext.Request.Body;
+        => context.Request.Body;
 }
 
 [Section(nameof(IOutboundContext)), Section(nameof(IOnErrorContext))]
 public class SetBodyResponseHandler : SetBodyHandler
 {
     protected override MockBody GetBody(GatewayContext context)
-        => context.RuntimeContext.Response.Body;
+        => context.Response.Body;
 }
 
-public abstract class SetBodyHandler : IInvokeHandler
+public abstract class SetBodyHandler : IPolicyHandler
 {
     public Action<GatewayContext, string, SetBodyConfig?>? Interceptor { private get; init; }
-    public string MethodName => nameof(IInboundContext.SetBody);
+    public string PolicyName => nameof(IInboundContext.SetBody);
 
-    public object? Invoke(GatewayContext context, object?[]? args)
+    public object? Handle(GatewayContext context, object?[]? args)
     {
         if (args == null || args.Length != 2)
         {

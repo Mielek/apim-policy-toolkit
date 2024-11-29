@@ -5,11 +5,11 @@ using System.Reflection;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 
-public class SectionContextProxy : DispatchProxy
+internal class SectionContextProxy : DispatchProxy
 {
     private GatewayContext _context = null!;
 
-    private Dictionary<string, IInvokeHandler> _handlers = null!;
+    private Dictionary<string, IPolicyHandler> _handlers = null!;
 
     private string _sectionName = null!;
 
@@ -34,7 +34,7 @@ public class SectionContextProxy : DispatchProxy
 
         try
         {
-            return handler.Invoke(_context, args);
+            return handler.Handle(_context, args);
         }
         catch (PolicyException)
         {
@@ -46,12 +46,24 @@ public class SectionContextProxy : DispatchProxy
         }
     }
     
-    public void SetHandler(IInvokeHandler handler)
+    public void SetHandler(IPolicyHandler handler)
     {
-        _handlers[handler.MethodName] = handler;
+        _handlers[handler.PolicyName] = handler;
     }
     
-    private static Dictionary<string, IInvokeHandler> DiscoverHandlers<T>()
+    internal THandler GetHandler<THandler>() where THandler : class, IPolicyHandler
+    {
+        var tHandler = Activator.CreateInstance<THandler>();
+        if (_handlers.TryGetValue(tHandler.PolicyName, out var handler))
+        {
+            return handler as THandler ?? throw new InvalidOperationException();
+        }
+
+        _handlers[tHandler.PolicyName] = tHandler;
+        return tHandler;
+    }
+    
+    private static Dictionary<string, IPolicyHandler> DiscoverHandlers<T>()
     {
         var targetScope = typeof(T).Name;
         return Assembly.GetExecutingAssembly()
@@ -61,13 +73,13 @@ public class SectionContextProxy : DispatchProxy
                 {
                     IsClass: true,
                     IsAbstract: false,
-                    IsPublic: true,
-                    Namespace: "Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Handlers"
+                    Namespace: "Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies"
                 }
-                && typeof(IInvokeHandler).IsAssignableFrom(type)
+                && typeof(IPolicyHandler).IsAssignableFrom(type)
                 && type.GetCustomAttributes<SectionAttribute>().Any(att => att.Scope == targetScope))
-            .Select(t => Activator.CreateInstance(t) as IInvokeHandler)
+            .Select(t => Activator.CreateInstance(t) as IPolicyHandler)
             .Where(h => h is not null)
-            .ToDictionary(h => h!.MethodName)!;
+            .ToDictionary(h => h!.PolicyName)!;
     }
+    
 }

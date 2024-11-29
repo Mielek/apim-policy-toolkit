@@ -3,8 +3,8 @@
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 
-public interface IInvokeHandler
+internal interface IPolicyHandler
 {
-    public string MethodName { get; }
-    object? Invoke(GatewayContext context, object?[]? args);
+    public string PolicyName { get; }
+    object? Handle(GatewayContext context, object?[]? args);
 }
