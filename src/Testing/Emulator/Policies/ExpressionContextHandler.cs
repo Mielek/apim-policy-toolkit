@@ -11,7 +11,7 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
     Section(nameof(IOutboundContext)),
     Section(nameof(IOnErrorContext))
 ]
-public class ExpressionContextHandler : IPolicyHandler
+internal class ExpressionContextHandler : IPolicyHandler
 {
     public string PolicyName => "get_ExpressionContext";
     public object? Handle(GatewayContext context, object?[]? args) => context;

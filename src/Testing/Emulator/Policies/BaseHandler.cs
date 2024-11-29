@@ -11,14 +11,19 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
     Section(nameof(IOutboundContext)),
     Section(nameof(IOnErrorContext))
 ]
-public class BaseHandler : IPolicyHandler
+internal class BaseHandler : IPolicyHandler
 {
-    public Action<GatewayContext>? Interceptor { private get; init; }
+    public List<Tuple<
+        Func<GatewayContext, bool>,
+        Action<GatewayContext>
+    >> CallbackHooks { get; } = new();
+
     public string PolicyName => nameof(IInboundContext.Base);
 
     public object? Handle(GatewayContext context, object?[]? args)
-    {
-        Interceptor?.Invoke(context);
+    { 
+        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context));
+        callbackHook?.Item2(context);
         return null;
     }
 }

@@ -7,20 +7,18 @@ using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [Section(nameof(IInboundContext))]
-public class SetBodyRequestHandler : SetBodyHandler
+internal class SetBodyRequestHandler : SetBodyHandler
 {
-    protected override MockBody GetBody(GatewayContext context)
-        => context.Request.Body;
+    protected override MockBody GetBody(GatewayContext context) => context.Request.Body;
 }
 
 [Section(nameof(IOutboundContext)), Section(nameof(IOnErrorContext))]
-public class SetBodyResponseHandler : SetBodyHandler
+internal class SetBodyResponseHandler : SetBodyHandler
 {
-    protected override MockBody GetBody(GatewayContext context)
-        => context.Response.Body;
+    protected override MockBody GetBody(GatewayContext context) => context.Response.Body;
 }
 
-public abstract class SetBodyHandler : IPolicyHandler
+internal abstract class SetBodyHandler : IPolicyHandler
 {
     public Action<GatewayContext, string, SetBodyConfig?>? Interceptor { private get; init; }
     public string PolicyName => nameof(IInboundContext.SetBody);

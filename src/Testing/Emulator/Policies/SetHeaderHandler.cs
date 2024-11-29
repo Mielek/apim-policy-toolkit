@@ -7,20 +7,20 @@ using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [Section(nameof(IInboundContext))]
-public class SetHeaderRequestHandler : SetHeaderHandler
+internal class SetHeaderRequestHandler : SetHeaderHandler
 {
     protected override Dictionary<string, string[]> GetHeaders(GatewayContext context)
         => context.Request.Headers;
 }
 
 [Section(nameof(IOutboundContext)), Section(nameof(IOnErrorContext))]
-public class SetHeaderResponseHandler : SetHeaderHandler
+internal class SetHeaderResponseHandler : SetHeaderHandler
 {
     protected override Dictionary<string, string[]> GetHeaders(GatewayContext context)
         => context.Response.Headers;
 }
 
-public abstract class SetHeaderHandler : IPolicyHandler
+internal abstract class SetHeaderHandler : IPolicyHandler
 {
     public Action<MockExpressionContext, string, string[]>? Interceptor { private get; init; }
     public string PolicyName => nameof(IInboundContext.SetHeader);

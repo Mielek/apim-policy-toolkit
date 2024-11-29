@@ -6,9 +6,13 @@ using Azure.ApiManagement.PolicyToolkit.Authoring;
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [Section(nameof(IBackendContext))]
-public class ForwardRequestHandler: IPolicyHandler
+internal class ForwardRequestHandler: IPolicyHandler
 {
-    public Action<GatewayContext, ForwardRequestConfig?>? Interceptor { private get; init; }
+    public List<Tuple<
+        Func<GatewayContext, ForwardRequestConfig?, bool>,
+        Action<GatewayContext, ForwardRequestConfig?>
+    >> CallbackHooks { get; } = new();
+
     public string PolicyName => nameof(IBackendContext.ForwardRequest);
     public object? Handle(GatewayContext context, object?[]? args)
     {
@@ -26,8 +30,11 @@ public class ForwardRequestHandler: IPolicyHandler
             }
             config = c;
         }
-        Interceptor?.Invoke(context, config);
+        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, config));
+        callbackHook?.Item2(context, config);
 
+        // TODO
+        
         return null;
     }
 }

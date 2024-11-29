@@ -5,20 +5,22 @@ using System.Reflection;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 
-internal class SectionContextProxy : DispatchProxy
+internal class SectionContextProxy<TSection> : DispatchProxy where TSection : class
 {
     private GatewayContext _context = null!;
 
     private Dictionary<string, IPolicyHandler> _handlers = null!;
 
-    private string _sectionName = null!;
+    private readonly string _sectionName = typeof(TSection).Name;
 
-    public static SectionContextProxy Create<T>(GatewayContext expressionContext) where T : class
+    public TSection Object => this as TSection ?? throw new InvalidOperationException();
+
+    public static SectionContextProxy<TSection> Create(GatewayContext expressionContext)
     {
-        var context = (Create(typeof(T), typeof(SectionContextProxy)) as SectionContextProxy)!;
+        var context =
+            (Create(typeof(TSection), typeof(SectionContextProxy<TSection>)) as SectionContextProxy<TSection>)!;
         context._context = expressionContext;
-        context._handlers = DiscoverHandlers<T>();
-        context._sectionName = typeof(T).Name;
+        context._handlers = DiscoverHandlers<TSection>();
         return context;
     }
 
@@ -45,14 +47,16 @@ internal class SectionContextProxy : DispatchProxy
             throw new PolicyException(e) { Policy = targetMethod.Name, Section = _sectionName };
         }
     }
-    
-    public void SetHandler(IPolicyHandler handler)
-    {
-        _handlers[handler.PolicyName] = handler;
-    }
-    
+
     internal THandler GetHandler<THandler>() where THandler : class, IPolicyHandler
     {
+        var scopes = typeof(THandler).GetCustomAttributes<SectionAttribute>().Select(att => att.Scope).ToArray();
+        if (!scopes.Contains(_sectionName))
+        {
+            throw new ArgumentException(
+                $"Handler define {string.Join(',', scopes)} but is tried to be fetched form {_sectionName} scope");
+        }
+
         var tHandler = Activator.CreateInstance<THandler>();
         if (_handlers.TryGetValue(tHandler.PolicyName, out var handler))
         {
@@ -62,7 +66,7 @@ internal class SectionContextProxy : DispatchProxy
         _handlers[tHandler.PolicyName] = tHandler;
         return tHandler;
     }
-    
+
     private static Dictionary<string, IPolicyHandler> DiscoverHandlers<T>()
     {
         var targetScope = typeof(T).Name;
@@ -81,5 +85,4 @@ internal class SectionContextProxy : DispatchProxy
             .Where(h => h is not null)
             .ToDictionary(h => h!.PolicyName)!;
     }
-    
 }

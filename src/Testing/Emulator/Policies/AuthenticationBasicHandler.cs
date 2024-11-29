@@ -9,7 +9,7 @@ using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [Section(nameof(IInboundContext))]
-public class AuthenticationBasicHandler : IPolicyHandler
+internal class AuthenticationBasicHandler : IPolicyHandler
 {
     public Action<MockExpressionContext, string, string>? Interceptor { private get; init; }
 

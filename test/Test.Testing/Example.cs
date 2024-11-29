@@ -5,7 +5,7 @@ using System.Text;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
-using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Builders;
+using Azure.ApiManagement.PolicyToolkit.Testing.Document;
 
 using Newtonsoft.Json.Linq;
 
@@ -21,7 +21,7 @@ public class Example
         var test = new TestDocument(document) { Context = { Request = { IpAddress = "10.0.0.1" } } };
 
         test.RunInbound();
-        
+
         var authValue = test.Context.Request
             .Headers.Should().ContainKey("Authorization")
             .WhoseValue.Should().HaveCount(1).And.Subject.First()!;
@@ -36,10 +36,10 @@ public class Example
     {
         var document = new OperationDocument();
         var test = new TestDocument(document) { Context = { Request = { IpAddress = "11.0.0.1" } } };
-        test.InboundPolicies.AuthenticationManagedIdentity().ReturnsToken("testTokenValue");
-        
+        test.InboundPolicies().AuthenticationManagedIdentity().ReturnsToken("testTokenValue");
+
         test.RunInbound();
-    
+
         var authValue = test.Context.Request
             .Headers.Should().ContainKey("Authorization")
             .WhoseValue.Should().HaveCount(1).And.Subject.First()!;
@@ -50,7 +50,7 @@ public class Example
             .WhoseValue.Should().BeOfType<string>().Subject;
         token.Should().Be(variableToken).And.Be("testTokenValue");
     }
-    
+
     [TestMethod]
     public void ShouldRewriteBody()
     {
@@ -65,9 +65,9 @@ public class Example
             }
             """);
         var test = new TestDocument(document) { Context = { Response = { Body = { Content = initial.ToString() } } } };
-    
+
         test.RunOutbound();
-    
+
         var body = test.Context.Response.Body.Content;
         var expected = JObject.Parse(
             """
