@@ -1,4 +1,7 @@
-﻿using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
@@ -19,8 +22,8 @@ public static class MockBaseProvider
 
     public class MockBase
     {
-        private Func<GatewayContext, bool> _predicate;
-        private BaseHandler _handler;
+        private readonly Func<GatewayContext, bool> _predicate;
+        private readonly BaseHandler _handler;
 
         internal MockBase(
             Func<GatewayContext, bool> predicate,

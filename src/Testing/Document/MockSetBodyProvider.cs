@@ -1,4 +1,7 @@
-﻿using Azure.ApiManagement.PolicyToolkit.Authoring;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
@@ -17,7 +20,7 @@ public static class MockSetBodyProvider
 
     public static MockSetBody SetBody(
         this MockPoliciesProvider<IInboundContext> mock,
-        Func<GatewayContext, object, SetBodyConfig?, bool> predicate
+        Func<GatewayContext, string, SetBodyConfig?, bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetBodyRequestHandler>();
@@ -26,7 +29,7 @@ public static class MockSetBodyProvider
 
     public static MockSetBody SetBody(
         this MockPoliciesProvider<IOutboundContext> mock,
-        Func<GatewayContext, object, SetBodyConfig?, bool> predicate
+        Func<GatewayContext, string, SetBodyConfig?, bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetBodyResponseHandler>();
@@ -35,7 +38,7 @@ public static class MockSetBodyProvider
 
     public static MockSetBody SetBody(
         this MockPoliciesProvider<IOnErrorContext> mock,
-        Func<GatewayContext, object, SetBodyConfig?, bool> predicate
+        Func<GatewayContext, string, SetBodyConfig?, bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetBodyResponseHandler>();
@@ -44,15 +47,19 @@ public static class MockSetBodyProvider
 
     public class MockSetBody
     {
-        private Func<GatewayContext, object, SetBodyConfig?, bool> _predicate;
-        private SetBodyHandler _handler;
+        private readonly Func<GatewayContext, string, SetBodyConfig?, bool> _predicate;
+        private readonly SetBodyHandler _handler;
 
         internal MockSetBody(
-            Func<GatewayContext, object, SetBodyConfig?, bool> predicate,
+            Func<GatewayContext, string, SetBodyConfig?, bool> predicate,
             SetBodyHandler handler)
         {
             _predicate = predicate;
             _handler = handler;
         }
+
+        public void WithCallback(Action<GatewayContext, string, SetBodyConfig?> callback) => _handler.CallbackHooks.Add(
+            new Tuple<Func<GatewayContext, string, SetBodyConfig?, bool>, Action<GatewayContext, string, SetBodyConfig?>>(
+                _predicate, callback));
     }
 }

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
-using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
@@ -22,29 +21,21 @@ internal class SetHeaderResponseHandler : SetHeaderHandler
 
 internal abstract class SetHeaderHandler : IPolicyHandler
 {
-    public Action<MockExpressionContext, string, string[]>? Interceptor { private get; init; }
+    public List<Tuple<
+        Func<GatewayContext, string, string[], bool>,
+        Action<GatewayContext, string, string[]>
+    >> CallbackHooks { get; } = new();
+
     public string PolicyName => nameof(IInboundContext.SetHeader);
 
     public object? Handle(GatewayContext context, object?[]? args)
     {
-        if (args?.Length != 2)
-        {
-            throw new ArgumentException("SetHeader policy expects exactly 2 arguments.");
-        }
+        (string name, string[] values) = args.ExtractArguments<string, string[]>();
 
-        if (args[0] is not string name)
+        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, name, values));
+        if (callbackHook is not null)
         {
-            throw new ArgumentException("SetHeader policy expects the first argument to be a string.");
-        }
-
-        if (args[1] is not string[] values)
-        {
-            throw new ArgumentException("SetHeader policy expects the second argument to be an array of strings.");
-        }
-
-        if (Interceptor is not null)
-        {
-            Interceptor(context, name, values);
+            callbackHook.Item2(context, name, values);
         }
         else
         {

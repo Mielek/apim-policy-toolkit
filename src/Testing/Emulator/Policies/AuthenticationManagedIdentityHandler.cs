@@ -22,7 +22,7 @@ internal class AuthenticationManagedIdentityHandler : IPolicyHandler
 
     public object? Handle(GatewayContext context, object?[]? args)
     {
-        var config = ExtractConfig(args);
+        var config = args.ExtractArgument<ManagedIdentityAuthenticationConfig>();
 
         var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, config));
         if (callbackHook is not null)
@@ -47,21 +47,6 @@ internal class AuthenticationManagedIdentityHandler : IPolicyHandler
         }
 
         return null;
-    }
-
-    private ManagedIdentityAuthenticationConfig ExtractConfig(object?[]? args)
-    {
-        if (args is not { Length: 1 })
-        {
-            throw new ArgumentException("Expected 1 argument", nameof(args));
-        }
-
-        if (args[0] is not ManagedIdentityAuthenticationConfig config)
-        {
-            throw new ArgumentException("Expected ManagedIdentityAuthenticationConfig as first argument", nameof(args));
-        }
-
-        return config;
     }
 
     private string DefaultTokenProvider(GatewayContext context, ManagedIdentityAuthenticationConfig config)

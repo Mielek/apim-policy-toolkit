@@ -1,4 +1,7 @@
-﻿using Azure.ApiManagement.PolicyToolkit.Authoring;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
@@ -17,7 +20,7 @@ public static class MockSetHeaderProvider
 
     public static MockSetHeader SetHeader(
         this MockPoliciesProvider<IInboundContext> mock,
-        Func<GatewayContext, object, SetBodyConfig?, bool> predicate
+        Func<GatewayContext, string, string[], bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetHeaderRequestHandler>();
@@ -26,7 +29,7 @@ public static class MockSetHeaderProvider
 
     public static MockSetHeader SetHeader(
         this MockPoliciesProvider<IOutboundContext> mock,
-        Func<GatewayContext, object, SetBodyConfig?, bool> predicate
+        Func<GatewayContext, string, string[], bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetHeaderResponseHandler>();
@@ -35,7 +38,7 @@ public static class MockSetHeaderProvider
 
     public static MockSetHeader SetHeader(
         this MockPoliciesProvider<IOnErrorContext> mock,
-        Func<GatewayContext, object, SetBodyConfig?, bool> predicate
+        Func<GatewayContext, string, string[], bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetHeaderResponseHandler>();
@@ -44,15 +47,19 @@ public static class MockSetHeaderProvider
     
     public class MockSetHeader
     {
-        private Func<GatewayContext, object, SetBodyConfig?, bool> _predicate;
-        private SetHeaderHandler _handler;
+        private readonly Func<GatewayContext, string, string[], bool> _predicate;
+        private readonly SetHeaderHandler _handler;
 
         internal MockSetHeader(
-            Func<GatewayContext, object, SetBodyConfig?, bool> predicate,
+            Func<GatewayContext, string, string[], bool> predicate,
             SetHeaderHandler handler)
         {
             _predicate = predicate;
             _handler = handler;
         }
+
+        public void WithCallback(Action<GatewayContext, string, string[]> callback) => _handler.CallbackHooks.Add(
+            new Tuple<Func<GatewayContext, string, string[], bool>, Action<GatewayContext, string, string[]>>(
+                _predicate, callback));
     }
 }

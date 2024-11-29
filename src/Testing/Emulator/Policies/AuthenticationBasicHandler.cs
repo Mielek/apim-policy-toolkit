@@ -17,15 +17,7 @@ internal class AuthenticationBasicHandler : IPolicyHandler
 
     public object? Handle(GatewayContext context, object?[]? args)
     {
-        if (args is not { Length: 2 })
-        {
-            throw new ArgumentException("Invalid number of arguments");
-        }
-
-        if (args[0] is not string username || args[1] is not string password)
-        {
-            throw new ArgumentException("Invalid argument type");
-        }
+        (string username, string password) = args.ExtractArguments<string, string>();
 
         if (Interceptor is not null)
         {

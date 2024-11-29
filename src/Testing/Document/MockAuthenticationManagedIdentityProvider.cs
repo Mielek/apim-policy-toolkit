@@ -1,4 +1,7 @@
-﻿using Azure.ApiManagement.PolicyToolkit.Authoring;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
@@ -19,8 +22,8 @@ public static class MockAuthenticationManagedIdentityProvider
 
     public class MockAuthenticationManagedIdentity
     {
-        private Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool> _predicate;
-        private AuthenticationManagedIdentityHandler _handler;
+        private readonly Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool> _predicate;
+        private readonly AuthenticationManagedIdentityHandler _handler;
 
         internal MockAuthenticationManagedIdentity(
             Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool> predicate,

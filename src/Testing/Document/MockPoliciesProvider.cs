@@ -1,4 +1,7 @@
-﻿using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
 

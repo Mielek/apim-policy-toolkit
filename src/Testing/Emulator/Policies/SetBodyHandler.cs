@@ -20,19 +20,23 @@ internal class SetBodyResponseHandler : SetBodyHandler
 
 internal abstract class SetBodyHandler : IPolicyHandler
 {
-    public Action<GatewayContext, string, SetBodyConfig?>? Interceptor { private get; init; }
+    public List<Tuple<
+        Func<GatewayContext, string, SetBodyConfig?, bool>,
+        Action<GatewayContext, string, SetBodyConfig?>
+    >> CallbackHooks { get; } = new();
+
     public string PolicyName => nameof(IInboundContext.SetBody);
 
     public object? Handle(GatewayContext context, object?[]? args)
     {
-        if (args == null || args.Length != 2)
+        if (args is not { Length: 2 })
         {
-            throw new InvalidOperationException();
+            throw new ArgumentException("Expected 2 arguments", nameof(args));
         }
 
         if (args[0] is not string body)
         {
-            throw new InvalidOperationException("SetBodyHandler requires a string argument.");
+            throw new ArgumentException("SetBodyHandler requires a string argument.");
         }
 
         SetBodyConfig? config = null;
@@ -41,15 +45,17 @@ internal abstract class SetBodyHandler : IPolicyHandler
         {
             if (args[1] is not SetBodyConfig c)
             {
-                throw new InvalidOperationException("SetBodyHandler requires a string argument for the content type.");
+                throw new ArgumentException("SetBodyHandler requires a string argument for the content type.");
             }
 
             config = c;
         }
 
-        if (Interceptor is not null)
-        {
-            Interceptor(context, body, config);
+        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, body, config));
+
+        if (callbackHook is not null)
+        {        
+            callbackHook.Item2(context, body, config);
             return null;
         }
 

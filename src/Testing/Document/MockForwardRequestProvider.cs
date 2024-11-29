@@ -1,4 +1,7 @@
-﻿using Azure.ApiManagement.PolicyToolkit.Authoring;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
@@ -20,8 +23,8 @@ public static class MockForwardRequestProvider
 
     public class MockForwardRequest
     {
-        private Func<GatewayContext, ForwardRequestConfig?, bool> _predicate;
-        private ForwardRequestHandler _handler;
+        private readonly Func<GatewayContext, ForwardRequestConfig?, bool> _predicate;
+        private readonly ForwardRequestHandler _handler;
 
         internal MockForwardRequest(
             Func<GatewayContext, ForwardRequestConfig?, bool> predicate,
