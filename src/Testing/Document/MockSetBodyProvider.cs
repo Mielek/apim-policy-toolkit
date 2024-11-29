@@ -9,48 +9,48 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
 
 public static class MockSetBodyProvider
 {
-    public static MockSetBody SetBody(this MockPoliciesProvider<IInboundContext> mock) =>
+    public static Setup SetBody(this MockPoliciesProvider<IInboundContext> mock) =>
         SetBody(mock, (_, _, _) => true);
 
-    public static MockSetBody SetBody(this MockPoliciesProvider<IOutboundContext> mock) =>
+    public static Setup SetBody(this MockPoliciesProvider<IOutboundContext> mock) =>
         SetBody(mock, (_, _, _) => true);
 
-    public static MockSetBody SetBody(this MockPoliciesProvider<IOnErrorContext> mock) =>
+    public static Setup SetBody(this MockPoliciesProvider<IOnErrorContext> mock) =>
         SetBody(mock, (_, _, _) => true);
 
-    public static MockSetBody SetBody(
+    public static Setup SetBody(
         this MockPoliciesProvider<IInboundContext> mock,
         Func<GatewayContext, string, SetBodyConfig?, bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetBodyRequestHandler>();
-        return new MockSetBody(predicate, handler);
+        return new Setup(predicate, handler);
     }
 
-    public static MockSetBody SetBody(
+    public static Setup SetBody(
         this MockPoliciesProvider<IOutboundContext> mock,
         Func<GatewayContext, string, SetBodyConfig?, bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetBodyResponseHandler>();
-        return new MockSetBody(predicate, handler);
+        return new Setup(predicate, handler);
     }
 
-    public static MockSetBody SetBody(
+    public static Setup SetBody(
         this MockPoliciesProvider<IOnErrorContext> mock,
         Func<GatewayContext, string, SetBodyConfig?, bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetBodyResponseHandler>();
-        return new MockSetBody(predicate, handler);
+        return new Setup(predicate, handler);
     }
 
-    public class MockSetBody
+    public class Setup
     {
         private readonly Func<GatewayContext, string, SetBodyConfig?, bool> _predicate;
         private readonly SetBodyHandler _handler;
 
-        internal MockSetBody(
+        internal Setup(
             Func<GatewayContext, string, SetBodyConfig?, bool> predicate,
             SetBodyHandler handler)
         {

@@ -11,7 +11,10 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 [Section(nameof(IInboundContext))]
 internal class AuthenticationBasicHandler : IPolicyHandler
 {
-    public Action<MockExpressionContext, string, string>? Interceptor { private get; init; }
+    public List<Tuple<
+        Func<GatewayContext, string, string, bool>,
+        Action<GatewayContext, string, string>
+    >> CallbackHooks { get; } = new();
 
     public string PolicyName => nameof(IInboundContext.AuthenticationBasic);
 
@@ -19,9 +22,10 @@ internal class AuthenticationBasicHandler : IPolicyHandler
     {
         (string username, string password) = args.ExtractArguments<string, string>();
 
-        if (Interceptor is not null)
+        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, username, password));
+        if (callbackHook is not null)
         {
-            Interceptor(context, username, password);
+            callbackHook.Item2(context, username, password);
         }
         else
         {

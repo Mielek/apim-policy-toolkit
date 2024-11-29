@@ -9,48 +9,48 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
 
 public static class MockSetHeaderProvider
 {
-    public static MockSetHeader SetHeader(this MockPoliciesProvider<IInboundContext> mock) =>
+    public static Setup SetHeader(this MockPoliciesProvider<IInboundContext> mock) =>
         SetHeader(mock, (_, _, _) => true);
 
-    public static MockSetHeader SetHeader(this MockPoliciesProvider<IOutboundContext> mock) =>
+    public static Setup SetHeader(this MockPoliciesProvider<IOutboundContext> mock) =>
         SetHeader(mock, (_, _, _) => true);
 
-    public static MockSetHeader SetHeader(this MockPoliciesProvider<IOnErrorContext> mock) =>
+    public static Setup SetHeader(this MockPoliciesProvider<IOnErrorContext> mock) =>
         SetHeader(mock, (_, _, _) => true);
 
-    public static MockSetHeader SetHeader(
+    public static Setup SetHeader(
         this MockPoliciesProvider<IInboundContext> mock,
         Func<GatewayContext, string, string[], bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetHeaderRequestHandler>();
-        return new MockSetHeader(predicate, handler);
+        return new Setup(predicate, handler);
     }
 
-    public static MockSetHeader SetHeader(
+    public static Setup SetHeader(
         this MockPoliciesProvider<IOutboundContext> mock,
         Func<GatewayContext, string, string[], bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetHeaderResponseHandler>();
-        return new MockSetHeader(predicate, handler);
+        return new Setup(predicate, handler);
     }
 
-    public static MockSetHeader SetHeader(
+    public static Setup SetHeader(
         this MockPoliciesProvider<IOnErrorContext> mock,
         Func<GatewayContext, string, string[], bool> predicate
     )
     {
         var handler = mock.SectionContextProxy.GetHandler<SetHeaderResponseHandler>();
-        return new MockSetHeader(predicate, handler);
+        return new Setup(predicate, handler);
     }
     
-    public class MockSetHeader
+    public class Setup
     {
         private readonly Func<GatewayContext, string, string[], bool> _predicate;
         private readonly SetHeaderHandler _handler;
 
-        internal MockSetHeader(
+        internal Setup(
             Func<GatewayContext, string, string[], bool> predicate,
             SetHeaderHandler handler)
         {

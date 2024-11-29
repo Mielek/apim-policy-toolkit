@@ -9,24 +9,24 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
 
 public static class MockForwardRequestProvider
 {
-    public static MockForwardRequest ForwardRequest(this MockPoliciesProvider<IBackendContext> mock) =>
+    public static Setup ForwardRequest(this MockPoliciesProvider<IBackendContext> mock) =>
         ForwardRequest(mock, (_, _) => true);
 
-    public static MockForwardRequest ForwardRequest<T>(
+    public static Setup ForwardRequest<T>(
         this MockPoliciesProvider<T> mock,
         Func<GatewayContext, ForwardRequestConfig?, bool> predicate
     ) where T : class
     {
         var handler = mock.SectionContextProxy.GetHandler<ForwardRequestHandler>();
-        return new MockForwardRequest(predicate, handler);
+        return new Setup(predicate, handler);
     }
 
-    public class MockForwardRequest
+    public class Setup
     {
         private readonly Func<GatewayContext, ForwardRequestConfig?, bool> _predicate;
         private readonly ForwardRequestHandler _handler;
 
-        internal MockForwardRequest(
+        internal Setup(
             Func<GatewayContext, ForwardRequestConfig?, bool> predicate,
             ForwardRequestHandler handler)
         {

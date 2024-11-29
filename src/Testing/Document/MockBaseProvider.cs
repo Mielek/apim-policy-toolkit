@@ -8,24 +8,23 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
 
 public static class MockBaseProvider
 {
-    
-    public static MockBase Base<T>(this MockPoliciesProvider<T> mock) where T : class => Base(mock, _ => true);
+    public static Setup Base<T>(this MockPoliciesProvider<T> mock) where T : class => Base(mock, _ => true);
 
-    public static MockBase Base<T>(
+    public static Setup Base<T>(
         this MockPoliciesProvider<T> mock,
         Func<GatewayContext, bool> predicate
     ) where T : class
     {
         var handler = mock.SectionContextProxy.GetHandler<BaseHandler>();
-        return new MockBase(predicate, handler);
+        return new Setup(predicate, handler);
     }
 
-    public class MockBase
+    public class Setup
     {
         private readonly Func<GatewayContext, bool> _predicate;
         private readonly BaseHandler _handler;
 
-        internal MockBase(
+        internal Setup(
             Func<GatewayContext, bool> predicate,
             BaseHandler handler)
         {

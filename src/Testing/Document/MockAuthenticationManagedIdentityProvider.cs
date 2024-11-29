@@ -9,23 +9,23 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
 
 public static class MockAuthenticationManagedIdentityProvider
 {
-    public static MockAuthenticationManagedIdentity AuthenticationManagedIdentity(
+    public static Setup AuthenticationManagedIdentity(
         this MockPoliciesProvider<IInboundContext> mock) => AuthenticationManagedIdentity(mock, (_, _) => true);
 
-    public static MockAuthenticationManagedIdentity AuthenticationManagedIdentity(
+    public static Setup AuthenticationManagedIdentity(
         this MockPoliciesProvider<IInboundContext> mock,
         Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool> predicate)
     {
         var handler = mock.SectionContextProxy.GetHandler<AuthenticationManagedIdentityHandler>();
-        return new MockAuthenticationManagedIdentity(predicate, handler);
+        return new Setup(predicate, handler);
     }
 
-    public class MockAuthenticationManagedIdentity
+    public class Setup
     {
         private readonly Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool> _predicate;
         private readonly AuthenticationManagedIdentityHandler _handler;
 
-        internal MockAuthenticationManagedIdentity(
+        internal Setup(
             Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool> predicate,
             AuthenticationManagedIdentityHandler handler)
         {
