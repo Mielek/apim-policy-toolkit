@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Security.Cryptography;
+using System.Text;
+
 using Azure.ApiManagement.PolicyToolkit.Authoring;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
@@ -20,7 +23,7 @@ internal class AuthenticationManagedIdentityHandler : PolicyHandler<ManagedIdent
         var provideTokenHook = ProvideTokenHooks.FirstOrDefault(hook => hook.Item1(context, config));
         var token = provideTokenHook is not null
             ? CreateTokenByHook(provideTokenHook.Item2, config)
-            : DefaultTokenProvider(context, config);
+            : DefaultTokenProvider(config);
 
         if (!string.IsNullOrWhiteSpace(config.OutputTokenVariableName))
         {
@@ -32,20 +35,34 @@ internal class AuthenticationManagedIdentityHandler : PolicyHandler<ManagedIdent
         }
     }
 
-    private string DefaultTokenProvider(GatewayContext context, ManagedIdentityAuthenticationConfig config)
+    private string DefaultTokenProvider(ManagedIdentityAuthenticationConfig config)
     {
-        string token = $"resource={config.Resource}";
+        const string header = "{ \"alg\": \"RS256\",\"typ\": \"JWT\" }";
+        var headerBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(header));
+        var payload = $"{{ \"resource\"=\"{config.Resource}\"";
+
         if (!string.IsNullOrWhiteSpace(config.ClientId))
         {
-            token += $"&client_id={config.ClientId}";
+            payload += $" \"client_id\": \"{config.ClientId}\"";
         }
 
         if (config.IgnoreError is not null)
         {
-            token += $"&ignore_error={config.IgnoreError}";
+            payload += $" \"ignore_error\": \"{config.IgnoreError}\"";
         }
+        payload += " }";
+        var payloadBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(payload));
 
-        return token;
+        var signature = $"{headerBase64}.{payloadBase64}";
+        var signatureBytes = Encoding.UTF8.GetBytes(signature);
+        byte[] secretKey = new byte[64];
+        using var generator = RandomNumberGenerator.Create();
+        generator.GetBytes(secretKey);
+        using var hmac = new HMACSHA256(secretKey);
+        var hash = hmac.ComputeHash(signatureBytes);
+        var hashBase64 = Convert.ToBase64String(hash);
+
+        return $"{headerBase64}.{payloadBase64}.{hashBase64}";
     }
 
     private string CreateTokenByHook(Func<string, string?, string> tokenProvider,
