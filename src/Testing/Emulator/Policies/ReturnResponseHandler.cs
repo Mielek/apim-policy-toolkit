@@ -1,4 +1,5 @@
-using System.Text;
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
 using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
@@ -42,9 +43,10 @@ internal class ReturnResponseHandler : IPolicyHandler
         if (!string.IsNullOrWhiteSpace(config.ResponseVariableName))
         {
             //copy variable
-            response = context.Variables[config.ResponseVariableName] as MockResponse ?? throw new ArgumentException($"Variable {config.ResponseVariableName} should be response"); 
+            response = context.Variables[config.ResponseVariableName] as MockResponse ??
+                       throw new ArgumentException($"Variable {config.ResponseVariableName} should be response");
         }
-        
+
         if (config.Status is not null)
         {
             response.StatusCode = config.Status.Code;
@@ -64,6 +66,7 @@ internal class ReturnResponseHandler : IPolicyHandler
                         ArgumentNullException.ThrowIfNull(header.Values);
                         response.Headers[header.Name] = header.Values;
                     }
+
                     break;
                 case "append":
                     ArgumentNullException.ThrowIfNull(header.Values);
