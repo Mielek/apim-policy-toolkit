@@ -7,6 +7,11 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
 public class MockExpressionContext : IExpressionContext
 {
+    public MockExpressionContext()
+    {
+        MockExtensions.SetDefaultServices();
+    }
+
     public Guid RequestId { get; set; } = Guid.NewGuid();
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
     public TimeSpan Elapsed { get; set; } = TimeSpan.Zero;
@@ -23,7 +28,6 @@ public class MockExpressionContext : IExpressionContext
 
     public MockResponse Response { get; set; } = new MockResponse();
     IResponse IExpressionContext.Response => Response;
-
 
     public MockSubscription Subscription { get; set; } = new MockSubscription();
     ISubscription IExpressionContext.Subscription => Subscription;
