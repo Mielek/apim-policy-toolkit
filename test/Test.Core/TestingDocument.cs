@@ -18,6 +18,11 @@ public class TestingDocument : IDocument
         {
             context.SetHeader("X-Company", "true");
             context.AuthenticationBasic("{{username}}", "{{password}}");
+            context.ReturnResponse(new ReturnResponseConfig
+            {
+                Status = new StatusConfig { Code = 200, Reason = "OK" }
+            });
+            return;
         }
         else
         {

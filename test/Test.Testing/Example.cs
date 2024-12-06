@@ -32,6 +32,24 @@ public class Example
     }
 
     [TestMethod]
+    public void ShouldReturnResponseForInternalIpAndMockSubscription()
+    {
+        var document = new OperationDocument();
+        var test = new TestDocument(document)
+        {
+            Context = { Request = { IpAddress = "10.0.0.1" }, Subscription = { Name = "asdfgh-mock" } }
+        };
+
+        test.RunInbound();
+
+        var response = test.Context.Response;
+        response.StatusCode.Should().Be(200);
+        response.StatusReason.Should().Be("Mocked OK");
+        test.Context.Request
+            .Headers.Should().NotContainKey("Authorization");
+    }
+
+    [TestMethod]
     public void ShouldUseManagedIdentityTokenAuthenticationForRequestsFromExternalIp()
     {
         var document = new OperationDocument();
@@ -58,7 +76,7 @@ public class Example
         var test = new TestDocument(document);
         int called = 0;
         test.InBackend().ForwardRequest().WithCallback((_, _) => called++);
-        
+
         test.RunBackend();
 
         called.Should().Be(1);
@@ -102,6 +120,14 @@ public class Example
             context.Base();
             if (IsFromCompanyIp(context.ExpressionContext))
             {
+                if (IsMockSubscription(context.ExpressionContext))
+                {
+                    context.ReturnResponse(new ReturnResponseConfig
+                    {
+                        Status = new StatusConfig { Code = 200, Reason = "Mocked OK" },
+                    });
+                }
+
                 context.AuthenticationBasic("{{username}}", "{{password}}");
             }
             else
@@ -127,6 +153,9 @@ public class Example
 
         public bool IsFromCompanyIp(IExpressionContext context)
             => context.Request.IpAddress.StartsWith("10.0.0.");
+
+        public bool IsMockSubscription(IExpressionContext context)
+            => context.Subscription.Name.EndsWith("-mock");
 
         public string Bearer(IExpressionContext context)
             => $"Bearer {context.Variables["testToken"]}";

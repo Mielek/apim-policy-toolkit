@@ -38,10 +38,8 @@ internal class SectionContextProxy<TSection> : DispatchProxy where TSection : cl
         {
             return handler.Handle(_context, args);
         }
-        catch (PolicyException)
-        {
-            throw;
-        }
+        catch (FinishSectionProcessingException) { throw; }
+        catch (PolicyException) { throw; }
         catch (Exception e)
         {
             throw new PolicyException(e) { Policy = targetMethod.Name, Section = _sectionName };

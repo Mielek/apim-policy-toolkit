@@ -10,8 +10,17 @@ public class TestDocument(IDocument document)
 {
     public GatewayContext Context { get; init; } = new();
 
-    public void RunInbound() => document.Inbound(Context.InboundProxy.Object);
-    public void RunBackend() => document.Backend(Context.BackendProxy.Object);
-    public void RunOutbound() => document.Outbound(Context.OutboundProxy.Object);
-    public void RunOnError() => document.OnError(Context.OnErrorProxy.Object);
+    public void RunInbound() => this.Handle(Context.InboundProxy.Object, document.Inbound);
+    public void RunBackend() => this.Handle(Context.BackendProxy.Object, document.Backend);
+    public void RunOutbound() => this.Handle(Context.OutboundProxy.Object, document.Outbound);
+    public void RunOnError() => this.Handle(Context.OnErrorProxy.Object, document.OnError);
+
+    private void Handle<T>(T context, Action<T> section)
+    {
+        try
+        {
+            section(context);
+        }
+        catch (FinishSectionProcessingException) { }
+    }
 }
