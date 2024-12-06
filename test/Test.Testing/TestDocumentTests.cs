@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 namespace Azure.ApiManagement.PolicyToolkit.Testing;
 
 [TestClass]
-public class Example
+public class TestDocumentTests
 {
     [TestMethod]
     public void ShouldUseBasicAuthenticationForRequestsFromInternalIp()
