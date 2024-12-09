@@ -26,8 +26,7 @@ int numberOfErrors = 0;
 
 foreach (var file in files)
 {
-    var fileName = Path.GetFileNameWithoutExtension(file);
-    Console.Out.WriteLine($"File {fileName} Processing");
+    Console.Out.WriteLine($"File '{file}' Processing");
     var code = File.ReadAllText(file);
     var syntax = CSharpSyntaxTree.ParseText(code, path: file);
 
@@ -77,10 +76,10 @@ foreach (var file in files)
             Directory.CreateDirectory(directoryPath);
         }
         File.WriteAllText(targetFile, xml);
-        Console.Out.WriteLine($"File {targetFile} created");
+        Console.Out.WriteLine($"File '{targetFile}' created");
     }
 
-    Console.Out.WriteLine($"File {fileName} processed");
+    Console.Out.WriteLine($"File '{file}' processed");
 }
 
 return numberOfErrors;
