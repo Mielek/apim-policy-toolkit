@@ -36,5 +36,4 @@
     <ItemGroup>
         <ProjectReference Include="..\Authoring\Authoring.csproj"/>
     </ItemGroup>
-
 </Project>
