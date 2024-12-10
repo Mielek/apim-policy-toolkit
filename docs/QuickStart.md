@@ -233,7 +233,7 @@ context.SomePolicy(new Config()
 Cool! We have a more complex policy document. Now let's compile it to a policy document.
 
 ```shell
-dotnet azure-apim-policy-compiler --s .\source --o . --format true
+dotnet azure-apim-policy-compiler --s .\source\ --o . --format true
 ```
 
 Content of the generated file should be:
