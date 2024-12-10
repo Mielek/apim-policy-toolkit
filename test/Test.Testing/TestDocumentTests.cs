@@ -24,7 +24,7 @@ public class TestDocumentTests
 
         var authValue = test.Context.Request
             .Headers.Should().ContainKey("Authorization")
-            .WhoseValue.Should().HaveCount(1).And.Subject.First()!;
+            .WhoseValue.Should().ContainSingle().Subject;
         authValue.Should().StartWith("Basic ");
         var token = authValue["Basic ".Length..];
         token = Encoding.UTF8.GetString(Convert.FromBase64String(token));

@@ -1,6 +1,10 @@
-using Contoso.Apis;
+using System.Text;
 
+using Azure.ApiManagement.PolicyToolkit.Testing;
+using Azure.ApiManagement.PolicyToolkit.Testing.Document;
 using Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
+
+using Contoso.Apis;
 
 using Newtonsoft.Json.Linq;
 
@@ -37,5 +41,54 @@ public class ApiOperationPolicyTest
                 JObject.Parse(expected)
             )
         );
+    }
+
+    [TestMethod]
+    public void TestInboundInternalIp()
+    {
+        var policyDocument = new ApiOperationPolicy();
+        var testDocument = new TestDocument(policyDocument)
+        {
+            Context = {
+                Request = { IpAddress = "10.0.0.1" }
+            }
+        };
+
+        testDocument.RunInbound();
+
+        var headers = testDocument.Context.Request.Headers;
+        var value = headers.Should().ContainKey("Authorization")
+            .WhoseValue.Should().ContainSingle()
+            .Subject;
+        value.Should().StartWith("Basic ");
+        DecodeBasicAuthorization(value).Should().Be("{{username}}:{{password}}");
+    }
+
+    [TestMethod]
+    public void TestInboundExternalIp()
+    {
+        var policyDocument = new ApiOperationPolicy();
+        var testDocument = new TestDocument(policyDocument)
+        {
+            Context = {
+                Request = { IpAddress = "11.0.0.1" }
+            }
+        };
+        testDocument.InInbound().AuthenticationManagedIdentity().ReturnsToken("myToken");
+
+        testDocument.RunInbound();
+
+        var headers = testDocument.Context.Request.Headers;
+        var value = headers.Should().ContainKey("Authorization")
+            .WhoseValue.Should().ContainSingle()
+            .Subject;
+        value.Should().StartWith("Bearer ");
+        value["Bearer ".Length..].Should().Be("myToken");
+    }
+
+    private string DecodeBasicAuthorization(string value)
+    {
+        var token = value["Basic ".Length..];
+        return Encoding.UTF8.GetString(Convert.FromBase64String(token));
     }
 }
