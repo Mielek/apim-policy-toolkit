@@ -2,10 +2,10 @@
 
     <PropertyGroup>
         <PackageId>Azure.ApiManagement.PolicyToolkit.Compiling</PackageId>
-        <PackageVersion>0.0.1</PackageVersion>
-        <FileVersion>0.0.1</FileVersion>
-        <AssemblyVersion>0.0.1</AssemblyVersion>
-        <InformationalVersion>0.0.1</InformationalVersion>
+        <PackageVersion>0.0.2</PackageVersion>
+        <FileVersion>0.0.2</FileVersion>
+        <AssemblyVersion>0.0.2</AssemblyVersion>
+        <InformationalVersion>0.0.2</InformationalVersion>
         <Authors>Microsoft</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
