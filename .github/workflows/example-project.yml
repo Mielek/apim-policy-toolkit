@@ -1,0 +1,42 @@
+name: Test example project
+on:
+  workflow_run:
+    workflows: [ "CI" ]
+    branches: [ "main" ]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./example
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        working-directory: ../
+        with:
+          dotnet-version: 8.0.x
+      - name: Create new packages
+        working-directory: ../
+        run: dotnet pack
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Restore tool
+        run: dotnet tool restore
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build with dotnet
+        run: dotnet build --no-restore
+      - name: Test with dotnet
+        run: dotnet test --no-build --logger trx --results-directory "TestResults"
+      - name: Upload dotnet test results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-test-results
+          path: TestResults
+      - name: Compile policies
+        run: dotnet azure-apim-policy-compiler --s .\source\ --o .\target\ --format true
