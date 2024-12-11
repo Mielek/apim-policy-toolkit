@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Security.Cryptography;
-using System.Text;
+using System.IdentityModel.Tokens.Jwt;
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
+
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
@@ -37,32 +39,24 @@ internal class AuthenticationManagedIdentityHandler : PolicyHandler<ManagedIdent
 
     private string DefaultTokenProvider(ManagedIdentityAuthenticationConfig config)
     {
-        const string header = "{ \"alg\": \"RS256\",\"typ\": \"JWT\" }";
-        var headerBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(header));
-        var payload = $"{{ \"resource\"=\"{config.Resource}\"";
+        byte[] securityKey = JwtTokenUtilities.GenerateKeyBytes(256);
+        var credentials = new SigningCredentials(new SymmetricSecurityKey(securityKey), SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityTokenHandler().CreateJwtSecurityToken(
+            issuer: "mock",
+            audience: config.Resource,
+            signingCredentials: credentials);
 
+        token.Payload["resource"] = config.Resource;
         if (!string.IsNullOrWhiteSpace(config.ClientId))
         {
-            payload += $" \"client_id\": \"{config.ClientId}\"";
+            token.Payload["client_id"] = config.ClientId;
         }
-
         if (config.IgnoreError is not null)
         {
-            payload += $" \"ignore_error\": \"{config.IgnoreError}\"";
+            token.Payload["ignore_error"] = config.IgnoreError;
         }
-        payload += " }";
-        var payloadBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(payload));
 
-        var signature = $"{headerBase64}.{payloadBase64}";
-        var signatureBytes = Encoding.UTF8.GetBytes(signature);
-        byte[] secretKey = new byte[64];
-        using var generator = RandomNumberGenerator.Create();
-        generator.GetBytes(secretKey);
-        using var hmac = new HMACSHA256(secretKey);
-        var hash = hmac.ComputeHash(signatureBytes);
-        var hashBase64 = Convert.ToBase64String(hash);
-
-        return $"{headerBase64}.{payloadBase64}.{hashBase64}";
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
     private string CreateTokenByHook(Func<string, string?, string> tokenProvider,
