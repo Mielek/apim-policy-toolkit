@@ -19,7 +19,7 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Create new packages
-        working-directory: ../
+        working-directory: ./../
         run: dotnet pack
       - name: Restore dependencies
         run: dotnet restore
@@ -34,6 +34,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dotnet-test-results
-          path: TestResults
+          path: example/TestResults
       - name: Compile policies
         run: dotnet azure-apim-policy-compiler --s .\source\ --o .\target\ --format true
