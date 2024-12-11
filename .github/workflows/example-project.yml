@@ -26,8 +26,6 @@ jobs:
         run: dotnet restore
       - name: Restore tool
         run: dotnet tool restore
-      - name: Restore dependencies
-        run: dotnet restore
       - name: Build with dotnet
         run: dotnet build --no-restore
       - name: Test with dotnet
