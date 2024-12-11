@@ -29,12 +29,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
-        <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.3.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.3.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Authoring\Authoring.csproj"/>
+        <ProjectReference Include="..\Authoring\Authoring.csproj" />
     </ItemGroup>
-
 </Project>

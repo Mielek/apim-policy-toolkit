@@ -12,6 +12,6 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.ApiManagement.PolicyToolkit.Authoring" Version="0.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>

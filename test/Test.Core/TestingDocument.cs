@@ -18,13 +18,17 @@ public class TestingDocument : IDocument
         {
             context.SetHeader("X-Company", "true");
             context.AuthenticationBasic("{{username}}", "{{password}}");
+            context.ReturnResponse(new ReturnResponseConfig
+            {
+                Status = new StatusConfig { Code = 200, Reason = "OK" }
+            });
+            return;
         }
         else
         {
             context.AuthenticationManagedIdentity(new ManagedIdentityAuthenticationConfig
             {
-                Resource = "https://management.azure.com/",
-                OutputTokenVariableName = "testToken",
+                Resource = "https://management.azure.com/", OutputTokenVariableName = "testToken",
             });
             context.SetHeader("Authorization", Bearer(context.ExpressionContext));
         }
@@ -39,8 +43,7 @@ public class TestingDocument : IDocument
 
     bool IsFromCompanyIp(IExpressionContext context) => context.Request.IpAddress.StartsWith("10.0.0.");
 
-    public string Bearer(IExpressionContext context)
-        => $"Bearer {context.Variables["testToken"]}";
+    public string Bearer(IExpressionContext context) => $"Bearer {context.Variables["testToken"]}";
 
     string FilterRequest(IExpressionContext context)
     {
@@ -52,7 +55,7 @@ public class TestingDocument : IDocument
                 body.Remove(internalProperty);
             }
         }
+
         return body.ToString();
     }
-
 }

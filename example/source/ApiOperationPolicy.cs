@@ -8,44 +8,30 @@ namespace Contoso.Apis;
 [Document("echo-api_retrieve-resource")]
 public class ApiOperationPolicy : IDocument
 {
-    public void Inbound(IInboundContext c)
+    public void Inbound(IInboundContext context)
     {
-        c.Base();
-        if (IsFromCompanyIp(c.ExpressionContext))
+        context.Base();
+        if (IsFromCompanyIp(context.ExpressionContext))
         {
-            c.Cors(new CorsConfig
-            {
-                AllowCredentials = true,
-                AllowedOrigins = ["http://internal.contoso.example"],
-                AllowedHeaders = ["*"],
-                AllowedMethods = ["*"],
-                ExposeHeaders = ["*"],
-            });
-            c.InlinePolicy("<set-backend-service base-url=\"https://internal.contoso.example\" />");
-            c.AuthenticationBasic("{{username}}", "{{password}}");
+            context.AuthenticationBasic("{{username}}", "{{password}}");
         }
         else
         {
-            c.AuthenticationManagedIdentity(new ManagedIdentityAuthenticationConfig()
+            context.AuthenticationManagedIdentity(new ManagedIdentityAuthenticationConfig()
             {
-                Resource = "https://management.azure.com/", 
-                OutputTokenVariableName = "testToken",
+                Resource = "https://management.azure.com/",
             });
-            c.SetHeader("Authorization", Bearer(c.ExpressionContext));
         }
     }
 
-    public void Outbound(IOutboundContext c)
+    public void Outbound(IOutboundContext context)
     {
-        c.Base();
-        c.SetBody(FilterSecrets(c.ExpressionContext));
+        context.Base();
+        context.SetBody(FilterSecrets(context.ExpressionContext));
     }
 
     public bool IsFromCompanyIp(IExpressionContext context)
         => context.Request.IpAddress.StartsWith("10.0.0.");
-
-    public string Bearer(IExpressionContext context)
-        => $"Bearer {context.Variables["testToken"]}";
 
     [Expression]
     public string FilterSecrets(IExpressionContext context)
