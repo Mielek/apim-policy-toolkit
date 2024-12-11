@@ -37,4 +37,4 @@ jobs:
           path: ./example/TestResults
       - name: Compile policies
         working-directory: ./example
-        run: dotnet azure-apim-policy-compiler --s .\source\ --o .\target\ --format true
+        run: dotnet azure-apim-policy-compiler --s ./source/ --o ./target/ --format true
