@@ -33,18 +33,26 @@ public static class MockAuthenticationManagedIdentityProvider
             _handler = handler;
         }
 
-        public void WithCallback(Action<GatewayContext, ManagedIdentityAuthenticationConfig> callback) =>
+        public Setup WithCallback(Action<GatewayContext, ManagedIdentityAuthenticationConfig> callback)
+        {
             _handler.CallbackHooks.Add(
                 new Tuple<Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool>,
                     Action<GatewayContext, ManagedIdentityAuthenticationConfig>>(_predicate, callback));
+            return this;
+        }
 
-        public void WithTokenProviderHook(Func<string, string?, string> hook) => _handler.ProvideTokenHooks.Add(
-            new Tuple<Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool>, Func<string, string?, string>>(
-                _predicate, hook));
+        public Setup WithTokenProviderHook(Func<string, string?, string> hook)
+        {
+            _handler.ProvideTokenHooks.Add(
+                new Tuple<Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool>,
+                    Func<string, string?, string>>(
+                    _predicate, hook));
+            return this;
+        }
 
-        public void ReturnsToken(string token) => this.WithTokenProviderHook((_, _) => token);
+        public Setup ReturnsToken(string token) => this.WithTokenProviderHook((_, _) => token);
 
-        public void WithError(string error) =>
-            this.WithTokenProviderHook((_, _) => throw new InvalidOperationException(error));
+        public Setup WithError(string error) =>
+            this.WithTokenProviderHook((_, _) => throw new HttpRequestException(error));
     }
 }

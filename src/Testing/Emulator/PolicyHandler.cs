@@ -3,7 +3,7 @@
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 
 internal abstract class PolicyHandler<TConfig> : IPolicyHandler
-where TConfig : class
+    where TConfig : class
 {
     public List<Tuple<
         Func<GatewayContext, TConfig, bool>,
@@ -24,6 +24,7 @@ where TConfig : class
         {
             Handle(context, config);
         }
+
         return null;
     }
 
@@ -53,6 +54,7 @@ internal abstract class PolicyHandler<TParam1, TParam2> : IPolicyHandler
         {
             Handle(context, param1, param2);
         }
+
         return null;
     }
 
