@@ -141,7 +141,7 @@ public class AuthenticationManagedIdentityHandlerTests
     }
 
     [TestMethod]
-    public void AuthenticationManagedIdentity_WithInvocationPredicate_HandleCallback()
+    public void AuthenticationManagedIdentity_HandleCallback_WithInvocationPredicate()
     {
         var test = new TestDocument(new PredicateAmi());
         test.InInbound()
@@ -176,7 +176,7 @@ public class AuthenticationManagedIdentityHandlerTests
     }
 
     [TestMethod]
-    public void AuthenticationManagedIdentity_WithInvocationPredicate_HandleTokenProviderHook()
+    public void AuthenticationManagedIdentity_HandleTokenProviderHook_WithInvocationPredicate()
     {
         var test = new TestDocument(new PredicateAmi());
         test.InInbound()
@@ -209,7 +209,7 @@ public class AuthenticationManagedIdentityHandlerTests
     }
 
     [TestMethod]
-    public void AuthenticationManagedIdentity_WithInvocationPredicate_HandleReturnToken()
+    public void AuthenticationManagedIdentity_HandleReturnToken_WithInvocationPredicate()
     {
         var test = new TestDocument(new PredicateAmi());
         test.InInbound()
@@ -249,7 +249,7 @@ public class AuthenticationManagedIdentityHandlerTests
     }
 
     [TestMethod]
-    public void AuthenticationManagedIdentity_WithInvocationPredicate_HandleWithError()
+    public void AuthenticationManagedIdentity_HandleWithError_WithInvocationPredicate()
     {
         var test = new TestDocument(new PredicateAmi());
         test.InInbound()
