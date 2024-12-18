@@ -49,7 +49,18 @@ public class AuthenticationManagedIdentityHandlerTests
         }
     }
 
-    class AmiIgnoreError : IDocument
+    class AmiIgnoreError: IDocument
+    {
+        public void Inbound(IInboundContext context)
+        {
+            context.AuthenticationManagedIdentity(new ManagedIdentityAuthenticationConfig()
+            {
+                Resource = "https://management.azure.com/", IgnoreError = true
+            });
+        }
+    }
+
+    class AmiIgnoreErrorWithVariable : IDocument
     {
         public void Inbound(IInboundContext context)
         {
@@ -59,6 +70,7 @@ public class AuthenticationManagedIdentityHandlerTests
             });
         }
     }
+
 
     class PredicateAmi : IDocument
     {
@@ -78,10 +90,13 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleSimpleConfig()
     {
-        var test = new TestDocument(new SimpleAmi());
+        // Arrange
+        var test = new SimpleAmi().AsTestDocument();
 
+        // Act
         test.RunInbound();
 
+        // Assert
         var authHeader = test.Context.Request.Headers.GetValueOrDefault("Authorization");
         authHeader.Should().NotBeNullOrEmpty().And.StartWithEquivalentOf("Bearer ");
         var token = new JwtSecurityTokenHandler().ReadJwtToken(authHeader!["Bearer ".Length..]);
@@ -93,10 +108,13 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleClientId()
     {
-        var test = new TestDocument(new AmiClientId());
+        // Arrange
+        var test = new AmiClientId().AsTestDocument();
 
+        // Act
         test.RunInbound();
 
+        // Assert
         var authHeader = test.Context.Request.Headers.GetValueOrDefault("Authorization");
         authHeader.Should().NotBeNullOrEmpty().And.StartWithEquivalentOf("Bearer ");
         var token = new JwtSecurityTokenHandler().ReadJwtToken(authHeader!["Bearer ".Length..]);
@@ -109,10 +127,13 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleOutputVariable()
     {
-        var test = new TestDocument(new AmiOutputVariable());
+        // Arrange
+        var test = new AmiOutputVariable().AsTestDocument();
 
+        // Act
         test.RunInbound();
 
+        // Assert
         test.Context.Request.Headers.Should().NotContainKey("Authorization");
         var value = test.Context.Variables.GetValueOrDefault("testVariable");
         value.Should().NotBeNull().And.BeOfType<string>().Which.Should().NotBeNullOrEmpty();
@@ -125,7 +146,8 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleCallback()
     {
-        var test = new TestDocument(new SimpleAmi());
+        // Arrange
+        var test = new SimpleAmi().AsTestDocument();
         ManagedIdentityAuthenticationConfig? config = null;
         test.InInbound().AuthenticationManagedIdentity().WithCallback((context, cfg) =>
         {
@@ -133,8 +155,10 @@ public class AuthenticationManagedIdentityHandlerTests
             config = cfg;
         });
 
+        // Act
         test.RunInbound();
 
+        // Assert
         test.Context.Request.Headers.Should().NotContainKey("Authorization");
         var variable = test.Context.Variables.Should().ContainSingle().Which;
         variable.Key.Should().Be("test");
@@ -146,7 +170,8 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleCallback_WithInvocationPredicate()
     {
-        var test = new TestDocument(new PredicateAmi());
+        // Arrange
+        var test = new PredicateAmi().AsTestDocument();
         test.InInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "c")
             .WithCallback((context, _) => context.Variables["c"] = "token-c");
@@ -157,8 +182,10 @@ public class AuthenticationManagedIdentityHandlerTests
             .AuthenticationManagedIdentity((_, config) => config.Resource == "a")
             .WithCallback((context, _) => context.Variables["a"] = "token-a");
 
+        // Act
         test.RunInbound();
 
+        // Assert
         test.Context.Request.Headers.Should().NotContainKey("Authorization");
         test.Context.Variables.Should().ContainKeys("a", "b");
     }
@@ -166,13 +193,16 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleTokenProviderHook()
     {
-        var test = new TestDocument(new AmiClientId());
+        // Arrange
+        var test = new AmiClientId().AsTestDocument();
         test.InInbound()
             .AuthenticationManagedIdentity()
             .WithTokenProviderHook((resource, clientId) => $"{resource}{clientId}/token");
 
+        // Act
         test.RunInbound();
 
+        // Assert
         test.Context.Request.Headers.Should().ContainKey("Authorization")
             .WhoseValue.Should().ContainSingle()
             .Which.Should().Be("Bearer https://management.azure.com/some-client-id/token");
@@ -181,7 +211,8 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleTokenProviderHook_WithInvocationPredicate()
     {
-        var test = new TestDocument(new PredicateAmi());
+        // Arrange
+        var test = new PredicateAmi().AsTestDocument();
         test.InInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "c")
             .WithTokenProviderHook((_, _) => "token-c");
@@ -192,8 +223,10 @@ public class AuthenticationManagedIdentityHandlerTests
             .AuthenticationManagedIdentity((_, config) => config.Resource == "a")
             .WithTokenProviderHook((_, _) => "token-a");
 
+        // Act
         test.RunInbound();
 
+        // Assert
         test.Context.Request.Headers.Should().NotContainKey("Authorization");
         test.Context.Variables.Should().Contain("a", "token-a").And.Contain("b", "token-b");
     }
@@ -201,11 +234,14 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleReturnToken()
     {
-        var test = new TestDocument(new SimpleAmi());
+        // Arrange
+        var test = new SimpleAmi().AsTestDocument();
         test.InInbound().AuthenticationManagedIdentity().ReturnsToken("token");
 
+        // Act
         test.RunInbound();
 
+        // Assert
         test.Context.Request.Headers.Should().ContainKey("Authorization")
             .WhoseValue.Should().ContainSingle()
             .Which.Should().Be("Bearer token");
@@ -214,7 +250,8 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleReturnToken_WithInvocationPredicate()
     {
-        var test = new TestDocument(new PredicateAmi());
+        // Arrange
+        var test = new PredicateAmi().AsTestDocument();
         test.InInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "c")
             .ReturnsToken("token-c");
@@ -225,8 +262,10 @@ public class AuthenticationManagedIdentityHandlerTests
             .AuthenticationManagedIdentity((_, config) => config.Resource == "a")
             .ReturnsToken("token-a");
 
+        // Act
         test.RunInbound();
 
+        // Assert
         test.Context.Request.Headers.Should().NotContainKey("Authorization");
         test.Context.Variables.Should().Contain("a", "token-a").And.Contain("b", "token-b");
     }
@@ -234,11 +273,14 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleWithError()
     {
-        var test = new TestDocument(new SimpleAmi());
+        // Arrange
+        var test = new SimpleAmi().AsTestDocument();
         test.InInbound().AuthenticationManagedIdentity().WithError("InternalServerError");
 
+        // Act
         var ex = Assert.ThrowsException<PolicyException>(() => test.RunInbound());
 
+        // Assert
         ex.Policy.Should().Be("AuthenticationManagedIdentity");
         ex.Section.Should().Be("IInboundContext");
         ex.Message.Should().Be("InternalServerError");
@@ -254,7 +296,8 @@ public class AuthenticationManagedIdentityHandlerTests
     [TestMethod]
     public void AuthenticationManagedIdentity_HandleWithError_WithInvocationPredicate()
     {
-        var test = new TestDocument(new PredicateAmi());
+        // Arrange
+        var test = new PredicateAmi().AsTestDocument();
         test.InInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "b")
             .WithError("InternalServerError");
@@ -262,7 +305,10 @@ public class AuthenticationManagedIdentityHandlerTests
             .AuthenticationManagedIdentity((_, config) => config.Resource == "a")
             .ReturnsToken("token-a");
 
+        // Act
         var ex = Assert.ThrowsException<PolicyException>(() => test.RunInbound());
+        
+        // Assert
         ex.Policy.Should().Be("AuthenticationManagedIdentity");
         ex.Section.Should().Be("IInboundContext");
         ex.Message.Should().Be("InternalServerError");
@@ -278,15 +324,35 @@ public class AuthenticationManagedIdentityHandlerTests
     }
     
     [TestMethod]
-    public void AuthenticationManagedIdentity_IgnoreError()
+    public void AuthenticationManagedIdentity_IgnoreError_InAuthHeader()
     {
-        var test = new TestDocument(new AmiIgnoreError());
+        // Arrange
+        var test = new AmiIgnoreError().AsTestDocument();
         test.InInbound().AuthenticationManagedIdentity().WithError("InternalServerError");
 
+        // Act
         test.RunInbound();
 
+        // Assert
         var authHeader = test.Context.Request.Headers.GetValueOrDefault("Authorization");
         authHeader.Should().NotBeNullOrEmpty().And.StartWithEquivalentOf("Bearer ");
         authHeader!["Bearer ".Length..].Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void AuthenticationManagedIdentity_IgnoreError_InVariable()
+    {
+        // Arrange
+        var test = new AmiIgnoreErrorWithVariable().AsTestDocument();
+        test.InInbound().AuthenticationManagedIdentity().WithError("InternalServerError");
+
+        // Act
+        test.RunInbound();
+
+        // Assert
+        test.Context.Request.Headers.Should().NotContainKey("Authorization");
+        test.Context.Variables.Should().ContainKey("testVariable")
+            .WhoseValue.Should().BeOfType<string>()
+            .Which.Should().BeEmpty();
     }
 }

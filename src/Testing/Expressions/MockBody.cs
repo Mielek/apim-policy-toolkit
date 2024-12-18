@@ -32,6 +32,7 @@ public class MockBody : IMessageBody
             using var reader = new XmlTextReader(Content);
             return (T)(object)XNode.ReadFrom(reader);
         }
+
         if (typeof(T) == typeof(XElement)) return (T)(object)XElement.Parse(Content);
         if (typeof(T) == typeof(XDocument)) return (T)(object)XDocument.Parse(Content);
 
