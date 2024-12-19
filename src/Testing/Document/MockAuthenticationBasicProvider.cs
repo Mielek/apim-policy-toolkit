@@ -47,8 +47,6 @@ public static class MockAuthenticationBasicProvider
         }
 
         public void WithCallback(Action<GatewayContext, string, string> callback) =>
-            _handler.CallbackHooks.Add(
-                new Tuple<Func<GatewayContext, string, string, bool>, Action<GatewayContext, string, string>>(
-                    _predicate, callback));
+            _handler.CallbackHooks.Add((_predicate, callback).ToTuple());
     }
 }

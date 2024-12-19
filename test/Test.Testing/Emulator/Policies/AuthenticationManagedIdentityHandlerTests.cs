@@ -49,7 +49,7 @@ public class AuthenticationManagedIdentityHandlerTests
         }
     }
 
-    class AmiIgnoreError: IDocument
+    class AmiIgnoreError : IDocument
     {
         public void Inbound(IInboundContext context)
         {
@@ -66,7 +66,9 @@ public class AuthenticationManagedIdentityHandlerTests
         {
             context.AuthenticationManagedIdentity(new ManagedIdentityAuthenticationConfig()
             {
-                Resource = "https://management.azure.com/", IgnoreError = true, OutputTokenVariableName = "testVariable"
+                Resource = "https://management.azure.com/",
+                IgnoreError = true,
+                OutputTokenVariableName = "testVariable"
             });
         }
     }
@@ -149,7 +151,7 @@ public class AuthenticationManagedIdentityHandlerTests
         // Arrange
         var test = new SimpleAmi().AsTestDocument();
         ManagedIdentityAuthenticationConfig? config = null;
-        test.InInbound().AuthenticationManagedIdentity().WithCallback((context, cfg) =>
+        test.MockInbound().AuthenticationManagedIdentity().WithCallback((context, cfg) =>
         {
             context.Variables["test"] = "test";
             config = cfg;
@@ -172,13 +174,13 @@ public class AuthenticationManagedIdentityHandlerTests
     {
         // Arrange
         var test = new PredicateAmi().AsTestDocument();
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "c")
             .WithCallback((context, _) => context.Variables["c"] = "token-c");
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "b")
             .WithCallback((context, _) => context.Variables["b"] = "token-b");
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "a")
             .WithCallback((context, _) => context.Variables["a"] = "token-a");
 
@@ -195,7 +197,7 @@ public class AuthenticationManagedIdentityHandlerTests
     {
         // Arrange
         var test = new AmiClientId().AsTestDocument();
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity()
             .WithTokenProviderHook((resource, clientId) => $"{resource}{clientId}/token");
 
@@ -213,13 +215,13 @@ public class AuthenticationManagedIdentityHandlerTests
     {
         // Arrange
         var test = new PredicateAmi().AsTestDocument();
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "c")
             .WithTokenProviderHook((_, _) => "token-c");
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "b")
             .WithTokenProviderHook((_, _) => "token-b");
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "a")
             .WithTokenProviderHook((_, _) => "token-a");
 
@@ -236,7 +238,7 @@ public class AuthenticationManagedIdentityHandlerTests
     {
         // Arrange
         var test = new SimpleAmi().AsTestDocument();
-        test.InInbound().AuthenticationManagedIdentity().ReturnsToken("token");
+        test.MockInbound().AuthenticationManagedIdentity().ReturnsToken("token");
 
         // Act
         test.RunInbound();
@@ -252,13 +254,13 @@ public class AuthenticationManagedIdentityHandlerTests
     {
         // Arrange
         var test = new PredicateAmi().AsTestDocument();
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "c")
             .ReturnsToken("token-c");
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "b")
             .ReturnsToken("token-b");
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "a")
             .ReturnsToken("token-a");
 
@@ -275,7 +277,7 @@ public class AuthenticationManagedIdentityHandlerTests
     {
         // Arrange
         var test = new SimpleAmi().AsTestDocument();
-        test.InInbound().AuthenticationManagedIdentity().WithError("InternalServerError");
+        test.MockInbound().AuthenticationManagedIdentity().WithError("InternalServerError");
 
         // Act
         var ex = Assert.ThrowsException<PolicyException>(() => test.RunInbound());
@@ -298,16 +300,16 @@ public class AuthenticationManagedIdentityHandlerTests
     {
         // Arrange
         var test = new PredicateAmi().AsTestDocument();
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "b")
             .WithError("InternalServerError");
-        test.InInbound()
+        test.MockInbound()
             .AuthenticationManagedIdentity((_, config) => config.Resource == "a")
             .ReturnsToken("token-a");
 
         // Act
         var ex = Assert.ThrowsException<PolicyException>(() => test.RunInbound());
-        
+
         // Assert
         ex.Policy.Should().Be("AuthenticationManagedIdentity");
         ex.Section.Should().Be("IInboundContext");
@@ -322,13 +324,13 @@ public class AuthenticationManagedIdentityHandlerTests
         variable.Key.Should().Be("a");
         variable.Value.Should().Be("token-a");
     }
-    
+
     [TestMethod]
     public void AuthenticationManagedIdentity_IgnoreError_InAuthHeader()
     {
         // Arrange
         var test = new AmiIgnoreError().AsTestDocument();
-        test.InInbound().AuthenticationManagedIdentity().WithError("InternalServerError");
+        test.MockInbound().AuthenticationManagedIdentity().WithError("InternalServerError");
 
         // Act
         test.RunInbound();
@@ -344,7 +346,7 @@ public class AuthenticationManagedIdentityHandlerTests
     {
         // Arrange
         var test = new AmiIgnoreErrorWithVariable().AsTestDocument();
-        test.InInbound().AuthenticationManagedIdentity().WithError("InternalServerError");
+        test.MockInbound().AuthenticationManagedIdentity().WithError("InternalServerError");
 
         // Act
         test.RunInbound();

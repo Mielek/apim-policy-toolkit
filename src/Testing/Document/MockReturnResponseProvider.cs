@@ -34,8 +34,7 @@ public static class MockReturnResponseProvider
             _handler = handler;
         }
 
-        public void WithCallback(Action<GatewayContext, ReturnResponseConfig> callback) => _handler.CallbackHooks.Add(
-            new Tuple<Func<GatewayContext, ReturnResponseConfig, bool>, Action<GatewayContext, ReturnResponseConfig>>(
-                _predicate, callback));
+        public void WithCallback(Action<GatewayContext, ReturnResponseConfig> callback) =>
+            _handler.CallbackHooks.Add((_predicate, callback).ToTuple());
     }
 }

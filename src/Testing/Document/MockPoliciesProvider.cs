@@ -9,8 +9,5 @@ public class MockPoliciesProvider<TSection> where TSection : class
 {
     internal readonly SectionContextProxy<TSection> SectionContextProxy;
 
-    internal MockPoliciesProvider(SectionContextProxy<TSection> proxy)
-    {
-        this.SectionContextProxy = proxy;
-    }
+    internal MockPoliciesProvider(SectionContextProxy<TSection> proxy) => this.SectionContextProxy = proxy;
 }
