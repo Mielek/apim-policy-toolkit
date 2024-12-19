@@ -8,5 +8,5 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 [Section(nameof(IOutboundContext))]
 internal class AzureOpenAiSemanticCacheStoreHandler : LlmSemanticCacheStoreHandler
 {
-    public override string PolicyName => nameof(IOutboundContext.LlmSemanticCacheStore);
+    public override string PolicyName => nameof(IOutboundContext.AzureOpenAiSemanticCacheStore);
 }

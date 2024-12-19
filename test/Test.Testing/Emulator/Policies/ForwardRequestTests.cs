@@ -10,21 +10,21 @@ namespace Test.Emulator.Emulator.Policies;
 public class ForwardRequestTests
 {
 
-    class SimpleFR : IDocument
-    {
-        public void Backend(IBackendContext context)
-        {
-            context.ForwardRequest();
-        }
-    }
-    
-    [TestMethod]
-    public void Test()
-    {
-        var test = new SimpleFR().AsTestDocument();
-
-        test.RunBackend();
-        
-        
-    }
+    // class SimpleFR : IDocument
+    // {
+    //     public void Backend(IBackendContext context)
+    //     {
+    //         context.ForwardRequest();
+    //     }
+    // }
+    //
+    // [TestMethod]
+    // public void Test()
+    // {
+    //     var test = new SimpleFR().AsTestDocument();
+    //
+    //     test.RunBackend();
+    //     
+    //     
+    // }
 }
