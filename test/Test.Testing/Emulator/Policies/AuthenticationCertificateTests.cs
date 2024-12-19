@@ -8,27 +8,27 @@ using Azure.ApiManagement.PolicyToolkit.Testing.Document;
 namespace Test.Emulator.Emulator.Policies;
 
 [TestClass]
-public class ForwardRequestTests
+public class AuthenticationCertificateTests
 {
-    class SimpleForwardRequest : IDocument
+    class SimpleAuthenticationCertificate : IDocument
     {
-        public void Backend(IBackendContext context)
+        public void Inbound(IInboundContext context)
         {
-            context.ForwardRequest();
+            context.AuthenticationCertificate(new CertificateAuthenticationConfig { CertificateId = "abcdefgh" });
         }
     }
 
     [TestMethod]
-    public void ForwardRequest_Callback()
+    public void AuthenticationCertificate_Callback()
     {
-        var test = new SimpleForwardRequest().AsTestDocument();
+        var test = new SimpleAuthenticationCertificate().AsTestDocument();
         var executedCallback = false;
-        test.MockBackend().ForwardRequest().WithCallback((_, _) =>
+        test.MockInbound().AuthenticationCertificate().WithCallback((_, _) =>
         {
             executedCallback = true;
         });
 
-        test.RunBackend();
+        test.RunInbound();
 
         executedCallback.Should().BeTrue();
     }

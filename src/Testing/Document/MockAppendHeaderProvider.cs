@@ -26,11 +26,11 @@ public static class MockAppendHeaderProvider
     public static Setup AppendHeader(
         this MockPoliciesProvider<IOutboundContext> mock,
         Func<GatewayContext, string, string[], bool> predicate
-    ) => AppendHeader<IOutboundContext, AppendHeaderRequestHandler>(mock, predicate);
+    ) => AppendHeader<IOutboundContext, AppendHeaderResponseHandler>(mock, predicate);
 
     public static Setup AppendHeader(this MockPoliciesProvider<IOnErrorContext> mock,
         Func<GatewayContext, string, string[], bool> predicate
-    ) => AppendHeader<IOnErrorContext, AppendHeaderRequestHandler>(mock, predicate);
+    ) => AppendHeader<IOnErrorContext, AppendHeaderResponseHandler>(mock, predicate);
 
     private static Setup AppendHeader<TContext, THandler>(
         MockPoliciesProvider<TContext> mock,

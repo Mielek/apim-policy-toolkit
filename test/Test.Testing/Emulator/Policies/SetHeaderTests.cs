@@ -64,18 +64,20 @@ public class SetHeaderTests
         {
             Context = { Request = { Headers = { { "X-Inbound", ["overriden"] } } } }
         };
+        bool callbackExecuted = false;
         test.MockInbound().SetHeader().WithCallback((context, name, values) =>
         {
-            context.Request.Headers.Add($"{name}-Callback", values);
+            callbackExecuted = true;
+            context.Request.Headers[name] = values;
         });
 
         // Act
         test.RunInbound();
 
         // Assert
+        callbackExecuted.Should().BeTrue();
         test.Context.Request.Headers.Should().NotContainKeys("X-Outbound", "X-OnError")
             .And.ContainKey("X-Inbound")
-            .And.ContainKey("X-Inbound-Callback")
             .WhoseValue.Should().HaveCount(2).And.ContainInOrder("value-1", "value-2");
         test.Context.Response.Headers.Should().NotContainKeys("X-Inbound", "X-Outbound", "X-OnError");
     }
@@ -89,16 +91,21 @@ public class SetHeaderTests
         {
             Context = { Request = { Headers = { { "A", ["overriden"] }, { "B", ["overriden"] } } } }
         };
+        bool callbackExecuted = false;
         test.MockInbound().SetHeader((_, name, _) => name == "B").WithCallback((context, name, values) =>
         {
-            context.Request.Headers.Add($"{name}-Callback", values);
+            callbackExecuted = true;
+            context.Request.Headers[name] = values;
         });
 
         // Act
         test.RunInbound();
 
         // Assert
-        test.Context.Request.Headers.Should().ContainKeys("A", "B", "B-Callback");
+        callbackExecuted.Should().BeTrue();
+        test.Context.Request.Headers.Should().ContainKeys("A", "B")
+            .And.ContainKey("B")
+            .WhoseValue.Should().ContainInOrder("value-b");
     }
 
     [TestMethod]
@@ -128,18 +135,20 @@ public class SetHeaderTests
         {
             Context = { Response = { Headers = { { "X-Outbound", ["overriden-1", "overriden-2"] } } } }
         };
+        bool callbackExecuted = false;
         test.MockOutbound().SetHeader().WithCallback((context, name, values) =>
         {
-            context.Response.Headers.Add($"{name}-Callback", values);
+            callbackExecuted = true;
+            context.Response.Headers[name] = values;
         });
 
         // Act
         test.RunOutbound();
 
         // Assert
+        callbackExecuted.Should().BeTrue();
         test.Context.Response.Headers.Should().NotContainKeys("X-Inbound", "X-OnError")
             .And.ContainKey("X-Outbound")
-            .And.ContainKey("X-Outbound-Callback")
             .WhoseValue.Should().HaveCount(1).And.ContainInOrder("value-1");
         test.Context.Request.Headers.Should().NotContainKeys("X-Inbound", "X-Outbound", "X-OnError");
     }
@@ -171,18 +180,20 @@ public class SetHeaderTests
         {
             Context = { Response = { Headers = { { "X-OnError", ["overriden-1", "overriden-2"] } } } }
         };
+        bool callbackExecuted = false;
         test.MockOnError().SetHeader().WithCallback((context, name, values) =>
         {
-            context.Response.Headers.Add($"{name}-Callback", values);
+            callbackExecuted = true;
+            context.Response.Headers[name] = values;
         });
 
         // Act
         test.RunOnError();
 
         // Assert
+        callbackExecuted.Should().BeTrue();
         test.Context.Response.Headers.Should().NotContainKeys("X-Inbound", "X-Outbound")
             .And.ContainKey("X-OnError")
-            .And.ContainKey("X-OnError-Callback")
             .WhoseValue.Should().HaveCount(3).And.ContainInOrder("value-1", "value-2", "value-3");
         test.Context.Request.Headers.Should().NotContainKeys("X-Inbound", "X-Outbound", "X-OnError");
     }
