@@ -5,7 +5,7 @@ using Azure.ApiManagement.PolicyToolkit.Authoring.Implementations;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
-public class MockExtensions
+public static class MockExtensions
 {
     public static void SetBasicAuthCredentialParser(IBasicAuthCredentialsParser parser)
         => ImplementationContext.Default.SetService(parser);

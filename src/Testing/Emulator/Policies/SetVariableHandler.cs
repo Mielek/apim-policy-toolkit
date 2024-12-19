@@ -15,8 +15,6 @@ internal class SetVariableHandler : PolicyHandler<string, object>
 {
     public override string PolicyName => nameof(IInboundContext.SetVariable);
 
-    protected override void Handle(GatewayContext context, string name, object value)
-    {
+    protected override void Handle(GatewayContext context, string name, object value) =>
         context.Variables[name] = value;
-    }
 }

@@ -34,8 +34,7 @@ public static class MockForwardRequestProvider
             _handler = handler;
         }
 
-        public void WithCallback(Action<GatewayContext, ForwardRequestConfig?> callback) => _handler.CallbackHooks.Add(
-            new Tuple<Func<GatewayContext, ForwardRequestConfig?, bool>, Action<GatewayContext, ForwardRequestConfig?>>(
-                _predicate, callback));
+        public void WithCallback(Action<GatewayContext, ForwardRequestConfig?> callback) =>
+            _handler.CallbackHooks.Add((_predicate, callback).ToTuple());
     }
 }

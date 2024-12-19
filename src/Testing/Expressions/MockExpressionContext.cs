@@ -7,7 +7,7 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
 public class MockExpressionContext : IExpressionContext
 {
-    public MockExpressionContext()
+    static MockExpressionContext()
     {
         MockExtensions.SetDefaultServices();
     }

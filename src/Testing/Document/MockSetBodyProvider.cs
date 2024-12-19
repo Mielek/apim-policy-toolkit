@@ -58,8 +58,7 @@ public static class MockSetBodyProvider
             _handler = handler;
         }
 
-        public void WithCallback(Action<GatewayContext, string, SetBodyConfig?> callback) => _handler.CallbackHooks.Add(
-            new Tuple<Func<GatewayContext, string, SetBodyConfig?, bool>, Action<GatewayContext, string, SetBodyConfig?>>(
-                _predicate, callback));
+        public void WithCallback(Action<GatewayContext, string, SetBodyConfig?> callback) =>
+            _handler.CallbackHooks.Add((_predicate, callback).ToTuple());
     }
 }

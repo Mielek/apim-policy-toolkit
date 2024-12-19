@@ -42,7 +42,7 @@ internal class SectionContextProxy<TSection> : DispatchProxy where TSection : cl
         catch (PolicyException) { throw; }
         catch (Exception e)
         {
-            throw new PolicyException(e) { Policy = targetMethod.Name, Section = _sectionName };
+            throw new PolicyException(e) { Policy = targetMethod.Name, Section = _sectionName, PolicyArgs = args };
         }
     }
 

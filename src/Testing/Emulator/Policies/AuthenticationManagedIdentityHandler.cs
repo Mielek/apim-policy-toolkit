@@ -23,9 +23,8 @@ internal class AuthenticationManagedIdentityHandler : PolicyHandler<ManagedIdent
     protected override void Handle(GatewayContext context, ManagedIdentityAuthenticationConfig config)
     {
         var provideTokenHook = ProvideTokenHooks.FirstOrDefault(hook => hook.Item1(context, config));
-        var token = provideTokenHook is not null
-            ? CreateTokenByHook(provideTokenHook.Item2, config)
-            : DefaultTokenProvider(config);
+        var hook = provideTokenHook is not null ? provideTokenHook.Item2 : DefaultTokenProvider;
+        var token = CreateTokenByHook(hook, config);
 
         if (!string.IsNullOrWhiteSpace(config.OutputTokenVariableName))
         {
@@ -35,28 +34,6 @@ internal class AuthenticationManagedIdentityHandler : PolicyHandler<ManagedIdent
         {
             context.Request.Headers["Authorization"] = [$"Bearer {token}"];
         }
-    }
-
-    private string DefaultTokenProvider(ManagedIdentityAuthenticationConfig config)
-    {
-        byte[] securityKey = JwtTokenUtilities.GenerateKeyBytes(256);
-        var credentials = new SigningCredentials(new SymmetricSecurityKey(securityKey), SecurityAlgorithms.HmacSha256);
-        var token = new JwtSecurityTokenHandler().CreateJwtSecurityToken(
-            issuer: "mock",
-            audience: config.Resource,
-            signingCredentials: credentials);
-
-        token.Payload["resource"] = config.Resource;
-        if (!string.IsNullOrWhiteSpace(config.ClientId))
-        {
-            token.Payload["client_id"] = config.ClientId;
-        }
-        if (config.IgnoreError is not null)
-        {
-            token.Payload["ignore_error"] = config.IgnoreError;
-        }
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
     private string CreateTokenByHook(Func<string, string?, string> tokenProvider,
@@ -80,5 +57,17 @@ internal class AuthenticationManagedIdentityHandler : PolicyHandler<ManagedIdent
         }
 
         return token;
+    }
+
+    private string DefaultTokenProvider(string resourceId, string? clientId)
+    {
+        byte[] securityKey = JwtTokenUtilities.GenerateKeyBytes(256);
+        var credentials = new SigningCredentials(new SymmetricSecurityKey(securityKey), SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityTokenHandler().CreateJwtSecurityToken(
+            issuer: !string.IsNullOrWhiteSpace(clientId) ? clientId : "system-assigned",
+            audience: resourceId,
+            signingCredentials: credentials);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

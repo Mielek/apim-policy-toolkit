@@ -3,7 +3,6 @@
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 
 internal abstract class PolicyHandler<TConfig> : IPolicyHandler
-where TConfig : class
 {
     public List<Tuple<
         Func<GatewayContext, TConfig, bool>,
@@ -24,15 +23,43 @@ where TConfig : class
         {
             Handle(context, config);
         }
+
         return null;
     }
 
     protected abstract void Handle(GatewayContext context, TConfig config);
 }
 
+internal abstract class PolicyHandlerOptionalParam<TConfig> : IPolicyHandler
+    where TConfig : class
+{
+    public List<Tuple<
+        Func<GatewayContext, TConfig?, bool>,
+        Action<GatewayContext, TConfig?>
+    >> CallbackHooks { get; } = new();
+
+    public abstract string PolicyName { get; }
+
+    public object? Handle(GatewayContext context, object?[]? args)
+    {
+        var config = args.ExtractOptionalArgument<TConfig>();
+        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, config));
+        if (callbackHook is not null)
+        {
+            callbackHook.Item2(context, config);
+        }
+        else
+        {
+            Handle(context, config);
+        }
+
+        return null;
+    }
+
+    protected abstract void Handle(GatewayContext context, TConfig? config);
+}
+
 internal abstract class PolicyHandler<TParam1, TParam2> : IPolicyHandler
-    where TParam1 : class
-    where TParam2 : class
 {
     public List<Tuple<
         Func<GatewayContext, TParam1, TParam2, bool>,
@@ -53,6 +80,7 @@ internal abstract class PolicyHandler<TParam1, TParam2> : IPolicyHandler
         {
             Handle(context, param1, param2);
         }
+
         return null;
     }
 

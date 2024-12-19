@@ -21,30 +21,29 @@ public static class MockSetHeaderProvider
     public static Setup SetHeader(
         this MockPoliciesProvider<IInboundContext> mock,
         Func<GatewayContext, string, string[], bool> predicate
-    )
-    {
-        var handler = mock.SectionContextProxy.GetHandler<SetHeaderRequestHandler>();
-        return new Setup(predicate, handler);
-    }
+    ) => SetHeader<IInboundContext, SetHeaderRequestHandler>(mock, predicate);
 
     public static Setup SetHeader(
         this MockPoliciesProvider<IOutboundContext> mock,
         Func<GatewayContext, string, string[], bool> predicate
-    )
-    {
-        var handler = mock.SectionContextProxy.GetHandler<SetHeaderResponseHandler>();
-        return new Setup(predicate, handler);
-    }
+    ) => SetHeader<IOutboundContext, SetHeaderResponseHandler>(mock, predicate);
 
     public static Setup SetHeader(
         this MockPoliciesProvider<IOnErrorContext> mock,
         Func<GatewayContext, string, string[], bool> predicate
+    ) => SetHeader<IOnErrorContext, SetHeaderResponseHandler>(mock, predicate);
+
+    private static Setup SetHeader<TContext, THandler>(
+        MockPoliciesProvider<TContext> mock,
+        Func<GatewayContext, string, string[], bool> predicate
     )
+        where TContext : class
+        where THandler : SetHeaderHandler
     {
-        var handler = mock.SectionContextProxy.GetHandler<SetHeaderResponseHandler>();
+        var handler = mock.SectionContextProxy.GetHandler<THandler>();
         return new Setup(predicate, handler);
     }
-    
+
     public class Setup
     {
         private readonly Func<GatewayContext, string, string[], bool> _predicate;
@@ -58,8 +57,7 @@ public static class MockSetHeaderProvider
             _handler = handler;
         }
 
-        public void WithCallback(Action<GatewayContext, string, string[]> callback) => _handler.CallbackHooks.Add(
-            new Tuple<Func<GatewayContext, string, string[], bool>, Action<GatewayContext, string, string[]>>(
-                _predicate, callback));
+        public void WithCallback(Action<GatewayContext, string, string[]> callback) =>
+            _handler.CallbackHooks.Add((_predicate, callback).ToTuple());
     }
 }

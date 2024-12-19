@@ -54,7 +54,7 @@ public class TestDocumentTests
     {
         var document = new OperationDocument();
         var test = new TestDocument(document) { Context = { Request = { IpAddress = "11.0.0.1" } } };
-        test.InInbound().AuthenticationManagedIdentity().ReturnsToken("testTokenValue");
+        test.MockInbound().AuthenticationManagedIdentity().ReturnsToken("testTokenValue");
 
         test.RunInbound();
 
@@ -75,7 +75,7 @@ public class TestDocumentTests
         var document = new OperationDocument();
         var test = new TestDocument(document);
         int called = 0;
-        test.InBackend().ForwardRequest().WithCallback((_, _) => called++);
+        test.MockBackend().ForwardRequest().WithCallback((_, _) => called++);
 
         test.RunBackend();
 

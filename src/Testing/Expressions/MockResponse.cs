@@ -5,12 +5,10 @@ using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
-public class MockResponse : IResponse
+public class MockResponse : MockMessage, IResponse
 {
-    public MockBody Body { get; set; } = new MockBody();
     IMessageBody IResponse.Body => Body;
 
-    public Dictionary<string, string[]> Headers { get; set; } = new Dictionary<string, string[]>();
     IReadOnlyDictionary<string, string[]> IResponse.Headers => Headers;
 
     public int StatusCode { get; set; } = 200;

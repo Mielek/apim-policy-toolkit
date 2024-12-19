@@ -33,6 +33,6 @@ public static class MockBaseProvider
         }
 
         public void WithCallback(Action<GatewayContext> callback) =>
-            _handler.CallbackHooks.Add(new Tuple<Func<GatewayContext, bool>, Action<GatewayContext>>(_predicate, callback));
+            _handler.CallbackHooks.Add((_predicate, callback).ToTuple());
     }
 }

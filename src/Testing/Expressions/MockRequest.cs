@@ -7,14 +7,12 @@ using Azure.ApiManagement.PolicyToolkit.Authoring.Expressions;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Expressions;
 
-public class MockRequest : IRequest
+public class MockRequest : MockMessage, IRequest
 {
-    public MockBody Body { get; set; } = new MockBody();
     IMessageBody IRequest.Body => Body;
 
     public X509Certificate2? Certificate { get; set; } = null;
 
-    public Dictionary<string, string[]> Headers { get; set; } = new Dictionary<string, string[]>();
     IReadOnlyDictionary<string, string[]> IRequest.Headers => Headers;
 
     public string IpAddress { get; set; } = "192.168.0.1";
