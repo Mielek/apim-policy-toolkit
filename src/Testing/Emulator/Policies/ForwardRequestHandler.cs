@@ -6,37 +6,12 @@ using Azure.ApiManagement.PolicyToolkit.Authoring;
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 [Section(nameof(IBackendContext))]
-internal class ForwardRequestHandler : IPolicyHandler
+internal class ForwardRequestHandler : PolicyHandlerOptionalParam<ForwardRequestConfig>
 {
-    public List<Tuple<
-        Func<GatewayContext, ForwardRequestConfig?, bool>,
-        Action<GatewayContext, ForwardRequestConfig?>
-    >> CallbackHooks { get; } = new();
+    public override string PolicyName => nameof(IBackendContext.ForwardRequest);
 
-    public string PolicyName => nameof(IBackendContext.ForwardRequest);
-
-    public object? Handle(GatewayContext context, object?[]? args)
+    protected override void Handle(GatewayContext context, ForwardRequestConfig? config)
     {
-        if (args is not { Length: 1 })
-        {
-            throw new ArgumentException("ForwardRequest requires exactly one argument.");
-        }
-
-        ForwardRequestConfig? config = null;
-        if (args[0] is not null)
-        {
-            if (args[0] is not ForwardRequestConfig c)
-            {
-                throw new ArgumentException("ForwardRequest requires a ForwardRequestConfig argument.");
-            }
-
-            config = c;
-        }
-
-        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, config));
-        callbackHook?.Item2(context, config);
-
-        // TODO
-        return null;
+        throw new NotImplementedException();
     }
 }

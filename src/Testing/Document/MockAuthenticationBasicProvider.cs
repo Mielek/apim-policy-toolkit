@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
-using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
@@ -47,8 +46,6 @@ public static class MockAuthenticationBasicProvider
         }
 
         public void WithCallback(Action<GatewayContext, string, string> callback) =>
-            _handler.CallbackHooks.Add(
-                new Tuple<Func<GatewayContext, string, string, bool>, Action<GatewayContext, string, string>>(
-                    _predicate, callback));
+            _handler.CallbackSetup.Add((_predicate, callback).ToTuple());
     }
 }

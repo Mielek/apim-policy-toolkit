@@ -7,15 +7,15 @@ namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
 
 public static class TestDocumentExtensions
 {
-    public static MockPoliciesProvider<IInboundContext> InInbound(this TestDocument document) =>
+    public static MockPoliciesProvider<IInboundContext> SetupInbound(this TestDocument document) =>
         new(document.Context.InboundProxy);
 
-    public static MockPoliciesProvider<IBackendContext> InBackend(this TestDocument document) =>
+    public static MockPoliciesProvider<IBackendContext> SetupBackend(this TestDocument document) =>
         new(document.Context.BackendProxy);
 
-    public static MockPoliciesProvider<IOutboundContext> InOutbound(this TestDocument document) =>
+    public static MockPoliciesProvider<IOutboundContext> SetupOutbound(this TestDocument document) =>
         new(document.Context.OutboundProxy);
 
-    public static MockPoliciesProvider<IOnErrorContext> InOnError(this TestDocument document) =>
+    public static MockPoliciesProvider<IOnErrorContext> SetupOnError(this TestDocument document) =>
         new(document.Context.OnErrorProxy);
 }

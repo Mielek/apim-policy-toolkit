@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
-using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
@@ -34,17 +33,14 @@ public static class MockAuthenticationManagedIdentityProvider
         }
 
         public void WithCallback(Action<GatewayContext, ManagedIdentityAuthenticationConfig> callback) =>
-            _handler.CallbackHooks.Add(
-                new Tuple<Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool>,
-                    Action<GatewayContext, ManagedIdentityAuthenticationConfig>>(_predicate, callback));
+            _handler.CallbackSetup.Add((_predicate, callback).ToTuple());
 
-        public void WithTokenProviderHook(Func<string, string?, string> hook) => _handler.ProvideTokenHooks.Add(
-            new Tuple<Func<GatewayContext, ManagedIdentityAuthenticationConfig, bool>, Func<string, string?, string>>(
-                _predicate, hook));
+        public void WithTokenProviderHook(Func<string, string?, string> hook) =>
+            _handler.ProvideTokenHooks.Add((_predicate, hook).ToTuple());
 
         public void ReturnsToken(string token) => this.WithTokenProviderHook((_, _) => token);
 
         public void WithError(string error) =>
-            this.WithTokenProviderHook((_, _) => throw new InvalidOperationException(error));
+            this.WithTokenProviderHook((_, _) => throw new HttpRequestException(error));
     }
 }

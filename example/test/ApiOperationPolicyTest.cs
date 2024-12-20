@@ -74,7 +74,7 @@ public class ApiOperationPolicyTest
                 Request = { IpAddress = "11.0.0.1" }
             }
         };
-        testDocument.InInbound().AuthenticationManagedIdentity().ReturnsToken("myToken");
+        testDocument.SetupInbound().AuthenticationManagedIdentity().ReturnsToken("myToken");
 
         testDocument.RunInbound();
 

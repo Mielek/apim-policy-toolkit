@@ -7,4 +7,5 @@ public class PolicyException(Exception e) : Exception(e.Message, e)
 {
     public required string Policy { get; init; }
     public required string Section { get; init; }
+    public required object?[]? PolicyArgs { get; init; }
 }

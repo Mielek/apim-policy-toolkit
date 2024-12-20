@@ -42,7 +42,7 @@ internal class SectionContextProxy<TSection> : DispatchProxy where TSection : cl
         catch (PolicyException) { throw; }
         catch (Exception e)
         {
-            throw new PolicyException(e) { Policy = targetMethod.Name, Section = _sectionName };
+            throw new PolicyException(e) { Policy = targetMethod.Name, Section = _sectionName, PolicyArgs = args };
         }
     }
 
@@ -58,7 +58,8 @@ internal class SectionContextProxy<TSection> : DispatchProxy where TSection : cl
         var tHandler = Activator.CreateInstance<THandler>();
         if (_handlers.TryGetValue(tHandler.PolicyName, out var handler))
         {
-            return handler as THandler ?? throw new InvalidOperationException();
+            return handler as THandler ?? throw new InvalidOperationException(
+                $"Handler of type {typeof(THandler).Name} was requested but handler table contains one of type {handler.GetType().Name}");
         }
 
         _handlers[tHandler.PolicyName] = tHandler;

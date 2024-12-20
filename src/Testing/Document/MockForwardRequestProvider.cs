@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
-using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
@@ -34,8 +33,7 @@ public static class MockForwardRequestProvider
             _handler = handler;
         }
 
-        public void WithCallback(Action<GatewayContext, ForwardRequestConfig?> callback) => _handler.CallbackHooks.Add(
-            new Tuple<Func<GatewayContext, ForwardRequestConfig?, bool>, Action<GatewayContext, ForwardRequestConfig?>>(
-                _predicate, callback));
+        public void WithCallback(Action<GatewayContext, ForwardRequestConfig?> callback) =>
+            _handler.CallbackSetup.Add((_predicate, callback).ToTuple());
     }
 }
