@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
@@ -34,6 +33,6 @@ public static class MockInlineProvider
         }
 
         public void WithCallback(Action<GatewayContext, string> callback) =>
-            _handler.CallbackHooks.Add((_predicate, callback).ToTuple());
+            _handler.CallbackSetup.Add((_predicate, callback).ToTuple());
     }
 }

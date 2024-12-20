@@ -7,14 +7,14 @@ internal abstract class PolicyHandler<TConfig> : IPolicyHandler
     public List<Tuple<
         Func<GatewayContext, TConfig, bool>,
         Action<GatewayContext, TConfig>
-    >> CallbackHooks { get; } = new();
+    >> CallbackSetup { get; } = new();
 
     public abstract string PolicyName { get; }
 
     public object? Handle(GatewayContext context, object?[]? args)
     {
         var config = args.ExtractArgument<TConfig>();
-        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, config));
+        var callbackHook = CallbackSetup.Find(hook => hook.Item1(context, config));
         if (callbackHook is not null)
         {
             callbackHook.Item2(context, config);
@@ -36,14 +36,14 @@ internal abstract class PolicyHandlerOptionalParam<TConfig> : IPolicyHandler
     public List<Tuple<
         Func<GatewayContext, TConfig?, bool>,
         Action<GatewayContext, TConfig?>
-    >> CallbackHooks { get; } = new();
+    >> CallbackSetup { get; } = new();
 
     public abstract string PolicyName { get; }
 
     public object? Handle(GatewayContext context, object?[]? args)
     {
         var config = args.ExtractOptionalArgument<TConfig>();
-        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, config));
+        var callbackHook = CallbackSetup.Find(hook => hook.Item1(context, config));
         if (callbackHook is not null)
         {
             callbackHook.Item2(context, config);
@@ -64,14 +64,14 @@ internal abstract class PolicyHandler<TParam1, TParam2> : IPolicyHandler
     public List<Tuple<
         Func<GatewayContext, TParam1, TParam2, bool>,
         Action<GatewayContext, TParam1, TParam2>
-    >> CallbackHooks { get; } = new();
+    >> CallbackSetup { get; } = new();
 
     public abstract string PolicyName { get; }
 
     public object? Handle(GatewayContext context, object?[]? args)
     {
         var (param1, param2) = args.ExtractArguments<TParam1, TParam2>();
-        var callbackHook = CallbackHooks.Find(hook => hook.Item1(context, param1, param2));
+        var callbackHook = CallbackSetup.Find(hook => hook.Item1(context, param1, param2));
         if (callbackHook is not null)
         {
             callbackHook.Item2(context, param1, param2);

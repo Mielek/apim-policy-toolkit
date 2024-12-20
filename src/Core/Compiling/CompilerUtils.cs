@@ -7,7 +7,6 @@ using System.Xml.Linq;
 using Azure.ApiManagement.PolicyToolkit.Compiling.Diagnostics;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling;
@@ -20,27 +19,27 @@ public static class CompilerUtils
         {
             case LiteralExpressionSyntax syntax:
                 return syntax.Token.ValueText;
-            case InterpolatedStringExpressionSyntax syntax:
-                var interpolationParts = syntax.Contents.Select(c => c switch
-                {
-                    InterpolatedStringTextSyntax text => text.TextToken.ValueText,
-                    InterpolationSyntax interpolation =>
-                        $"{{context.Variables[\"{interpolation.Expression.ToString()}\"]}}",
-                    _ => ""
-                });
-                var interpolationExpression = CSharpSyntaxTree
-                    .ParseText($"context => $\"{string.Join("", interpolationParts)}\"").GetRoot();
-                var lambda = interpolationExpression.DescendantNodesAndSelf().OfType<LambdaExpressionSyntax>()
-                    .FirstOrDefault();
-                lambda = Normalize(lambda!);
-                return $"@({lambda.ExpressionBody})";
             case InvocationExpressionSyntax syntax:
                 return FindCode(syntax, context);
+            // case InterpolatedStringExpressionSyntax syntax:
+            //     var interpolationParts = syntax.Contents.Select(c => c switch
+            //     {
+            //         InterpolatedStringTextSyntax text => text.TextToken.ValueText,
+            //         InterpolationSyntax interpolation =>
+            //             $"{{context.Variables[\"{interpolation.Expression.ToString()}\"]}}",
+            //         _ => ""
+            //     });
+            //     var interpolationExpression = CSharpSyntaxTree
+            //         .ParseText($"context => $\"{string.Join("", interpolationParts)}\"").GetRoot();
+            //     var lambda = interpolationExpression.DescendantNodesAndSelf().OfType<LambdaExpressionSyntax>()
+            //         .FirstOrDefault();
+            //     lambda = Normalize(lambda!);
+            //     return $"@({lambda.ExpressionBody})";
             default:
                 context.Report(Diagnostic.Create(
                     CompilationErrors.NotSupportedParameter,
                     expression.GetLocation()
-                    ));
+                ));
                 return "";
         }
     }
@@ -52,7 +51,7 @@ public static class CompilerUtils
             context.Report(Diagnostic.Create(
                 CompilationErrors.InvalidExpression,
                 syntax.GetLocation()
-                ));
+            ));
             return "";
         }
 
@@ -97,7 +96,7 @@ public static class CompilerUtils
                 context.Report(Diagnostic.Create(
                     CompilationErrors.ObjectInitializerContainsNotAnAssigmentExpression,
                     expression.GetLocation()
-                    ));
+                ));
                 continue;
             }
 

@@ -23,7 +23,7 @@ public class ForwardRequestTests
     {
         var test = new SimpleForwardRequest().AsTestDocument();
         var executedCallback = false;
-        test.MockBackend().ForwardRequest().WithCallback((_, _) =>
+        test.SetupBackend().ForwardRequest().WithCallback((_, _) =>
         {
             executedCallback = true;
         });

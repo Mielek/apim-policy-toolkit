@@ -65,7 +65,7 @@ public class SetHeaderTests
             Context = { Request = { Headers = { { "X-Inbound", ["overriden"] } } } }
         };
         bool callbackExecuted = false;
-        test.MockInbound().SetHeader().WithCallback((context, name, values) =>
+        test.SetupInbound().SetHeader().WithCallback((context, name, values) =>
         {
             callbackExecuted = true;
             context.Request.Headers[name] = values;
@@ -92,7 +92,7 @@ public class SetHeaderTests
             Context = { Request = { Headers = { { "A", ["overriden"] }, { "B", ["overriden"] } } } }
         };
         bool callbackExecuted = false;
-        test.MockInbound().SetHeader((_, name, _) => name == "B").WithCallback((context, name, values) =>
+        test.SetupInbound().SetHeader((_, name, _) => name == "B").WithCallback((context, name, values) =>
         {
             callbackExecuted = true;
             context.Request.Headers[name] = values;
@@ -136,7 +136,7 @@ public class SetHeaderTests
             Context = { Response = { Headers = { { "X-Outbound", ["overriden-1", "overriden-2"] } } } }
         };
         bool callbackExecuted = false;
-        test.MockOutbound().SetHeader().WithCallback((context, name, values) =>
+        test.SetupOutbound().SetHeader().WithCallback((context, name, values) =>
         {
             callbackExecuted = true;
             context.Response.Headers[name] = values;
@@ -181,7 +181,7 @@ public class SetHeaderTests
             Context = { Response = { Headers = { { "X-OnError", ["overriden-1", "overriden-2"] } } } }
         };
         bool callbackExecuted = false;
-        test.MockOnError().SetHeader().WithCallback((context, name, values) =>
+        test.SetupOnError().SetHeader().WithCallback((context, name, values) =>
         {
             callbackExecuted = true;
             context.Response.Headers[name] = values;

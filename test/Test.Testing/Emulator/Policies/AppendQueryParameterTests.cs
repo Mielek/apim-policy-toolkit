@@ -66,7 +66,7 @@ public class AppendQueryParameterTests
         // Arrange
         var test = new SimpleAppendQueryParameter().AsTestDocument();
         var callbackExecuted = false;
-        test.MockInbound().AppendQueryParameter().WithCallback(((context, name, values) =>
+        test.SetupInbound().AppendQueryParameter().WithCallback(((context, name, values) =>
         {
             callbackExecuted = true;
             context.Request.Url.Query.Add(name, values.Reverse().ToArray());
@@ -91,7 +91,7 @@ public class AppendQueryParameterTests
             Context = { Request = { Url = { Query = { { "paramA", ["AA"] } } } } }
         };
         var callbackExecuted = false;
-        test.MockInbound().AppendQueryParameter((_, name, _) => name == "paramB").WithCallback(((_, _, _) =>
+        test.SetupInbound().AppendQueryParameter((_, name, _) => name == "paramB").WithCallback(((_, _, _) =>
         {
             callbackExecuted = true;
         }));

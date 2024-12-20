@@ -55,7 +55,7 @@ public class AppendHeaderTests
             .WhoseValue.Should().HaveCount(3).And.ContainInOrder("value-0", "value-1", "value-2");
         test.Context.Response.Headers.Should().NotContainKeys("X-Inbound", "X-Outbound", "X-OnError");
     }
-    
+
     [TestMethod]
     public void AppendHeader_Inbound_HandleSimple_CreateIfNotExists()
     {
@@ -81,7 +81,7 @@ public class AppendHeaderTests
             Context = { Request = { Headers = { { "X-Inbound", ["value-0"] } } } }
         };
         bool callbackExecuted = false;
-        test.MockInbound().AppendHeader().WithCallback((context, name, values) =>
+        test.SetupInbound().AppendHeader().WithCallback((context, name, values) =>
         {
             callbackExecuted = true;
             context.Request.Headers[name] = context.Request.Headers[name].Concat(values).Reverse().ToArray();
@@ -107,7 +107,7 @@ public class AppendHeaderTests
             Context = { Request = { Headers = { { "A", ["value-0"] }, { "B", ["value-0"] } } } }
         };
         bool callbackExecuted = false;
-        test.MockInbound().AppendHeader((_, name, _) => name == "B").WithCallback((context, name, values) =>
+        test.SetupInbound().AppendHeader((_, name, _) => name == "B").WithCallback((context, name, values) =>
         {
             callbackExecuted = true;
             context.Request.Headers[name] = context.Request.Headers[name].Concat(values).Reverse().ToArray();
@@ -151,7 +151,7 @@ public class AppendHeaderTests
             Context = { Response = { Headers = { { "X-Outbound", ["value-0"] } } } }
         };
         bool callbackExecuted = false;
-        test.MockOutbound().AppendHeader().WithCallback((context, name, values) =>
+        test.SetupOutbound().AppendHeader().WithCallback((context, name, values) =>
         {
             callbackExecuted = true;
             context.Response.Headers[name] = context.Response.Headers[name].Concat(values).Reverse().ToArray();
@@ -196,7 +196,7 @@ public class AppendHeaderTests
             Context = { Response = { Headers = { { "X-OnError", ["value-0"] } } } }
         };
         bool callbackExecuted = false;
-        test.MockOnError().AppendHeader().WithCallback((context, name, values) =>
+        test.SetupOnError().AppendHeader().WithCallback((context, name, values) =>
         {
             callbackExecuted = true;
             context.Response.Headers[name] = context.Response.Headers[name].Concat(values).Reverse().ToArray();

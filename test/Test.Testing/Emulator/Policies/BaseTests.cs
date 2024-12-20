@@ -39,7 +39,7 @@ public class BaseTests
         // Arrange
         var test = new TestDocument(new SimpleBase());
         bool baseExecuted = false;
-        test.MockInbound().Base().WithCallback(_ => baseExecuted = !baseExecuted);
+        test.SetupInbound().Base().WithCallback(_ => baseExecuted = !baseExecuted);
 
         // Act
         test.RunInbound();
@@ -55,7 +55,7 @@ public class BaseTests
         var test = new TestDocument(new SimpleBase());
         bool baseExecuted = false;
 
-        test.MockBackend().Base().WithCallback(_ => baseExecuted = !baseExecuted);
+        test.SetupBackend().Base().WithCallback(_ => baseExecuted = !baseExecuted);
 
         // Act
         test.RunBackend();
@@ -71,7 +71,7 @@ public class BaseTests
         var test = new TestDocument(new SimpleBase());
         bool baseExecuted = false;
 
-        test.MockOutbound().Base().WithCallback(_ => baseExecuted = !baseExecuted);
+        test.SetupOutbound().Base().WithCallback(_ => baseExecuted = !baseExecuted);
 
         // Act
         test.RunOutbound();
@@ -87,7 +87,7 @@ public class BaseTests
         var test = new TestDocument(new SimpleBase());
         bool baseExecuted = false;
 
-        test.MockOnError().Base().WithCallback(_ => baseExecuted = !baseExecuted);
+        test.SetupOnError().Base().WithCallback(_ => baseExecuted = !baseExecuted);
 
         // Act
         test.RunOnError();
@@ -101,7 +101,7 @@ public class BaseTests
     {
         // Arrange
         var test = new TestDocument(new SimpleBase()) { Context = { Variables = { { "a", true } } } };
-        test.MockInbound().Base(context => context.Variables.ContainsKey("b")).WithCallback(context =>
+        test.SetupInbound().Base(context => context.Variables.ContainsKey("b")).WithCallback(context =>
         {
             context.Variables.Remove("a");
             context.Variables.Remove("b");

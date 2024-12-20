@@ -26,7 +26,7 @@ public class AzureOpenAiEmitTokenMetricTests
     {
         var test = new SimpleAzureOpenAiEmitTokenMetric().AsTestDocument();
         var executedCallback = false;
-        test.MockInbound().AzureOpenAiEmitTokenMetric().WithCallback((_, _) =>
+        test.SetupInbound().AzureOpenAiEmitTokenMetric().WithCallback((_, _) =>
         {
             executedCallback = true;
         });

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Azure.ApiManagement.PolicyToolkit.Authoring;
-using Azure.ApiManagement.PolicyToolkit.Testing.Emulator;
 using Azure.ApiManagement.PolicyToolkit.Testing.Emulator.Policies;
 
 namespace Azure.ApiManagement.PolicyToolkit.Testing.Document;
@@ -58,6 +57,6 @@ public static class MockSetHeaderProvider
         }
 
         public void WithCallback(Action<GatewayContext, string, string[]> callback) =>
-            _handler.CallbackHooks.Add((_predicate, callback).ToTuple());
+            _handler.CallbackSetup.Add((_predicate, callback).ToTuple());
     }
 }

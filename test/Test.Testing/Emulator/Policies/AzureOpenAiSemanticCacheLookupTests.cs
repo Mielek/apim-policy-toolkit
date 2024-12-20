@@ -16,9 +16,7 @@ public class AzureOpenAiSemanticCacheLookupTests
         {
             context.AzureOpenAiSemanticCacheLookup(new SemanticCacheLookupConfig()
             {
-                ScoreThreshold = 0.05M,
-                EmbeddingsBackendId = "backend-id",
-                EmbeddingsBackendAuth = "token"
+                ScoreThreshold = 0.05M, EmbeddingsBackendId = "backend-id", EmbeddingsBackendAuth = "token"
             });
         }
     }
@@ -28,7 +26,7 @@ public class AzureOpenAiSemanticCacheLookupTests
     {
         var test = new SimpleAzureOpenAiSemanticCacheLookup().AsTestDocument();
         var executedCallback = false;
-        test.MockInbound().AzureOpenAiSemanticCacheLookup().WithCallback((_, _) =>
+        test.SetupInbound().AzureOpenAiSemanticCacheLookup().WithCallback((_, _) =>
         {
             executedCallback = true;
         });

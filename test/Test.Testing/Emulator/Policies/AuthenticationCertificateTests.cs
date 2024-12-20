@@ -23,7 +23,7 @@ public class AuthenticationCertificateTests
     {
         var test = new SimpleAuthenticationCertificate().AsTestDocument();
         var executedCallback = false;
-        test.MockInbound().AuthenticationCertificate().WithCallback((_, _) =>
+        test.SetupInbound().AuthenticationCertificate().WithCallback((_, _) =>
         {
             executedCallback = true;
         });

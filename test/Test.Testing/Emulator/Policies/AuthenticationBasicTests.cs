@@ -51,7 +51,7 @@ public class AuthenticationBasicTests
     {
         // Arrange
         var test = new SimpleABasic().AsTestDocument();
-        test.MockInbound().AuthenticationBasic().WithCallback((context, user, pass) =>
+        test.SetupInbound().AuthenticationBasic().WithCallback((context, user, pass) =>
         {
             context.Request.Headers["Authorization"] = [$"Basic {user}:{pass}"];
         });
@@ -69,13 +69,13 @@ public class AuthenticationBasicTests
     {
         // Arrange
         var test = new MultipleABasic().AsTestDocument();
-        test.MockInbound()
+        test.SetupInbound()
             .AuthenticationBasic((_, user, pass) => user == "b" && pass == "b-pass")
             .WithCallback((context, user, pass) =>
             {
                 context.Request.Headers["B"] = [$"{user}:{pass}"];
             });
-        test.MockInbound()
+        test.SetupInbound()
             .AuthenticationBasic((_, user, pass) => user == "a" && pass == "a-pass")
             .WithCallback((context, user, pass) =>
             {
